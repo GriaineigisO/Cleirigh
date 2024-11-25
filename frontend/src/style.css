@@ -1,0 +1,88 @@
+.nunito-sans {
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100,
+      "YTLC" 500;
+  }
+
+body {
+    background-color: #3cc36b;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+#navbar {
+    display: flex;
+    flex-direction: row;
+    background-color: #c7eed4;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+}
+
+.nav-ul {
+    margin-right: 4rem;
+}
+
+.navlink{
+    margin-right: 1rem;
+    text-decoration: none;
+    color: #2A8A4C;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.navlink:hover {
+    background-color: #9fc8ad;
+    color: #c7eed4
+}
+
+.title-logo {
+    margin-left: 4rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.title-logo h1 a{
+   text-decoration: none;
+   color: #2A8A4C;
+}
+
+.grey-qo-regular {
+    font-family: "Grey Qo", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+
+.subtitle {
+    font-size: 35px;
+    color: #2A8A4C;
+    font-weight: lighter;
+    margin-left: 2rem;
+    font-family: "Grey Qo", cursive;
+}
+
+.logo {
+    height:30px;
+    margin-right: 0.5rem;
+}
+
+.uncial-antiqua-regular {
+    font-family: "Uncial Antiqua", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    
+};
+
+#welcomePage {
+    background: linear-gradient(rgba(60, 195, 107), rgba(240, 240, 240)), url('./Images/welcomePageBackground.png');
+    background-repeat: no-repeat;
+    height: 1000px;
+}
+
+
+
+
