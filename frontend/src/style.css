@@ -106,7 +106,7 @@ body {
 
 #input-container div input {
     margin-bottom: 10px;
-    max-width: 300px;
+    width: 300px;
 }
 
 .grey-qo-regular {
