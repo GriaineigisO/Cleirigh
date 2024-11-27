@@ -12,7 +12,7 @@ const Navbar = ({onLogin, onLogout}) => {
         localStorage.removeItem('username');
         sessionStorage.clear();
         onLogout && onLogout();
-        window.location.href = '/welcome';
+        window.location.href = '/';
     };
 
     const isLoggedIn = !! localStorage.getItem('token');
@@ -55,18 +55,23 @@ const Navbar = ({onLogin, onLogout}) => {
         
             {isLoggedIn ? (
                 <>
-                    <div>
-                        <h1><a href="./Pages/home.js">Cleirigh</a></h1>
+                    <div className="title-logo">
+                        <img className="logo" src={logo} alt="Ó Cléirigh Cl"></img>
+                        <h1 className="uncial-antiqua-regular"><a href="/home">Cleirigh</a></h1>
+                        <p className="subtitle">Geneological Archive</p>
                     </div>
-                    <Link to={`/${currentUser}`} className="navlink">{currentUser}</Link>
-                    <Link className="navlink">Tree</Link>
-                    <Link onClick={handleSignOut} className="navlink">Sign Out</Link>
+                    <ul className="nav-ul">
+                        <Link className="navlink">Tree</Link>
+                        <Link to={`/${currentUser}`} className="navlink">Account</Link>
+                        <Link onClick={handleSignOut} className="navlink">Sign Out</Link>
+                    </ul>
+                    
                 </>
             ) : (
                 <>
                     <div className="title-logo">
                         <img className="logo" src={logo} alt="Ó Cléirigh Cl"></img>
-                        <h1 className="uncial-antiqua-regular"><a href="/welcome">Cleirigh</a></h1>
+                        <h1 className="uncial-antiqua-regular"><a href="/">Cleirigh</a></h1>
                         <p className="subtitle">Geneological Archive</p>
                     </div>
                     <ul className="nav-ul">

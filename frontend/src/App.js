@@ -27,14 +27,14 @@ function App() {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-  }
+  };
 
   return (
     <Router>
       <div>
         <Navbar />
         <Routes>
-          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/:id" element={<Account />} />

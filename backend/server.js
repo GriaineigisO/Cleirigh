@@ -14,12 +14,21 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
+const pool = new Pool ({
+    user: process.env.DB_USER,
+    host: process.env.HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+});
+
 app.use(session({
     secret: 'enter secret key',
     resave: false,
     saveUninitialized: true,
     cookie: {secure: false}
 }));
+
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -29,17 +38,17 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-app.post('api/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
         //Check if user already exists
-        const userExists = await Pool.query(
+        const userExists = await pool.query(
             'SELECT * FROM users WHERE email = $1',
             [email]
         );
 
-        if (userExists.row.length > 0) {
+        if (userExists.rows.length > 0) {
             return res.status(400).json({ message: 'User already exists'});
         }
 
@@ -48,13 +57,13 @@ app.post('api/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         //insert new user into the database
-        const newUser = await Pool.query(
-            'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
-            [username, email, hashedPassword]
+        const newUser = await pool.query(
+            'INSERT INTO users (username, email, password, id) VALUES ($1, $2, $3, $4) RETURNING *',
+            [username, email, hashedPassword, Date.now()]
         );
 
         //generate token for user
-        const token = jwt.sign({ id: newUser.rows[0].id }, 'jwt_secret', { expiresIn: '1h'});
+        const token = jwt.sign({ id: newUser.rows[0].id }, process.env.JWT_SECRET, { expiresIn: '1h'});
 
         //respond with token and user data
         res.json({
@@ -71,12 +80,12 @@ app.post('api/register', async (req, res) => {
     }
 });
 
-app.post('api/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
         //find user by email
-        const result = await Pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
         if (result.rows.length === 0) {
             return res.status(401).json({ message: 'Invalid email or password' });
@@ -90,6 +99,10 @@ app.post('api/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         };
 
+        // Generate token
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        console.log('Token generated:', token);
+
         //respond with token and user data
         res.json({
             token,
@@ -99,11 +112,21 @@ app.post('api/login', async (req, res) => {
                 email: user.email
             },
         });
-    } catch (err) {
+    } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'server error' });
     };
 });
+
+
+pool.query('SELECT NOW()', (err, res) => {
+    if (err) {
+        console.error('Database connection error:', err.stack);
+    } else {
+        console.log('Database connected:', res.rows[0]);
+    }
+});
+
 
 //checks if user has a paid account or not
 app.get('/api/user', async (req, res) => {
@@ -111,7 +134,7 @@ app.get('/api/user', async (req, res) => {
     try {
         const result = await cleirighUserDB.query('SELECT premium FROM users WHERE username = $1', [username]);
 
-        if (result.rows.legnth > 0) {
+        if (result.rows.length > 0) {
             const premium = result.rows[0].premium;
             res.json({ premium });
         } else {
@@ -122,6 +145,67 @@ app.get('/api/user', async (req, res) => {
         res.status(500).json({ message: 'Internal server error'});
     }
 });
+
+
+// makes a new tree
+app.post('/make-new-tree', async (req, res) => {
+    try {
+      const { userId, treeName, treeId } = req.body; // Expecting the logged-in user's ID in the request body
+  
+      //inserts new tree into database
+      const result = await pool.query('INSERT INTO trees (user_id, tree_name, tree_id) VALUES ($1, $2, $3) RETURNING *',
+            [userId, treeName, treeId]);
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    }
+  });
+
+
+//determines if the user has not made a tree yet
+app.post('/check-if-no-trees', async (req, res) => {
+    try {
+      const { userId } = req.body; 
+  
+      const result = await pool.query('SELECT user_id FROM trees WHERE user_id = $1',
+            [userId]);
+
+        if (result.rows.length > 0) {
+            // User has trees, return true
+            console.log("has trees")
+            res.json({ hasTrees: true });
+            } else {
+            // User has no trees, return false
+            console.log("no trees")
+            res.json({ hasTrees: false });
+            }
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    }
+  });
+
+//gets the name of a user's tree
+app.post('/get-tree-name', async (req, res) => {
+    try {
+      const { userId } = req.body; 
+  
+      const result = await pool.query('SELECT * FROM trees WHERE user_id = $1',
+            [userId]);
+
+            if (result.rows.length > 0) {
+                res.json({ treeName: result.rows[0].tree_name });
+            } else {
+                res.status(404).json({ message: 'No trees found for this user' });
+            }
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    }
+  });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

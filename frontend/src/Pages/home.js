@@ -1,10 +1,193 @@
+import { useState, useEffect } from 'react';
+import {jwtDecode} from 'jwt-decode';
+
+const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
+    return (
+      <div>
+        <h1>Begin Your New Archive</h1>
+        <p>To begin creating your first tree, enter its name below.</p>
+        <input
+          type="text"
+          value={treeName}
+          onChange={(e) => setTreeName(e.target.value)} // Update parent state
+          placeholder="Enter tree name"
+        />
+        <button onClick={handleNewTree}>Create Your First Tree</button>
+      </div>
+    );
+  };
 
 
-const Home = () => {
+  const HomePageWithTree = () => {
+
+    const [treeName, setTreeName] = useState('');
+
+    
+    // returns name of user's tree
+    useEffect (() => {
+    
+        const getTreeName = async () => {
+
+            const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found');
+          return;
+        }
+    
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;
+
+            try {
+            const response = await fetch('http://localhost:5000/get-tree-name', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId })
+            });
+
+            // Check if the response is valid and is JSON
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            
+            const data = await response.json();
+            setTreeName(data.treeName); // Update state based on response
+            } catch (error) {
+            console.error('Error checking trees:', error);
+            }
+
+            return treeName;
+        };
+
+        getTreeName();
+    }, [])
 
     return (
-        <div>
-            <h2>HOME PAGE</h2>
+      <div>
+        <h1>The {treeName} Tree</h1>
+        <ul>
+            <li>X-num ancestors</li>
+            <li>X-num places</li>
+            <li>x-num occupations</li>
+        </ul>
+      </div>
+    );
+  };
+
+const Home = () => {
+    const [treeName, setTreeName] = useState('');
+    const [hasTrees, setHasTrees] = useState(null);
+
+    console.log('Has trees:', hasTrees); // Log the value of hasTrees
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found');
+          return;
+        }
+    
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;
+    
+        // Check if user has trees
+        const checkUserHasTrees = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/check-if-no-trees', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId })
+            });
+
+            // Check if the response is valid and is JSON
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            setHasTrees(data.hasTrees); // Update state based on response
+          } catch (error) {
+            console.error('Error checking trees:', error);
+          }
+        };
+    
+        checkUserHasTrees(); 
+      }, []); 
+
+    
+
+    const handleNewTree = async () => {
+
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+
+        // Decode the token to get the user ID
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;  // Assuming 'id' is the key used in the token
+        const treeId = Date.now();
+
+        try {
+            const response = await fetch('http://localhost:5000/make-new-tree', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId, treeName, treeId })
+            });
+    
+            const data = await response.json();
+            console.log('Query Results:', data);
+            setHasTrees(true);
+            console.log('State hasTrees updated to:', true);
+          } catch (error) {
+            console.error('Error submitting query:', error);
+          }
+    };    
+
+    return (
+        <div >
+            <div className="row">
+
+                <div className="col-sm-2 left-sidebar">
+                    <div className="row"><a href="">Family tree</a></div>
+                    <div className="row"><a href="">Ancestor Profiles</a></div>
+                    <div className="row"><a href="">Queries</a></div>
+                </div>
+
+                <div className="col-lg centre-col ">
+    {hasTrees !== null && (
+        <div key={hasTrees ? 'with-tree' : 'no-tree'}>
+            {hasTrees ? (
+                <HomePageWithTree />
+            ) : (
+                <HomePageNoTrees 
+                    treeName={treeName} 
+                    setTreeName={setTreeName} 
+                    handleNewTree={handleNewTree} 
+                />
+            )}
+        </div>
+    )}
+</div>
+
+
+                <div className="col-sm-3 right-sidebar">
+                        <div className="row"><a href="">Make a New Tree</a></div>
+                        <div className="row"><a href="">Add New Ancestor</a></div>
+                        <div className="row"><a href="">Random Ancestor's Profile</a></div>
+                        <div className="row"><a href="">On This Day</a></div>
+                        <div className="row"><a href="">Battles</a></div>
+                </div>
+
+            </div>
         </div>
     )
 

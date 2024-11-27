@@ -6,13 +6,12 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
-  const [error, setError] = useState(''); // Initialize error state as an empty string
+  const [error, setError] = useState(''); 
 
   const handleRegister = async (e) => {
     e.preventDefault();
     
-    // Clear error state at the beginning of registration attempt
-    setError(''); // Optional: You can keep this to clear the error on new attempts
+    setError(''); 
 
     if (password !== confirmedPassword) {
       alert(`Passwords do not match: ${password} - ${confirmedPassword}`);
@@ -36,6 +35,7 @@ const Register = () => {
       window.location.href = '/home'; // Redirect to the home page
     } catch (error) {
       // Log the error for debugging
+      console.log(error.response)
       console.error('Registration error details:', error);
 
       // Check for error response and update the error message
