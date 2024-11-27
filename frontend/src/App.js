@@ -7,7 +7,7 @@ import Register from './Pages/register.js';
 import Account from './Pages/account.js';
 import Success from './Pages/success.js';
 import Cancel from './Pages/cancel.js';
-import Home from './Pages/home.js';
+import {Home} from './Pages/home.js';
 
 function App() {
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import {jwtDecode} from 'jwt-decode';
+import {capitaliseFirstLetter} from '../library.js'
 
 const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
     return (
@@ -17,70 +18,88 @@ const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
     );
   };
 
+let treesName = "";
+const HomePageWithTree = () => {
 
-  const HomePageWithTree = () => {
+  const [treeName, setTreeName] = useState('');
 
-    const [treeName, setTreeName] = useState('');
+  
+  // returns name of user's tree
+  useEffect (() => {
+  
+      const getTreeName = async () => {
 
+          const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+  
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.id;
+
+          try {
+          const response = await fetch('http://localhost:5000/get-tree-name', {
+              method: 'POST',
+              headers: {
+              'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId })
+          });
+
+          // Check if the response is valid and is JSON
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+  
+          
+          const data = await response.json();
+          setTreeName(data.treeName); // Update state based on response
+          } catch (error) {
+          console.error('Error checking trees:', error);
+          }
+
+          return treeName;
+      };
+
+      getTreeName();
+  }, [])
+
+  const [isEmpty, setIsEmpty] = useState(true);
+
+  const CheckIfTreeIsEmpty = async () => {
+
+    const currentTree = JSON.parse(localStorage.getItem('currentTree'));
+
+      setIsEmpty(true)
     
-    // returns name of user's tree
-    useEffect (() => {
-    
-        const getTreeName = async () => {
+  }
 
-            const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('No token found');
-          return;
-        }
-    
-        const decodedToken = jwtDecode(token);
-        const userId = decodedToken.id;
+  useEffect(() => {
+    CheckIfTreeIsEmpty();
+  }, []);
 
-            try {
-            const response = await fetch('http://localhost:5000/get-tree-name', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId })
-            });
 
-            // Check if the response is valid and is JSON
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-    
-            
-            const data = await response.json();
-            setTreeName(data.treeName); // Update state based on response
-            } catch (error) {
-            console.error('Error checking trees:', error);
-            }
 
-            return treeName;
-        };
-
-        getTreeName();
-    }, [])
-
-    return (
-      <div>
-        <h1>The {treeName} Tree</h1>
+  return (
+    <div>
+      <h1>The {capitaliseFirstLetter(treeName)} Tree</h1>
+      {isEmpty ? (
+        <p>Your tree is empty!</p>
+      ) : (
         <ul>
-            <li>X-num ancestors</li>
-            <li>X-num places</li>
-            <li>x-num occupations</li>
-        </ul>
-      </div>
-    );
-  };
+          <li>X-num ancestors</li>
+          <li>X-num places</li>
+          <li>x-num occupations</li>
+      </ul>
+      )}
+    </div>
+  );
+};
 
 const Home = () => {
     const [treeName, setTreeName] = useState('');
-    const [hasTrees, setHasTrees] = useState(null);
-
-    console.log('Has trees:', hasTrees); // Log the value of hasTrees
+    const [hasTrees, setHasTrees] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -117,11 +136,9 @@ const Home = () => {
     
         checkUserHasTrees(); 
       }, []); 
-
     
-
     const handleNewTree = async () => {
-
+    
         // Get the token from localStorage
         const token = localStorage.getItem('token');
         if (!token) {
@@ -133,8 +150,9 @@ const Home = () => {
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.id;  // Assuming 'id' is the key used in the token
         const treeId = Date.now();
-
+        
         try {
+          
             const response = await fetch('http://localhost:5000/make-new-tree', {
               method: 'POST',
               headers: {
@@ -142,14 +160,15 @@ const Home = () => {
               },
               body: JSON.stringify({ userId, treeName, treeId })
             });
-    
+           
             const data = await response.json();
-            console.log('Query Results:', data);
+            //saves what tree is currently selected, in loca storage
             setHasTrees(true);
-            console.log('State hasTrees updated to:', true);
+            
           } catch (error) {
             console.error('Error submitting query:', error);
           }
+        
     };    
 
     return (
@@ -163,20 +182,16 @@ const Home = () => {
                 </div>
 
                 <div className="col-lg centre-col ">
-    {hasTrees !== null && (
-        <div key={hasTrees ? 'with-tree' : 'no-tree'}>
-            {hasTrees ? (
-                <HomePageWithTree />
-            ) : (
-                <HomePageNoTrees 
-                    treeName={treeName} 
-                    setTreeName={setTreeName} 
-                    handleNewTree={handleNewTree} 
-                />
-            )}
-        </div>
-    )}
-</div>
+                    {hasTrees ? (
+                        <HomePageWithTree />
+                    ) : (
+                        <HomePageNoTrees 
+                            treeName={treeName} 
+                            setTreeName={setTreeName} 
+                            handleNewTree={handleNewTree} 
+                        />
+                    )}
+                </div>
 
 
                 <div className="col-sm-3 right-sidebar">
@@ -193,4 +208,4 @@ const Home = () => {
 
 };
 
-export default Home;
+export {Home, treesName};

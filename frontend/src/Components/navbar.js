@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
 import logo from '../Images/crest.png';
+import {jwtDecode} from 'jwt-decode';
+import {capitaliseFirstLetter} from '../library.js';
 
 const Navbar = ({onLogin, onLogout}) => {
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('username'));
@@ -50,6 +52,53 @@ const Navbar = ({onLogin, onLogout}) => {
         }
     }, [isLoggedIn]);
 
+
+
+    const [treeName, setTreeName] = useState('');
+
+     // returns name of user's tree
+     useEffect (() => {
+    
+        const getTreeName = async () => {
+
+            const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found');
+          return;
+        }
+    
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;
+
+            try {
+            const response = await fetch('http://localhost:5000/get-tree-name', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId })
+            });
+
+            // Check if the response is valid and is JSON
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            
+            const data = await response.json();
+            setTreeName(data.treeName); // Update state based on response
+        
+
+            } catch (error) {
+            console.error('Error checking trees:', error);
+            }
+
+            return treeName;
+        };
+
+        getTreeName();
+    }, [])
+
     return (
         <div id="navbar">
         
@@ -61,7 +110,7 @@ const Navbar = ({onLogin, onLogout}) => {
                         <p className="subtitle">Geneological Archive</p>
                     </div>
                     <ul className="nav-ul">
-                        <Link className="navlink">Tree</Link>
+                        <Link className="navlink">{capitaliseFirstLetter(treeName)} Tree</Link>
                         <Link to={`/${currentUser}`} className="navlink">Account</Link>
                         <Link onClick={handleSignOut} className="navlink">Sign Out</Link>
                     </ul>
