@@ -201,12 +201,9 @@ app.post('/check-if-no-trees', async (req, res) => {
             [userId]);
 
         if (result.rows.length > 0) {
-            // User has trees, return true
-            console.log("has trees")
             res.json({ hasTrees: true });
             } else {
             // User has no trees, return false
-            console.log("no trees")
             res.json({ hasTrees: false });
             }
 
@@ -244,7 +241,7 @@ app.post('/check-if-tree-empty', async (req, res) => {
         if (!currentTree || !currentTree.treeId) {
             return res.status(400).json({ error: 'No valid tree provided' });
         }
-  console.log(currentTree.treeId)
+
         const treeTableName = `tree_${currentTree.treeId}`; // Dynamic table name
 
         const result = await pool.query(`SELECT * FROM ${treeTableName}`);
@@ -261,6 +258,64 @@ app.post('/check-if-tree-empty', async (req, res) => {
     }
   });
 
+// Updates the current tree for the user
+app.post('/set-current-tree', async (req, res) => {
+    try {
+        const { userId, treeId } = req.body; 
+
+        if (!userId || !treeId) {
+            return res.status(400).json({ error: 'Missing userId or treeId' });
+        }
+
+        // Update the current_tree column for the user
+        const result = await pool.query(
+            'UPDATE users SET current_tree_id = $1 WHERE id = $2 RETURNING current_tree_id',
+            [treeId, userId]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'User not found or update failed' });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Current tree updated successfully',
+            currentTree: result.rows[0].current_tree,
+        });
+    } catch (err) {
+        console.error('Error updating current tree:', err.message);
+        res.status(500).json({ error: 'Database query failed' });
+    }
+});
+
+// Fetch the current tree for the user
+app.post('/get-current-tree', async (req, res) => {
+    try {
+        const { userId } = req.body; 
+
+        if (!userId) {
+            return res.status(400).json({ error: 'Missing userId' });
+        }
+
+        // Query to get the current tree
+        const result = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({
+            success: true,
+            currentTree: result.rows[0].current_tree_id,
+        });
+    } catch (err) {
+        console.error('Error fetching current tree:', err.message);
+        res.status(500).json({ error: 'Database query failed' });
+    }
+});
 
   
 

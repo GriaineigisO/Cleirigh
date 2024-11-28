@@ -22,21 +22,21 @@ let treesName = "";
 const HomePageWithTree = () => {
 
   const [treeName, setTreeName] = useState('');
-
+  const [isEmpty, setIsEmpty] = useState(null);
+  const [currentTree, setCurrentTree] = useState();
   
   // returns name of user's tree
   useEffect (() => {
   
       const getTreeName = async () => {
-
           const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        return;
-      }
+          if (!token) {
+            console.error('No token found');
+            return;
+          }
   
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;
 
           try {
           const response = await fetch('http://localhost:5000/get-tree-name', {
@@ -65,13 +65,53 @@ const HomePageWithTree = () => {
       getTreeName();
   }, [])
 
-  const [isEmpty, setIsEmpty] = useState(true);
-
+  
   const CheckIfTreeIsEmpty = async () => {
 
-    const currentTree = JSON.parse(localStorage.getItem('currentTree'));
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+  
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
 
-      setIsEmpty(true)
+    //gets the current_tree_id in the users table
+    try {
+      const response = await fetch('http://localhost:5000/get-current-tree', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+          console.log('Current tree updated to:', data.currentTree);
+          setCurrentTree(data.currentTree);
+      } else {
+          console.error('Failed to update current tree:', data.error);
+      }
+  } catch (error) {
+      console.error('Error setting current tree:', error);
+  }
+
+  //counts amount of rows in the current tree to check if the tree is empty or not
+  try {
+    console.log("current tree is:", currentTree)
+    const response = await fetch('http://localhost:5000/check-if-tree-empty', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentTree }),
+    });
+
+    const data = await response.json();
+    console.log('Tree is empty:', data.isEmpty);
+    setIsEmpty(data.isEmpty)
+    console.log(isEmpty)
+  } catch (error) {
+      console.error('Error setting current tree:', error);
+  }
     
   }
 
@@ -148,7 +188,7 @@ const Home = () => {
 
         // Decode the token to get the user ID
         const decodedToken = jwtDecode(token);
-        const userId = decodedToken.id;  // Assuming 'id' is the key used in the token
+        const userId = decodedToken.id; 
         const treeId = Date.now();
         
         try {
@@ -165,9 +205,29 @@ const Home = () => {
             //saves what tree is currently selected, in loca storage
             setHasTrees(true);
             
-          } catch (error) {
+        } catch (error) {
             console.error('Error submitting query:', error);
-          }
+        }
+        
+        //updates the current_tree_id column in the users table
+        try {
+            const response = await fetch('http://localhost:5000/set-current-tree', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, treeId }),
+            });
+    
+            const data = await response.json();
+            if (data.success) {
+                console.log('Current tree updated to:', data.currentTree);
+            } else {
+                console.error('Failed to update current tree:', data.error);
+            }
+        } catch (error) {
+            console.error('Error setting current tree:', error);
+        }
+        
+        
         
     };    
 
