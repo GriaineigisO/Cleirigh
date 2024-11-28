@@ -456,13 +456,15 @@ app.post('/count-places', async (req, res) => {
 
         // Extract an array of place_of_birth values
         const deathPlaces = deathPlace.rows.map(row => row.place_of_death);
-        console.log(deathPlaces)
 
         const allPlacesArray = birthPlaces.concat(deathPlaces);
-        const allPlacesJoined = allPlacesArray.join(", ")
+
+        //filters empty arrays which are the result of the birth or death place being left blank
+        const filteredArray = allPlacesArray.filter((i) => i !== "");
+        const allPlacesJoined = filteredArray.join(", ")
 
         res.json({
-            numOfPlaces: allPlacesArray.length,
+            numOfPlaces: filteredArray.length,
             listOfPlaces: allPlacesJoined
         });
 
@@ -479,7 +481,6 @@ app.post('/count-occupations', async (req, res) => {
             return res.status(400).json({ error: 'Invalid tree identifier occupations' });
         }
         
-
         const occupations = await pool.query(`
             SELECT occupation FROM tree_${currentTree}
             WHERE occupation IS NOT NULL
@@ -488,7 +489,6 @@ app.post('/count-occupations', async (req, res) => {
         const occupationList = occupations.rows.map(row => row.occupation);
         const occupationJoined = occupationList.join(", ")
 
-        console.log(occupationList)
 
         res.json({
             numOfOccupations: occupationList.length,

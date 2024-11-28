@@ -185,6 +185,40 @@ useEffect(() => {
     setOccupation(event.target.value);
   };
 
+
+  const homePageStats = async () => {
+    if (!currentTree !== null && !currentTree !== undefined) {
+      const response = await fetch('http://localhost:5000/count-ancestors', {
+        method: 'POST',
+        headers:  { 'Content-Type': 'application/json' },
+        body: JSON.stringify({currentTree})
+      })
+
+      const data = await response.json();
+      setNumOfAncestors(data);
+
+      const placeResponse = await fetch('http://localhost:5000/count-places', {
+        method: 'POST',
+        headers:  { 'Content-Type': 'application/json' },
+        body: JSON.stringify({currentTree})
+      })
+
+      const placeData = await placeResponse.json();
+        setNumOfPlaces(placeData.numOfPlaces);
+        setListOfPlaces(`including: ${placeData.listOfPlaces}`);
+
+        const occupationResponse = await fetch('http://localhost:5000/count-occupations', {
+          method: 'POST',
+          headers:  { 'Content-Type': 'application/json' },
+          body: JSON.stringify({currentTree})
+        })
+    
+        const occupationData = await occupationResponse.json();
+        setNumOfOccupations(occupationData.numOfOccupations);
+        setListOfOccupations(`including: ${occupationData.listOfOccupations}`);
+    }
+  }
+
   const handleFirstPerson = async () => {
 
     const response = await fetch('http://localhost:5000/add-first-person', {
@@ -195,56 +229,7 @@ useEffect(() => {
   setIsEmpty(false);
   }
 
-  useEffect(() => {
-    const countNumberOfAncestors = async () => {
-      if (!currentTree !== null && !currentTree !== undefined) {
-        const response = await fetch('http://localhost:5000/count-ancestors', {
-          method: 'POST',
-          headers:  { 'Content-Type': 'application/json' },
-          body: JSON.stringify({currentTree})
-        })
-    
-        const data = await response.json();
-        setNumOfAncestors(data);
-      }
-  }
-  countNumberOfAncestors();
-  }, [currentTree])
-
-  useEffect(() => {
-    const countNumberOfPlaces = async () => {
-      if (!currentTree !== null && !currentTree !== undefined) {
-        const response = await fetch('http://localhost:5000/count-places', {
-          method: 'POST',
-          headers:  { 'Content-Type': 'application/json' },
-          body: JSON.stringify({currentTree})
-        })
-    
-        const data = await response.json();
-        setNumOfPlaces(data.numOfPlaces);
-        console.log(data.listOfPlaces)
-        setListOfPlaces(data.listOfPlaces);
-      }
-  }
-  countNumberOfPlaces();
-  }, [currentTree])
-
-  useEffect(() => {
-    const countNumberOfOccupations = async () => {
-      if (!currentTree !== null && !currentTree !== undefined) {
-        const response = await fetch('http://localhost:5000/count-occupations', {
-          method: 'POST',
-          headers:  { 'Content-Type': 'application/json' },
-          body: JSON.stringify({currentTree})
-        })
-    
-        const data = await response.json();
-        setNumOfOccupations(data.numOfOccupations);
-        setListOfOccupations(data.listOfOccupations);
-      }
-  }
-  countNumberOfOccupations();
-  }, [currentTree])
+  homePageStats();
 
   return (
     <div>
@@ -312,7 +297,7 @@ useEffect(() => {
       ) : (
         <ul>
           <li>{numOfAncestors} ancestors</li>
-          <li>{numOfPlaces} places including {listOfPlaces}</li>
+          <li>{numOfPlaces} places {listOfPlaces}</li>
           <li>{numOfOccupations} occupations {listOfOccupations}</li>
       </ul>
       )}
