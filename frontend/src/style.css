@@ -144,6 +144,11 @@ body {
     font-style: normal;
   }
   
+.basePersonForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+}
 
 .subtitle {
     font-size: 35px;
@@ -163,6 +168,3 @@ body {
     font-weight: 400;
     font-style: normal;
 };
-
-
-

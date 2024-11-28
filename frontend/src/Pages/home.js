@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import {capitaliseFirstLetter} from '../library.js'
+import '../style.css';
 
 const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
     return (
@@ -24,7 +25,24 @@ const HomePageWithTree = () => {
   const [treeName, setTreeName] = useState('');
   const [isEmpty, setIsEmpty] = useState(null);
   const [currentTree, setCurrentTree] = useState();
-  
+  const [isDead, setIsDead] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [sex, setSex] = useState('');
+  const [ethnicity, setEthnicity] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [birthPlace, setBirthPlace] = useState('');
+  const [deathDate, setDeathDate] = useState('');
+  const [deathPlace, setDeathPlace] = useState('');
+  const [deathCause, setDeathCause] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [numOfAncestors, setNumOfAncestors] = useState(0);
+  const [numOfPlaces, setNumOfPlaces] = useState(0);
+  const [numOfOccupations, setNumOfOccupations] = useState(0);
+  const [listOfPlaces, setListOfPlaces] = useState('');
+  const [listOfOccupations, setListOfOccupations] = useState('');
+
   // returns name of user's tree
   useEffect (() => {
   
@@ -65,8 +83,7 @@ const HomePageWithTree = () => {
       getTreeName();
   }, [])
 
-  
-  const CheckIfTreeIsEmpty = async () => {
+  const getCurrentTree = async () => {
 
     const token = localStorage.getItem('token');
     if (!token) {
@@ -77,8 +94,8 @@ const HomePageWithTree = () => {
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.id;
 
-    //gets the current_tree_id in the users table
-    try {
+     //gets the current_tree_id in the users table
+     try {
       const response = await fetch('http://localhost:5000/get-current-tree', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -86,51 +103,217 @@ const HomePageWithTree = () => {
       });
 
       const data = await response.json();
-      if (data.success) {
-          console.log('Current tree updated to:', data.currentTree);
-          setCurrentTree(data.currentTree);
-      } else {
-          console.error('Failed to update current tree:', data.error);
-      }
+      setCurrentTree(data.currentTree);
   } catch (error) {
       console.error('Error setting current tree:', error);
   }
+}
 
-  //counts amount of rows in the current tree to check if the tree is empty or not
-  try {
-    console.log("current tree is:", currentTree)
-    const response = await fetch('http://localhost:5000/check-if-tree-empty', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentTree }),
-    });
+useEffect(() => {
+  getCurrentTree();
+}, []);
 
-    const data = await response.json();
-    console.log('Tree is empty:', data.isEmpty);
-    setIsEmpty(data.isEmpty)
-    console.log(isEmpty)
-  } catch (error) {
-      console.error('Error setting current tree:', error);
+useEffect(() => {
+  const checkTreeEmpty = async () => {
+  if (!currentTree !== null && currentTree !== undefined) {
+
+      const response = await fetch('http://localhost:5000/check-if-tree-empty', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ currentTree }),
+      });
+  
+      const data = await response.json();
+      setIsEmpty(data.isEmpty)
+    }
   }
-    
+
+  checkTreeEmpty();
+
+}, [currentTree]); // This runs whenever `currentTree` changes
+
+
+  const handleAlive = () => {
+    setIsDead(false);
+  }
+
+  const handleDead = () => {
+    setIsDead(true);
+  }
+
+  const handleFirstName = (event) => {
+    setFirstName(event.target.value);
+  }
+
+  const handleMiddleName = (event) => {
+    setMiddleName(event.target.value);
+  }
+
+  const handleLastName = (event) => {
+    setLastName(event.target.value);
+  }
+
+  const handleSex = (event) => {
+    setSex(event.target.value);
+  }
+
+  const handleEthnicity = (event) => {
+    setEthnicity(event.target.value);
+  };
+
+  const handleBirthDate = (event) => {
+    setBirthDate(event.target.value);
+  };
+
+  const handleBirthPlace = (event) => {
+    setBirthPlace(event.target.value);
+  };
+
+  const handleDeathDate = (event) => {
+    setDeathDate(event.target.value);
+  };
+
+  const handleDeathPlace = (event) => {
+    setDeathPlace(event.target.value);
+  };
+
+  const handleDeathCause = (event) => {
+    setDeathCause(event.target.value);
+  };
+
+  const handleOccupation = (event) => {
+    setOccupation(event.target.value);
+  };
+
+  const handleFirstPerson = async () => {
+
+    const response = await fetch('http://localhost:5000/add-first-person', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, middleName, lastName, sex, ethnicity, birthDate, birthPlace, deathDate, deathPlace, deathCause, occupation, currentTree}),
+  });
+  setIsEmpty(false);
   }
 
   useEffect(() => {
-    CheckIfTreeIsEmpty();
-  }, []);
+    const countNumberOfAncestors = async () => {
+      if (!currentTree !== null && !currentTree !== undefined) {
+        const response = await fetch('http://localhost:5000/count-ancestors', {
+          method: 'POST',
+          headers:  { 'Content-Type': 'application/json' },
+          body: JSON.stringify({currentTree})
+        })
+    
+        const data = await response.json();
+        setNumOfAncestors(data);
+      }
+  }
+  countNumberOfAncestors();
+  }, [currentTree])
 
+  useEffect(() => {
+    const countNumberOfPlaces = async () => {
+      if (!currentTree !== null && !currentTree !== undefined) {
+        const response = await fetch('http://localhost:5000/count-places', {
+          method: 'POST',
+          headers:  { 'Content-Type': 'application/json' },
+          body: JSON.stringify({currentTree})
+        })
+    
+        const data = await response.json();
+        setNumOfPlaces(data.numOfPlaces);
+        console.log(data.listOfPlaces)
+        setListOfPlaces(data.listOfPlaces);
+      }
+  }
+  countNumberOfPlaces();
+  }, [currentTree])
 
+  useEffect(() => {
+    const countNumberOfOccupations = async () => {
+      if (!currentTree !== null && !currentTree !== undefined) {
+        const response = await fetch('http://localhost:5000/count-occupations', {
+          method: 'POST',
+          headers:  { 'Content-Type': 'application/json' },
+          body: JSON.stringify({currentTree})
+        })
+    
+        const data = await response.json();
+        setNumOfOccupations(data.numOfOccupations);
+        setListOfOccupations(data.listOfOccupations);
+      }
+  }
+  countNumberOfOccupations();
+  }, [currentTree])
 
   return (
     <div>
       <h1>The {capitaliseFirstLetter(treeName)} Tree</h1>
       {isEmpty ? (
-        <p>Your tree is empty!</p>
+        <div>
+          <p>Your tree is empty! Begin it by entering the base person - this is the person whose ancestry will be described. It may be yourself or someone else.</p>
+
+          {/*form to enter base person*/}
+          <div className="basePersonForm">
+            <label>First Name</label>
+            <input type="text" onChange={handleFirstName}></input>
+
+            <label>Middle Name</label>
+            <input type="text" onChange={handleMiddleName}></input>
+
+            <label>Last Name</label>
+            <input type="text" onChange={handleLastName}></input>
+
+            <label>Sex</label>
+            <select onChange={handleSex}>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+
+            <label>Ethnicity</label>
+            <input type="text" onChange={handleEthnicity}></input>
+
+            <label>Date of Birth</label>
+            <input type="text" onChange={handleBirthDate}></input>
+
+            <label>Place of Birth</label>
+            <input type="text"  onChange={handleBirthPlace}></input>
+
+            <div>
+              <label>Alive</label>
+              <input type="radio" name="deadOrAlive" onClick={handleAlive}/>
+
+              <label>Dead</label>
+              <input type="radio" name="deadOrAlive" onClick={handleDead}/>
+            </div>
+
+            {isDead ? (
+              <>
+              <label>Date of Death</label>
+              <input type="text"  onChange={handleDeathDate}></input>
+  
+              <label>Place of Death</label>
+              <input type="text"  onChange={handleDeathPlace}></input>
+
+              <label>Cause of Death</label>
+              <input type="text" onChange={handleDeathCause}></input>
+              </>
+            ) : (
+              <></>
+            )}
+
+            <label>Occupation</label>
+            <input type="text" onChange={handleOccupation}></input>
+
+            <button onClick={handleFirstPerson}>Add First Person</button>
+          </div>
+        </div>
+
       ) : (
         <ul>
-          <li>X-num ancestors</li>
-          <li>X-num places</li>
-          <li>x-num occupations</li>
+          <li>{numOfAncestors} ancestors</li>
+          <li>{numOfPlaces} places including {listOfPlaces}</li>
+          <li>{numOfOccupations} occupations {listOfOccupations}</li>
       </ul>
       )}
     </div>
@@ -218,9 +401,7 @@ const Home = () => {
             });
     
             const data = await response.json();
-            if (data.success) {
-                console.log('Current tree updated to:', data.currentTree);
-            } else {
+            if (!data.success) {
                 console.error('Failed to update current tree:', data.error);
             }
         } catch (error) {

@@ -9,8 +9,15 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cleirighUserDB = require('./db');
 
+const corsOptions = {
+    origin: 'http://localhost:3000', // Allow only this origin
+    methods: 'GET,HEAD,POST,PUT,DELETE', // Allowed HTTP methods
+    credentials: true, // Allow cookies if needed
+};
+
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -118,16 +125,6 @@ app.post('/api/login', async (req, res) => {
     };
 });
 
-
-pool.query('SELECT NOW()', (err, res) => {
-    if (err) {
-        console.error('Database connection error:', err.stack);
-    } else {
-        console.log('Database connected:', res.rows[0]);
-    }
-});
-
-
 //checks if user has a paid account or not
 app.get('/api/user', async (req, res) => {
     const username = req.query.username;
@@ -146,7 +143,6 @@ app.get('/api/user', async (req, res) => {
     }
 });
 
-
 // makes a new tree
 app.post('/make-new-tree', async (req, res) => {
     try {
@@ -159,19 +155,23 @@ app.post('/make-new-tree', async (req, res) => {
     //creates a new table which will contain the actual tree's data (regarding ancestors in it)
     const makeNewTreeTable = await pool.query(
         `CREATE TABLE tree_${treeId} (
-            name TEXT,
+            first_name TEXT DEFAULT NULL,
+            middle_name TEXT DEFAULT NULL,
+            last_name TEXT DEFAULT NULL,
             ancestor_id INT PRIMARY KEY,
             page_number INT, 
-            sex BOOLEAN, 
-            ethnicity TEXT, 
+            base_person BOOLEAN DEFAULT false,
+            sex TEXT DEFAULT true, 
+            ethnicity TEXT DEFAULT NULL, 
             date_of_birth DATE, 
-            place_of_birth TEXT, 
+            place_of_birth TEXT DEFAULT NULL, 
             date_of_death DATE, 
-            place_of_death TEXT, 
-            cause_of_death TEXT, 
-            occupation TEXT, 
-            father_id INT, 
-            mother_id INT
+            place_of_death TEXT DEFAULT NULL, 
+            cause_of_death TEXT DEFAULT NULL, 
+            occupation TEXT DEFAULT NULL, 
+            father_id INT DEFAULT NULL, 
+            mother_id INT DEFAULT NULL,
+            UNIQUE (ancestor_id)
             )
         `);
             
@@ -233,30 +233,6 @@ app.post('/get-tree-name', async (req, res) => {
     }
   });
 
-//check if the currently selected tree is empty
-app.post('/check-if-tree-empty', async (req, res) => {
-    try {
-        const { currentTree } = req.body; 
-
-        if (!currentTree || !currentTree.treeId) {
-            return res.status(400).json({ error: 'No valid tree provided' });
-        }
-
-        const treeTableName = `tree_${currentTree.treeId}`; // Dynamic table name
-
-        const result = await pool.query(`SELECT * FROM ${treeTableName}`);
-
-        if (result.rows.length > 0) {
-            res.json({ isEmpty: false });
-        } else {
-            res.json({ isEmpty: true })
-        }
-
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Database query failed' });
-    }
-  });
 
 // Updates the current tree for the user
 app.post('/set-current-tree', async (req, res) => {
@@ -318,6 +294,211 @@ app.post('/get-current-tree', async (req, res) => {
 });
 
   
+//check if the currently selected tree is empty
+app.post('/check-if-tree-empty', async (req, res) => {
+    try {
+        const { currentTree } = req.body; 
+        
+        if (!currentTree) {
+            return res.status(400).json({ error: 'No valid tree provided' });
+        }
+
+        const treeTableName = `tree_${currentTree}`; // Dynamic table name
+
+        const result = await pool.query(`SELECT * FROM ${treeTableName}`);
+        if (result.rows.length > 0) {
+            res.json({ isEmpty: false });
+        } else {
+            res.json({ isEmpty: true })
+        }
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Database query failed' });
+    }
+});
+
+//adds the very first person to the tree as a base user
+app.post('/add-first-person', async (req, res) => {
+    try {
+        const {
+            firstName, 
+            middleName,
+            lastName,
+            sex,
+            ethnicity,
+            birthDate, 
+            birthPlace,
+            deathDate,
+            deathPlace,
+            deathCause,
+            occupation,
+            currentTree
+        } = req.body;
+
+        // Make random six-digit number for ancestor_id
+        const ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        const page_number = 1;
+        const base_person = true;  
+
+        //if birthdate was not given, date is set to 31st Dec 1001 (which will be printed to the screen was UNKNOWN)
+        let dateOfBirth = "";
+        if (birthDate.length === 0) {
+            date = new Date(1001, 0, 0);
+            dateOfBirth = date.toISOString().split('T')[0];
+        } else {
+            dateOfBirth = birthDate;
+        }
+
+        //if deathdate was not given, date is set to 31st Dec 1001 (which will be printed to the screen was UNKNOWN)
+        let dateOfDeath = "";
+        if (deathDate.length === 0) {
+            date = new Date(1001, 0, 0);
+            dateOfDeath = date.toISOString().split('T')[0];
+        } else {
+            dateOfDeath = deathDate;
+        }
+
+        // Use parameterized queries to avoid issues with data types
+        const firstPersonQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
+            ) 
+        `, [
+            firstName,
+            middleName,
+            lastName,
+            ancestor_id,
+            page_number,
+            base_person, 
+            sex,
+            ethnicity,
+            dateOfBirth,
+            birthPlace,
+            dateOfDeath,
+            deathPlace,
+            deathCause,
+            occupation
+        ]);
+
+        res.status(200).json({ message: 'First person added successfully!' });
+
+    } catch (error) {
+        console.log('Error adding first person:', error);
+        res.status(500).json({ error: 'Error adding first person.' });
+    }
+});
+
+//counts the amount of ancestors in the tree, not including the base person
+app.post('/count-ancestors', async (req, res) => {
+    try {
+        const { currentTree } = req.body;
+
+        const result = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+        `)
+
+        res.json(result.rows.length - 1);
+
+    } catch (error) {
+        console.log('Error counting ancestors:', error)
+    }
+})
+
+//counts the amount of places mentioned in the tree
+app.post('/count-places', async (req, res) => {
+    try {
+        const { currentTree } = req.body;
+
+        if (!currentTree) {
+            return res.status(400).json({ error: 'Invalid tree identifier places' });
+        }
+        
+
+        const birthPlace = await pool.query(`
+            SELECT place_of_birth FROM tree_${currentTree}
+            WHERE place_of_birth IS NOT NULL
+        `)
+
+        // Extract an array of place_of_birth values
+        const birthPlaces = birthPlace.rows.map(row => row.place_of_birth);
+
+        //if the placename includes wider areas like "Leuchars, Fife, Scotland" then only the first placename shall be extracted
+        for (let i = 0; i < birthPlaces.length; i++) {
+            for (let j = 0; j < birthPlaces[i].length; j++) {
+                if (birthPlaces[i][j] === ",") {
+                    birthPlaces[i] = birthPlaces[i].splice(0, j);
+                    continue;
+                }
+            }
+        }
+
+        const deathPlace = await pool.query(`
+            SELECT place_of_death FROM tree_${currentTree}
+            WHERE place_of_death IS NOT NULL
+        `)
+
+        // Extract an array of place_of_birth values
+        const deathPlaces = deathPlace.rows.map(row => row.place_of_death);
+        console.log(deathPlaces)
+
+        const allPlacesArray = birthPlaces.concat(deathPlaces);
+        const allPlacesJoined = allPlacesArray.join(", ")
+
+        res.json({
+            numOfPlaces: allPlacesArray.length,
+            listOfPlaces: allPlacesJoined
+        });
+
+    } catch (error) {
+        console.log('Error counting places:', error)
+    }
+})
+
+//counts the amount of places mentioned in the tree
+app.post('/count-occupations', async (req, res) => {
+    try {
+        const { currentTree } = req.body;
+        if (!currentTree) {
+            return res.status(400).json({ error: 'Invalid tree identifier occupations' });
+        }
+        
+
+        const occupations = await pool.query(`
+            SELECT occupation FROM tree_${currentTree}
+            WHERE occupation IS NOT NULL
+        `)
+
+        const occupationList = occupations.rows.map(row => row.occupation);
+        const occupationJoined = occupationList.join(", ")
+
+        console.log(occupationList)
+
+        res.json({
+            numOfOccupations: occupationList.length,
+            listOfOccupations: occupationJoined
+        });
+
+    } catch (error) {
+        console.log('Error counting occupations:', error)
+    }
+})
 
 
 const PORT = process.env.PORT || 5000;
