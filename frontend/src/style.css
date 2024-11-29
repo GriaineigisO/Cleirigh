@@ -157,17 +157,17 @@ body {
 }
 
 .profileListing {
-    border: inset 2px #61c084;
-    background-color: #97ccaa;
-    border-radius: 2px;
+    border-top: solid 2px black;
+
     margin-bottom: 2px;
     max-width: 1000px;
     padding-left: 5px;
     list-style: none;
+    padding-bottom: 5px;
 }
 
 .profileListing:hover {
-    background-color: #617b6a;;
+    background-color: #617b6a;
 }
 
 .li-span {

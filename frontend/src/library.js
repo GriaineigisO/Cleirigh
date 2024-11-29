@@ -32,3 +32,10 @@ export const convertDate = (date) => {
 
     return `${day} ${month} ${year}`;
 }
+
+//if no death place is given, N/A is returned
+export const deathPlace = (place) => {
+    if (place === null) {
+        return "N/A"
+    }
+}
