@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import {capitaliseFirstLetter} from '../library.js'
 import '../style.css';
+import {Link} from "react-router-dom";
+import LeftSidebar from '../Components/leftSidebar.js';
+
 
 const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
     return (
@@ -401,11 +404,7 @@ const Home = () => {
         <div >
             <div className="row">
 
-                <div className="col-sm-2 left-sidebar">
-                    <div className="row"><a href="">Family tree</a></div>
-                    <div className="row"><a href="">Ancestor Profiles</a></div>
-                    <div className="row"><a href="">Queries</a></div>
-                </div>
+                <LeftSidebar />
 
                 <div className="col-lg centre-col ">
                     {hasTrees ? (

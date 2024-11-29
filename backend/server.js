@@ -500,6 +500,55 @@ app.post('/count-occupations', async (req, res) => {
     }
 })
 
+//gets a list of all ancestors and basic info of them
+app.post('/get-all-ancestors', async (req, res) => {
+    try {
+
+        const { userId } = req.body; 
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+        
+        const result = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+        `);
+
+        const firstNames = result.rows.map(row => row.first_name);
+        const middleNames = result.rows.map(row => row.middle_name);
+        const lastNames = result.rows.map(row => row.last_name);
+        const sexes = result.rows.map(row => row.sex);
+        const datesOfBirth = result.rows.map(row => row.date_of_birth);
+        const placesOfBirth = result.rows.map(row => row.place_of_birth);
+        const datesOfDeath = result.rows.map(row => row.date_of_death);
+        const placesOfDeath = result.rows.map(row => row.place_of_death);
+        const ethnicities = result.rows.map(row => row.ethnicity);
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+        res.json({
+            firstNames: firstNames,
+            middleNames: middleNames,
+            lastNames: lastNames,
+            sexes: sexes,
+            datesOfBirth: datesOfBirth,
+            placesOfBirth: placesOfBirth,
+            datesOfDeath: datesOfDeath,
+            placesOfDeath: placesOfDeath,
+            ethnicities: ethnicities
+        })
+
+
+
+    } catch (error) {
+        console.log('Error creating profile list:', error)
+    }
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

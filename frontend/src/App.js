@@ -8,6 +8,9 @@ import Account from './Pages/account.js';
 import Success from './Pages/success.js';
 import Cancel from './Pages/cancel.js';
 import {Home} from './Pages/home.js';
+import Profiles from './Pages/profiles.js';
+import FamilyTree from './Pages/familytree.js';
+import Queries from './Pages/queries.js';
 
 function App() {
 
@@ -36,6 +39,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/profiles" element={<Profiles />} />
+          <Route path="/familytree" element={<FamilyTree />} />
+          <Route path="/queries" element={<Queries />} />
           <Route path="/register" element={<Register />} />
           <Route path="/:id" element={<Account />} />
           <Route path="/success" element={<Success />} />
