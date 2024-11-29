@@ -161,11 +161,11 @@ app.post('/make-new-tree', async (req, res) => {
             ancestor_id INT PRIMARY KEY,
             page_number INT, 
             base_person BOOLEAN DEFAULT false,
-            sex TEXT DEFAULT true, 
+            sex TEXT DEFAULT "male", 
             ethnicity TEXT DEFAULT NULL, 
-            date_of_birth DATE, 
+            date_of_birth DATE DEFAULT NULL, 
             place_of_birth TEXT DEFAULT NULL, 
-            date_of_death DATE, 
+            date_of_death DATE DEFAULT NULL, 
             place_of_death TEXT DEFAULT NULL, 
             cause_of_death TEXT DEFAULT NULL, 
             occupation TEXT DEFAULT NULL, 
@@ -527,9 +527,7 @@ app.post('/get-all-ancestors', async (req, res) => {
         const datesOfDeath = result.rows.map(row => row.date_of_death);
         const placesOfDeath = result.rows.map(row => row.place_of_death);
         const ethnicities = result.rows.map(row => row.ethnicity);
-
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
+        const basePerson = result.rows.map(row => row.base_person);
 
         res.json({
             firstNames: firstNames,
@@ -540,7 +538,8 @@ app.post('/get-all-ancestors', async (req, res) => {
             placesOfBirth: placesOfBirth,
             datesOfDeath: datesOfDeath,
             placesOfDeath: placesOfDeath,
-            ethnicities: ethnicities
+            ethnicities: ethnicities,
+            basePerson: basePerson
         })
 
 

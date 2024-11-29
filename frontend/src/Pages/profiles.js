@@ -15,6 +15,7 @@ const Profiles = () => {
     const [placesOfBirth, setPlacesOfBirth] = useState([]);
     const [datesOfDeath, setDatesOfDeath] = useState([]);
     const [placesOfDeath, setPlacesOfDeath] = useState([]);
+    const [basePerson, setBasePerson] = useState([]);
     
 
     useEffect(() => { 
@@ -40,6 +41,7 @@ const Profiles = () => {
                 setDatesOfDeath(data.datesOfDeath);
                 setPlacesOfDeath(data.placesOfDeath)
                 setEthnicities(data.ethnicities);
+                setBasePerson(data.basePerson);
 
 
             } catch (error) {
@@ -49,6 +51,16 @@ const Profiles = () => {
 
         getAllProfiles();
     }, []);
+
+    const MarkBasePerson = (basePerson) => {
+        if (basePerson.person) {
+            return (
+                <span className="li-span">Base Person</span>
+            )
+        } else {
+            return (<></>)
+        }
+    }
 
     return (
         <div>
@@ -60,8 +72,8 @@ const Profiles = () => {
 
                     <ul>
                         {firstNames.map((firstName, index) => (
-                            <li key={index}>
-                                {firstNames[index]} {middleNames[index]} {lastNames[index]} {sexes[index]} {convertDate(datesOfBirth[index])} {placesOfBirth[index]} {convertDate(datesOfDeath[index])} {placesOfDeath[index]} {ethnicities[index]}
+                            <li key={index} className="profileListing">
+                                <span className="li-span">name:</span> {firstNames[index]} {middleNames[index]} {lastNames[index]} <span className="li-span">sex:</span> {sexes[index]} <span className="li-span">born:</span> {convertDate(datesOfBirth[index])} <span className="li-span">in</span> {placesOfBirth[index]} <span className="li-span">died:</span> {convertDate(datesOfDeath[index])} <span className="li-span">in</span> {placesOfDeath[index]} <span className="li-span">ethnicity:</span> {ethnicities[index]} <br /> <MarkBasePerson person={basePerson[index]} />
                             </li>
                         ))}
                     </ul>
