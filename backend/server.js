@@ -443,7 +443,7 @@ app.post('/count-places', async (req, res) => {
         for (let i = 0; i < birthPlaces.length; i++) {
             for (let j = 0; j < birthPlaces[i].length; j++) {
                 if (birthPlaces[i][j] === ",") {
-                    birthPlaces[i] = birthPlaces[i].splice(0, j);
+                    birthPlaces[i] = birthPlaces[i].slice(0, j);
                     continue;
                 }
             }

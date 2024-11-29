@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import {capitaliseFirstLetter} from '../library.js'
 import '../style.css';
@@ -45,6 +45,7 @@ const HomePageWithTree = () => {
   const [numOfOccupations, setNumOfOccupations] = useState(0);
   const [listOfPlaces, setListOfPlaces] = useState('');
   const [listOfOccupations, setListOfOccupations] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // returns name of user's tree
   useEffect (() => {
@@ -189,38 +190,63 @@ useEffect(() => {
   };
 
 
-  const homePageStats = async () => {
-    if (!currentTree !== null && !currentTree !== undefined) {
-      const response = await fetch('http://localhost:5000/count-ancestors', {
-        method: 'POST',
-        headers:  { 'Content-Type': 'application/json' },
-        body: JSON.stringify({currentTree})
-      })
 
-      const data = await response.json();
-      setNumOfAncestors(data);
 
-      const placeResponse = await fetch('http://localhost:5000/count-places', {
-        method: 'POST',
-        headers:  { 'Content-Type': 'application/json' },
-        body: JSON.stringify({currentTree})
-      })
 
-      const placeData = await placeResponse.json();
-        setNumOfPlaces(placeData.numOfPlaces);
-        setListOfPlaces(`including: ${placeData.listOfPlaces}`);
+const homePageStats = useCallback(async () => {
+  try {
+    const response = await fetch('http://localhost:5000/count-ancestors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentTree }),
+    });
 
-        const occupationResponse = await fetch('http://localhost:5000/count-occupations', {
-          method: 'POST',
-          headers:  { 'Content-Type': 'application/json' },
-          body: JSON.stringify({currentTree})
-        })
-    
-        const occupationData = await occupationResponse.json();
-        setNumOfOccupations(occupationData.numOfOccupations);
-        setListOfOccupations(`including: ${occupationData.listOfOccupations}`);
-    }
+    const data = await response.json();
+    setNumOfAncestors(data);
+
+    const placeResponse = await fetch('http://localhost:5000/count-places', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentTree }),
+    });
+
+    const placeData = await placeResponse.json();
+    setNumOfPlaces(placeData.numOfPlaces);
+    setListOfPlaces(`including: ${placeData.listOfPlaces}`);
+
+    const occupationResponse = await fetch('http://localhost:5000/count-occupations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentTree }),
+    });
+
+    const occupationData = await occupationResponse.json();
+    setNumOfOccupations(occupationData.numOfOccupations);
+    setListOfOccupations(`including: ${occupationData.listOfOccupations}`);
+  } catch (error) {
+    console.error('Error fetching stats:', error);
   }
+}, [currentTree]); // homePageStats now depends on currentTree
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (currentTree) {
+        setLoading(true); // Start loading
+        try {
+          await homePageStats(); // Call the memoized function
+        } catch (error) {
+          console.error('Error fetching stats:', error);
+        } finally {
+          setLoading(false); // Stop loading
+        }
+      }
+    };
+  
+    fetchData();
+  }, [currentTree, homePageStats]); // Include homePageStats in dependencies
+  
+
 
   const handleFirstPerson = async () => {
 
@@ -229,10 +255,11 @@ useEffect(() => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ firstName, middleName, lastName, sex, ethnicity, birthDate, birthPlace, deathDate, deathPlace, deathCause, occupation, currentTree}),
   });
+  
   setIsEmpty(false);
   }
 
-  homePageStats();
+
 
   return (
     <div>
@@ -298,11 +325,17 @@ useEffect(() => {
         </div>
 
       ) : (
-        <ul>
-          <li>{numOfAncestors} ancestors</li>
-          <li>{numOfPlaces} places {listOfPlaces}</li>
-          <li>{numOfOccupations} occupations {listOfOccupations}</li>
-      </ul>
+        <div>
+        {loading ? (
+          <div className="spinner"></div>
+        ) : (
+          <ul>
+            <li>{numOfAncestors} ancestors</li>
+            <li>{numOfPlaces} places {listOfPlaces}</li>
+            <li>{numOfOccupations} occupations {listOfOccupations}</li>
+        </ul>
+        )}
+        </div>
       )}
     </div>
   );
