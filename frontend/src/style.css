@@ -278,7 +278,7 @@ body {
     justify-content: space-around;
     align-content: center;
     font-size: smaller;
-    padding-top: 5px;
+    padding-top: 10px;
     color: white;
 }
 
@@ -303,4 +303,12 @@ body {
 .bottom-bar-searching {
     display: flex;
     align-content: center;
+}
+
+.table-label {
+    background-color: grey;
+}
+
+.table-content {
+    background-color: #c7eed4;
 }

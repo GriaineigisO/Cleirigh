@@ -55,206 +55,223 @@ const FamilyTree = () => {
 
                         <div className="tree-row justify-content-center">
 
-                                <table className="ancestor-box">
-                                        <tr>
-                                            <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                        </tr>
-                                        <tr class="ancestor-box-border-bottom" >
-                                            <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                            <td class="ancestor-box-border">date:</td>
-                                            <td class="birth-date-cell" rowspan="2">Death</td>
-                                            <td class="ancestor-box-border">date:</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ancestor-box-border">place:</td>
-                                            <td class="ancestor-box-border">place:</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                        </tr>
-                                </table>
-
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
                             <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
-                                </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
                             </table>
 
+                            <table className="ancestor-box">
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Relation to:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Birth: </td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Death:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                        <td class="ancestor-box-border-bottom table-content"></td>
+                                    </tr>
+                            </table>
+
+                            
                         </div>
 
                     </div>
@@ -264,105 +281,153 @@ const FamilyTree = () => {
 
                         <div className="tree-row justify-content-center">
 
-                        <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                        <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
 
-                            <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                                <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
 
-                            <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                                <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
 
-                            <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                                <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
 
                         </div>
 
@@ -373,55 +438,79 @@ const FamilyTree = () => {
 
                         <div className="tree-row justify-content-center">
 
-                        <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                        <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
 
-                        <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                                <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
 
                         </div>
 
@@ -434,30 +523,42 @@ const FamilyTree = () => {
 
                             <div className="tree-row justify-content-center">
 
-                            <table className="ancestor-box">
-                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Relation to:</td>
+                                <table  className="ancestor-box">
+                                <tr>
+                                    <th class="ancestor-box-border-bottom table-label">Relation to: </th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Name:</td>
-                                </tr>
-                                <tr class="ancestor-box-border-bottom" >
-                                    <td class="ancestor-box-border-right birth-date-cell" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border">date:</td>
-                                    <td class="birth-date-cell" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border">date:</td>
+                                    <td class="ancestor-box-border-bottom table-label">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border">place:</td>
-                                    <td class="ancestor-box-border">place:</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="ancestor-box-border table-label">date:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top" colspan="4">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-label">place:</td>
+                                    <td class="ancestor-box-border table-content"></td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-bottom" colspan="4">Profile Number:</td>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                </tr>
+                                </table>
                             
                             </div>
 
@@ -481,10 +582,11 @@ const FamilyTree = () => {
                         <div className="bottom-bar-searching">
                             <label style={{marginRight:"3px"}}>Go To Page</label>
                             <input style={{marginRight:"3px"}} type="text" className="bottom-bar-search"></input>
-                            <button className="bottom-bar-button">Go</button>
+                            <button style={{marginRight:"10px"}} className="bottom-bar-button">Go</button>
+                            <button style={{marginRight:"3px"}} className="bottom-bar-button">Return To Base Person</button>
+                            <button style={{marginRight:"3px"}} className="bottom-bar-button">Random Page</button>
                         </div>
-                        
-                    
+
                     </div>
 
                 </div>
