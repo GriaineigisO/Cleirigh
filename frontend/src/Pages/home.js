@@ -326,16 +326,16 @@ const homePageStats = useCallback(async () => {
 
       ) : (
         <div>
-        {loading ? (
-          <div className="spinner"></div>
-        ) : (
-          <ul>
-            <li>{numOfAncestors} ancestors</li>
-            <li>{numOfPlaces} places {listOfPlaces}</li>
-            <li>{numOfOccupations} occupations {listOfOccupations}</li>
-        </ul>
-        )}
-        </div>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <ul>
+              <li>{numOfAncestors} ancestors</li>
+              <li>{numOfPlaces} places {listOfPlaces}</li>
+              <li>{numOfOccupations} occupations {listOfOccupations}</li>
+          </ul>
+          )}
+      </div>
       )}
     </div>
   );

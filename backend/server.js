@@ -159,7 +159,7 @@ app.post('/make-new-tree', async (req, res) => {
             middle_name TEXT DEFAULT NULL,
             last_name TEXT DEFAULT NULL,
             ancestor_id INT PRIMARY KEY,
-            page_number INT, 
+            page_number INT DEFAULT 1, 
             base_person BOOLEAN DEFAULT false,
             sex TEXT DEFAULT "male", 
             ethnicity TEXT DEFAULT NULL, 

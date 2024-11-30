@@ -47,6 +47,7 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/:pageNumber" element={<FamilyTree />} />
         </Routes>
       </div>
     </Router>
