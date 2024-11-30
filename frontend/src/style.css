@@ -100,6 +100,7 @@ body {
     height: 60px;
     align-items: center;
     border-bottom: solid 4px #225107;
+    
 }
 
 
@@ -265,7 +266,7 @@ body {
 }
 
 .bottom-bar {
-    background-color: grey;
+    background-color: #296606;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -306,7 +307,9 @@ body {
 }
 
 .table-label {
-    background-color: grey;
+    background-color: #75b74f;
+    font-variant: small-caps;
+    font-weight: bold;
 }
 
 .table-content {

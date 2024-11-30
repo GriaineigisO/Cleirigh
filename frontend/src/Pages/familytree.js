@@ -10,7 +10,7 @@ const FamilyTree = () => {
                 <div className="col">
 
                 <div className="row scrollable">
-                  
+
                     <div id="tree-container scrollable">
 
                     {/*contains great-grandparents*/}
@@ -313,7 +313,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
@@ -350,7 +350,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
@@ -387,7 +387,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
@@ -424,7 +424,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
@@ -470,7 +470,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
@@ -507,7 +507,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
@@ -555,7 +555,7 @@ const FamilyTree = () => {
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label">Profile Number:</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
-                                    <td class="ancestor-box-border table-label">Spouse Page Number</td>
+                                    <td class="ancestor-box-border table-label">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 </table>
