@@ -359,7 +359,7 @@ app.post('/add-first-person', async (req, res) => {
             dateOfDeath = deathDate;
         }
 
-        // Use parameterized queries to avoid issues with data types
+     
         const firstPersonQuery = await pool.query(`
             INSERT INTO tree_${currentTree} (
                 first_name,
@@ -571,8 +571,15 @@ app.post('/get-base-person', async (req, res) => {
 
         res.json({
             firstName:baseUserquery.rows[0].first_name,
+            lastName:baseUserquery.rows[0].lastt_name,
             basePersonID:baseUserquery.rows[0].ancestor_id,
-            fullName: fullName
+            fullName: fullName,
+            birthDate: baseUserquery.rows[0].date_of_birth,
+            birthPlace: baseUserquery.rows[0].place_of_birth,
+            deathDate: baseUserquery.rows[0].date_of_death,
+            deathPlace: baseUserquery.rows[0].place_of_death,
+            occupation: baseUserquery.rows[0].occupation,
+            profileNumber:baseUserquery.rows[0].ancestor_id
             
         })
 
@@ -728,11 +735,78 @@ app.post('/get-current-page-number', async (req, res) => {
             WHERE id = ${userId}
         `)
 
-        res.json(pageNum.rows[0].current_page)
+        res.json(Number(pageNum.rows[0].current_page))
         
     } catch (error) {
         console.log("Error getting page number:", error)
     }
+})
+
+app.post('/save-father', async (req, res) => {
+    const { userId, fatherDetails, bottomPagePersonID} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)
+
+        const allAncestorIds = ancestoridQuery.rows.map(row => ancestor_id);
+
+        let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        while (allAncestorIds.includes( ancestor_id)) {
+            ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        }
+
+        const childQuery = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET father_id = ${ancestor_id }
+            WHERE ancestor_id = ${bottomPagePersonID}
+            `)
+
+
+        const fatherQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
+            ) 
+        `, [
+            fatherDetails.firstName,
+            fatherDetails.middleName,
+            fatherDetails.lastName,
+            ancestor_id,
+            page_number,
+            "false", 
+            "male",
+            fatherDetails.ethnicity,
+            fatherDetails.birthDate,
+            fatherDetails.birthPlace,
+            fatherDetails.deathDate,
+            fatherDetails.deathPlace,
+            fatherDetails.causeOfDeath,
+            fatherDetails.titles
+        ]);
 })
 
 const PORT = process.env.PORT || 5000;

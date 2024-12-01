@@ -7,7 +7,7 @@ const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 export const convertDate = (date) => {
 
     if (date === null || date === undefined) {
-        return "N/A"
+        return ""
     }
     
     //extracts only the yyyy-mm-dd from the ISO 8601 format

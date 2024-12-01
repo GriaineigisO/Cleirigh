@@ -1,6 +1,7 @@
 import LeftSidebar from "../Components/leftSidebar"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Component } from 'react';
 import { convertDate } from '../library.js';
+import { Modal, Button } from 'react-bootstrap';
 
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
 //paternalmaternalgreatgrandparents = paternal grandmother's parents
@@ -8,9 +9,36 @@ import { convertDate } from '../library.js';
 //maternalmaternalgrandparents = maternal grandmother's parents
 
 const FamilyTree = () => {
+
+    const [show, setShow] = useState(false);
+    const closeAddFatherModal = () => setShow(false);
+    const openAddFatherModal = () => setShow(true);
+    const [fatherDetails, setFatherDetails] = useState({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        birthDate: '',
+        birthPlace: '',
+        deathDate: '',
+        deathPlace: '',
+        causeOfDeath: '',
+        titles: '',
+        ethnicity: '',
+      });
+
+    const [bottomDetails, setBottomDetails] = useState({
+        lastName: '',
+        father_id: '',
+        mother_id: ''
+    })
+
+    const [BottomPagePersonLastName, setBottomPagePersonLastName] = useState('')
+      
+
     const [pageNumber, setPageNumber] = useState(1);
     const [basePersonFirstName, setBasePersonFirstName] = useState('');
     const [basePersonName, setBasePersonName] = useState('');
+    const [basePersonLastName, setBasePersonLastName] = useState('');
     const [bottomPagePersonName, setBottomPagePersonName] = useState('');
     const [fatherName, setFatherName] = useState('');
     const [motherName, setMotherName] = useState('');
@@ -162,7 +190,14 @@ const FamilyTree = () => {
             const data = await response.json();
             setBasePersonFirstName(data.firstName);
             setBasePersonName(data.fullName);
-            setBasePersonID(data.basePersonID)
+            setBasePersonLastName(data.lastName);
+            setBasePersonID(data.basePersonID);
+            setBasePersonBirthDate(convertDate(data.birthDate));
+            setBasePersonBirthPlace(data.birthPlace);
+            setBasePersonDeathDate(convertDate(data.deathDate));
+            setBasePersonDeathPlace(data.deathPlace);
+            setBasePersonOccupation(data.occupation);
+            setBasePersonProfileNumber(data.profileNumber);
         }
 
         getBasePerson();
@@ -180,9 +215,25 @@ const FamilyTree = () => {
 
             const data = await response.json();
             setPageNumber(data);
+            
+            if (basePersonID) {
+            //if the user is on page 1, then the bottom person will always be the base person
+            if (pageNumber === Number(1)) {
+                setBottomPagePersonName(basePersonName);
+                setBottomPagePersonName(basePersonLastName);
+                setBottomPagePersonID(basePersonID);
+                setBottomPagePersonBirthDate(basePersonBirthDate);
+                setBottomPagePersonBirthPlace(basePersonBirthPlace);
+                setBottomPagePersonDeathDate(basePersonDeathDate);
+                setBottomPagePersonDeathPlace(basePersonDeathPlace);
+                setBottomPagePersonOccupation(basePersonOccupation)
+                setBottomPagePersonProfileNumber(basePersonProfileNumber)
+            }
+
+            }
         }
         getCurrentPageNumber();
-    }, [])
+    }, [basePersonID])
 
 
    useEffect(() => {
@@ -543,9 +594,64 @@ useEffect(() => {
         window.location.reload();
     };
 
+    const saveFatherChanges = async () => {
+
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/save-father', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, fatherDetails, bottomPagePersonID }),
+        })   
+        setShow(false)
+    }
+   
+    console.log(bottomPagePersonName)
 
     return (
         <div>
+
+            <Modal show={show} onHide={closeAddFatherModal} dialogClassName="custom-modal-width">
+                <Modal.Header closeButton>
+                <Modal.Title>Add {bottomPagePersonName}'s Father</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="input-modal">
+                        <input  type="text" placeholder="First Name" onChange={(e) => setFatherDetails({ ...fatherDetails, firstName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Middle Name" onChange={(e) => setFatherDetails({ ...fatherDetails, middleName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Last Name" value={bottomPagePersonName} onChange={(e) => setFatherDetails({ ...fatherDetails, lastName: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Birth Date (yyyy-mm-dd)" onChange={(e) => setFatherDetails({ ...fatherDetails, birthDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Birth Place" onChange={(e) => setFatherDetails({ ...fatherDetails, birthPlace: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Death Date (yyyy-mm-dd)" onChange={(e) => setFatherDetails({ ...fatherDetails, deathDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Death Place" onChange={(e) => setFatherDetails({ ...fatherDetails, deathPlace: e.target.value })}></input>
+
+                    <input type="text" placeholder="Cause of Death" onChange={(e) => setFatherDetails({ ...fatherDetails, causeOfDeath: e.target.value })}></input>
+                    </div>
+                   
+                    <input type="text" placeholder="Titles/Occupations" onChange={(e) => setFatherDetails({ ...fatherDetails, titles: e.target.value })}></input>
+
+                    <input type="text" placeholder="Ethnicity" onChange={(e) => setFatherDetails({ ...fatherDetails, ethnicity: e.target.value })}></input>
+
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={closeAddFatherModal}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={saveFatherChanges}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+            
             <div className="row">
                 <LeftSidebar />
 
@@ -1293,12 +1399,13 @@ useEffect(() => {
                             <table className="unknown-ancestor">
                                 <tr><p></p></tr>
                                 <tr></tr>
-                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button onClick={openAddFatherModal}>Add Father</button></tr>
                                 <tr></tr>
                                 <tr></tr>
                                 <tr></tr>
                             </table>
                         )}
+                        
                         
                         {motherID ? (
                             <table  className="ancestor-box">
