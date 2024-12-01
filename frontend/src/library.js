@@ -6,7 +6,7 @@ export const capitaliseFirstLetter = (str) => {
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 export const convertDate = (date) => {
 
-    if (date === null || date === "1000-12-31T00:01:15.000Z") {
+    if (date === null || date === undefined) {
         return "N/A"
     }
     

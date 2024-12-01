@@ -232,17 +232,26 @@ body {
     justify-items : center;
 }
 
+.empty-slot, .unknown-ancestor {
+    border-radius: 10px;
+    border: dashed 1px black;
+}
 
-
-.ancestor-box {
+.ancestor-box, .unknown-ancestor, .empty-slot {
     width: 40%;
     font-size: 10px;
     margin: 6px;
     height: 150px;
 }
 
+
+.unknown-ancestor-cell {
+    vertical-align: middle;
+    text-align: center;
+}
+
 .shrink {
-    width: 40px; /* Let the column size to its content */
+    width: 40px; 
   }
 
 .up-arrow {
@@ -318,4 +327,5 @@ body {
 
 .table-content {
     background-color: #c7eed4;
+    font-size: 13px;
 }

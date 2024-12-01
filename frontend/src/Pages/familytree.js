@@ -8,6 +8,7 @@ import { convertDate } from '../library.js';
 //maternalmaternalgrandparents = maternal grandmother's parents
 
 const FamilyTree = () => {
+    const [pageNumber, setPageNumber] = useState(1);
     const [basePersonFirstName, setBasePersonFirstName] = useState('');
     const [basePersonName, setBasePersonName] = useState('');
     const [bottomPagePersonName, setBottomPagePersonName] = useState('');
@@ -167,12 +168,29 @@ const FamilyTree = () => {
         getBasePerson();
     }, [])
 
+    useEffect(() => {
+        const getCurrentPageNumber = async () => {
+            const userId = localStorage.getItem('userId');
+
+            const response = await fetch('http://localhost:5000/get-current-page-number', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+            })
+
+            const data = await response.json();
+            setPageNumber(data);
+        }
+        getCurrentPageNumber();
+    }, [])
+
+
    useEffect(() => {
-    const getParents = async () => {
+    const getFather = async () => {
         if (basePersonID) {
             const personID = basePersonID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -187,8 +205,23 @@ const FamilyTree = () => {
             setFatherDeathPlace(data.fatherDeathPlace);
             setFatherOccupation(data.fatherOccupation);
             setFatherProfileNumber(data.fatherProfileNumber);
+        }
+    }
+    getFather();
+}, [basePersonID])
 
+useEffect(() => {
+    const getMother = async () => {
+        if (basePersonID) {
+            const personID = basePersonID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setMotherName(data.motherName);
             setMotherID(data.motherID);
             setMotherBirthDate(convertDate(data.motherBirthDate));
@@ -199,15 +232,15 @@ const FamilyTree = () => {
             setMotherProfileNumber(data.motherProfileNumber);
         }
     }
-    getParents();
+    getMother();
 }, [basePersonID])
 
 useEffect(() => {
-    const getPaternalGrandParents = async () => {
+    const getPaternalGrandFather = async () => {
         if (fatherID) {
             const personID = fatherID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -222,8 +255,23 @@ useEffect(() => {
             setPaternalGrandfatherDeathPlace(data.fatherDeathPlace);
             setPaternalGrandfatherOccupation(data.fatherOccupation);
             setPaternalGrandfatherProfileNumber(data.fatherProfileNumber);
+        }
+    }
+    getPaternalGrandFather();
+}, [fatherID])
 
+useEffect(() => {
+    const getPaternalGrandMother= async () => {
+        if (fatherID) {
+            const personID = fatherID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setPaternalGrandmotherName(data.motherName);
             setPaternalGrandmotherID(data.motherID);
             setPaternalGrandmotherBirthDate(convertDate(data.motherBirthDate));
@@ -232,17 +280,18 @@ useEffect(() => {
             setPaternalGrandmotherDeathPlace(data.motherDeathPlace);
             setPaternalGrandmotherOccupation(data.motherOccupation);
             setPaternalGrandmotherProfileNumber(data.motherProfileNumber);
+            console.log(paternalGrandmotherName)
         }
     }
-    getPaternalGrandParents();
+    getPaternalGrandMother();
 }, [fatherID])
 
 useEffect(() => {
-    const getMaternalGrandParents = async () => {
+    const getMaternalGrandFather = async () => {
         if (motherID) {
             const personID = motherID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -257,8 +306,23 @@ useEffect(() => {
             setMaternalGrandfatherDeathPlace(data.fatherDeathPlace);
             setMaternalGrandfatherOccupation(data.fatherOccupation);
             setMaternalGrandfatherProfileNumber(data.fatherProfileNumber);
+        }
+    }
+    getMaternalGrandFather();
+}, [motherID])
 
+useEffect(() => {
+    const getMaternalGrandMother = async () => {
+        if (motherID) {
+            const personID = motherID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setMaternalGrandmotherName(data.motherName);
             setMaternalGrandmotherID(data.motherID);
             setMaternalGrandmotherBirthDate(convertDate(data.motherBirthDate));
@@ -269,15 +333,15 @@ useEffect(() => {
             setMaternalGrandmotherProfileNumber(data.motherProfileNumber);
         }
     }
-    getMaternalGrandParents();
+    getMaternalGrandMother();
 }, [motherID])
 
 useEffect(() => {
-    const getPaternalPaternalGreatGrandParents = async () => {
+    const getPaternalPaternalGreatGrandFather = async () => {
         if (paternalGrandfatherID) {
             const personID = paternalGrandfatherID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -292,8 +356,23 @@ useEffect(() => {
             setPaternalPaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setPaternalPaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setPaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+        }
+    }
+    getPaternalPaternalGreatGrandFather();
+}, [paternalGrandfatherID])
 
+useEffect(() => {
+    const getPaternalPaternalGreatGrandMother = async () => {
+        if (paternalGrandfatherID) {
+            const personID = paternalGrandfatherID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setPaternalPaternalGreatGrandmotherName(data.motherName);
             setPaternalPaternalGreatGrandmotherID(data.motherID);
             setPaternalPaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
@@ -304,15 +383,16 @@ useEffect(() => {
             setPaternalPaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
         }
     }
-    getPaternalPaternalGreatGrandParents();
+    getPaternalPaternalGreatGrandMother();
 }, [paternalGrandfatherID])
 
+
 useEffect(() => {
-    const getPaternalMaternalGreatGrandParents = async () => {
+    const getPaternalMaternalGreatGrandFather = async () => {
         if (paternalGrandmotherID) {
             const personID = paternalGrandmotherID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -327,8 +407,23 @@ useEffect(() => {
             setPaternalMaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setPaternalMaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setPaternalMaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+        }
+    }
+    getPaternalMaternalGreatGrandFather();
+}, [paternalGrandmotherID])
 
+useEffect(() => {
+    const getPaternalMaternalGreatGrandMother = async () => {
+        if (paternalGrandmotherID) {
+            const personID = paternalGrandmotherID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setPaternalMaternalGreatGrandmotherName(data.motherName);
             setPaternalMaternalGreatGrandmotherID(data.motherID);
             setPaternalMaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
@@ -339,15 +434,15 @@ useEffect(() => {
             setPaternalMaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
         }
     }
-    getPaternalMaternalGreatGrandParents();
+    getPaternalMaternalGreatGrandMother();
 }, [paternalGrandmotherID])
 
 useEffect(() => {
-    const getMaternalPaternalGreatGrandParents = async () => {
+    const getMaternalPaternalGreatGrandFather = async () => {
         if (maternalGrandfatherID) {
             const personID = maternalGrandfatherID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -362,8 +457,24 @@ useEffect(() => {
             setMaternalPaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setMaternalPaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setMaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+        }
+        
+    }
+    getMaternalPaternalGreatGrandFather();
+}, [maternalGrandfatherID])
 
+useEffect(() => {
+    const getMaternalPaternalGreatGrandmother = async () => {
+        if (maternalGrandfatherID) {
+            const personID = maternalGrandfatherID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setMaternalPaternalGreatGrandmotherName(data.motherName);
             setMaternalPaternalGreatGrandmotherID(data.motherID);
             setMaternalPaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
@@ -374,15 +485,15 @@ useEffect(() => {
             setMaternalPaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
         }
     }
-    getMaternalPaternalGreatGrandParents();
+    getMaternalPaternalGreatGrandmother();
 }, [maternalGrandfatherID])
 
 useEffect(() => {
-    const getMaternalMaternalGreatGrandParents = async () => {
+    const getMaternalMaternalGreatGrandFather = async () => {
         if (maternalGrandmotherID) {
             const personID = maternalGrandmotherID;
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/get-parents', {
+            const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID }),
@@ -397,8 +508,23 @@ useEffect(() => {
             setMaternalMaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setMaternalMaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setMaternalMaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+        }
+    }
+    getMaternalMaternalGreatGrandFather();
+}, [maternalGrandmotherID])
 
+useEffect(() => {
+    const getMaternalMaternalGreatGrandMother = async () => {
+        if (maternalGrandmotherID) {
+            const personID = maternalGrandmotherID;
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/get-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID }),
+            })
 
+            const data = await response.json();
             setMaternalMaternalGreatGrandmotherName(data.motherName);
             setMaternalMaternalGreatGrandmotherID(data.motherID);
             setMaternalMaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
@@ -409,10 +535,13 @@ useEffect(() => {
             setMaternalMaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
         }
     }
-    getMaternalMaternalGreatGrandParents();
+    getMaternalMaternalGreatGrandMother();
 }, [maternalGrandmotherID])
 
 
+    const handleNavigateUpwards = (personID) => {
+        window.location.reload();
+    };
 
 
     return (
@@ -432,44 +561,99 @@ useEffect(() => {
 
                         <div className="row arrow-page-num-div">
 
+                        {paternalPaternalGreatGrandfatherName || paternalPaternalGreatGrandfatherBirthDate || paternalPaternalGreatGrandfatherBirthPlace || paternalPaternalGreatGrandfatherDeathDate || paternalPaternalGreatGrandfatherDeathPlace || paternalPaternalGreatGrandfatherOccupation || paternalPaternalGreatGrandfatherProfileNumber ? (
                             <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
+                                <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherID)}>Page: <br />⇑</p>
                             </div>
+                        ) : (
+                            <div className="col">
+                                <p className="up-arrow"> <br /></p>
+                            </div>
+                        )}
 
+                            {paternalPaternalGreatGrandmotherName || paternalPaternalGreatGrandmotherBirthDate || paternalPaternalGreatGrandmotherBirthPlace || paternalPaternalGreatGrandmotherDeathDate || paternalPaternalGreatGrandmotherDeathPlace || paternalPaternalGreatGrandmotherOccupation || paternalPaternalGreatGrandmotherProfileNumber ? (
                             <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
+                                <p className="up-arrow"onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandmotherID)}>Page: <br />⇑</p>
                             </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
 
-                            <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
-                            </div>
+                            {paternalMaternalGreatGrandfatherName || paternalMaternalGreatGrandfatherBirthDate || paternalMaternalGreatGrandfatherBirthPlace || paternalMaternalGreatGrandfatherDeathDate || paternalMaternalGreatGrandfatherDeathPlace || paternalMaternalGreatGrandfatherOccupation || paternalMaternalGreatGrandfatherProfileNumber ? (
+                                <div className="col">
+                                    <p className="up-arrow"onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandfatherID)}>Page: <br />⇑</p>
+                                </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
+                            
 
-                            <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
-                            </div>
+                            {paternalMaternalGreatGrandmotherName || paternalMaternalGreatGrandmotherBirthDate || paternalMaternalGreatGrandmotherBirthPlace || paternalMaternalGreatGrandmotherDeathDate || paternalMaternalGreatGrandmotherDeathPlace || paternalMaternalGreatGrandmotherOccupation || paternalMaternalGreatGrandmotherProfileNumber ? (
+                                <div className="col">
+                                    <p className="up-arrow"onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandmotherID)}>Page: <br />⇑</p>
+                                </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
+                            
 
-                            <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
-                            </div>
+                            {maternalPaternalGreatGrandfatherName || maternalPaternalGreatGrandfatherBirthDate || maternalPaternalGreatGrandfatherBirthPlace || maternalPaternalGreatGrandfatherDeathDate || maternalPaternalGreatGrandfatherDeathPlace || maternalPaternalGreatGrandfatherOccupation || maternalPaternalGreatGrandfatherProfileNumber ? (
+                                <div className="col">
+                                    <p className="up-arrow"onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandfatherID)}>Page: <br />⇑</p>
+                                </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
+                            
 
-                            <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
-                            </div>
+                            {maternalPaternalGreatGrandmotherID ? (
+                                <div className="col">
+                                    <p className="up-arrow"onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandmotherID)}>Page: <br />⇑</p>
+                                </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
+                            
 
-                            <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
-                            </div>
+                            {maternalMaternalGreatGrandfatherID ? (
+                                <div className="col">
+                                    <p className="up-arrow"onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandfatherID)}>Page: <br />⇑</p>
+                                </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
+                            
 
-                            <div className="col">
-                                <p className="up-arrow">Page: <br />⇑</p>
-                            </div>
+                            {maternalMaternalGreatGrandmotherID ? (
+                                 <div className="col" >
+                                    <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandmotherID)}>Page: <br />⇑</p>
+                                </div>
+                            ) : (
+                                <div className="col">
+                                    <p className="up-arrow"> <br /></p>
+                                </div>
+                            )}
+                           
                             
                                 
                         </div>
 
                         <div className="tree-row justify-content-center">
 
-                            <table className="ancestor-box">
+                            {paternalPaternalGreatGrandfatherName || paternalPaternalGreatGrandfatherBirthDate || paternalPaternalGreatGrandfatherBirthPlace || paternalPaternalGreatGrandfatherDeathDate || paternalPaternalGreatGrandfatherDeathPlace || paternalPaternalGreatGrandfatherOccupation || paternalPaternalGreatGrandfatherProfileNumber ? (
+                                <table className="ancestor-box">
                                     <tr>
                                         <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
                                         <td class="ancestor-box-border-bottom table-content"></td>
@@ -494,8 +678,28 @@ useEffect(() => {
                                         <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
                                         <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandfatherProfileNumber}</td>
                                     </tr>
-                            </table>
+                                </table>
+                            ) : (
+                                <>
+                                {paternalGrandfatherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                                </>
+                            )}
+                          
 
+                          {paternalPaternalGreatGrandmotherName || paternalPaternalGreatGrandmotherBirthDate || paternalPaternalGreatGrandmotherBirthPlace || paternalPaternalGreatGrandmotherDeathDate || paternalPaternalGreatGrandmotherDeathPlace || paternalPaternalGreatGrandmotherOccupation || paternalPaternalGreatGrandmotherProfileNumber ? (
                             <table className="ancestor-box">
                                     <tr>
                                         <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
@@ -522,8 +726,27 @@ useEffect(() => {
                                         <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandmotherProfileNumber}</td>
                                     </tr>
                             </table>
+                        ) : (
+                            <>
+                                {paternalGrandfatherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                                </>
+                        )}
 
-                            <table className="ancestor-box">
+                        {paternalMaternalGreatGrandfatherName || paternalMaternalGreatGrandfatherBirthDate || paternalMaternalGreatGrandfatherBirthPlace || paternalMaternalGreatGrandfatherDeathDate || paternalMaternalGreatGrandfatherDeathPlace || paternalMaternalGreatGrandfatherOccupation || paternalMaternalGreatGrandfatherProfileNumber ? (
+                        <table className="ancestor-box">
                                     <tr>
                                         <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
                                         <td class="ancestor-box-border-bottom table-content"></td>
@@ -549,141 +772,260 @@ useEffect(() => {
                                         <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandfatherProfileNumber}</td>
                                     </tr>
                             </table>
+                            ): (
+                                <>
+                                {paternalGrandmotherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                                </>
+                            )
+                        }
 
+                        {paternalMaternalGreatGrandmotherName || paternalMaternalGreatGrandmotherBirthDate || paternalMaternalGreatGrandmotherBirthPlace || paternalMaternalGreatGrandmotherDeathDate || paternalMaternalGreatGrandmotherDeathPlace || paternalMaternalGreatGrandmotherOccupation || paternalMaternalGreatGrandmotherProfileNumber ? (
                             <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherBirthDate} <br /> {paternalMaternalGreatGrandmotherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherDeathDate} <br /> {paternalMaternalGreatGrandmotherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherProfileNumber}</td>
-                                    </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
+                                    <td class="ancestor-box-border-bottom table-content"></td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
+                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherBirthDate} <br /> {paternalMaternalGreatGrandmotherBirthPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherDeathDate} <br /> {paternalMaternalGreatGrandmotherDeathPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherOccupation}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherProfileNumber}</td>
+                                </tr>
+                        </table>
+                        ) : (
+                            <>
+                            {paternalGrandmotherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                            
 
+                        {maternalPaternalGreatGrandfatherName || maternalPaternalGreatGrandfatherBirthDate || maternalPaternalGreatGrandfatherBirthPlace || maternalPaternalGreatGrandfatherDeathDate || maternalPaternalGreatGrandfatherDeathPlace || maternalPaternalGreatGrandfatherOccupation || maternalPaternalGreatGrandfatherProfileNumber ? (
                             <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherBirthDate} <br /> {maternalPaternalGreatGrandfatherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherDeathDate} <br /> {maternalPaternalGreatGrandfatherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherProfileNumber}</td>
-                                    </tr>
-                            </table>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
+                                    <td class="ancestor-box-border-bottom table-content"></td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherBirthDate} <br /> {maternalPaternalGreatGrandfatherBirthPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherDeathDate} <br /> {maternalPaternalGreatGrandfatherDeathPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherOccupation}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherProfileNumber}</td>
+                                </tr>
+                        </table>
+                        ) : (
+                            <>
+                            {maternalGrandfatherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                            
 
+                        {maternalPaternalGreatGrandmotherID ? (
                             <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherBirthDate} <br /> {maternalPaternalGreatGrandmotherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherDeathDate} <br /> {maternalPaternalGreatGrandmotherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherProfileNumber}</td>
-                                    </tr>
-                            </table>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
+                                <td class="ancestor-box-border-bottom table-content"></td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherName}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
+                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherBirthDate} <br /> {maternalPaternalGreatGrandmotherBirthPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
+                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherDeathDate} <br /> {maternalPaternalGreatGrandmotherDeathPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherOccupation}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
+                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherProfileNumber}</td>
+                            </tr>
+                    </table>
+                        ) : (
+                            <>
+                            {maternalGrandfatherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                            
 
-                            <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherBirthDate} <br /> {maternalMaternalGreatGrandfatherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherDeathDate} <br /> {maternalMaternalGreatGrandfatherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherProfileNumber}</td>
-                                    </tr>
-                            </table>
+                            {maternalMaternalGreatGrandfatherID ? (
+                                <table className="ancestor-box">
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
+                                    <td class="ancestor-box-border-bottom table-content"></td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherBirthDate} <br /> {maternalMaternalGreatGrandfatherBirthPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherDeathDate} <br /> {maternalMaternalGreatGrandfatherDeathPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherOccupation}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherProfileNumber}</td>
+                                </tr>
+                        </table>
+                            ) : (
+                                <>
+                            {maternalGrandmotherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                            )}
+                            
 
-                            <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherBirthDate} <br /> {maternalMaternalGreatGrandmotherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherDeathDate} <br /> {maternalMaternalGreatGrandmotherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherProfileNumber}</td>
-                                    </tr>
-                            </table>
+                            {maternalMaternalGreatGrandmotherID ? (
+                                <table className="ancestor-box">
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
+                                    <td class="ancestor-box-border-bottom table-content"></td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherBirthDate} <br /> {maternalMaternalGreatGrandmotherBirthPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherDeathDate} <br /> {maternalMaternalGreatGrandmotherDeathPlace}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherOccupation}</td>
+                                </tr>
+                                <tr>
+                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
+                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherProfileNumber}</td>
+                                </tr>
+                        </table>
+                            ) : (
+                                <>
+                            {maternalGrandmotherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                            )}
+                            
 
                             
                         </div>
@@ -695,137 +1037,215 @@ useEffect(() => {
 
                         <div className="tree-row justify-content-center">
 
-                        <table  className="ancestor-box">
-                                <tr>
-                                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{paternalGrandfatherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandfatherBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandfatherDeathDate}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandfatherBirthPlace}</td>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandfatherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{paternalGrandfatherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{paternalGrandfatherProfileNumber}</td>
-                                </tr>
-                                </table>
+                        {paternalGrandfatherID ? (
+                             <table  className="ancestor-box">
+                             <tr>
+                                 <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                                 <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                             </tr>
+                             <tr>
+                                 <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                 <td class="ancestor-box-border-bottom table-content" colspan="5">{paternalGrandfatherName}</td>
+                             </tr>
+                             <tr>
+                                 <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                 <td class="ancestor-box-border table-label shrink">date:</td>
+                                 <td class="ancestor-box-border table-content">{paternalGrandfatherBirthDate}</td>
+                                 <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                 <td class="ancestor-box-border table-label shrink">date:</td>
+                                 <td class="ancestor-box-border table-content">{paternalGrandfatherDeathDate}</td>
+                             </tr>
+                             <tr>
+                                 <td class="ancestor-box-border table-label shrink">place:</td>
+                                 <td class="ancestor-box-border table-content">{paternalGrandfatherBirthPlace}</td>
+                                 <td class="ancestor-box-border table-label shrink">place:</td>
+                                 <td class="ancestor-box-border table-content">{paternalGrandfatherDeathPlace}</td>
+                             </tr>
+                             <tr>
+                                 <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                 <td class="ancestor-box-border table-content" colspan="5">{paternalGrandfatherOccupation}</td>
+                             </tr>
+                             <tr>
+                                 <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                                 <td class="ancestor-box-border table-content" colspan="5">{paternalGrandfatherProfileNumber}</td>
+                             </tr>
+                             </table>
+                        ) : (
+                            <>
+                            {fatherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                       
 
-                                <table  className="ancestor-box">
-                                <tr>
-                                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{paternalGrandmotherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandmotherBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandmotherDeathDate}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandmotherBirthPlace}</td>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{paternalGrandmotherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{paternalGrandmotherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{paternalGrandmotherProfileNumber}</td>
-                                </tr>
-                                </table>
-
-                                <table  className="ancestor-box">
-                                <tr>
-                                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{maternalGrandfatherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandfatherBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandfatherDeathDate}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandfatherBirthPlace}</td>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandfatherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{maternalGrandfatherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{maternalGrandfatherProfileNumber}</td>
-                                </tr>
-                                </table>
-
-                                <table  className="ancestor-box">
-                                <tr>
-                                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{maternalGrandmotherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandmotherBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandmotherDeathDate}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandmotherBirthPlace}</td>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{maternalGrandmotherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{maternalGrandmotherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{maternalGrandmotherProfileNumber}</td>
-                                </tr>
-                                </table>
+                        {paternalGrandmotherID ? (
+                            <table  className="ancestor-box">
+                            <tr>
+                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                <td class="ancestor-box-border-bottom table-content" colspan="5">{paternalGrandmotherName}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{paternalGrandmotherBirthDate}</td>
+                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{paternalGrandmotherDeathDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{paternalGrandmotherBirthPlace}</td>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{paternalGrandmotherDeathPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{paternalGrandmotherOccupation}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{paternalGrandmotherProfileNumber}</td>
+                            </tr>
+                            </table>
+                        ) : (
+                            <>
+                            {fatherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                        
+                        {maternalGrandfatherID ? (
+                            <table  className="ancestor-box">
+                            <tr>
+                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                <td class="ancestor-box-border-bottom table-content" colspan="5">{maternalGrandfatherName}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandfatherBirthDate}</td>
+                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandfatherDeathDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandfatherBirthPlace}</td>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandfatherDeathPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandfatherOccupation}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandfatherProfileNumber}</td>
+                            </tr>
+                            </table>
+                        ) : (
+                            <>
+                            {motherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                        
+                        {maternalGrandmotherID ? (
+                            <table  className="ancestor-box">
+                            <tr>
+                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                <td class="ancestor-box-border-bottom table-content" colspan="5">{maternalGrandmotherName}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandmotherBirthDate}</td>
+                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandmotherDeathDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandmotherBirthPlace}</td>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{maternalGrandmotherDeathPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandmotherOccupation}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandmotherProfileNumber}</td>
+                            </tr>
+                            </table>
+                        ) : (
+                            <>
+                            {motherID ? (
+                                    <table className="unknown-ancestor">
+                                        <tr><p></p></tr>
+                                        <tr></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                        <tr></tr>
+                                    </table>
+                                ) : (
+                                    <table className="empty-slot">
+                                        <tr colspan="5" rowspan="6"><p></p></tr>
+                                    </table>
+                                )}
+                            </>
+                        )}
+                        
 
                         </div>
 
@@ -836,71 +1256,94 @@ useEffect(() => {
 
                         <div className="tree-row justify-content-center">
 
-                        <table  className="ancestor-box">
-                                <tr>
-                                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{fatherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{fatherBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{fatherDeathDate}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{fatherBirthPlace}</td>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{fatherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{fatherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{fatherProfileNumber}</td>
-                                </tr>
-                                </table>
-
-                                <table  className="ancestor-box">
-                                <tr>
-                                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{motherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{motherBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                    <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content">{motherDeathDate}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{motherBirthPlace}</td>
-                                    <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content">{motherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{motherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="5">{motherProfileNumber}</td>
-                                </tr>
-                                </table>
+                        {fatherID ? (
+                            <table  className="ancestor-box">
+                            <tr>
+                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                <td class="ancestor-box-border-bottom table-content" colspan="5">{fatherName}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{fatherBirthDate}</td>
+                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{fatherDeathDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{fatherBirthPlace}</td>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{fatherDeathPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{fatherOccupation}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{fatherProfileNumber}</td>
+                            </tr>
+                    </table>
+                        ) : (
+                            <table className="unknown-ancestor">
+                                <tr><p></p></tr>
+                                <tr></tr>
+                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                <tr></tr>
+                                <tr></tr>
+                                <tr></tr>
+                            </table>
+                        )}
+                        
+                        {motherID ? (
+                            <table  className="ancestor-box">
+                            <tr>
+                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                                <td class="ancestor-box-border-bottom table-content" colspan="5">{motherName}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{motherBirthDate}</td>
+                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="ancestor-box-border table-label shrink">date:</td>
+                                <td class="ancestor-box-border table-content">{motherDeathDate}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{motherBirthPlace}</td>
+                                <td class="ancestor-box-border table-label shrink">place:</td>
+                                <td class="ancestor-box-border table-content">{motherDeathPlace}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{motherOccupation}</td>
+                            </tr>
+                            <tr>
+                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                                <td class="ancestor-box-border table-content" colspan="5">{motherProfileNumber}</td>
+                            </tr>
+                            </table>
+                        ) : (
+                            <table className="unknown-ancestor">
+                                <tr><p></p></tr>
+                                <tr></tr>
+                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                <tr></tr>
+                                <tr></tr>
+                                <tr></tr>
+                            </table>
+                        )}
+                        
 
                         </div>
 
@@ -920,31 +1363,31 @@ useEffect(() => {
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{basePersonName}</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{bottomPagePersonName}</td>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
                                     <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-content">{bottomPagePersonBirthDate}</td>
                                     <td class="birth-date-cell table-label" rowspan="2">Death</td>
                                     <td class="ancestor-box-border table-label shrink">date:</td>
-                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-content">{bottomPagePersonDeathDate}</td>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-content">{bottomPagePersonBirthPlace}</td>
                                     <td class="ancestor-box-border table-label shrink">place:</td>
-                                    <td class="ancestor-box-border table-content"></td>
+                                    <td class="ancestor-box-border table-content">{bottomPagePersonDeathPlace}</td>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-content" colspan="2">{bottomPagePersonOccupation}</td>
                                     <td class="ancestor-box-border table-label shrink">Spouse</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-content" colspan="2">{bottomPagePersonProfileNumber}</td>
                                     <td class="ancestor-box-border table-label shrink">Spouse Page</td>
                                     <td class="ancestor-box-border table-content" colspan="2"></td>
                                 </tr>

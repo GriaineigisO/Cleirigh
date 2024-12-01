@@ -581,8 +581,8 @@ app.post('/get-base-person', async (req, res) => {
     }
 })
 
-//gets the parents of the person at the bottom of a tree chart
-app.post('/get-parents', async (req, res) => {
+//gets the father of the person at the bottom of a tree chart
+app.post('/get-father', async (req, res) => {
     try {
         const { userId, personID } = req.body;
 
@@ -601,7 +601,6 @@ app.post('/get-parents', async (req, res) => {
             `)
 
         const fatherID = parentQuery.rows[0].father_id;
-        const motherID = parentQuery.rows[0].mother_id;
 
         //find all other data on parents using their IDs
         const fatherQuery = await pool.query(`
@@ -609,83 +608,130 @@ app.post('/get-parents', async (req, res) => {
             WHERE ancestor_id = ${fatherID}
         `)
 
+        let fatherFirstName = "";
+        let fatherMiddleName = "";
+        let fatherLastName = "";
+
+        if(fatherID !== null) {
+            if (fatherQuery.rows[0].first_name === null) {
+                fatherFirstName = "UNKNOWN";
+            } else {
+                fatherFirstName = fatherQuery.rows[0].first_name;
+            }
+
+            if (fatherQuery.rows[0].middle_name === null) {
+                fatherMiddleName = "";
+            } else {
+                fatherMiddleName = fatherQuery.rows[0].middle_name;
+            }
+
+            if (fatherQuery.rows[0].last_name === null) {
+                fatherLastName = "";
+            } else {
+                fatherLastName = fatherQuery.rows[0].last_name;
+            }
+
+            const fatherFullName = `${fatherFirstName} ${fatherMiddleName} ${fatherLastName}`;
+
+            res.json({
+                fatherID:fatherID,
+                fatherName:fatherFullName,
+                fatherBirthDate:fatherQuery.rows[0].date_of_birth,
+                fatherBirthPlace:fatherQuery.rows[0].place_of_birth,
+                fatherDeathDate:fatherQuery.rows[0].date_of_death,
+                fatherDeathPlace:fatherQuery.rows[0].place_of_death,
+                fatherOccupation:fatherQuery.rows[0].occupation,
+                fatherProfileNumber:fatherQuery.rows[0].ancestor_id,
+            })
+        }
+
+
+    } catch (error) {
+        console.log("Error getting father:", error)
+    }
+})
+
+//gets the mother of the person at the bottom of a tree chart
+app.post('/get-mother', async (req, res) => {
+    try {
+        const { userId, personID } = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        //finds the IDs of the person's parents
+        const parentQuery = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${personID}
+            `)
+
+        const motherID = parentQuery.rows[0].mother_id;
+
         const motherQuery = await pool.query(`
             SELECT * FROM tree_${currentTree}
             WHERE ancestor_id = ${motherID}
         `)
 
-        let fatherFirstName = "";
-        let fatherMiddleName = "";
-        let fatherLastName = "";
         let motherFirstName = "";
         let motherMiddleName = "";
         let motherLastName = "";
 
-        if (fatherQuery.rows[0].first_name === null) {
-            fatherFirstName = "UNKNOWN";
-        } else {
-            fatherFirstName = fatherQuery.rows[0].first_name;
+        if(motherID !== null) {
+            if (motherQuery.rows[0].first_name === null) {
+                motherFirstName = "UNKNOWN";
+            } else {
+                motherFirstName = motherQuery.rows[0].first_name;
+            }
+
+            if (motherQuery.rows[0].middle_name === null) {
+                motherMiddleName = "";
+            } else {
+                motherMiddleName = motherQuery.rows[0].middle_name;
+            }
+
+            if (motherQuery.rows[0].last_name === null) {
+                motherLastName = "";
+            } else {
+                motherLastName = motherQuery.rows[0].last_name;
+            }
+
+            const motherFullName = `${motherFirstName} ${motherMiddleName} ${motherLastName}`;
+
+            res.json({
+                motherID:motherID,
+                motherName:motherFullName,
+                motherBirthDate:motherQuery.rows[0].date_of_birth,
+                motherBirthPlace:motherQuery.rows[0].place_of_birth,
+                motherDeathDate:motherQuery.rows[0].date_of_death,
+                motherDeathPlace:motherQuery.rows[0].place_of_death,
+                motherOccupation:motherQuery.rows[0].occupation,
+                motherProfileNumber:motherQuery.rows[0].ancestor_id
+            })
         }
-
-        if (motherQuery.rows[0].first_name === null) {
-            motherFirstName = "UNKNOWN";
-        } else {
-            motherFirstName = motherQuery.rows[0].first_name;
-        }
-
-        if (fatherQuery.rows[0].middle_name === null) {
-            fatherMiddleName = "";
-        } else {
-            fatherMiddleName = fatherQuery.rows[0].middle_name;
-        }
-
-        if (motherQuery.rows[0].middle_name === null) {
-            motherMiddleName = "";
-        } else {
-            motherMiddleName = motherQuery.rows[0].middle_name;
-        }
-
-        if (fatherQuery.rows[0].last_name === null) {
-            fatherLastName = "";
-        } else {
-            fatherLastName = fatherQuery.rows[0].last_name;
-        }
-
-        if (motherQuery.rows[0].last_name === null) {
-            motherLastName = "";
-        } else {
-            motherLastName = motherQuery.rows[0].last_name;
-        }
-
-
-
-        const fatherFullName = `${fatherFirstName} ${fatherMiddleName} ${fatherLastName}` ;
-        const motherFullName = `${motherFirstName} ${motherMiddleName} ${motherLastName}` ;
-
-
-        res.json({
-            fatherID:fatherID,
-            motherID:motherID,
-            fatherName:fatherFullName,
-            motherName:motherFullName,
-
-            fatherBirthDate:fatherQuery.rows[0].date_of_birth,
-            fatherBirthPlace:fatherQuery.rows[0].place_of_birth,
-            fatherDeathDate:fatherQuery.rows[0].date_of_death,
-            fatherDeathPlace:fatherQuery.rows[0].place_of_death,
-            fatherOccupation:fatherQuery.rows[0].occupation,
-            fatherProfileNumber:fatherQuery.rows[0].ancestor_id,
-
-            motherBirthDate:motherQuery.rows[0].date_of_birth,
-            motherBirthPlace:motherQuery.rows[0].place_of_birth,
-            motherDeathDate:motherQuery.rows[0].date_of_death,
-            motherDeathPlace:motherQuery.rows[0].place_of_death,
-            motherOccupation:motherQuery.rows[0].occupation,
-            motherProfileNumber:motherQuery.rows[0].ancestor_id
-        })
 
     } catch (error) {
-        console.log("Error getting base user's name:", error)
+        console.log("Error getting mother:", error)
+    }
+})
+
+app.post('/get-current-page-number', async (req, res) => {
+    try {
+        const {userId} = req.body;
+
+        const pageNum = await pool.query(`
+            SELECT * FROM users
+            WHERE id = ${userId}
+        `)
+
+        res.json(pageNum.rows[0].current_page)
+        
+    } catch (error) {
+        console.log("Error getting page number:", error)
     }
 })
 
