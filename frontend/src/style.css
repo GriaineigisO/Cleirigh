@@ -241,6 +241,10 @@ body {
     height: 150px;
 }
 
+.shrink {
+    width: 40px; /* Let the column size to its content */
+  }
+
 .up-arrow {
     text-align: center;
 }
