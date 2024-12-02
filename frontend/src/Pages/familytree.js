@@ -1,6 +1,6 @@
 import LeftSidebar from "../Components/leftSidebar"
-import { useState, useEffect, Component } from 'react';
-import { convertDate } from '../library.js';
+import React, { useState, useEffect, Component } from 'react';
+import { convertDate, convertNumToRelation } from '../library.js';
 import { Modal, Button } from 'react-bootstrap';
 
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
@@ -10,36 +10,78 @@ import { Modal, Button } from 'react-bootstrap';
 
 const FamilyTree = () => {
 
-    const [show, setShow] = useState(false);
-    const closeAddFatherModal = () => setShow(false);
-    const openAddFatherModal = () => setShow(true);
-    const [fatherDetails, setFatherDetails] = useState({
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        birthDate: '',
-        birthPlace: '',
-        deathDate: '',
-        deathPlace: '',
-        causeOfDeath: '',
-        titles: '',
-        ethnicity: '',
+    const [showFather, setShowFather] = useState(false);
+    const [showMother, setShowMother] = useState(false);
+    const [showPaternalGrandfather, setShowPaternalGrandfather] = useState(false);
+
+    const closeAddFatherModal = () => setShowFather(false);
+    const openAddFatherModal = () => setShowFather(true);
+
+    const closeAddMotherModal = () => setShowMother(false);
+    const openAddMotherModal = () => setShowMother(true);
+
+    const closeAddPaternalGrandfatherModal = () => setShowPaternalGrandfather(false);
+    const openAddPaternalGrandfatherModal = () => setShowPaternalGrandfather(true);
+
+    const [fatherDetails, setFatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
       });
 
-    const [bottomDetails, setBottomDetails] = useState({
-        lastName: '',
-        father_id: '',
-        mother_id: ''
-    })
+      const [motherDetails, setMotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
 
-    const [BottomPagePersonLastName, setBottomPagePersonLastName] = useState('')
-      
+      const [paternalGrandfatherDetails, setPaternalGrandfatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+   
+
 
     const [pageNumber, setPageNumber] = useState(1);
+
+    const [bottomPagePersonFirstName, setBottomPagePersonFirstName] = useState('');
+    const [bottomPagePersonLastName, setBottomPagePersonLastName] = useState('');
+    const [bottomPagePersonFullName, setBottomPagePersonFullName] = useState('');
+    const [bottomPagePersonEthnicity, setBottomPagePersonEthnicity] = useState('');
+    const [bottomPersonSex, setBottomPersonSex] = useState('');
+    const [bottomRelationToBaseUser, setBottomRelationToBaseUser] = useState('');
+    const [basePersonSex, setBasePersonSex] = useState('');
+    const [basePersonEthnicity, setBasePersonEthnicity] = useState('');
+
     const [basePersonFirstName, setBasePersonFirstName] = useState('');
-    const [basePersonName, setBasePersonName] = useState('');
+    const [basePersonFullName, setBasePersonFullName] = useState('');
     const [basePersonLastName, setBasePersonLastName] = useState('');
-    const [bottomPagePersonName, setBottomPagePersonName] = useState('');
     const [fatherName, setFatherName] = useState('');
     const [motherName, setMotherName] = useState('');
     const [paternalGrandmotherName, setPaternalGrandmotherName] = useState('');
@@ -54,6 +96,52 @@ const FamilyTree = () => {
     const [maternalPaternalGreatGrandfatherName, setMaternalPaternalGreatGrandfatherName] = useState('');
     const [maternalMaternalGreatGrandmotherName, setMaternalMaternalGreatGrandmotherName] = useState('');
     const [maternalMaternalGreatGrandfatherName, setMaternalMaternalGreatGrandfatherName] = useState('');
+
+    const [fatherFirstName, setFatherFirstName] = useState('');
+    const [motherFirstName, setMotherFirstName] = useState('');
+    const [paternalGrandmotherFirstName, setPaternalGrandmotherFirstName] = useState('');
+    const [paternalGrandfatherFirstName, setPaternalGrandfatherFirstName] = useState('');
+    const [maternalGrandmotherFirstName, setMaternalGrandmotherFirstName] = useState('');
+    const [maternalGrandfatherFirstName, setMaternalGrandfatherFirstName] = useState('');
+    const [paternalPaternalGreatGrandmotherFirstName, setPaternalPaternalGreatGrandmotherFirstName] = useState('');
+    const [paternalPaternalGreatGrandfatherFirstName, setPaternalPaternalGreatGrandfatherFirstName] = useState('');
+    const [paternalMaternalGreatGrandmotherFirstName, setPaternalMaternalGreatGrandmotherFirstName] = useState('');
+    const [paternalMaternalGreatGrandfatherFirstName, setPaternalMaternalGreatGrandfatherFirstName] = useState('');
+    const [maternalPaternalGreatGrandmotherFirstName, setMaternalPaternalGreatGrandmotherFirstName] = useState('');
+    const [maternalPaternalGreatGrandfatherFirstName, setMaternalPaternalGreatGrandfatherFirstName] = useState('');
+    const [maternalMaternalGreatGrandmotherFirstName, setMaternalMaternalGreatGrandmotherFirstName] = useState('');
+    const [maternalMaternalGreatGrandfatherFirstName, setMaternalMaternalGreatGrandfatherFirstName] = useState('');
+
+    const [fatherMiddleName, setFatherMiddleName] = useState('');
+    const [motherMiddleName, setMotherMiddleName] = useState('');
+    const [paternalGrandmotherMiddleName, setPaternalGrandmotherMiddleName] = useState('');
+    const [paternalGrandfatherMiddleName, setPaternalGrandfatherMiddleName] = useState('');
+    const [maternalGrandmotherMiddleName, setMaternalGrandmotherMiddleName] = useState('');
+    const [maternalGrandfatherMiddleName, setMaternalGrandfatherMiddleName] = useState('');
+    const [paternalPaternalGreatGrandmotherMiddleName, setPaternalPaternalGreatGrandmotherMiddleName] = useState('');
+    const [paternalPaternalGreatGrandfatherMiddleName, setPaternalPaternalGreatGrandfatherMiddleName] = useState('');
+    const [paternalMaternalGreatGrandmotherMiddleName, setPaternalMaternalGreatGrandmotherMiddleName] = useState('');
+    const [paternalMaternalGreatGrandfatherMiddleName, setPaternalMaternalGreatGrandfatherMiddleName] = useState('');
+    const [maternalPaternalGreatGrandmotherMiddleName, setMaternalPaternalGreatGrandmotherMiddleName] = useState('');
+    const [maternalPaternalGreatGrandfatherMiddleName, setMaternalPaternalGreatGrandfatherMiddleName] = useState('');
+    const [maternalMaternalGreatGrandmotherMiddleName, setMaternalMaternalGreatGrandmotherMiddleName] = useState('');
+    const [maternalMaternalGreatGrandfatherMiddleName, setMaternalMaternalGreatGrandfatherMiddleName] = useState('');
+
+
+    const [fatherLastName, setFatherLastName] = useState('');
+    const [motherLastName, setMotherLastName] = useState('');
+    const [paternalGrandmotherLastName, setPaternalGrandmotherLastName] = useState('');
+    const [paternalGrandfatherLastName, setPaternalGrandfatherLastName] = useState('');
+    const [maternalGrandmotherLastName, setMaternalGrandmotherLastName] = useState('');
+    const [maternalGrandfatherLastName, setMaternalGrandfatherLastName] = useState('');
+    const [paternalPaternalGreatGrandmotherLastName, setPaternalPaternalGreatGrandmotherLastName] = useState('');
+    const [paternalPaternalGreatGrandfatherLastName, setPaternalPaternalGreatGrandfatherLastName] = useState('');
+    const [paternalMaternalGreatGrandmotherLastName, setPaternalMaternalGreatGrandmotherLastName] = useState('');
+    const [paternalMaternalGreatGrandfatherLastName, setPaternalMaternalGreatGrandfatherLastName] = useState('');
+    const [maternalPaternalGreatGrandmotherLastName, setMaternalPaternalGreatGrandmotherLastName] = useState('');
+    const [maternalPaternalGreatGrandfatherLastName, setMaternalPaternalGreatGrandfatherLastName] = useState('');
+    const [maternalMaternalGreatGrandmotherLastName, setMaternalMaternalGreatGrandmotherLastName] = useState('');
+    const [maternalMaternalGreatGrandfatherLastName, setMaternalMaternalGreatGrandfatherLastName] = useState('');
 
     const [basePersonID, setBasePersonID] = useState('');
     const [bottomPagePersonID, setBottomPagePersonID] = useState('');
@@ -176,6 +264,53 @@ const FamilyTree = () => {
     const [maternalMaternalGreatGrandmotherProfileNumber, setMaternalMaternalGreatGrandmotherProfileNumber] = useState('');
     const [maternalMaternalGreatGrandfatherProfileNumber, setMaternalMaternalGreatGrandfatherProfileNumber] = useState('');
 
+    const [fatherRelationToUser, setFatherRelationToUser] = useState('');
+    const [motherRelationToUser, setMotherRelationToUser] = useState('');
+    const [paternalGrandmotherRelationToUser, setPaternalGrandmotherRelationToUser] = useState('');
+    const [paternalGrandfatherRelationToUser, setPaternalGrandfatherRelationToUser] = useState('');
+    const [maternalGrandmotherRelationToUser, setMaternalGrandmotherRelationToUser] = useState('');
+    const [maternalGrandfatherRelationToUser, setMaternalGrandfatherRelationToUser] = useState('');
+    const [paternalPaternalGreatGrandmotherRelationToUser, setPaternalPaternalGreatGrandmotherRelationToUser] = useState('');
+    const [paternalPaternalGreatGrandfatherRelationToUser, setPaternalPaternalGreatGrandfatherRelationToUser] = useState('');
+    const [paternalMaternalGreatGrandmotherRelationToUser, setPaternalMaternalGreatGrandmotherRelationToUser] = useState('');
+    const [paternalMaternalGreatGrandfatherRelationToUser, setPaternalMaternalGreatGrandfatherRelationToUser] = useState('');
+    const [maternalPaternalGreatGrandmotherRelationToUser, setMaternalPaternalGreatGrandmotherRelationToUser] = useState('');
+    const [maternalPaternalGreatGrandfatherRelationToUser, setMaternalPaternalGreatGrandfatherRelationToUser] = useState('');
+    const [maternalMaternalGreatGrandmotherRelationToUser, setMaternalMaternalGreatGrandmotherRelationToUser] = useState('');
+    const [maternalMaternalGreatGrandfatherRelationToUser, setMaternalMaternalGreatGrandfatherRelationToUser] = useState('');
+
+    const [fatherEthnicity, setFatherEthnicity] = useState('');
+    const [motherEthnicity, setMotherEthnicity] = useState('');
+    const [paternalGrandmotherEthnicity, setPaternalGrandmotherEthnicity] = useState('');
+    const [paternalGrandfatherEthnicity, setPaternalGrandfatherEthnicity] = useState('');
+    const [maternalGrandmotherEthnicity, setMaternalGrandmotherEthnicity] = useState('');
+    const [maternalGrandfatherEthnicity, setMaternalGrandfatherEthnicity] = useState('');
+    const [paternalPaternalGreatGrandmotherEthnicity, setPaternalPaternalGreatGrandmotherEthnicity] = useState('');
+    const [paternalPaternalGreatGrandfatherEthnicity, setPaternalPaternalGreatGrandfatherEthnicity] = useState('');
+    const [paternalMaternalGreatGrandmotherEthnicity, setPaternalMaternalGreatGrandmotherEthnicity] = useState('');
+    const [paternalMaternalGreatGrandfatherEthnicity, setPaternalMaternalGreatGrandfatherEthnicity] = useState('');
+    const [maternalPaternalGreatGrandmotherEthnicity, setMaternalPaternalGreatGrandmotherEthnicity] = useState('');
+    const [maternalPaternalGreatGrandfatherEthnicity, setMaternalPaternalGreatGrandfatherEthnicity] = useState('');
+    const [maternalMaternalGreatGrandmotherEthnicity, setMaternalMaternalGreatGrandmotherEthnicity] = useState('');
+    const [maternalMaternalGreatGrandfatherEthnicity, setMaternalMaternalGreatGrandfatherEthnicity] = useState('');
+
+    const [fatherCauseOfDeath, setFatherCauseOfDeath] = useState('');
+    const [motherCauseOfDeath, setMotherCauseOfDeath] = useState('');
+    const [paternalGrandmotherCauseOfDeath, setPaternalGrandmotherCauseOfDeath] = useState('');
+    const [paternalGrandfatherCauseOfDeath, setPaternalGrandfatherCauseOfDeath] = useState('');
+    const [maternalGrandmotherCauseOfDeath, setMaternalGrandmotherCauseOfDeath] = useState('');
+    const [maternalGrandfatherCauseOfDeath, setMaternalGrandfatherCauseOfDeath] = useState('');
+    const [paternalPaternalGreatGrandmotherCauseOfDeath, setPaternalPaternalGreatGrandmotherCauseOfDeath] = useState('');
+    const [paternalPaternalGreatGrandfatherCauseOfDeath, setPaternalPaternalGreatGrandfatherCauseOfDeath] = useState('');
+    const [paternalMaternalGreatGrandmotherCauseOfDeath, setPaternalMaternalGreatGrandmotherCauseOfDeath] = useState('');
+    const [paternalMaternalGreatGrandfatherCauseOfDeath, setPaternalMaternalGreatGrandfatherCauseOfDeath] = useState('');
+    const [maternalPaternalGreatGrandmotherCauseOfDeath, setMaternalPaternalGreatGrandmotherCauseOfDeath] = useState('');
+    const [maternalPaternalGreatGrandfatherCauseOfDeath, setMaternalPaternalGreatGrandfatherCauseOfDeath] = useState('');
+    const [maternalMaternalGreatGrandmotherCauseOfDeath, setMaternalMaternalGreatGrandmotherCauseOfDeath] = useState('');
+    const [maternalMaternalGreatGrandfatherCauseOfDeath, setMaternalMaternalGreatGrandfatherCauseOfDeath] = useState('');
+
+    
+
     useEffect(() => {
         const getBasePerson = async () => {
 
@@ -189,15 +324,17 @@ const FamilyTree = () => {
 
             const data = await response.json();
             setBasePersonFirstName(data.firstName);
-            setBasePersonName(data.fullName);
+            setBasePersonFullName(data.fullName);
             setBasePersonLastName(data.lastName);
             setBasePersonID(data.basePersonID);
-            setBasePersonBirthDate(convertDate(data.birthDate));
+            setBasePersonBirthDate(data.birthDate);
             setBasePersonBirthPlace(data.birthPlace);
-            setBasePersonDeathDate(convertDate(data.deathDate));
+            setBasePersonDeathDate(data.deathDate);
             setBasePersonDeathPlace(data.deathPlace);
             setBasePersonOccupation(data.occupation);
+            setBasePersonEthnicity(data.ethnicity);
             setBasePersonProfileNumber(data.profileNumber);
+            setBasePersonSex(data.sex)
         }
 
         getBasePerson();
@@ -219,21 +356,26 @@ const FamilyTree = () => {
             if (basePersonID) {
             //if the user is on page 1, then the bottom person will always be the base person
             if (pageNumber === Number(1)) {
-                setBottomPagePersonName(basePersonName);
-                setBottomPagePersonName(basePersonLastName);
+                setBottomPagePersonFirstName(basePersonFirstName);
+                setBottomPagePersonLastName(basePersonLastName);
+                setBottomPagePersonFullName(basePersonFullName);
                 setBottomPagePersonID(basePersonID);
                 setBottomPagePersonBirthDate(basePersonBirthDate);
                 setBottomPagePersonBirthPlace(basePersonBirthPlace);
                 setBottomPagePersonDeathDate(basePersonDeathDate);
                 setBottomPagePersonDeathPlace(basePersonDeathPlace);
-                setBottomPagePersonOccupation(basePersonOccupation)
-                setBottomPagePersonProfileNumber(basePersonProfileNumber)
+                setBottomPagePersonOccupation(basePersonOccupation);
+                setBottomPagePersonEthnicity(basePersonEthnicity);
+                setBottomPagePersonProfileNumber(basePersonID);
+                setBottomPersonSex(basePersonSex);
+                setBottomRelationToBaseUser(0)
             }
 
             }
         }
         getCurrentPageNumber();
     }, [basePersonID])
+
 
 
    useEffect(() => {
@@ -249,13 +391,20 @@ const FamilyTree = () => {
 
             const data = await response.json();
             setFatherName(data.fatherName);
+            setFatherFirstName(data.fatherFirstName);
+            setFatherMiddleName(data.fatherMiddleName);
+            setFatherLastName(data.fatherLastName);
             setFatherID(data.fatherID);
-            setFatherBirthDate(convertDate(data.fatherBirthDate));
+            setFatherBirthDate(data.fatherBirthDate);
             setFatherBirthPlace(data.fatherBirthPlace);
-            setFatherDeathDate(convertDate(data.fatherDeathDate));
+            setFatherDeathDate(data.fatherDeathDate);
             setFatherDeathPlace(data.fatherDeathPlace);
             setFatherOccupation(data.fatherOccupation);
             setFatherProfileNumber(data.fatherProfileNumber);
+            setFatherRelationToUser(data.relation_to_user)
+            setFatherEthnicity(data.fatherEthnicity);
+            console.log(fatherEthnicity)
+            setFatherCauseOfDeath(data.causeOfDeath);
         }
     }
     getFather();
@@ -275,12 +424,18 @@ useEffect(() => {
             const data = await response.json();
             setMotherName(data.motherName);
             setMotherID(data.motherID);
-            setMotherBirthDate(convertDate(data.motherBirthDate));
+            setMotherFirstName(data.motherFirstName);
+            setMotherMiddleName(data.motherMiddleName);
+            setMotherLastName(data.motherLastName);
+            setMotherBirthDate(data.motherBirthDate);
             setMotherBirthPlace(data.motherBirthPlace);
-            setMotherDeathDate(convertDate(data.motherDeathDate));
+            setMotherDeathDate(data.motherDeathDate);
             setMotherDeathPlace(data.motherDeathPlace);
             setMotherOccupation(data.motherOccupation);
             setMotherProfileNumber(data.motherProfileNumber);
+            setMotherRelationToUser(data.relation_to_user);
+            setMotherEthnicity(data.ethnicity);
+            setMotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getMother();
@@ -299,13 +454,19 @@ useEffect(() => {
 
             const data = await response.json();
             setPaternalGrandfatherName(data.fatherName);
+            setPaternalGrandfatherFirstName(data.fatherFirstName);
+            setPaternalGrandfatherMiddleName(data.fatherMiddleName);
+            setPaternalGrandfatherLastName(data.fatherLastName);
             setPaternalGrandfatherID(data.fatherID);
-            setPaternalGrandfatherBirthDate(convertDate(data.fatherBirthDate));
+            setPaternalGrandfatherBirthDate(data.fatherBirthDate);
             setPaternalGrandfatherBirthPlace(data.fatherBirthPlace);
-            setPaternalGrandfatherDeathDate(convertDate(data.fatherDeathDate));
+            setPaternalGrandfatherDeathDate(data.fatherDeathDate);
             setPaternalGrandfatherDeathPlace(data.fatherDeathPlace);
             setPaternalGrandfatherOccupation(data.fatherOccupation);
             setPaternalGrandfatherProfileNumber(data.fatherProfileNumber);
+            setPaternalGrandfatherRelationToUser(data.relation_to_user)
+            setPaternalGrandfatherEthnicity(data.ethnicity);
+            setPaternalGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
     getPaternalGrandFather();
@@ -325,13 +486,17 @@ useEffect(() => {
             const data = await response.json();
             setPaternalGrandmotherName(data.motherName);
             setPaternalGrandmotherID(data.motherID);
-            setPaternalGrandmotherBirthDate(convertDate(data.motherBirthDate));
+            setPaternalGrandmotherFirstName(data.motherFirstName);
+            setPaternalGrandmotherMiddleName(data.motherMiddleName);
+            setPaternalGrandmotherLastName(data.motherLastName);
+            setPaternalGrandmotherBirthDate(data.motherBirthDate);
             setPaternalGrandmotherBirthPlace(data.motherBirthPlace);
-            setPaternalGrandmotherDeathDate(convertDate(data.motherDeathDate));
+            setPaternalGrandmotherDeathDate(data.motherDeathDate);
             setPaternalGrandmotherDeathPlace(data.motherDeathPlace);
             setPaternalGrandmotherOccupation(data.motherOccupation);
             setPaternalGrandmotherProfileNumber(data.motherProfileNumber);
-            console.log(paternalGrandmotherName)
+            setPaternalGrandmotherEthnicity(data.ethnicity);
+            setPaternalGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getPaternalGrandMother();
@@ -351,12 +516,17 @@ useEffect(() => {
             const data = await response.json();
             setMaternalGrandfatherName(data.fatherName);
             setMaternalGrandfatherID(data.fatherID);
-            setMaternalGrandfatherBirthDate(convertDate(data.fatherBirthDate));
+            setMaternalGrandfatherFirstName(data.fatherFirstName);
+            setMaternalGrandfatherMiddleName(data.fatherMiddleName);
+            setMaternalGrandfatherLastName(data.fatherLastName);
+            setMaternalGrandfatherBirthDate(data.fatherBirthDate);
             setMaternalGrandfatherBirthPlace(data.fatherBirthPlace);
-            setMaternalGrandfatherDeathDate(convertDate(data.fatherDeathDate));
+            setMaternalGrandfatherDeathDate(data.fatherDeathDate);
             setMaternalGrandfatherDeathPlace(data.fatherDeathPlace);
             setMaternalGrandfatherOccupation(data.fatherOccupation);
             setMaternalGrandfatherProfileNumber(data.fatherProfileNumber);
+            setMaternalGrandfatherEthnicity(data.ethnicity);
+            setMaternalGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
     getMaternalGrandFather();
@@ -376,12 +546,17 @@ useEffect(() => {
             const data = await response.json();
             setMaternalGrandmotherName(data.motherName);
             setMaternalGrandmotherID(data.motherID);
-            setMaternalGrandmotherBirthDate(convertDate(data.motherBirthDate));
+            setMaternalGrandmotherFirstName(data.motherFirstName);
+            setMaternalGrandmotherMiddleName(data.motherMiddleName);
+            setMaternalGrandmotherLastName(data.motherLastName);
+            setMaternalGrandmotherBirthDate(data.motherBirthDate);
             setMaternalGrandmotherBirthPlace(data.motherBirthPlace);
-            setMaternalGrandmotherDeathDate(convertDate(data.motherDeathDate));
+            setMaternalGrandmotherDeathDate(data.motherDeathDate);
             setMaternalGrandmotherDeathPlace(data.motherDeathPlace);
             setMaternalGrandmotherOccupation(data.motherOccupation);
             setMaternalGrandmotherProfileNumber(data.motherProfileNumber);
+            setMaternalGrandmotherEthnicity(data.ethnicity);
+            setMaternalGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getMaternalGrandMother();
@@ -401,12 +576,17 @@ useEffect(() => {
             const data = await response.json();
             setPaternalPaternalGreatGrandfatherName(data.fatherName);
             setPaternalPaternalGreatGrandfatherID(data.fatherID);
-            setPaternalPaternalGreatGrandfatherBirthDate(convertDate(data.fatherBirthDate));
+            setPaternalPaternalGreatGrandfatherFirstName(data.fatherFirstName);
+            setPaternalPaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
+            setPaternalPaternalGreatGrandfatherLastName(data.fatherLastName);
+            setPaternalPaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
             setPaternalPaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setPaternalPaternalGreatGrandfatherDeathDate(convertDate(data.fatherDeathDate));
+            setPaternalPaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
             setPaternalPaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setPaternalPaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setPaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+            setPaternalPaternalGreatGrandfatherEthnicity(data.ethnicity);
+            setPaternalPaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
     getPaternalPaternalGreatGrandFather();
@@ -426,12 +606,17 @@ useEffect(() => {
             const data = await response.json();
             setPaternalPaternalGreatGrandmotherName(data.motherName);
             setPaternalPaternalGreatGrandmotherID(data.motherID);
-            setPaternalPaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
+            setPaternalPaternalGreatGrandmotherFirstName(data.motherFirstName);
+            setPaternalPaternalGreatGrandmotherMiddleName(data.motherMiddleName);
+            setPaternalPaternalGreatGrandmotherLastName(data.motherLastName);
+            setPaternalPaternalGreatGrandmotherBirthDate(data.motherBirthDate);
             setPaternalPaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setPaternalPaternalGreatGrandmotherDeathDate(convertDate(data.motherDeathDate));
+            setPaternalPaternalGreatGrandmotherDeathDate(data.motherDeathDate);
             setPaternalPaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
             setPaternalPaternalGreatGrandmotherOccupation(data.motherOccupation);
             setPaternalPaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
+            setPaternalPaternalGreatGrandmotherEthnicity(data.ethnicity);
+            setPaternalPaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getPaternalPaternalGreatGrandMother();
@@ -452,12 +637,17 @@ useEffect(() => {
             const data = await response.json();
             setPaternalMaternalGreatGrandfatherName(data.fatherName);
             setPaternalMaternalGreatGrandfatherID(data.fatherID);
-            setPaternalMaternalGreatGrandfatherBirthDate(convertDate(data.fatherBirthDate));
+            setPaternalMaternalGreatGrandfatherFirstName(data.fatherFirstName);
+            setPaternalMaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
+            setPaternalMaternalGreatGrandfatherLastName(data.fatherLastName);
+            setPaternalMaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
             setPaternalMaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setPaternalMaternalGreatGrandfatherDeathDate(convertDate(data.fatherDeathDate));
+            setPaternalMaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
             setPaternalMaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setPaternalMaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setPaternalMaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+            setPaternalMaternalGreatGrandfatherEthnicity(data.ethnicity);
+            setPaternalMaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
     getPaternalMaternalGreatGrandFather();
@@ -477,12 +667,17 @@ useEffect(() => {
             const data = await response.json();
             setPaternalMaternalGreatGrandmotherName(data.motherName);
             setPaternalMaternalGreatGrandmotherID(data.motherID);
-            setPaternalMaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
+            setPaternalMaternalGreatGrandmotherFirstName(data.motherFirstName);
+            setPaternalMaternalGreatGrandmotherMiddleName(data.motherMiddleName);
+            setPaternalMaternalGreatGrandmotherLastName(data.motherLastName);
+            setPaternalMaternalGreatGrandmotherBirthDate(data.motherBirthDate);
             setPaternalMaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setPaternalMaternalGreatGrandmotherDeathDate(convertDate(data.motherDeathDate));
+            setPaternalMaternalGreatGrandmotherDeathDate(data.motherDeathDate);
             setPaternalMaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
             setPaternalMaternalGreatGrandmotherOccupation(data.motherOccupation);
             setPaternalMaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
+            setPaternalMaternalGreatGrandmotherEthnicity(data.ethnicity);
+            setPaternalMaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getPaternalMaternalGreatGrandMother();
@@ -502,12 +697,17 @@ useEffect(() => {
             const data = await response.json();
             setMaternalPaternalGreatGrandfatherName(data.fatherName);
             setMaternalPaternalGreatGrandfatherID(data.fatherID);
-            setMaternalPaternalGreatGrandfatherBirthDate(convertDate(data.fatherBirthDate));
+            setMaternalPaternalGreatGrandfatherFirstName(data.fatherFirstName);
+            setMaternalPaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
+            setMaternalPaternalGreatGrandfatherLastName(data.fatherLastName);
+            setMaternalPaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
             setMaternalPaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setMaternalPaternalGreatGrandfatherDeathDate(convertDate(data.fatherDeathDate));
+            setMaternalPaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
             setMaternalPaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setMaternalPaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setMaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+            setMaternalPaternalGreatGrandfatherEthnicity(data.ethnicity);
+            setMaternalPaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
         }
         
     }
@@ -528,12 +728,17 @@ useEffect(() => {
             const data = await response.json();
             setMaternalPaternalGreatGrandmotherName(data.motherName);
             setMaternalPaternalGreatGrandmotherID(data.motherID);
-            setMaternalPaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
+            setMaternalPaternalGreatGrandmotherFirstName(data.motherFirstName);
+            setMaternalPaternalGreatGrandmotherMiddleName(data.motherMiddleName);
+            setMaternalPaternalGreatGrandmotherLastName(data.motherLastName);
+            setMaternalPaternalGreatGrandmotherBirthDate(data.motherBirthDate);
             setMaternalPaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setMaternalPaternalGreatGrandmotherDeathDate(convertDate(data.motherDeathDate));
+            setMaternalPaternalGreatGrandmotherDeathDate(data.motherDeathDate);
             setMaternalPaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
             setMaternalPaternalGreatGrandmotherOccupation(data.motherOccupation);
             setMaternalPaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
+            setMaternalPaternalGreatGrandmotherEthnicity(data.ethnicity);
+            setMaternalPaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getMaternalPaternalGreatGrandmother();
@@ -553,12 +758,17 @@ useEffect(() => {
             const data = await response.json();
             setMaternalMaternalGreatGrandfatherName(data.fatherName);
             setMaternalMaternalGreatGrandfatherID(data.fatherID);
-            setMaternalMaternalGreatGrandfatherBirthDate(convertDate(data.fatherBirthDate));
+            setMaternalMaternalGreatGrandfatherFirstName(data.fatherFirstName);
+            setMaternalMaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
+            setMaternalMaternalGreatGrandfatherLastName(data.fatherLastName);
+            setMaternalMaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
             setMaternalMaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setMaternalMaternalGreatGrandfatherDeathDate(convertDate(data.fatherDeathDate));
+            setMaternalMaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
             setMaternalMaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
             setMaternalMaternalGreatGrandfatherOccupation(data.fatherOccupation);
             setMaternalMaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
+            setMaternalMaternalGreatGrandfatherEthnicity(data.ethnicity);
+            setMaternalMaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
     getMaternalMaternalGreatGrandFather();
@@ -578,12 +788,17 @@ useEffect(() => {
             const data = await response.json();
             setMaternalMaternalGreatGrandmotherName(data.motherName);
             setMaternalMaternalGreatGrandmotherID(data.motherID);
-            setMaternalMaternalGreatGrandmotherBirthDate(convertDate(data.motherBirthDate));
+            setMaternalMaternalGreatGrandmotherFirstName(data.motherFirstName);
+            setMaternalMaternalGreatGrandmotherMiddleName(data.motherMiddleName);
+            setMaternalMaternalGreatGrandmotherLastName(data.motherLastName);
+            setMaternalMaternalGreatGrandmotherBirthDate(data.motherBirthDate);
             setMaternalMaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setMaternalMaternalGreatGrandmotherDeathDate(convertDate(data.motherDeathDate));
+            setMaternalMaternalGreatGrandmotherDeathDate(data.motherDeathDate);
             setMaternalMaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
             setMaternalMaternalGreatGrandmotherOccupation(data.motherOccupation);
             setMaternalMaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
+            setMaternalMaternalGreatGrandmotherEthnicity(data.ethnicity);
+            setMaternalMaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
     getMaternalMaternalGreatGrandMother();
@@ -594,25 +809,116 @@ useEffect(() => {
         window.location.reload();
     };
 
-    const saveFatherChanges = async () => {
+    
+    //updates fatherDetails whenever it changes
+        useEffect(() => {
+            if (!fatherDetails.lastName && bottomPagePersonLastName) {
+                setFatherDetails((prev) => ({
+                  ...prev,
+                  lastName: bottomPagePersonLastName,
+                }));
+              }
+        }, [fatherDetails.lastName, bottomPagePersonLastName]);
 
-        const userId = localStorage.getItem('userId');
-        const response = await fetch('http://localhost:5000/save-father', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, fatherDetails, bottomPagePersonID }),
-        })   
-        setShow(false)
+        useEffect(() => {
+            if (!fatherDetails.ethnicity && bottomPagePersonEthnicity) {
+                setFatherDetails((prev) => ({
+                  ...prev,
+                  ethnicity: bottomPagePersonEthnicity,
+                }));
+              }
+        }, [fatherDetails.ethnicity, bottomPagePersonEthnicity]);
+
+        //updates motherDetails whenever it changes
+        useEffect(() => {
+            if (!motherDetails.ethnicity && bottomPagePersonEthnicity) {
+                setMotherDetails((prev) => ({
+                  ...prev,
+                  ethnicity: bottomPagePersonEthnicity,
+                }));
+              }
+        }, [motherDetails.ethnicity, bottomPagePersonEthnicity]);
+
+
+        useEffect(() => {
+            if (!paternalGrandfatherDetails.lastName && fatherLastName) {
+                setPaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: fatherLastName,
+                  }))
+              }
+        }, [paternalGrandfatherDetails.lastName, fatherLastName]);
+
+        useEffect(() => {
+            if (!paternalGrandfatherDetails.ethnicity  && fatherEthnicity) {
+                setPaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: fatherEthnicity,
+                  }))
+              }
+        }, [paternalGrandfatherDetails.ethnicity, fatherEthnicity]);
+
+
+    const saveFatherChanges = async () => {
+        setShowFather(false)
+        try {
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/save-father', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, fatherDetails, bottomPagePersonID }),
+            })   
+            
+            const data = await response.json()
+            window.location.reload();
+        } catch (error) {
+            console.log("Error saving father changes:", error)
+        }
     }
-   
-    console.log(bottomPagePersonName)
+
+    const saveMotherChanges = async () => {
+        setShowMother(false)
+        try {
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/save-mother', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, motherDetails, bottomPagePersonID }),
+            })   
+            
+            const data = await response.json()
+            window.location.reload();
+        } catch (error) {
+            console.log("Error saving father changes:", error)
+        }
+    }
+
+    const savePaternalGrandfatherChanges = async () => {
+        setShowPaternalGrandfather(false)
+        try {
+            console.log(paternalGrandfatherDetails.firstName)
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/save-paternal-grandfather', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, paternalGrandfatherDetails, fatherID }),
+            })   
+            
+            const data = await response.json()
+            window.location.reload();
+        } catch (error) {
+            console.log("Error saving paternal grandfather changes:", error)
+        }
+    }
+
+
 
     return (
         <div>
 
-            <Modal show={show} onHide={closeAddFatherModal} dialogClassName="custom-modal-width">
+            <Modal show={showFather} onHide={closeAddFatherModal} dialogClassName="custom-modal-width">
                 <Modal.Header closeButton>
-                <Modal.Title>Add {bottomPagePersonName}'s Father</Modal.Title>
+                <Modal.Title>Add {bottomPagePersonFirstName}'s Father</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="input-modal">
@@ -620,26 +926,28 @@ useEffect(() => {
 
                         <input type="text" placeholder="Middle Name" onChange={(e) => setFatherDetails({ ...fatherDetails, middleName: e.target.value })}></input>
 
-                        <input type="text" placeholder="Last Name" value={bottomPagePersonName} onChange={(e) => setFatherDetails({ ...fatherDetails, lastName: e.target.value })}></input>
+                        <input type="text" placeholder="Last Name"  value={fatherDetails.lastName} onChange={(e) => setFatherDetails({...fatherDetails, lastName: e.target.value})}></input>
                     </div>
 
                     <div className="input-modal">
-                    <input type="text" placeholder="Birth Date (yyyy-mm-dd)" onChange={(e) => setFatherDetails({ ...fatherDetails, birthDate: e.target.value })}></input>
+                    <input type="text" placeholder="Birth Date" onChange={(e) => setFatherDetails({ ...fatherDetails, birthDate: e.target.value })}></input>
 
                     <input type="text" placeholder="Birth Place" onChange={(e) => setFatherDetails({ ...fatherDetails, birthPlace: e.target.value })}></input>
                     </div>
 
                     <div className="input-modal">
-                    <input type="text" placeholder="Death Date (yyyy-mm-dd)" onChange={(e) => setFatherDetails({ ...fatherDetails, deathDate: e.target.value })}></input>
+                    <input type="text" placeholder="Death Date" onChange={(e) => setFatherDetails({ ...fatherDetails, deathDate: e.target.value })}></input>
 
                     <input type="text" placeholder="Death Place" onChange={(e) => setFatherDetails({ ...fatherDetails, deathPlace: e.target.value })}></input>
 
                     <input type="text" placeholder="Cause of Death" onChange={(e) => setFatherDetails({ ...fatherDetails, causeOfDeath: e.target.value })}></input>
                     </div>
                    
+                    <div className="input-modal">
                     <input type="text" placeholder="Titles/Occupations" onChange={(e) => setFatherDetails({ ...fatherDetails, titles: e.target.value })}></input>
 
-                    <input type="text" placeholder="Ethnicity" onChange={(e) => setFatherDetails({ ...fatherDetails, ethnicity: e.target.value })}></input>
+                    <input type="text" placeholder="Ethnicity" value={fatherDetails.ethnicity} onChange={(e) => setFatherDetails({...fatherDetails, ethnicity: e.target.value})}></input>
+                    </div>
 
                 </Modal.Body>
                 <Modal.Footer>
@@ -647,6 +955,94 @@ useEffect(() => {
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={saveFatherChanges}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showMother} onHide={closeAddMotherModal} dialogClassName="custom-modal-width">
+                <Modal.Header closeButton>
+                <Modal.Title>Add {bottomPagePersonFirstName}'s Mother</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="input-modal">
+                        <input  type="text" placeholder="First Name" onChange={(e) => setMotherDetails({ ...motherDetails, firstName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Middle Name" onChange={(e) => setMotherDetails({ ...motherDetails, middleName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Last Name"  onChange={(e) => setMotherDetails({...motherDetails, lastName: e.target.value})}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Birth Date" onChange={(e) => setMotherDetails({ ...motherDetails, birthDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Birth Place" onChange={(e) => setMotherDetails({ ...motherDetails, birthPlace: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Death Date" onChange={(e) => setMotherDetails({ ...motherDetails, deathDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Death Place" onChange={(e) => setMotherDetails({ ...motherDetails, deathPlace: e.target.value })}></input>
+
+                    <input type="text" placeholder="Cause of Death" onChange={(e) => setMotherDetails({ ...motherDetails, causeOfDeath: e.target.value })}></input>
+                    </div>
+                   
+                    <div className="input-modal">
+                    <input type="text" placeholder="Titles/Occupations" onChange={(e) => setMotherDetails({ ...motherDetails, titles: e.target.value })}></input>
+
+                    <input type="text" placeholder="Ethnicity" value={motherDetails.ethnicity} onChange={(e) => setMotherDetails({...motherDetails, ethnicity: e.target.value})}></input>
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={closeAddMotherModal}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={saveMotherChanges}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showPaternalGrandfather} onHide={closeAddPaternalGrandfatherModal} dialogClassName="custom-modal-width">
+                <Modal.Header closeButton>
+                <Modal.Title>Add {fatherName}'s Father</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="input-modal">
+                        <input  type="text" placeholder="First Name" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, firstName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Middle Name" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, middleName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Last Name"  value={paternalGrandfatherDetails.lastName} onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, lastName: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Birth Date" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, birthDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Birth Place" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, birthPlace: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Death Date" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, deathDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Death Place" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, deathPlace: e.target.value })}></input>
+
+                    <input type="text" placeholder="Cause of Death" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, causeOfDeath: e.target.value })}></input>
+                    </div>
+                   
+                    <div className="input-modal">
+                    <input type="text" placeholder="Titles/Occupations" onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, occupation: e.target.value })}></input>
+
+                    <input type="text" placeholder="Ethnicity" value={paternalGrandfatherDetails.ethnicity} onChange={(e) => setPaternalGrandfatherDetails({ ...paternalGrandfatherDetails, ethnicity: e.target.value })}></input>
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={closeAddPaternalGrandfatherModal}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={savePaternalGrandfatherChanges}>
                     Save Changes
                 </Button>
                 </Modal.Footer>
@@ -1147,7 +1543,7 @@ useEffect(() => {
                              <table  className="ancestor-box">
                              <tr>
                                  <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                 <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                                 <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(paternalGrandfatherRelationToUser, "male")}</th>
                              </tr>
                              <tr>
                                  <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
@@ -1182,7 +1578,7 @@ useEffect(() => {
                                     <table className="unknown-ancestor">
                                         <tr><p></p></tr>
                                         <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
+                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button onClick={openAddPaternalGrandfatherModal}>Add Father</button></tr>
                                         <tr></tr>
                                         <tr></tr>
                                         <tr></tr>
@@ -1366,7 +1762,7 @@ useEffect(() => {
                             <table  className="ancestor-box">
                             <tr>
                                 <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(fatherRelationToUser, "male")}</th>
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
@@ -1411,7 +1807,7 @@ useEffect(() => {
                             <table  className="ancestor-box">
                             <tr>
                                 <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                                <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(motherRelationToUser, "female")}</th>
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
@@ -1444,7 +1840,7 @@ useEffect(() => {
                             <table className="unknown-ancestor">
                                 <tr><p></p></tr>
                                 <tr></tr>
-                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
+                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button  onClick={openAddMotherModal}>Add Mother</button></tr>
                                 <tr></tr>
                                 <tr></tr>
                                 <tr></tr>
@@ -1466,11 +1862,11 @@ useEffect(() => {
                                 <table  className="ancestor-box">
                                 <tr>
                                     <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
+                                    <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(bottomRelationToBaseUser, bottomPersonSex)}</th>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{bottomPagePersonName}</td>
+                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{bottomPagePersonFullName}</td>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>

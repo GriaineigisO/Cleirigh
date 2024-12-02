@@ -26,7 +26,7 @@ let treesName = "";
 const HomePageWithTree = () => {
 
   const [treeName, setTreeName] = useState('');
-  const [isEmpty, setIsEmpty] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(true);
   const [currentTree, setCurrentTree] = useState();
   const [isDead, setIsDead] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -260,7 +260,7 @@ const homePageStats = useCallback(async () => {
   }
 
 
-
+console.log(isEmpty)
   return (
     <div>
       <h1>The {capitaliseFirstLetter(treeName)} Tree</h1>
@@ -384,19 +384,11 @@ const Home = () => {
     const handleNewTree = async () => {
     
         // Get the token from localStorage
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No token found');
-            return;
-        }
-
-        // Decode the token to get the user ID
-        const decodedToken = jwtDecode(token);
-        const userId = decodedToken.id; 
+        const userId = localStorage.getItem('userId');
         const treeId = Date.now();
         
         try {
-          
+          console.log("nee tree")
             const response = await fetch('http://localhost:5000/make-new-tree', {
               method: 'POST',
               headers: {

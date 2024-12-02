@@ -39,3 +39,40 @@ export const deathPlace = (place) => {
         return "N/A"
     }
 }
+
+export const convertNumToRelation = (num, sex) => {
+    if (num === 0) {
+        return "Self";
+    }
+    if (Number(num) === 1) {
+        if (sex === "male") {
+            return "Father"
+        } else {
+            return "Mother";
+        }
+    }
+
+    if (Number(num) === 2) {
+        if (sex === "male") {
+            return "Grandfather"
+        } else {
+            return "Grandmother"
+        }
+    }
+
+    if (Number(num) === 3) {
+        if (sex === "male") {
+            return "Great Grandfather"
+        } else {
+            return "Great Grandmother"
+        }
+    }
+
+    if (Number(num) > 3) {
+        if (sex === "male") {
+            return `Great x${num-2} Grandfather`
+        } else {
+            return `Great x${num-2} Grandmother`
+        }
+    }
+}

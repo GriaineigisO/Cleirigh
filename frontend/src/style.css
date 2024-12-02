@@ -35,7 +35,7 @@
     
 }
 
-input[type=text] {
+.input-modal input {
     background-color: rgb(32, 40, 31) ;
     color: rgb(210, 255, 126) !important;
     margin-right: 5px;
@@ -43,6 +43,7 @@ input[type=text] {
     border: none;
     border-radius: 5px;
 }
+
 
   .modal-overlay {
     position: fixed;
@@ -349,6 +350,8 @@ body {
     margin-right: 4px!important;
     margin-top: 0px!important;
 }
+
+
 
 .scrollable {
     overflow: scroll;
