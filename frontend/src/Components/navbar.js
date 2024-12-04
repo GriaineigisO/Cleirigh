@@ -20,30 +20,30 @@ const Navbar = ({onLogin, onLogout}) => {
     const isLoggedIn = !! localStorage.getItem('token');
 
     //checks is user has a paid account
-    const [isPremium, setIsPremium] = useState(false);
-    const [error, setError] = useState(null);
-    useEffect(() => {
-        const username = localStorage.getItem('username');
+    // const [isPremium, setIsPremium] = useState(false);
+    // const [error, setError] = useState(null);
+    // useEffect(() => {
+    //     const username = localStorage.getItem('username');
 
-        if (!username) {
-            setError('User is not logged in');
-            return
-        };
+    //     if (!username) {
+    //         setError('User is not logged in');
+    //         return
+    //     };
 
-        const fetchUserData = async () => {
-            try {
-                const response = await fetch(`http://localhost:500/api/user?username=${encodeURIComponent(username)}`);
-                if (!response.of) {
-                    throw new Error('User not found');
-                };
-                const data = await response.json();
-                setIsPremium(data.premium);
-            } catch (error) {
-                console.error('Error fetching user data:', error)
-            }
-        };
-        fetchUserData();
-    }, []);
+    //     const fetchUserData = async () => {
+    //         try {
+    //             const response = await fetch(`http://localhost:500/api/user?username=${encodeURIComponent(username)}`);
+    //             if (!response.of) {
+    //                 throw new Error('User not found');
+    //             };
+    //             const data = await response.json();
+    //             setIsPremium(data.premium);
+    //         } catch (error) {
+    //             console.error('Error fetching user data:', error)
+    //         }
+    //     };
+    //     fetchUserData();
+    // }, []);
 
     useEffect(() => {
         const username = localStorage.getItem('username');
