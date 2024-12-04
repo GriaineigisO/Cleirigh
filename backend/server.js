@@ -12,7 +12,6 @@ const cleirighUserDB = require('./db');
 const corsOptions = {
     origin: 'http://localhost:3000', // Allow only this origin
     methods: 'GET,HEAD,POST,PUT,DELETE', // Allowed HTTP methods
-    credentials: true, // Allow cookies if needed
 };
 
 
@@ -199,7 +198,6 @@ app.post('/check-if-no-trees', async (req, res) => {
       const result = await pool.query('SELECT user_id FROM trees WHERE user_id = $1',
             [userId]);
 
-            console.log(result.rows.length)
         if (result.rows.length > 0) {
             res.json({ hasTrees: true });
             } else {
@@ -624,7 +622,7 @@ app.post('/get-father', async (req, res) => {
             }
 
             const fatherFullName = `${fatherFirstName} ${fatherMiddleName} ${fatherLastName}`;
-console.log(fatherQuery.rows[0].ethnicity)
+
             res.json({
                 fatherID:fatherID,
                 fatherName:fatherFullName,
@@ -818,7 +816,7 @@ app.post('/save-father', async (req, res) => {
             fatherRelation
         ]);
 
-        res.json({fatherID: ancestor_id})
+        res.json(ancestor_id)
     } catch (error) {
         console.log("Error saving father:", error)
     }
@@ -907,18 +905,17 @@ app.post('/save-mother', async (req, res) => {
             motherRelation
         ]);
 
-        res.json({motherID: ancestor_id})
+        res.json(ancestor_id)
     } catch (error) {
         console.log("Error saving mother:", error)
     }
 })
 
 app.post('/save-paternal-grandfather', async (req, res) => {
+
     try {
 
     const { userId, paternalGrandfatherDetails, fatherID} = req.body;
-
-    console.log(paternalGrandfatherDetails)
 
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(
@@ -998,9 +995,462 @@ app.post('/save-paternal-grandfather', async (req, res) => {
             paternalgrandfatherRelation
         ]);
 
-        res.json({paternalGrandfatherID: ancestor_id})
+        res.json(ancestor_id)
     } catch (error) {
-        console.log("Error saving father:", error)
+        console.log("Error saving paternal-grandfather:", error)
+    }
+})
+
+app.post('/save-paternal-grandmother', async (req, res) => {
+    try {
+
+    const { userId, paternalGrandmotherDetails, fatherID} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)
+
+        const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+
+        let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        while (allAncestorIds.includes( ancestor_id)) {
+            ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        }
+
+        const childQuery = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET mother_id = ${ancestor_id }
+            WHERE ancestor_id = ${fatherID}
+            `)
+
+        //paternal grandfather of bottom page person has same page number
+        const pageNumQuery = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${fatherID}
+        `)
+        const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+
+        const relationToUserQuery = await pool.query(`
+           SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${fatherID}
+            `)
+
+        const paternalgrandmotherRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+
+        const fatherQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation,
+                relation_to_user
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+            ) 
+        `, [
+            paternalGrandmotherDetails.firstName,
+            paternalGrandmotherDetails.middleName,
+            paternalGrandmotherDetails.lastName,
+            ancestor_id,
+            page_number,
+            "false", 
+            "female",
+            paternalGrandmotherDetails.ethnicity,
+            paternalGrandmotherDetails.birthDate,
+            paternalGrandmotherDetails.birthPlace,
+            paternalGrandmotherDetails.deathDate,
+            paternalGrandmotherDetails.deathPlace,
+            paternalGrandmotherDetails.causeOfDeath,
+            paternalGrandmotherDetails.occupation,
+            paternalgrandmotherRelation
+        ]);
+
+        res.json(ancestor_id)
+    } catch (error) {
+        console.log("Error saving paternal grandmother:", error)
+    }
+})
+
+app.post('/save-maternal-grandfather', async (req, res) => {
+
+    try {
+        const { userId, maternalGrandfatherDetails, motherID} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)
+
+        const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+
+        let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        while (allAncestorIds.includes( ancestor_id)) {
+            ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        }
+
+        const childQuery = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET father_id = ${ancestor_id }
+            WHERE ancestor_id = ${motherID}
+            `)
+
+        //paternal grandfather of bottom page person has same page number
+        const pageNumQuery = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${motherID}
+        `)
+        const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+
+        const relationToUserQuery = await pool.query(`
+           SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${motherID}
+            `)
+
+        const maternalgrandfatherRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+
+        const motherQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation,
+                relation_to_user
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+            ) 
+        `, [
+            maternalGrandfatherDetails.firstName,
+            maternalGrandfatherDetails.middleName,
+            maternalGrandfatherDetails.lastName,
+            ancestor_id,
+            page_number,
+            "false", 
+            "male",
+            maternalGrandfatherDetails.ethnicity,
+            maternalGrandfatherDetails.birthDate,
+            maternalGrandfatherDetails.birthPlace,
+            maternalGrandfatherDetails.deathDate,
+            maternalGrandfatherDetails.deathPlace,
+            maternalGrandfatherDetails.causeOfDeath,
+            maternalGrandfatherDetails.occupation,
+            maternalgrandfatherRelation
+        ]);
+
+        res.json(ancestor_id)
+
+    } catch (error) {
+        console.log("Error saving maternal grandfather:", error)
+    }
+})
+
+app.post('/save-maternal-grandmother', async (req, res) => {
+    try {
+
+    const { userId, maternalGrandmotherDetails, motherID} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)
+
+        const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+
+        let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        while (allAncestorIds.includes( ancestor_id)) {
+            ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        }
+
+        const childQuery = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET mother_id = ${ancestor_id }
+            WHERE ancestor_id = ${motherID}
+            `)
+
+        //paternal grandfather of bottom page person has same page number
+        const pageNumQuery = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${motherID}
+        `)
+        const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+
+        const relationToUserQuery = await pool.query(`
+           SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${motherID}
+            `)
+
+        const maternalgrandmotherRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+
+        const motherQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation,
+                relation_to_user
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+            ) 
+        `, [
+            maternalGrandmotherDetails.firstName,
+            maternalGrandmotherDetails.middleName,
+            maternalGrandmotherDetails.lastName,
+            ancestor_id,
+            page_number,
+            "false", 
+            "female",
+            maternalGrandmotherDetails.ethnicity,
+            maternalGrandmotherDetails.birthDate,
+            maternalGrandmotherDetails.birthPlace,
+            maternalGrandmotherDetails.deathDate,
+            maternalGrandmotherDetails.deathPlace,
+            maternalGrandmotherDetails.causeOfDeath,
+            maternalGrandmotherDetails.occupation,
+            maternalgrandmotherRelation
+        ]);
+
+        res.json(ancestor_id)
+    } catch (error) {
+        console.log("Error saving maternal grandmother:", error)
+    }
+})
+
+app.post('/save-paternal-paternal-grandfather', async (req, res) => {
+    try {
+    const { userId, paternalPaternalGreatGrandfatherDetails, paternalGrandfatherID} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)
+
+        const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+
+        let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        while (allAncestorIds.includes( ancestor_id)) {
+            ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        }
+
+        const childQuery = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET father_id = ${ancestor_id }
+            WHERE ancestor_id = ${paternalGrandfatherID}
+            `)
+
+
+        const pageNumQuery = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${paternalGrandfatherID}
+        `)
+        const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+
+        const relationToUserQuery = await pool.query(`
+           SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${fatherID}
+            `)
+
+        const paternalPaternalGreatgrandfatherRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+
+        const grandfatherQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation,
+                relation_to_user
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+            ) 
+        `, [
+            paternalPaternalGreatGrandfatherDetails.firstName,
+            paternalPaternalGreatGrandfatherDetails.middleName,
+            paternalPaternalGreatGrandfatherDetails.lastName,
+            ancestor_id,
+            page_number,
+            "false", 
+            "male",
+            paternalPaternalGreatGrandfatherDetails.ethnicity,
+            paternalPaternalGreatGrandfatherDetails.birthDate,
+            paternalPaternalGreatGrandfatherDetails.birthPlace,
+            paternalPaternalGreatGrandfatherDetails.deathDate,
+            paternalPaternalGreatGrandfatherDetails.deathPlace,
+            paternalPaternalGreatGrandfatherDetails.causeOfDeath,
+            paternalPaternalGreatGrandfatherDetails.occupation,
+            paternalPaternalGreatgrandfatherRelation
+        ]);
+
+        res.json(ancestor_id)
+    } catch (error) {
+        console.log("Error saving paternal-paternal-great-grandfather:", error)
+    }
+})
+
+app.post('/save-ancestor', async (req, res) => {
+    try {
+
+    const { userId, ancestorDetails, childID, sex} = req.body;
+    
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+        console.log(getCurrentTreeId.rows[0].current_tree_id)
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)
+
+        const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+
+        let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        while (allAncestorIds.includes( ancestor_id)) {
+            ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+        }
+        
+        if (sex === "male") {
+            const childQuery = await pool.query(`
+                UPDATE tree_${currentTree}
+                SET father_id = ${ancestor_id }
+                WHERE ancestor_id = ${childID}
+                `)
+        } else if (sex === "female") {
+            const childQuery = await pool.query(`
+                UPDATE tree_${currentTree}
+                SET mother_id = ${ancestor_id }
+                WHERE ancestor_id = ${childID}
+                `)
+        }      
+
+        //father of bottom page person has same page number
+        const pageNumQuery = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${childID}
+        `)
+        const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+
+        const relationToUserQuery = await pool.query(`
+           SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${childID}
+            `)
+
+        const ancestorRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+
+        const ancestorQuery = await pool.query(`
+            INSERT INTO tree_${currentTree} (
+                first_name,
+                middle_name,
+                last_name,
+                ancestor_id,
+                page_number,
+                base_person,
+                sex,
+                ethnicity,
+                date_of_birth,
+                place_of_birth,
+                date_of_death,
+                place_of_death,
+                cause_of_death,
+                occupation,
+                relation_to_user
+            )  
+            VALUES (
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+            ) 
+        `, [
+            ancestorDetails.firstName,
+            ancestorDetails.middleName,
+            ancestorDetails.lastName,
+            ancestor_id,
+            page_number,
+            "false", 
+            sex,
+            ancestorDetails.ethnicity,
+            ancestorDetails.birthDate,
+            ancestorDetails.birthPlace,
+            ancestorDetails.deathDate,
+            ancestorDetails.deathPlace,
+            ancestorDetails.causeOfDeath,
+            ancestorDetails.titles,
+            ancestorRelation
+        ]);
+
+        res.json(ancestor_id)
+    } catch (error) {
+        console.log("Error saving ancestor:", error)
     }
 })
 

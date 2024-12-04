@@ -3,6 +3,7 @@ import React, { useState, useEffect, Component } from 'react';
 import { convertDate, convertNumToRelation } from '../library.js';
 import { Modal, Button } from 'react-bootstrap';
 
+
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
 //paternalmaternalgreatgrandparents = paternal grandmother's parents
 //maternalpaternalgrandparents = maternal grandfather's parents
@@ -13,6 +14,17 @@ const FamilyTree = () => {
     const [showFather, setShowFather] = useState(false);
     const [showMother, setShowMother] = useState(false);
     const [showPaternalGrandfather, setShowPaternalGrandfather] = useState(false);
+    const [showPaternalGrandmother, setShowPaternalGrandmother] = useState(false);
+    const [showMaternalGrandfather, setShowMaternalGrandfather] = useState(false);
+    const [showMaternalGrandmother, setShowMaternalGrandmother] = useState(false);
+    const [showPaternalPaternalGreatGrandfather, setShowPaternalPaternalGreatGrandfather] = useState(false);
+    const [showPaternalPaternalGreatGrandmother, setShowPaternalPaternalGreatGrandmother] = useState(false);
+    const [showPaternalMaternalGreatGrandfather, setShowPaternalMaternalGreatGrandfather] = useState(false);
+    const [showPaternalMaternalGreatGrandmother, setShowPaternalMaternalGreatGrandmother] = useState(false);
+    const [showMaternalPaternalGreatGrandfather, setShowMaternalPaternalGreatGrandfather] = useState(false);
+    const [showMaternalPaternalGreatGrandmother, setShowMaternalPaternalGreatGrandmother] = useState(false);
+    const [showMaternalMaternalGreatGrandfather, setShowMaternalMaternalGreatGrandfather] = useState(false);
+    const [showMaternalMaternalGreatGrandmother, setShowMaternalMaternalGreatGrandmother] = useState(false);
 
     const closeAddFatherModal = () => setShowFather(false);
     const openAddFatherModal = () => setShowFather(true);
@@ -22,6 +34,40 @@ const FamilyTree = () => {
 
     const closeAddPaternalGrandfatherModal = () => setShowPaternalGrandfather(false);
     const openAddPaternalGrandfatherModal = () => setShowPaternalGrandfather(true);
+
+    const closeAddPaternalGrandmotherModal = () => setShowPaternalGrandmother(false);
+    const openAddPaternalGrandmotherModal = () => setShowPaternalGrandmother(true);
+
+    const closeAddMaternalGrandfatherModal = () => setShowMaternalGrandfather(false);
+    const openAddMaternalGrandfatherModal = () => setShowMaternalGrandfather(true);
+
+    const closeAddMaternalGrandmotherModal = () => setShowMaternalGrandmother(false);
+    const openAddMaternalGrandmotherModal = () => setShowMaternalGrandmother(true);
+
+    const closeAddPaternalPaternalGreatGrandfatherModal = () => setShowPaternalPaternalGreatGrandfather(false);
+    const openAddPaternalPaternalGreatGrandfatherModal = () => setShowPaternalPaternalGreatGrandfather(true);
+
+    const closeAddPaternalPaternalGreatGrandmotherModal = () => setShowPaternalPaternalGreatGrandmother(false);
+    const openAddPaternalPaternalGreatGrandmotherModal = () => setShowPaternalPaternalGreatGrandmother(true);
+
+    const closeAddPaternalMaternalGreatGrandfatherModal = () => setShowPaternalMaternalGreatGrandfather(false);
+    const openAddPaternalMaternalGreatGrandfatherModal = () => setShowPaternalMaternalGreatGrandfather(true);
+
+    const closeAddPaternalMaternalGreatGrandmotherModal = () => setShowPaternalMaternalGreatGrandmother(false);
+    const openAddPaternalMaternalGreatGrandmotherModal = () => setShowPaternalMaternalGreatGrandmother(true);
+
+
+    const closeAddMaternalPaternalGreatGrandfatherModal = () => setShowMaternalPaternalGreatGrandfather(false);
+    const openAddMaternalPaternalGreatGrandfatherModal = () => setShowMaternalPaternalGreatGrandfather(true);
+
+    const closeAddMaternalPaternalGreatGrandmotherModal = () => setShowMaternalPaternalGreatGrandmother(false);
+    const openAddMaternalPaternalGreatGrandmotherModal = () => setShowMaternalPaternalGreatGrandmother(true);
+
+    const closeAddMaternalMaternalGreatGrandfatherModal = () => setShowMaternalMaternalGreatGrandfather(false);
+    const openAddMaternalMaternalGreatGrandfatherModal = () => setShowMaternalMaternalGreatGrandfather(true);
+
+    const closeAddMaternalMaternalGreatGrandmotherModal = () => setShowMaternalMaternalGreatGrandmother(false);
+    const openAddMaternalMaternalGreatGrandmotherModal = () => setShowMaternalMaternalGreatGrandmother(true);
 
     const [fatherDetails, setFatherDetails] = React.useState({
         firstName: null,
@@ -65,9 +111,164 @@ const FamilyTree = () => {
         relationTouser: null,
       });
 
+      const [paternalGrandmotherDetails, setPaternalGrandmotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+      const [maternalGrandfatherDetails, setMaternalGrandfatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+      const [maternalGrandmotherDetails, setMaternalGrandmotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+      const [paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+      const [paternalPaternalGreatGrandmotherDetails, setPaternalPaternalGreatGrandmotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+      const [paternalMaternalGreatGrandfatherDetails, setPaternalMaternalGreatGrandfatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+   
+
+      const [paternalMaternalGreatGrandmotherDetails, setPaternalMaternalGreatGrandmotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+
+      const [maternalPaternalGreatGrandfatherDetails, setMaternalPaternalGreatGrandfatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+   
+
+      const [maternalPaternalGreatGrandmotherDetails, setMaternalPaternalGreatGrandmotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
    
 
 
+const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfatherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
+   
+
+      const [maternalMaternalGreatGrandmotherDetails, setMaternalMaternalGreatGrandmotherDetails] = React.useState({
+        firstName: null,
+        middleName: null,
+        lastName: null,
+        birthDate: null,
+        birthPlace: null,
+        deathDate: null,
+        deathPlace: null,
+        causeOfDeath: null,
+        titles: null,
+        ethnicity: null,
+        relationTouser: null,
+      });
     const [pageNumber, setPageNumber] = useState(1);
 
     const [bottomPagePersonFirstName, setBottomPagePersonFirstName] = useState('');
@@ -311,77 +512,71 @@ const FamilyTree = () => {
 
     
 
+    
     useEffect(() => {
-        const getBasePerson = async () => {
-
-            const userId = localStorage.getItem('userId');
-
-            const response = await fetch('http://localhost:5000/get-base-person', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId }),
-            })
-
-            const data = await response.json();
-            setBasePersonFirstName(data.firstName);
-            setBasePersonFullName(data.fullName);
-            setBasePersonLastName(data.lastName);
-            setBasePersonID(data.basePersonID);
-            setBasePersonBirthDate(data.birthDate);
-            setBasePersonBirthPlace(data.birthPlace);
-            setBasePersonDeathDate(data.deathDate);
-            setBasePersonDeathPlace(data.deathPlace);
-            setBasePersonOccupation(data.occupation);
-            setBasePersonEthnicity(data.ethnicity);
-            setBasePersonProfileNumber(data.profileNumber);
-            setBasePersonSex(data.sex)
-        }
-
-        getBasePerson();
-    }, [])
-
-    useEffect(() => {
-        const getCurrentPageNumber = async () => {
-            const userId = localStorage.getItem('userId');
-
-            const response = await fetch('http://localhost:5000/get-current-page-number', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId }),
-            })
-
-            const data = await response.json();
-            setPageNumber(data);
-            
-            if (basePersonID) {
-            //if the user is on page 1, then the bottom person will always be the base person
-            if (pageNumber === Number(1)) {
-                setBottomPagePersonFirstName(basePersonFirstName);
-                setBottomPagePersonLastName(basePersonLastName);
-                setBottomPagePersonFullName(basePersonFullName);
-                setBottomPagePersonID(basePersonID);
-                setBottomPagePersonBirthDate(basePersonBirthDate);
-                setBottomPagePersonBirthPlace(basePersonBirthPlace);
-                setBottomPagePersonDeathDate(basePersonDeathDate);
-                setBottomPagePersonDeathPlace(basePersonDeathPlace);
-                setBottomPagePersonOccupation(basePersonOccupation);
-                setBottomPagePersonEthnicity(basePersonEthnicity);
-                setBottomPagePersonProfileNumber(basePersonID);
-                setBottomPersonSex(basePersonSex);
-                setBottomRelationToBaseUser(0)
+        const fetchInitialData = async () => {
+            try {
+                // Fetch Base Person
+                const userId = localStorage.getItem('userId');
+                const baseResponse = await fetch('http://localhost:5000/get-base-person', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId }),
+                });
+    
+                const baseData = await baseResponse.json();
+                setBasePersonFirstName(baseData.firstName);
+                setBasePersonFullName(baseData.fullName);
+                setBasePersonLastName(baseData.lastName);
+                setBasePersonID(baseData.basePersonID);
+                setBasePersonBirthDate(baseData.birthDate);
+                setBasePersonBirthPlace(baseData.birthPlace);
+                setBasePersonDeathDate(baseData.deathDate);
+                setBasePersonDeathPlace(baseData.deathPlace);
+                setBasePersonOccupation(baseData.occupation);
+                setBasePersonEthnicity(baseData.ethnicity);
+                setBasePersonProfileNumber(baseData.profileNumber);
+                setBasePersonSex(baseData.sex);
+    
+                // Fetch Current Page Number
+                const pageResponse = await fetch('http://localhost:5000/get-current-page-number', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId }),
+                });
+    
+                const pageData = await pageResponse.json();
+                setPageNumber(pageData);
+    
+                // Set Bottom Page Person if on Page 1
+                if (pageData === 1) {
+                    setBottomPagePersonFirstName(baseData.firstName);
+                    setBottomPagePersonLastName(baseData.lastName);
+                    setBottomPagePersonFullName(baseData.fullName);
+                    setBottomPagePersonID(baseData.basePersonID);
+                    setBottomPagePersonBirthDate(baseData.birthDate);
+                    setBottomPagePersonBirthPlace(baseData.birthPlace);
+                    setBottomPagePersonDeathDate(baseData.deathDate);
+                    setBottomPagePersonDeathPlace(baseData.deathPlace);
+                    setBottomPagePersonOccupation(baseData.occupation);
+                    setBottomPagePersonEthnicity(baseData.ethnicity);
+                    setBottomPagePersonProfileNumber(baseData.basePersonID);
+                    setBottomPersonSex(baseData.sex);
+                    setBottomRelationToBaseUser(0);
+                }
+            } catch (error) {
+                console.error("Error fetching initial data:", error);
             }
+        };
+    
+        fetchInitialData();
+    }, []); // Empty dependency array ensures it runs only once on mount
+    
 
-            }
-        }
-        getCurrentPageNumber();
-    }, [basePersonID])
 
-
-
-   useEffect(() => {
     const getFather = async () => {
-        if (basePersonID) {
-            const personID = basePersonID;
+        if (bottomPagePersonID) {
+            const personID = bottomPagePersonID;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -403,17 +598,19 @@ const FamilyTree = () => {
             setFatherProfileNumber(data.fatherProfileNumber);
             setFatherRelationToUser(data.relation_to_user)
             setFatherEthnicity(data.fatherEthnicity);
-            console.log(fatherEthnicity)
             setFatherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getFather();
-}, [basePersonID])
 
-useEffect(() => {
+    useEffect(() => {
+        getFather();
+    }, [bottomPagePersonID])
+
+
+
     const getMother = async () => {
-        if (basePersonID) {
-            const personID = basePersonID;
+        if (bottomPagePersonID) {
+            const personID = bottomPagePersonID;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -438,10 +635,13 @@ useEffect(() => {
             setMotherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getMother();
-}, [basePersonID])
 
-useEffect(() => {
+    useEffect(() => {
+        getMother();
+    }, [bottomPagePersonID])
+
+
+
     const getPaternalGrandFather = async () => {
         if (fatherID) {
             const personID = fatherID;
@@ -469,10 +669,11 @@ useEffect(() => {
             setPaternalGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getPaternalGrandFather();
-}, [fatherID])
 
-useEffect(() => {
+    useEffect(() => {
+        getPaternalGrandFather();
+    }, [fatherID])
+
     const getPaternalGrandMother= async () => {
         if (fatherID) {
             const personID = fatherID;
@@ -497,12 +698,14 @@ useEffect(() => {
             setPaternalGrandmotherProfileNumber(data.motherProfileNumber);
             setPaternalGrandmotherEthnicity(data.ethnicity);
             setPaternalGrandmotherCauseOfDeath(data.causeOfDeath);
+            setPaternalGrandmotherRelationToUser(data.relation_to_user)
         }
     }
-    getPaternalGrandMother();
-}, [fatherID])
 
-useEffect(() => {
+    useEffect(() => {
+        getPaternalGrandMother();
+    }, [fatherID])
+
     const getMaternalGrandFather = async () => {
         if (motherID) {
             const personID = motherID;
@@ -527,12 +730,14 @@ useEffect(() => {
             setMaternalGrandfatherProfileNumber(data.fatherProfileNumber);
             setMaternalGrandfatherEthnicity(data.ethnicity);
             setMaternalGrandfatherCauseOfDeath(data.causeOfDeath);
+            setMaternalGrandfatherRelationToUser(data.relation_to_user)
         }
     }
-    getMaternalGrandFather();
-}, [motherID])
 
-useEffect(() => {
+    useEffect(() => {
+        getMaternalGrandFather();
+    }, [motherID])
+
     const getMaternalGrandMother = async () => {
         if (motherID) {
             const personID = motherID;
@@ -557,13 +762,15 @@ useEffect(() => {
             setMaternalGrandmotherProfileNumber(data.motherProfileNumber);
             setMaternalGrandmotherEthnicity(data.ethnicity);
             setMaternalGrandmotherCauseOfDeath(data.causeOfDeath);
+            setMaternalGrandmotherRelationToUser(data.relation_to_user)
         }
     }
-    getMaternalGrandMother();
-}, [motherID])
+    useEffect(() => {
+        getMaternalGrandMother();
+    }, [motherID])
 
-useEffect(() => {
-    const getPaternalPaternalGreatGrandFather = async () => {
+   
+   const getPaternalPaternalGreatGrandFather = async () => {
         if (paternalGrandfatherID) {
             const personID = paternalGrandfatherID;
             const userId = localStorage.getItem('userId');
@@ -587,12 +794,14 @@ useEffect(() => {
             setPaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
             setPaternalPaternalGreatGrandfatherEthnicity(data.ethnicity);
             setPaternalPaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
+            setPaternalPaternalGreatGrandfatherRelationToUser(data.relation_to_user)
         }
     }
-    getPaternalPaternalGreatGrandFather();
-}, [paternalGrandfatherID])
+    useEffect(() => {
+        getPaternalPaternalGreatGrandFather();
+    }, [paternalGrandfatherID])
 
-useEffect(() => {
+
     const getPaternalPaternalGreatGrandMother = async () => {
         if (paternalGrandfatherID) {
             const personID = paternalGrandfatherID;
@@ -619,11 +828,11 @@ useEffect(() => {
             setPaternalPaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getPaternalPaternalGreatGrandMother();
-}, [paternalGrandfatherID])
+    useEffect(() => {
+        getPaternalPaternalGreatGrandMother();
+    }, [paternalGrandfatherID])
 
 
-useEffect(() => {
     const getPaternalMaternalGreatGrandFather = async () => {
         if (paternalGrandmotherID) {
             const personID = paternalGrandmotherID;
@@ -650,10 +859,11 @@ useEffect(() => {
             setPaternalMaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getPaternalMaternalGreatGrandFather();
-}, [paternalGrandmotherID])
+    useEffect(() => {
+        getPaternalMaternalGreatGrandFather();
+    }, [paternalGrandmotherID])
 
-useEffect(() => {
+
     const getPaternalMaternalGreatGrandMother = async () => {
         if (paternalGrandmotherID) {
             const personID = paternalGrandmotherID;
@@ -680,10 +890,11 @@ useEffect(() => {
             setPaternalMaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getPaternalMaternalGreatGrandMother();
-}, [paternalGrandmotherID])
+    useEffect(() => {
+        getPaternalMaternalGreatGrandMother();
+    }, [paternalGrandmotherID])
 
-useEffect(() => {
+
     const getMaternalPaternalGreatGrandFather = async () => {
         if (maternalGrandfatherID) {
             const personID = maternalGrandfatherID;
@@ -711,10 +922,10 @@ useEffect(() => {
         }
         
     }
-    getMaternalPaternalGreatGrandFather();
-}, [maternalGrandfatherID])
+    useEffect(() => {
+        getMaternalPaternalGreatGrandFather();
+    }, [maternalGrandfatherID])
 
-useEffect(() => {
     const getMaternalPaternalGreatGrandmother = async () => {
         if (maternalGrandfatherID) {
             const personID = maternalGrandfatherID;
@@ -741,10 +952,10 @@ useEffect(() => {
             setMaternalPaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getMaternalPaternalGreatGrandmother();
-}, [maternalGrandfatherID])
+    useEffect(() => {
+        getMaternalPaternalGreatGrandmother();
+    }, [maternalGrandfatherID])
 
-useEffect(() => {
     const getMaternalMaternalGreatGrandFather = async () => {
         if (maternalGrandmotherID) {
             const personID = maternalGrandmotherID;
@@ -771,10 +982,10 @@ useEffect(() => {
             setMaternalMaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getMaternalMaternalGreatGrandFather();
-}, [maternalGrandmotherID])
+    useEffect(() => {
+        getMaternalMaternalGreatGrandFather();
+    }, [maternalGrandmotherID])
 
-useEffect(() => {
     const getMaternalMaternalGreatGrandMother = async () => {
         if (maternalGrandmotherID) {
             const personID = maternalGrandmotherID;
@@ -801,8 +1012,9 @@ useEffect(() => {
             setMaternalMaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
         }
     }
-    getMaternalMaternalGreatGrandMother();
-}, [maternalGrandmotherID])
+    useEffect(() => {
+        getMaternalMaternalGreatGrandMother();
+    }, [maternalGrandmotherID])
 
 
     const handleNavigateUpwards = (personID) => {
@@ -839,7 +1051,7 @@ useEffect(() => {
               }
         }, [motherDetails.ethnicity, bottomPagePersonEthnicity]);
 
-
+        //updates paternalGrandfatherDetails whenever it changes
         useEffect(() => {
             if (!paternalGrandfatherDetails.lastName && fatherLastName) {
                 setPaternalGrandfatherDetails((prev) => ({
@@ -858,60 +1070,425 @@ useEffect(() => {
               }
         }, [paternalGrandfatherDetails.ethnicity, fatherEthnicity]);
 
+        //updates paternalGrandmotherDetails whenever it changes
+        useEffect(() => {
+            if (!paternalGrandmotherDetails.ethnicity  && fatherEthnicity) {
+                setPaternalGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: fatherEthnicity,
+                  }))
+              }
+        }, [paternalGrandmotherDetails.ethnicity, fatherEthnicity]);
 
-    const saveFatherChanges = async () => {
-        setShowFather(false)
-        try {
-            const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/save-father', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, fatherDetails, bottomPagePersonID }),
-            })   
-            
-            const data = await response.json()
-            window.location.reload();
-        } catch (error) {
-            console.log("Error saving father changes:", error)
+        //updates maternalGrandfatherDetails whenever it changes
+        useEffect(() => {
+            if (!maternalGrandfatherDetails.lastName && motherLastName) {
+                setMaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: motherLastName,
+                  }))
+              }
+        }, [maternalGrandfatherDetails.lastName, motherLastName]);
+
+        useEffect(() => {
+            if (!maternalGrandfatherDetails.ethnicity  && motherEthnicity) {
+                setMaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: motherEthnicity,
+                  }))
+              }
+        }, [maternalGrandfatherDetails.ethnicity, motherEthnicity]);
+
+        //updates maternalGrandmotherDetails whenever it changes
+        useEffect(() => {
+            if (!maternalGrandmotherDetails.ethnicity  && motherEthnicity) {
+                setMaternalGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: motherEthnicity,
+                  }))
+              }
+        }, [maternalGrandmotherDetails.ethnicity, motherEthnicity]);
+
+        //updates paternalPaternalGreatGrandfatherDetails whenever it changes
+        useEffect(() => {
+            if (!paternalPaternalGreatGrandfatherDetails.lastName && paternalGrandfatherLastName) {
+                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalGrandfatherLastName,
+                  }))
+              }
+        }, [paternalPaternalGreatGrandfatherDetails.lastName, paternalGrandfatherLastName]);
+
+        useEffect(() => {
+            if (!paternalPaternalGreatGrandfatherDetails.ethnicity  && paternalGrandfatherEthnicity) {
+                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalGrandfatherEthnicity,
+                  }))
+              }
+        }, [paternalPaternalGreatGrandfatherDetails.ethnicity, paternalGrandfatherEthnicity]);
+
+
+        const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const response = await fetch('http://localhost:5000/save-ancestor', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, ancestorDetails, childID, sex }),
+                });
+        
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.log("Error saving ancestor changes:", error);
+                throw error;
+            }
         }
+        
+        const saveFatherChanges = async () => {
+            setShowFather(false);
+            try {
+                const data = await saveAncestorChanges(fatherDetails, bottomPagePersonID, "male");
+                setFatherID(data);
+                getFather();
+            } catch (error) {
+                console.log("Error saving father changes:", error);
+            }
+        }
+        
+        const saveMotherChanges = async () => {
+            setShowMother(false);
+            try {
+                const data = await saveAncestorChanges(motherDetails, bottomPagePersonID, "female");
+                setMotherID(data);
+                getMother();
+            } catch (error) {
+                console.log("Error saving mother changes:", error);
+            }
+        }
+
+        const savePaternalGrandfatherChanges = async () => {
+            setShowPaternalGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(paternalGrandfatherDetails, fatherID, "male");
+                setPaternalGrandfatherID(data);
+                getPaternalGrandFather();
+            } catch (error) {
+                console.log("Error saving paternal grandfather changes:", error);
+            }
+        }
+
+        const savePaternalGrandmotherChanges = async () => {
+            setShowPaternalGrandmother(false);
+            try {
+                const data = await saveAncestorChanges(paternalGrandmotherDetails, fatherID, "female");
+                setPaternalGrandmotherID(data);
+                getPaternalGrandMother();
+            } catch (error) {
+                console.log("Error saving paternal grandmother changes:", error);
+            }
+        }
+
+        const saveMaternalGrandfatherChanges = async () => {
+            setShowMaternalGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(maternalGrandfatherDetails, motherID, "male");
+                setMaternalGrandfatherID(data);
+                getMaternalGrandFather();
+            } catch (error) {
+                console.log("Error saving maternal grandfather changes:", error);
+            }
+        }
+
+        const saveMaternalGrandmotherChanges = async () => {
+            setShowMaternalGrandmother(false);
+            try {
+                const data = await saveAncestorChanges(maternalGrandmotherDetails, motherID, "female");
+                setMaternalGrandmotherID(data);
+                getMaternalGrandMother();
+            } catch (error) {
+                console.log("Error saving maternal grandfather changes:", error);
+            }
+        }
+
+        const savePaternalPaternalGreatGrandfatherChanges = async () => {
+            setShowPaternalPaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandfatherDetails, paternalGrandfatherID, "male");
+                setPaternalPaternalGreatGrandfatherID(data);
+                getPaternalPaternalGreatGrandFather();
+            } catch (error) {
+                console.log("Error saving paternal paternal great grandfather changes:", error);
+            }
+        }
+
+        const savePaternalPaternalGreatGrandmotherChanges = async () => {
+            setShowPaternalPaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandmotherDetails, paternalGrandfatherID, "female");
+                setPaternalPaternalGreatGrandmotherID(data);
+                getPaternalPaternalGreatGrandMother();
+            } catch (error) {
+                console.log("Error saving paternal paternal great grandmother changes:", error);
+            }
+        }
+
+        const savePaternalMaternalGreatGrandfatherChanges = async () => {
+            setShowPaternalMaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandfatherDetails, paternalGrandmotherID, "male");
+                setPaternalMaternalGreatGrandfatherID(data);
+                getPaternalMaternalGreatGrandFather();
+            } catch (error) {
+                console.log("Error saving paternal maternal great grandfather changes:", error);
+            }
+        }
+
+        const savePaternalMaternalGreatGrandmotherChanges = async () => {
+            setShowPaternalMaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandmotherDetails, paternalGrandmotherID, "female");
+                setPaternalMaternalGreatGrandmotherID(data);
+                getPaternalMaternalGreatGrandMother();
+            } catch (error) {
+                console.log("Error saving paternal maternal great grandmother changes:", error);
+            }
+        }
+
+        const saveMaternalPaternalGreatGrandfatherChanges = async () => {
+            setShowMaternalPaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandfatherDetails, maternalGrandfatherID, "male");
+                setMaternalPaternalGreatGrandfatherID(data);
+                getMaternalPaternalGreatGrandFather();
+            } catch (error) {
+                console.log("Error saving maternal paternal great grandfather changes:", error);
+            }
+        }
+
+        const saveMaternalPaternalGreatGrandmotherChanges = async () => {
+            setShowMaternalPaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandmotherDetails, maternalGrandfatherID, "female");
+                setMaternalPaternalGreatGrandmotherID(data);
+                getMaternalPaternalGreatGrandmother();
+            } catch (error) {
+                console.log("Error saving maternal paternal great grandmother changes:", error);
+            }
+        }
+
+        const saveMaternalMaternalGreatGrandfatherChanges = async () => {
+            setShowMaternalMaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandfatherDetails, maternalGrandmotherID, "male");
+                setMaternalMaternalGreatGrandfatherID(data);
+                getMaternalMaternalGreatGrandFather();
+            } catch (error) {
+                console.log("Error saving maternal maternal great grandfather changes:", error);
+            }
+        }
+
+        const saveMaternalMaternalGreatGrandmotherChanges = async () => {
+            setShowMaternalMaternalGreatGrandfather(false);
+            try {
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandmotherDetails, maternalGrandmotherID, "female");
+                setMaternalMaternalGreatGrandmotherID(data);
+                getMaternalMaternalGreatGrandMother();
+            } catch (error) {
+                console.log("Error saving maternal maternal great grandmother changes:", error);
+            }
+        }
+        
+
+    function makeModal(showPerson, closeAddPerson, childName, setDetails, details, sex, save, closeAdd) {
+
+        let motherOrFather = "";
+        if (sex === "male") {
+            motherOrFather = "Father";
+        } else {
+            motherOrFather = "Mother";
+        }
+
+        return (
+
+        <Modal show={showPerson} onHide={closeAddPerson} dialogClassName="custom-modal-width">
+                <Modal.Header closeButton>
+                <Modal.Title>Add {childName}'s {motherOrFather}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="input-modal">
+                        <input  type="text" placeholder="First Name" onChange={(e) => setDetails({ ...details, firstName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Middle Name" onChange={(e) => setDetails({ ...details, middleName: e.target.value })}></input>
+
+                        {/*if the person is male, then his default surname is the same as his childrens'*/}
+                        {sex === "male" ? ( 
+                            <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+                        ): (
+                            <input type="text" placeholder="Last Name" onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+                        )}
+                        
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Birth Date" onChange={(e) => setDetails({ ...details, birthDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Birth Place" onChange={(e) => setDetails({ ...details, birthPlace: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Death Date" onChange={(e) => setDetails({ ...details, deathDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Death Place" onChange={(e) => setDetails({ ...details, deathPlace: e.target.value })}></input>
+
+                    <input type="text" placeholder="Cause of Death" onChange={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                    </div>
+                   
+                    <div className="input-modal">
+                    <input type="text" placeholder="Titles/Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+
+                    <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={closeAdd}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={save}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
+        )
     }
 
-    const saveMotherChanges = async () => {
-        setShowMother(false)
-        try {
-            const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/save-mother', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, motherDetails, bottomPagePersonID }),
-            })   
-            
-            const data = await response.json()
-            window.location.reload();
-        } catch (error) {
-            console.log("Error saving father changes:", error)
+    function showAncestorTable(ID, basePersonFirstName, relationToUser, sex, name, birthDate, deathDate, birthPlace, deathPlace, occupation, profileNumber, childID, openAddModal) {
+
+        let motherFather = "";
+        if (sex === "male") {
+            motherFather = "Father";
+        } else {
+            motherFather = "Mother";
         }
+
+        return (
+            <>
+            {ID ? (
+                <table  className="ancestor-box">
+                <tr>
+                    <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
+                    <th class="ancestor-box-border-bottom table-content" colSpan="5">{convertNumToRelation(relationToUser, sex)}</th>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                    <td class="ancestor-box-border-bottom table-content" colSpan="5">{name}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-right birth-date-cell table-label" rowSpan="2">Birth</td>
+                    <td class="ancestor-box-border table-label shrink">date:</td>
+                    <td class="ancestor-box-border table-content">{birthDate}</td>
+                    <td class="birth-date-cell table-label" rowSpan="2">Death</td>
+                    <td class="ancestor-box-border table-label shrink">date:</td>
+                    <td class="ancestor-box-border table-content">{deathDate}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border table-label shrink">place:</td>
+                    <td class="ancestor-box-border table-content">{birthPlace}</td>
+                    <td class="ancestor-box-border table-label shrink">place:</td>
+                    <td class="ancestor-box-border table-content">{deathPlace}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                    <td class="ancestor-box-border table-content" colSpan="5">{occupation}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                    <td class="ancestor-box-border table-content" colSpan="5">{profileNumber}</td>
+                </tr>
+                </table>
+           ) : (
+               <>
+               {childID ? (
+                       <table className="unknown-ancestor">
+                           <tr><p></p></tr>
+                           <tr></tr>
+                           <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell"><button onClick={openAddModal}>Add {motherFather}</button></tr>
+                           <tr></tr>
+                           <tr></tr>
+                           <tr></tr>
+                       </table>
+                   ) : (
+                       <table className="empty-slot">
+                           <tr colSpan="5" rowSpan="6"><p></p></tr>
+                       </table>
+                   )}
+               </>
+           )}
+           </>
+        )
     }
 
-    const savePaternalGrandfatherChanges = async () => {
-        setShowPaternalGrandfather(false)
-        try {
-            console.log(paternalGrandfatherDetails.firstName)
-            const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/save-paternal-grandfather', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, paternalGrandfatherDetails, fatherID }),
-            })   
-            
-            const data = await response.json()
-            window.location.reload();
-        } catch (error) {
-            console.log("Error saving paternal grandfather changes:", error)
+    function showGreatGrandParentTable(ID, basePersonFirstName, relationToUser, sex, name, birthDate, deathDate, birthPlace, deathPlace, occupation, profileNumber, childID, openAddModal) {
+
+        let motherFather = "";
+        if (sex === "male") {
+            motherFather = "Father";
+        } else {
+            motherFather = "Mother";
         }
-    }
 
-
+        return(
+            <>
+             {ID ? (
+            <table className="ancestor-box">
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
+                    <td class="ancestor-box-border-bottom table-content">{convertNumToRelation(relationToUser, sex)}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
+                    <td class="ancestor-box-border-bottom table-content">{name}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
+                    <td class="ancestor-box-border-bottom table-content">{birthDate} <br />{birthPlace}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
+                    <td class="ancestor-box-border-bottom table-content">{deathDate} <br />{deathPlace}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                    <td class="ancestor-box-border-bottom table-content">{occupation}</td>
+                </tr>
+                <tr>
+                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
+                    <td class="ancestor-box-border-bottom table-content">{profileNumber}</td>
+                </tr>
+            </table>
+        ) : (
+            <>
+            {childID ? (
+                <table className="unknown-ancestor">
+                    <tr><p></p></tr>
+                    <tr></tr>
+                    <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell"><button onClick={openAddModal}>Add {motherFather}</button></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                </table>
+            ) : (
+                <table className="empty-slot">
+                    <tr colSpan="5" rowSpan="6"><p></p></tr>
+                </table>
+            )}
+            </>
+        )}</>
+        )
+    };
 
     return (
         <div>
@@ -1047,6 +1624,31 @@ useEffect(() => {
                 </Button>
                 </Modal.Footer>
             </Modal>
+
+            
+            {makeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherName, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
+
+            {makeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherName, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
+
+            {makeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherName, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
+
+            {makeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherName, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
+
+            {makeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherName, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
+
+            {makeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherName, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
+
+            {makeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherName, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
+
+            {makeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherName, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
+
+            {makeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherName, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
+
+            {makeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherName, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
+
+            {makeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherName, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
+
+            
             
             <div className="row">
                 <LeftSidebar />
@@ -1154,382 +1756,22 @@ useEffect(() => {
 
                         <div className="tree-row justify-content-center">
 
-                            {paternalPaternalGreatGrandfatherName || paternalPaternalGreatGrandfatherBirthDate || paternalPaternalGreatGrandfatherBirthPlace || paternalPaternalGreatGrandfatherDeathDate || paternalPaternalGreatGrandfatherDeathPlace || paternalPaternalGreatGrandfatherOccupation || paternalPaternalGreatGrandfatherProfileNumber ? (
-                                <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandfatherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandfatherBirthDate} <br />{paternalPaternalGreatGrandfatherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandfatherDeathDate} <br />{paternalPaternalGreatGrandfatherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandfatherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandfatherProfileNumber}</td>
-                                    </tr>
-                                </table>
-                            ) : (
-                                <>
-                                {paternalGrandfatherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                                </>
-                            )}
-                          
+                            {showGreatGrandParentTable(paternalPaternalGreatGrandfatherID, basePersonFirstName, paternalPaternalGreatGrandfatherRelationToUser, "male", paternalPaternalGreatGrandfatherName, paternalPaternalGreatGrandfatherBirthDate, paternalPaternalGreatGrandfatherDeathDate, paternalPaternalGreatGrandfatherBirthPlace, paternalPaternalGreatGrandfatherDeathPlace, paternalPaternalGreatGrandfatherOccupation, paternalPaternalGreatGrandfatherProfileNumber, paternalGrandfatherID, openAddPaternalPaternalGreatGrandfatherModal)}
 
-                          {paternalPaternalGreatGrandmotherName || paternalPaternalGreatGrandmotherBirthDate || paternalPaternalGreatGrandmotherBirthPlace || paternalPaternalGreatGrandmotherDeathDate || paternalPaternalGreatGrandmotherDeathPlace || paternalPaternalGreatGrandmotherOccupation || paternalPaternalGreatGrandmotherProfileNumber ? (
-                            <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandmotherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandmotherBirthDate} <br /> {paternalPaternalGreatGrandmotherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandmotherDeathDate} <br/> {paternalPaternalGreatGrandmotherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandmotherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalPaternalGreatGrandmotherProfileNumber}</td>
-                                    </tr>
-                            </table>
-                        ) : (
-                            <>
-                                {paternalGrandfatherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                                </>
-                        )}
+                            {showGreatGrandParentTable(paternalPaternalGreatGrandmotherID, basePersonFirstName, paternalPaternalGreatGrandmotherRelationToUser, "female", paternalPaternalGreatGrandmotherName, paternalPaternalGreatGrandmotherBirthDate, paternalPaternalGreatGrandmotherDeathDate, paternalPaternalGreatGrandmotherBirthPlace, paternalPaternalGreatGrandmotherDeathPlace, paternalPaternalGreatGrandmotherOccupation, paternalPaternalGreatGrandmotherProfileNumber, paternalGrandfatherID, openAddPaternalPaternalGreatGrandmotherModal)}
 
-                        {paternalMaternalGreatGrandfatherName || paternalMaternalGreatGrandfatherBirthDate || paternalMaternalGreatGrandfatherBirthPlace || paternalMaternalGreatGrandfatherDeathDate || paternalMaternalGreatGrandfatherDeathPlace || paternalMaternalGreatGrandfatherOccupation || paternalMaternalGreatGrandfatherProfileNumber ? (
-                        <table className="ancestor-box">
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                        <td class="ancestor-box-border-bottom table-content"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandfatherName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandfatherBirthDate} <br /> {paternalMaternalGreatGrandfatherBirthPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandfatherDeathDate} <br /> {paternalMaternalGreatGrandfatherDeathPlace}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandfatherOccupation}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                        <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandfatherProfileNumber}</td>
-                                    </tr>
-                            </table>
-                            ): (
-                                <>
-                                {paternalGrandmotherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                                </>
-                            )
-                        }
+                            {showGreatGrandParentTable(paternalMaternalGreatGrandfatherID, basePersonFirstName, paternalMaternalGreatGrandfatherRelationToUser, "male", paternalMaternalGreatGrandfatherName, paternalMaternalGreatGrandfatherBirthDate, paternalMaternalGreatGrandfatherDeathDate, paternalMaternalGreatGrandfatherBirthPlace, paternalMaternalGreatGrandfatherDeathPlace, paternalMaternalGreatGrandfatherOccupation, paternalMaternalGreatGrandfatherProfileNumber, paternalGrandfatherID, openAddPaternalMaternalGreatGrandfatherModal)}
 
-                        {paternalMaternalGreatGrandmotherName || paternalMaternalGreatGrandmotherBirthDate || paternalMaternalGreatGrandmotherBirthPlace || paternalMaternalGreatGrandmotherDeathDate || paternalMaternalGreatGrandmotherDeathPlace || paternalMaternalGreatGrandmotherOccupation || paternalMaternalGreatGrandmotherProfileNumber ? (
-                            <table className="ancestor-box">
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                    <td class="ancestor-box-border-bottom table-content"></td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherBirthDate} <br /> {paternalMaternalGreatGrandmotherBirthPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherDeathDate} <br /> {paternalMaternalGreatGrandmotherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{paternalMaternalGreatGrandmotherProfileNumber}</td>
-                                </tr>
-                        </table>
-                        ) : (
-                            <>
-                            {paternalGrandmotherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                            
+                            {showGreatGrandParentTable(paternalMaternalGreatGrandmotherID, basePersonFirstName, paternalMaternalGreatGrandmotherRelationToUser, "female", paternalMaternalGreatGrandmotherName, paternalMaternalGreatGrandmotherBirthDate, paternalMaternalGreatGrandmotherDeathDate, paternalMaternalGreatGrandmotherBirthPlace, paternalMaternalGreatGrandmotherDeathPlace, paternalMaternalGreatGrandmotherOccupation, paternalMaternalGreatGrandmotherProfileNumber, maternalGrandfatherID, openAddPaternalMaternalGreatGrandmotherModal)}
 
-                        {maternalPaternalGreatGrandfatherName || maternalPaternalGreatGrandfatherBirthDate || maternalPaternalGreatGrandfatherBirthPlace || maternalPaternalGreatGrandfatherDeathDate || maternalPaternalGreatGrandfatherDeathPlace || maternalPaternalGreatGrandfatherOccupation || maternalPaternalGreatGrandfatherProfileNumber ? (
-                            <table className="ancestor-box">
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                    <td class="ancestor-box-border-bottom table-content"></td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherBirthDate} <br /> {maternalPaternalGreatGrandfatherBirthPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherDeathDate} <br /> {maternalPaternalGreatGrandfatherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandfatherProfileNumber}</td>
-                                </tr>
-                        </table>
-                        ) : (
-                            <>
-                            {maternalGrandfatherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                            
+                            {showGreatGrandParentTable(maternalPaternalGreatGrandfatherID, basePersonFirstName, maternalPaternalGreatGrandfatherRelationToUser, "male", maternalPaternalGreatGrandfatherName, maternalPaternalGreatGrandfatherBirthDate, maternalPaternalGreatGrandfatherDeathDate, maternalPaternalGreatGrandfatherBirthPlace, maternalPaternalGreatGrandfatherDeathPlace, maternalPaternalGreatGrandfatherOccupation, maternalPaternalGreatGrandfatherProfileNumber, maternalGrandfatherID, openAddMaternalPaternalGreatGrandfatherModal)}
 
-                        {maternalPaternalGreatGrandmotherID ? (
-                            <table className="ancestor-box">
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                <td class="ancestor-box-border-bottom table-content"></td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherName}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherBirthDate} <br /> {maternalPaternalGreatGrandmotherBirthPlace}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherDeathDate} <br /> {maternalPaternalGreatGrandmotherDeathPlace}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherOccupation}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                <td class="ancestor-box-border-bottom table-content">{maternalPaternalGreatGrandmotherProfileNumber}</td>
-                            </tr>
-                    </table>
-                        ) : (
-                            <>
-                            {maternalGrandfatherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                            
+                            {showGreatGrandParentTable(maternalPaternalGreatGrandmotherID, basePersonFirstName, maternalPaternalGreatGrandmotherRelationToUser, "female", maternalPaternalGreatGrandmotherName, maternalPaternalGreatGrandmotherBirthDate, maternalPaternalGreatGrandmotherDeathDate, maternalPaternalGreatGrandmotherBirthPlace, maternalPaternalGreatGrandmotherDeathPlace, maternalPaternalGreatGrandmotherOccupation, maternalPaternalGreatGrandmotherProfileNumber, maternalGrandfatherID, openAddMaternalPaternalGreatGrandmotherModal)}
 
-                            {maternalMaternalGreatGrandfatherID ? (
-                                <table className="ancestor-box">
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                    <td class="ancestor-box-border-bottom table-content"></td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherBirthDate} <br /> {maternalMaternalGreatGrandfatherBirthPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherDeathDate} <br /> {maternalMaternalGreatGrandfatherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandfatherProfileNumber}</td>
-                                </tr>
-                        </table>
-                            ) : (
-                                <>
-                            {maternalGrandmotherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                            )}
-                            
+                            {showGreatGrandParentTable(maternalMaternalGreatGrandfatherID, basePersonFirstName, maternalMaternalGreatGrandfatherRelationToUser, "male", maternalMaternalGreatGrandfatherName, maternalMaternalGreatGrandfatherBirthDate, maternalMaternalGreatGrandfatherDeathDate, maternalMaternalGreatGrandfatherBirthPlace, maternalMaternalGreatGrandfatherDeathPlace, maternalMaternalGreatGrandfatherOccupation, maternalMaternalGreatGrandfatherProfileNumber, maternalGrandmotherID, openAddMaternalMaternalGreatGrandfatherModal)}
 
-                            {maternalMaternalGreatGrandmotherID ? (
-                                <table className="ancestor-box">
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                                    <td class="ancestor-box-border-bottom table-content"></td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherName}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherBirthDate} <br /> {maternalMaternalGreatGrandmotherBirthPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Death:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherDeathDate} <br /> {maternalMaternalGreatGrandmotherDeathPlace}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherOccupation}</td>
-                                </tr>
-                                <tr>
-                                    <td class="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                                    <td class="ancestor-box-border-bottom table-content">{maternalMaternalGreatGrandmotherProfileNumber}</td>
-                                </tr>
-                        </table>
-                            ) : (
-                                <>
-                            {maternalGrandmotherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                            )}
-                            
-
-                            
+                            {showGreatGrandParentTable(maternalMaternalGreatGrandmotherID, basePersonFirstName, maternalMaternalGreatGrandmotherRelationToUser, "female", maternalMaternalGreatGrandmotherName, maternalMaternalGreatGrandmotherBirthDate, maternalMaternalGreatGrandmotherDeathDate, maternalMaternalGreatGrandmotherBirthPlace, maternalMaternalGreatGrandmotherDeathPlace, maternalMaternalGreatGrandmotherOccupation, maternalMaternalGreatGrandmotherProfileNumber, maternalGrandmotherID, openAddMaternalMaternalGreatGrandmotherModal)}
+                           
                         </div>
 
                     </div>
@@ -1539,215 +1781,13 @@ useEffect(() => {
 
                         <div className="tree-row justify-content-center">
 
-                        {paternalGrandfatherID ? (
-                             <table  className="ancestor-box">
-                             <tr>
-                                 <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                 <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(paternalGrandfatherRelationToUser, "male")}</th>
-                             </tr>
-                             <tr>
-                                 <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                 <td class="ancestor-box-border-bottom table-content" colspan="5">{paternalGrandfatherName}</td>
-                             </tr>
-                             <tr>
-                                 <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                 <td class="ancestor-box-border table-label shrink">date:</td>
-                                 <td class="ancestor-box-border table-content">{paternalGrandfatherBirthDate}</td>
-                                 <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                 <td class="ancestor-box-border table-label shrink">date:</td>
-                                 <td class="ancestor-box-border table-content">{paternalGrandfatherDeathDate}</td>
-                             </tr>
-                             <tr>
-                                 <td class="ancestor-box-border table-label shrink">place:</td>
-                                 <td class="ancestor-box-border table-content">{paternalGrandfatherBirthPlace}</td>
-                                 <td class="ancestor-box-border table-label shrink">place:</td>
-                                 <td class="ancestor-box-border table-content">{paternalGrandfatherDeathPlace}</td>
-                             </tr>
-                             <tr>
-                                 <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                 <td class="ancestor-box-border table-content" colspan="5">{paternalGrandfatherOccupation}</td>
-                             </tr>
-                             <tr>
-                                 <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                 <td class="ancestor-box-border table-content" colspan="5">{paternalGrandfatherProfileNumber}</td>
-                             </tr>
-                             </table>
-                        ) : (
-                            <>
-                            {fatherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button onClick={openAddPaternalGrandfatherModal}>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                       
+                        {showAncestorTable(paternalGrandfatherID, basePersonFirstName, paternalGrandfatherRelationToUser, "male", paternalGrandfatherName, paternalGrandfatherBirthDate, paternalGrandfatherDeathDate, paternalGrandfatherBirthPlace, paternalGrandfatherDeathPlace, paternalGrandfatherOccupation, paternalGrandfatherProfileNumber, fatherID, openAddPaternalGrandfatherModal)}
 
-                        {paternalGrandmotherID ? (
-                            <table  className="ancestor-box">
-                            <tr>
-                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                <td class="ancestor-box-border-bottom table-content" colspan="5">{paternalGrandmotherName}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                <td class="ancestor-box-border table-label shrink">date:</td>
-                                <td class="ancestor-box-border table-content">{paternalGrandmotherBirthDate}</td>
-                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                <td class="ancestor-box-border table-label shrink">date:</td>
-                                <td class="ancestor-box-border table-content">{paternalGrandmotherDeathDate}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border table-label shrink">place:</td>
-                                <td class="ancestor-box-border table-content">{paternalGrandmotherBirthPlace}</td>
-                                <td class="ancestor-box-border table-label shrink">place:</td>
-                                <td class="ancestor-box-border table-content">{paternalGrandmotherDeathPlace}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{paternalGrandmotherOccupation}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{paternalGrandmotherProfileNumber}</td>
-                            </tr>
-                            </table>
-                        ) : (
-                            <>
-                            {fatherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                        
-                        {maternalGrandfatherID ? (
-                            <table  className="ancestor-box">
-                            <tr>
-                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                <td class="ancestor-box-border-bottom table-content" colspan="5">{maternalGrandfatherName}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                <td class="ancestor-box-border table-label shrink">date:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandfatherBirthDate}</td>
-                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                <td class="ancestor-box-border table-label shrink">date:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandfatherDeathDate}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border table-label shrink">place:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandfatherBirthPlace}</td>
-                                <td class="ancestor-box-border table-label shrink">place:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandfatherDeathPlace}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandfatherOccupation}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandfatherProfileNumber}</td>
-                            </tr>
-                            </table>
-                        ) : (
-                            <>
-                            {motherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Father</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                        
-                        {maternalGrandmotherID ? (
-                            <table  className="ancestor-box">
-                            <tr>
-                                <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5"></th>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                <td class="ancestor-box-border-bottom table-content" colspan="5">{maternalGrandmotherName}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
-                                <td class="ancestor-box-border table-label shrink">date:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandmotherBirthDate}</td>
-                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
-                                <td class="ancestor-box-border table-label shrink">date:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandmotherDeathDate}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border table-label shrink">place:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandmotherBirthPlace}</td>
-                                <td class="ancestor-box-border table-label shrink">place:</td>
-                                <td class="ancestor-box-border table-content">{maternalGrandmotherDeathPlace}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandmotherOccupation}</td>
-                            </tr>
-                            <tr>
-                                <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{maternalGrandmotherProfileNumber}</td>
-                            </tr>
-                            </table>
-                        ) : (
-                            <>
-                            {motherID ? (
-                                    <table className="unknown-ancestor">
-                                        <tr><p></p></tr>
-                                        <tr></tr>
-                                        <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button>Add Mother</button></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                    </table>
-                                ) : (
-                                    <table className="empty-slot">
-                                        <tr colspan="5" rowspan="6"><p></p></tr>
-                                    </table>
-                                )}
-                            </>
-                        )}
-                        
+                        {showAncestorTable(paternalGrandmotherID, basePersonFirstName, paternalGrandmotherRelationToUser, "female", paternalGrandmotherName, paternalGrandmotherBirthDate, paternalGrandmotherDeathDate, paternalGrandmotherBirthPlace, paternalGrandmotherDeathPlace, paternalGrandmotherOccupation, paternalGrandmotherProfileNumber, fatherID, openAddPaternalGrandmotherModal)}
+
+                        {showAncestorTable(maternalGrandfatherID, basePersonFirstName, maternalGrandfatherRelationToUser, "male", maternalGrandfatherName, maternalGrandfatherBirthDate, maternalGrandfatherDeathDate, maternalGrandfatherBirthPlace, maternalGrandfatherDeathPlace, maternalGrandfatherOccupation, maternalGrandfatherProfileNumber, motherID, openAddMaternalGrandfatherModal)}
+
+                        {showAncestorTable(maternalGrandmotherID, basePersonFirstName, maternalGrandmotherRelationToUser, "female", maternalGrandmotherName, maternalGrandmotherBirthDate, maternalGrandmotherDeathDate, maternalGrandmotherBirthPlace, maternalGrandmotherDeathPlace, maternalGrandmotherOccupation, maternalGrandmotherProfileNumber, motherID, openAddMaternalGrandmotherModal)}
 
                         </div>
 
@@ -1762,17 +1802,17 @@ useEffect(() => {
                             <table  className="ancestor-box">
                             <tr>
                                 <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(fatherRelationToUser, "male")}</th>
+                                <th class="ancestor-box-border-bottom table-content" colSpan="5">{convertNumToRelation(fatherRelationToUser, "male")}</th>
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                <td class="ancestor-box-border-bottom table-content" colspan="5">{fatherName}</td>
+                                <td class="ancestor-box-border-bottom table-content" colSpan="5">{fatherName}</td>
                             </tr>
                             <tr>
-                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowSpan="2">Birth</td>
                                 <td class="ancestor-box-border table-label shrink">date:</td>
                                 <td class="ancestor-box-border table-content">{fatherBirthDate}</td>
-                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="birth-date-cell table-label" rowSpan="2">Death</td>
                                 <td class="ancestor-box-border table-label shrink">date:</td>
                                 <td class="ancestor-box-border table-content">{fatherDeathDate}</td>
                             </tr>
@@ -1784,18 +1824,18 @@ useEffect(() => {
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{fatherOccupation}</td>
+                                <td class="ancestor-box-border table-content" colSpan="5">{fatherOccupation}</td>
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{fatherProfileNumber}</td>
+                                <td class="ancestor-box-border table-content" colSpan="5">{fatherProfileNumber}</td>
                             </tr>
                     </table>
                         ) : (
                             <table className="unknown-ancestor">
                                 <tr><p></p></tr>
                                 <tr></tr>
-                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button onClick={openAddFatherModal}>Add Father</button></tr>
+                                <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell"><button onClick={openAddFatherModal}>Add Father</button></tr>
                                 <tr></tr>
                                 <tr></tr>
                                 <tr></tr>
@@ -1807,17 +1847,17 @@ useEffect(() => {
                             <table  className="ancestor-box">
                             <tr>
                                 <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(motherRelationToUser, "female")}</th>
+                                <th class="ancestor-box-border-bottom table-content" colSpan="5">{convertNumToRelation(motherRelationToUser, "female")}</th>
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                <td class="ancestor-box-border-bottom table-content" colspan="5">{motherName}</td>
+                                <td class="ancestor-box-border-bottom table-content" colSpan="5">{motherName}</td>
                             </tr>
                             <tr>
-                                <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                <td class="ancestor-box-border-right birth-date-cell table-label" rowSpan="2">Birth</td>
                                 <td class="ancestor-box-border table-label shrink">date:</td>
                                 <td class="ancestor-box-border table-content">{motherBirthDate}</td>
-                                <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                <td class="birth-date-cell table-label" rowSpan="2">Death</td>
                                 <td class="ancestor-box-border table-label shrink">date:</td>
                                 <td class="ancestor-box-border table-content">{motherDeathDate}</td>
                             </tr>
@@ -1829,18 +1869,18 @@ useEffect(() => {
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{motherOccupation}</td>
+                                <td class="ancestor-box-border table-content" colSpan="5">{motherOccupation}</td>
                             </tr>
                             <tr>
                                 <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                <td class="ancestor-box-border table-content" colspan="5">{motherProfileNumber}</td>
+                                <td class="ancestor-box-border table-content" colSpan="5">{motherProfileNumber}</td>
                             </tr>
                             </table>
                         ) : (
                             <table className="unknown-ancestor">
                                 <tr><p></p></tr>
                                 <tr></tr>
-                                <tr colspan="5" rowspan="6" className="unknown-ancestor-cell"><button  onClick={openAddMotherModal}>Add Mother</button></tr>
+                                <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell"><button  onClick={openAddMotherModal}>Add Mother</button></tr>
                                 <tr></tr>
                                 <tr></tr>
                                 <tr></tr>
@@ -1862,17 +1902,17 @@ useEffect(() => {
                                 <table  className="ancestor-box">
                                 <tr>
                                     <th class="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </th>
-                                    <th class="ancestor-box-border-bottom table-content" colspan="5">{convertNumToRelation(bottomRelationToBaseUser, bottomPersonSex)}</th>
+                                    <th class="ancestor-box-border-bottom table-content" colSpan="5">{convertNumToRelation(bottomRelationToBaseUser, bottomPersonSex)}</th>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label shrink">Name:</td>
-                                    <td class="ancestor-box-border-bottom table-content" colspan="5">{bottomPagePersonFullName}</td>
+                                    <td class="ancestor-box-border-bottom table-content" colSpan="5">{bottomPagePersonFullName}</td>
                                 </tr>
                                 <tr>
-                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowspan="2">Birth</td>
+                                    <td class="ancestor-box-border-right birth-date-cell table-label" rowSpan="2">Birth</td>
                                     <td class="ancestor-box-border table-label shrink">date:</td>
                                     <td class="ancestor-box-border table-content">{bottomPagePersonBirthDate}</td>
-                                    <td class="birth-date-cell table-label" rowspan="2">Death</td>
+                                    <td class="birth-date-cell table-label" rowSpan="2">Death</td>
                                     <td class="ancestor-box-border table-label shrink">date:</td>
                                     <td class="ancestor-box-border table-content">{bottomPagePersonDeathDate}</td>
                                 </tr>
@@ -1884,15 +1924,15 @@ useEffect(() => {
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                                    <td class="ancestor-box-border table-content" colspan="2">{bottomPagePersonOccupation}</td>
+                                    <td class="ancestor-box-border table-content" colSpan="2">{bottomPagePersonOccupation}</td>
                                     <td class="ancestor-box-border table-label shrink">Spouse</td>
-                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-content" colSpan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                                    <td class="ancestor-box-border table-content" colspan="2">{bottomPagePersonProfileNumber}</td>
+                                    <td class="ancestor-box-border table-content" colSpan="2">{bottomPagePersonProfileNumber}</td>
                                     <td class="ancestor-box-border table-label shrink">Spouse Page</td>
-                                    <td class="ancestor-box-border table-content" colspan="2"></td>
+                                    <td class="ancestor-box-border table-content" colSpan="2"></td>
                                 </tr>
                                 </table>
                             
