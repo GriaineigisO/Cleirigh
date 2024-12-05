@@ -141,7 +141,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -155,7 +155,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -169,7 +169,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -183,7 +183,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -197,7 +197,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -211,7 +211,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -225,7 +225,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -239,7 +239,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -253,7 +253,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -267,7 +267,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -281,7 +281,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -295,7 +295,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -309,7 +309,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -323,7 +323,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -337,7 +337,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -352,7 +352,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -366,7 +366,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -380,7 +380,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -394,7 +394,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -408,7 +408,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -422,7 +422,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -437,7 +437,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -451,7 +451,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -465,7 +465,7 @@ const FamilyTree = () => {
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -481,7 +481,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -495,7 +495,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -509,7 +509,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -524,7 +524,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -538,7 +538,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
@@ -552,20 +552,22 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         deathDate: null,
         deathPlace: null,
         causeOfDeath: null,
-        titles: null,
+        occupation: null,
         ethnicity: null,
         relationTouser: null,
       });
 
 
     const [pageNumber, setPageNumber] = useState(1);
+    const [totalNumOfPages, setTotalNumOfPages] = useState(1)
+    const [pageEntry, setPageEntry] = useState();
 
     const [bottomPagePersonFirstName, setBottomPagePersonFirstName] = useState('');
     const [bottomPagePersonLastName, setBottomPagePersonLastName] = useState('');
     const [bottomPagePersonFullName, setBottomPagePersonFullName] = useState('');
     const [bottomPagePersonEthnicity, setBottomPagePersonEthnicity] = useState('');
     const [bottomPersonSex, setBottomPersonSex] = useState('');
-    const [bottomRelationToBaseUser, setBottomRelationToBaseUser] = useState('');
+    const [bottomRelationToBaseUser, setBottomRelationToBaseUser] = useState(0);
     const [basePersonSex, setBasePersonSex] = useState('');
     const [basePersonEthnicity, setBasePersonEthnicity] = useState('');
 
@@ -812,6 +814,8 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
     const [maternalMaternalGreatGrandfatherHasParents, setMaternalMaternalGreatGrandfatherHasParents] = useState(false);
     const [maternalMaternalGreatGrandmotherHasParents, setMaternalMaternalGreatGrandmotherHasParents] = useState(false);
 
+    const [paternalPaternalGreatGrandfatherPage, setPaternalPaternalGreatGrandfatherPage] = useState();
+
     
 
     const fetchInitialData = async () => {
@@ -836,34 +840,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             setBasePersonOccupation(baseData.occupation);
             setBasePersonEthnicity(baseData.ethnicity);
             setBasePersonProfileNumber(baseData.profileNumber);
-            setBasePersonSex(baseData.sex);
-
-            // Fetch Current Page Number
-            const pageResponse = await fetch('http://localhost:5000/get-current-page-number', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId }),
-            });
-
-            const pageData = await pageResponse.json();
-            setPageNumber(pageData);
-
-            // Set Bottom Page Person if on Page 1
-            if (pageData === 1) {
-                setBottomPagePersonFirstName(baseData.firstName);
-                setBottomPagePersonLastName(baseData.lastName);
-                setBottomPagePersonFullName(baseData.fullName);
-                setBottomPagePersonID(baseData.basePersonID);
-                setBottomPagePersonBirthDate(baseData.birthDate);
-                setBottomPagePersonBirthPlace(baseData.birthPlace);
-                setBottomPagePersonDeathDate(baseData.deathDate);
-                setBottomPagePersonDeathPlace(baseData.deathPlace);
-                setBottomPagePersonOccupation(baseData.occupation);
-                setBottomPagePersonEthnicity(baseData.ethnicity);
-                setBottomPagePersonProfileNumber(baseData.basePersonID);
-                setBottomPersonSex(baseData.sex);
-                setBottomRelationToBaseUser(0);
-            }
+            setBasePersonSex(baseData.sex);           
         } catch (error) {
             console.error("Error fetching initial data:", error);
         }
@@ -871,6 +848,104 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
     fetchInitialData();
 
+    //grabs the current page number as stored in the database. This only runs once upon the page's reload
+    useEffect(() => {
+        const initialPageNum = async () => {
+             // Fetch Current Page Number
+             const userId = localStorage.getItem('userId');
+             const pageResponse = await fetch('http://localhost:5000/get-current-page-number', {
+              method: "POST",
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId }),
+          });
+          const pageData = await pageResponse.json();
+          setPageNumber(pageData.pageNum)
+        }
+        initialPageNum();
+    }, [])
+
+
+    const setNewPageNum = (num) => {
+        const userId = localStorage.getItem('userId');
+            const pageResponse = fetch('http://localhost:5000/set-current-page-number', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, num }),
+        });
+        setPageNumber(num)
+        window.location.reload()
+    }
+
+
+    useEffect(() => {
+            const getNewPageNum = async () => {
+            const userId = localStorage.getItem('userId');
+                const pageResponse = await fetch('http://localhost:5000/get-current-page-number', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+            });
+            
+            const pageData = await pageResponse.json();
+            setBottomPagePersonFirstName(pageData.firstName);
+            setBottomPagePersonLastName(pageData.lastName);
+            setBottomPagePersonFullName(pageData.fullName);
+            setBottomPagePersonID(pageData.id);
+            setBottomPagePersonBirthDate(pageData.birthDate);
+            setBottomPagePersonBirthPlace(pageData.birthPlace);
+            setBottomPagePersonDeathDate(pageData.deathDate);
+            setBottomPagePersonDeathPlace(pageData.deathPlace);
+            setBottomPagePersonOccupation(pageData.occupation);
+            setBottomPagePersonEthnicity(pageData.ethnicity);
+            setBottomPagePersonProfileNumber(pageData.id);
+            setBottomPersonSex(pageData.sex);
+            setBottomRelationToBaseUser(pageData.relationToUser);
+        }
+        getNewPageNum();
+    }, [pageNumber])
+
+    const navigateDown = async (personID) => {
+        console.log(personID)
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/get-previous-page', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID })
+        })
+
+        const data = await response.json();
+        setPageNumber(data.pageNum);
+        window.location.reload();
+    }
+
+    const countTotalPageNum = async () => {
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/count-all-pages', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+        })
+        const data = await response.json();
+        setTotalNumOfPages(data);
+    }
+    countTotalPageNum();
+
+    const handleNavigateUpwards = async (personID) => {
+
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/get-next-page', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, personID })
+        })
+        const data = await response.json();
+        setPageNumber(data.pageNum);
+        window.location.reload();
+    };
+
+    const handlePageEntry = async (event) => {
+        setPageEntry(event.target.value)
+    }
     
 
 
@@ -1323,10 +1398,6 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         getMaternalMaternalGreatGrandMother();
     }, [maternalGrandmotherID])
 
-
-    const handleNavigateUpwards = (personID) => {
-        window.location.reload();
-    };
 
     
     //updates fatherDetails whenever it changes
@@ -1847,8 +1918,12 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             }
         }
 
+
+
+
         const savePaternalPaternalGreatGrandfatherChanges = async () => {
             setShowPaternalPaternalGreatGrandfather(false);
+
             try {
                 const data = await saveAncestorChanges(paternalPaternalGreatGrandfatherDetails, paternalGrandfatherID, "male");
                 setPaternalPaternalGreatGrandfatherID(data);
@@ -1939,6 +2014,21 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalPaternalGreatGrandfathersFatherChanges = async () => {
             setShowPaternalPaternalGreatGrandfathersFather(false);
+      
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+             if (!paternalPaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalPaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
+
+            
+
             try {
                 const data = await saveAncestorChanges(paternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfatherID, "male");
             } catch (error) {
@@ -1948,6 +2038,18 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalPaternalGreatGrandfathersMotherChanges = async () => {
             setShowPaternalPaternalGreatGrandfathersMother(false);
+
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!paternalPaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalPaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(paternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfatherID, "female");
             } catch (error) {
@@ -1958,6 +2060,19 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalPaternalGreatGrandmothersFatherChanges = async () => {
             setShowPaternalPaternalGreatGrandmothersFather(false);
+
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!paternalPaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalPaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
+
             try {
                 const data = await saveAncestorChanges(paternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmotherID, "male");
             } catch (error) {
@@ -1967,6 +2082,18 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalPaternalGreatGrandmothersMotherChanges = async () => {
             setShowPaternalPaternalGreatGrandmothersMother(false);
+
+             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+             if (!paternalPaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalPaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(paternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmotherID, "female");
             } catch (error) {
@@ -1979,6 +2106,18 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalMaternalGreatGrandfathersFatherChanges = async () => {
             setShowPaternalMaternalGreatGrandfathersFather(false);
+
+             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+             if (!paternalMaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalMaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(paternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfatherID, "male");
             } catch (error) {
@@ -1988,6 +2127,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalMaternalGreatGrandfathersMotherChanges = async () => {
             setShowPaternalMaternalGreatGrandfathersMother(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!paternalMaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalMaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(paternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfatherID, "female");
             } catch (error) {
@@ -1997,6 +2147,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalMaternalGreatGrandmothersFatherChanges = async () => {
             setShowPaternalMaternalGreatGrandmothersFather(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!paternalMaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalMaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(paternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmotherID, "male");
             } catch (error) {
@@ -2006,6 +2167,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalMaternalGreatGrandmothersMotherChanges = async () => {
             setShowPaternalMaternalGreatGrandmothersMother(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!paternalMaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = paternalMaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(paternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmotherID, "female");
             } catch (error) {
@@ -2018,6 +2190,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalPaternalGreatGrandfathersFatherChanges = async () => {
             setShowMaternalPaternalGreatGrandfathersFather(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!maternalPaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalPaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfatherID, "male");
             } catch (error) {
@@ -2027,6 +2210,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalPaternalGreatGrandfathersMotherChanges = async () => {
             setShowMaternalPaternalGreatGrandfathersMother(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!maternalPaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalPaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfatherID, "female");
             } catch (error) {
@@ -2036,6 +2230,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalPaternalGreatGrandmothersFatherChanges = async () => {
             setShowMaternalPaternalGreatGrandmothersFather(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!maternalPaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalPaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmotherID, "male");
             } catch (error) {
@@ -2045,6 +2250,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalPaternalGreatGrandmothersMotherChanges = async () => {
             setShowMaternalPaternalGreatGrandmothersMother(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!maternalPaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalPaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmotherID, "female");
             } catch (error) {
@@ -2056,6 +2272,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalMaternalGreatGrandfathersFatherChanges = async () => {
             setShowMaternalMaternalGreatGrandfathersFather(false);
+            //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+            if (!maternalMaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalMaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfatherID, "male");
             } catch (error) {
@@ -2065,6 +2292,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalMaternalGreatGrandfathersMotherChanges = async () => {
             setShowMaternalMaternalGreatGrandfathersMother(false);
+             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+             if (!maternalMaternalGreatGrandfatherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalMaternalGreatGrandfatherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfatherID, "female");
             } catch (error) {
@@ -2074,6 +2312,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalMaternalGreatGrandmothersFatherChanges = async () => {
             setShowMaternalMaternalGreatGrandmothersFather(false);
+             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+             if (!maternalMaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalMaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmotherID, "male");
             } catch (error) {
@@ -2083,6 +2332,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const saveMaternalMaternalGreatGrandmothersMotherChanges = async () => {
             setShowMaternalMaternalGreatGrandmothersMother(false);
+             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
+             if (!maternalMaternalGreatGrandmotherHasParents) {
+                const userId = localStorage.getItem('userId');
+                const personID = maternalMaternalGreatGrandmotherID;
+                const response = fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID }),
+                })
+                countTotalPageNum();
+            }
             try {
                 const data = await saveAncestorChanges(maternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmotherID, "female");
             } catch (error) {
@@ -2172,29 +2432,29 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                     <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </td>
                     <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(relationToUser, sex)}</td>
                     <td className="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                    <td className="ancestor-box-border table-content shrink">{profileNumber}</td>
+                    <td className="ancestor-box-border-bottom table-content shrink">{profileNumber}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
                     <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{name}</b></td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-right birth-date-cell table-label" rowSpan="2">Birth</td>
-                    <td className="ancestor-box-border table-label shrink">date:</td>
-                    <td className="ancestor-box-border table-content">{birthDate}</td>
-                    <td className="birth-date-cell table-label" rowSpan="2">Death</td>
-                    <td className="ancestor-box-border table-label shrink">date:</td>
-                    <td className="ancestor-box-border table-content">{deathDate}</td>
+                    <td className="ancestor-box-border-bottom birth-date-cell table-label" rowSpan="2">Birth</td>
+                    <td className="ancestor-box-border-bottom table-label shrink">date:</td>
+                    <td className="ancestor-box-border-bottom table-content">{birthDate}</td>
+                    <td className="ancestor-box-border-bottom birth-date-cell table-label" rowSpan="2">Death</td>
+                    <td className="ancestor-box-border-bottom table-label shrink">date:</td>
+                    <td className="ancestor-box-border-bottom table-content">{deathDate}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border table-label shrink">place:</td>
-                    <td className="ancestor-box-border table-content">{birthPlace}</td>
-                    <td className="ancestor-box-border table-label shrink">place:</td>
-                    <td className="ancestor-box-border table-content">{deathPlace}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink">place:</td>
+                    <td className="ancestor-box-border-bottom table-content">{birthPlace}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink">place:</td>
+                    <td className="ancestor-box-border-bottom table-content">{deathPlace}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                    <td className="ancestor-box-border table-content" colSpan="5">{occupation}</td>
+                    <td className=" ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                    <td className="table-content" colSpan="5">{occupation}</td>
                 </tr>
                 </table>
            ) : (
@@ -2253,8 +2513,8 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                     <td className="ancestor-box-border-bottom table-content">{occupation}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Profile <br/>Number:</td>
-                    <td className="ancestor-box-border-bottom table-content">{profileNumber}</td>
+                    <td className=" table-label shrink">Profile <br/>Number:</td>
+                    <td className="table-content">{profileNumber}</td>
                 </tr>
             </table>
         ) : (
@@ -2277,7 +2537,6 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         )}</>
         )
     };
-
 
     const checkIfGGHasParents = async (greatgrandparentID, setHasParents) => { 
         if (greatgrandparentID) {
@@ -2304,6 +2563,23 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
     checkIfGGHasParents(maternalMaternalGreatGrandfatherProfileNumber, setMaternalMaternalGreatGrandfatherHasParents)
     checkIfGGHasParents(maternalMaternalGreatGrandmotherProfileNumber, setMaternalMaternalGreatGrandmotherHasParents)
+
+
+        // const printPageNum = async (id, setPage) => {
+
+        //     const userId = localStorage.getItem('userId');
+        //     const personID = id;
+        //     const response = await fetch('http://localhost:5000/get-next-page', {
+        //         method: "POST",
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({ userId, personID }),
+        //     })
+        //     const data = await response.json();
+            
+        //     setPageEntry(data.pageNum)
+        // };
+        // printPageNum(paternalPaternalGreatGrandfatherID, setPaternalPaternalGreatGrandfatherPage)
+ 
 
 
     return (
@@ -2402,7 +2678,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                                     <>
                                     {paternalPaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherProfileNumber)}>Page: {paternalPaternalGreatGrandfatherPage}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2589,22 +2865,6 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                                 }
                             </div>
 
-                            
-
-                            {/* {GreatGrandparentsUpArrows(paternalPaternalGreatGrandmotherProfileNumber, paternalPaternalGreatGrandmotherHasParents, setPaternalPaternalGreatGrandmotherHasParents)}
-
-                            {GreatGrandparentsUpArrows(paternalMaternalGreatGrandfatherProfileNumber, paternalMaternalGreatGrandfatherHasParents, setPaternalMaternalGreatGrandfatherHasParents)}
-
-                            {GreatGrandparentsUpArrows(paternalMaternalGreatGrandmotherProfileNumber, paternalMaternalGreatGrandmotherHasParents, setPaternalMaternalGreatGrandmotherHasParents)}
-
-                            {GreatGrandparentsUpArrows(maternalPaternalGreatGrandfatherProfileNumber, maternalPaternalGreatGrandfatherHasParents, setMaternalPaternalGreatGrandfatherHasParents)}
-
-                            {GreatGrandparentsUpArrows(maternalPaternalGreatGrandmotherProfileNumber, maternalPaternalGreatGrandmotherHasParents, setMaternalPaternalGreatGrandmotherHasParents)}
-
-                            {GreatGrandparentsUpArrows(maternalMaternalGreatGrandfatherProfileNumber, maternalMaternalGreatGrandfatherHasParents, setMaternalMaternalGreatGrandfatherHasParents)}
-
-                            {GreatGrandparentsUpArrows(maternalMaternalGreatGrandmotherProfileNumber, maternalMaternalGreatGrandmotherHasParents, setMaternalMaternalGreatGrandmotherHasParents)} */}
-                                                      
                                 
                         </div>
 
@@ -2675,10 +2935,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
                             
                             </div>
-
-                            <div className="col">
-                                <p className="up-arrow">⇓</p>
-                            </div>
+                            
+                            {pageNumber !== 1 ? (
+                                <div className="col">
+                                    <p className="up-arrow" onClick={() => navigateDown(bottomPagePersonProfileNumber)}>⇓</p>
+                                </div>
+                            ) : (
+                                <></>
+                            )}
+                                
+                            
 
                             
                         </div>
@@ -2691,14 +2957,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                 <div className="row bottom-bar">
 
                     <div className="bottom-bar-content">
-                        <p>Current Page: /</p>
+                        <p>Current Page: {pageNumber}/{totalNumOfPages}</p>
 
                         <div className="bottom-bar-searching">
                             <label style={{marginRight:"3px"}}>Go To Page</label>
-                            <input style={{marginRight:"3px"}} type="text" className="bottom-bar-search"></input>
-                            <button style={{marginRight:"10px"}} className="bottom-bar-button">Go</button>
-                            <button style={{marginRight:"3px"}} className="bottom-bar-button">Return To Base Person</button>
-                            <button style={{marginRight:"3px"}} className="bottom-bar-button">Random Page</button>
+                            <input style={{marginRight:"3px"}} type="text" className="bottom-bar-search" onChange={handlePageEntry}></input>
+                            <button style={{marginRight:"10px"}} className="bottom-bar-button" onClick={() => {setNewPageNum(pageEntry)}}>Go</button>
+                            <button style={{marginRight:"3px"}} className="bottom-bar-button" onClick={() => {setNewPageNum(1)}}>Return To Base Person</button>
+                            <button style={{marginRight:"3px"}} className="bottom-bar-button" onClick={() => {
+                                setNewPageNum(Math.floor(Math.random() * (totalNumOfPages - 1) + 1))
+                            }}>Random Page</button>
                         </div>
 
                     </div>

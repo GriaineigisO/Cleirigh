@@ -160,6 +160,8 @@ app.post('/make-new-tree', async (req, res) => {
             last_name TEXT DEFAULT NULL,
             ancestor_id INT PRIMARY KEY,
             page_number INT, 
+            base_of_page INT DEFAULT NULL,
+            previous_page INT DEFAULT NULL,
             base_person BOOLEAN DEFAULT false,
             sex TEXT DEFAULT NULL, 
             ethnicity TEXT DEFAULT NULL, 
@@ -348,6 +350,7 @@ app.post('/add-first-person', async (req, res) => {
                 ancestor_id,
                 page_number,
                 base_person,
+                base_of_page,
                 sex,
                 ethnicity,
                 date_of_birth,
@@ -359,7 +362,7 @@ app.post('/add-first-person', async (req, res) => {
                 relation_to_user
             )  
             VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16
             ) 
         `, [
             firstName,
@@ -368,6 +371,7 @@ app.post('/add-first-person', async (req, res) => {
             ancestor_id,
             page_number,
             base_person, 
+            1,
             sex,
             ethnicity,
             birthDate,
@@ -717,19 +721,241 @@ app.post('/get-mother', async (req, res) => {
     }
 })
 
+app.post('/set-current-page-number', async (req, res) => {
+
+    try {
+        const {userId, num} = req.body;
+
+        const setNum = await pool.query(`
+            UPDATE users    
+            SET current_page = ${num}
+            WHERE id = ${userId}
+        `)
+        
+    } catch (error) {
+        console.log("Error setting page number:", error)
+    }
+})
+
 app.post('/get-current-page-number', async (req, res) => {
     try {
         const {userId} = req.body;
 
+        //finds the latest current page number saved to the user db
         const pageNum = await pool.query(`
             SELECT * FROM users
             WHERE id = ${userId}
         `)
 
-        res.json(Number(pageNum.rows[0].current_page))
+        const currentPageNum = Number(pageNum.rows[0].current_page)
+
+        //finds the current tree that the user is on
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+
+        //finds which person if the "base" (ancestor listed at the bottom of the page) of the current page number
+        const baseOfPage = await pool.query(
+            `
+            SELECT * FROM tree_${currentTree}
+            WHERE base_of_page = ${currentPageNum}
+            `
+        )
+
+        let firstName = "";
+        let middleName = "";
+        let lastName = "";
+
+        if (baseOfPage.rows[0].first_name === null ) {
+            firstName = "UNKNOWN";
+        } else {
+            firstName = baseOfPage.rows[0].first_name;
+        }
+
+        if (baseOfPage.rows[0].middle_name === null) {
+            middleName = "";
+        } else {
+            middleName = baseOfPage.rows[0].middle_name;
+        }
+
+        if (baseOfPage.rows[0].last_name === null) {
+            lastName = "";
+        } else {
+            lastName = baseOfPage.rows[0].last_name;
+        }
+
+        const fullName = `${firstName} ${middleName} ${lastName}`;
+
+
+        res.json({
+            pageNum: currentPageNum,
+            firstName: baseOfPage.rows[0].first_name,
+            lastName: baseOfPage.rows[0].last_name,
+            fullName: fullName,
+            id: baseOfPage.rows[0].ancestor_id,
+            birthDate: baseOfPage.rows[0].date_of_birth,
+            birthPlace: baseOfPage.rows[0].place_of_birth,
+            deathDate: baseOfPage.rows[0].date_of_death,
+            deathPlace: baseOfPage.rows[0].place_of_death,
+            occupation: baseOfPage.rows[0].occupation,
+            ethnicity: baseOfPage.rows[0].ethnicity,
+            relationToUser: baseOfPage.rows[0].relation_to_user,
+            sex: baseOfPage.rows[0].sex,
+        })
         
     } catch (error) {
         console.log("Error getting page number:", error)
+    }
+})
+
+app.post('/make-new-page', async (req, res) => {
+    try {
+        const {userId, personID} = req.body;
+
+        //finds the current tree that the user is on
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        //finds what the current highest page number is, and increments it by on
+        const newPage = await pool.query(`
+            SELECT MAX(page_number) AS max_page
+            FROM tree_${currentTree}
+        `);
+        
+        const newPageNum = Number(newPage.rows[0].max_page) + 1;
+
+        //changes page number of the person who shall be the bottom page person of the new page
+        const person = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET 
+                page_number = ${newPageNum},
+                base_of_page = ${newPageNum}
+            WHERE ancestor_id = ${personID}
+        `);
+
+        } catch (error) {
+            console.log("Error making new page: ", error)
+        }
+})
+
+app.post('/count-all-pages', async (req, res) => {
+    try {
+        const {userId} = req.body;
+
+        //finds the current tree that the user is on
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        //finds what the current highest page number is, and increments it by on
+        const newPage = await pool.query(`
+            SELECT MAX(page_number) AS max_page
+            FROM tree_${currentTree}
+        `);
+        
+        const newPageNum = Number(newPage.rows[0].max_page);
+
+        res.json(newPageNum)
+
+        } catch (error) {
+            console.log("Error making new page: ", error)
+        }
+})
+
+
+app.post('/get-previous-page', async (req, res) => {
+    try {
+        const {userId, personID} = req.body;
+    
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        //finds sex of person
+        const sex = await pool.query (
+            `
+            SELECT sex FROM tree_${currentTree}
+            WHERE ancestor_id = ${personID}
+            `
+        )
+
+        let goDown = "";
+        if (sex.rows[0].sex === "male") {
+            goDown = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE father_id = ${personID};
+                `)
+        } else {
+            goDown = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE mother_id = ${personID};
+                `)
+        }
+
+
+        //updates the current page number in the database
+        const update = await pool.query(`
+            UPDATE users
+            SET current_page = ${Number(goDown.rows[0].page_number)}
+            WHERE id = ${userId}
+            `)
+
+        res.json({pageNum: Number(goDown.rows[0].page_number)});
+        
+
+    } catch (error) {
+        console.log("Error getting previous page: ", error)
+    }
+})
+
+app.post('/get-next-page', async (req, res) => {
+    try {
+        const {userId, personID} = req.body;
+    
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        //finds what page the person is at the base of
+        const goUp = await pool.query(
+            `
+            SELECT base_of_page FROM tree_${currentTree}
+            WHERE ancestor_id = ${personID}
+            `    
+        )
+
+
+        //updates the current page number in the database
+        const update = await pool.query(`
+            UPDATE users
+            SET current_page = ${Number(goUp.rows[0].base_of_page)}
+            WHERE id = ${userId}
+            `)
+
+        res.json({pageNum: Number(goUp.rows[0].base_of_page)});
+        
+
+    } catch (error) {
+        console.log("Error getting previous page: ", error)
     }
 })
 
@@ -821,7 +1047,7 @@ app.post('/save-ancestor', async (req, res) => {
             ancestorDetails.deathDate,
             ancestorDetails.deathPlace,
             ancestorDetails.causeOfDeath,
-            ancestorDetails.titles,
+            ancestorDetails.occupation,
             ancestorRelation
         ]);
 
@@ -852,7 +1078,7 @@ app.post('/check-if-great-grandparent-has-parents', async (req, res) => {
             `
         )
 
-        console.log(request.rows[0].first_name)
+
 
         if (request.rows[0].father_id === null && request.rows[0].mother_id === null) {
             res.json(false)

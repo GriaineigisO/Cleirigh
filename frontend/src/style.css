@@ -271,8 +271,8 @@ body {
 }
 
 .empty-slot, .unknown-ancestor {
-    border-radius: 10px;
     border: dashed 1px black;
+    border-radius: 5px !important;
 }
 
 .ancestor-box, .unknown-ancestor, .empty-slot {
@@ -280,17 +280,41 @@ body {
     font-size: 10px;
     margin: 6px;
     height: 150px;
+    border-radius: 5px !important;
+}
+
+.ancestor-box {
+    filter: drop-shadow(5px 5px 15px green);
 }
 
 
 .unknown-ancestor-cell {
     vertical-align: middle;
     text-align: center;
+    
 }
 
 .shrink {
     width: 40px; 
   }
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+table tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+}
+    
+table tr:last-child td:last-child {
+
+    border-bottom-right-radius: 10px;
+}
+
+table tr:first-child td:last-child {
+
+    border-top-right-radius: 10px;
+}
 
 .up-arrow {
     text-align: center;
@@ -300,21 +324,16 @@ body {
     width: 40px;
 }
 
-.ancestor-box, .ancestor-box-border {
-    border: solid 2px black;
-}
+.ancestor-box-border {
+    border: solid 2px rgb(133, 118, 118);
+    border-spacing: 0px;
+} 
 
 .ancestor-box-border-bottom {
-    border-bottom:  solid 2px black;
-}
+    border-bottom:  solid 2px rgb(133, 118, 118);
+    border-spacing: 0px;
+} 
 
-.ancestor-box-border-bottom {
-    border-top:  solid 2px black;
-}
-
-.ancestor-box-border-bottom {
-    border-right:  solid 2px black;;
-}
 
 .bottom-bar {
     background-color: #296606;
@@ -367,11 +386,14 @@ body {
     background-color: #75b74f;
     font-variant: small-caps;
     font-weight: bold;
+    text-align: center;
+
 }
 
 .table-content {
     background-color: #c7eed4;
     font-size: 13px;
+    text-align: center;
 }
 
 .gg-parent-buttons {
@@ -390,3 +412,13 @@ button {
     border: 1px solid rgb(210, 255, 126);
     border-radius: 5px !important;
 }
+
+button:hover {
+    transform: scale(1.2);
+}
+
+.up-arrow:hover {
+    filter: drop-shadow(0px 0px 5px green);
+    cursor: pointer;
+}
+
