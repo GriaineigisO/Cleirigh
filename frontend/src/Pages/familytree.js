@@ -1935,6 +1935,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalPaternalGreatGrandmotherChanges = async () => {
             setShowPaternalPaternalGreatGrandmother(false);
+     
             try {
                 const data = await saveAncestorChanges(paternalPaternalGreatGrandmotherDetails, paternalGrandfatherID, "female");
                 setPaternalPaternalGreatGrandmotherID(data);
@@ -1946,6 +1947,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         const savePaternalMaternalGreatGrandfatherChanges = async () => {
             setShowPaternalMaternalGreatGrandfather(false);
+            console.log(paternalMaternalGreatGrandfatherDetails)
             try {
                 const data = await saveAncestorChanges(paternalMaternalGreatGrandfatherDetails, paternalGrandmotherID, "male");
                 setPaternalMaternalGreatGrandfatherID(data);
@@ -2678,7 +2680,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                                     <>
                                     {paternalPaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherProfileNumber)}>Page: {paternalPaternalGreatGrandfatherPage}<br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>

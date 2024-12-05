@@ -964,6 +964,7 @@ app.post('/save-ancestor', async (req, res) => {
     try {
 
     const { userId, ancestorDetails, childID, sex} = req.body;
+    console.log(ancestorDetails)
     
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(
