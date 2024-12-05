@@ -831,6 +831,40 @@ app.post('/save-ancestor', async (req, res) => {
     }
 })
 
+//determines if the great grandparent of the bottom page person has parents
+app.post('/check-if-great-grandparent-has-parents', async (req, res) => {
+    try {
+        const { userId, greatgrandparentID } = req.body;
+        
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const request = await pool.query(
+            `
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${greatgrandparentID}
+            `
+        )
+
+        console.log(request.rows[0].first_name)
+
+        if (request.rows[0].father_id === null && request.rows[0].mother_id === null) {
+            res.json(false)
+        } else {
+            res.json(true);
+        }
+
+    } catch (error) {
+        console.log("Error checking greatgrandparent's parents:", error)
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

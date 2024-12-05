@@ -373,3 +373,20 @@ body {
     background-color: #c7eed4;
     font-size: 13px;
 }
+
+.gg-parent-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.gg-parent-buttons button {
+    width: 70px;    
+}
+
+button {
+    background-color: rgb(40, 74, 39);
+    color: rgb(210, 255, 126);
+    border: 1px solid rgb(210, 255, 126);
+    border-radius: 5px !important;
+}
