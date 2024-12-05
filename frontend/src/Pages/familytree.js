@@ -1598,6 +1598,35 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
               }
         }, [paternalMaternalGreatGrandfathersMotherDetails.ethnicity, paternalMaternalGreatGrandfatherEthnicity]);
 
+        //updates paternalMaternalGreatGrandmothersFatherDetails whenever it changes
+        useEffect(() => {
+            if (!paternalMaternalGreatGrandmothersFatherDetails.lastName && paternalMaternalGreatGrandmotherLastName) {
+                setPaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalMaternalGreatGrandmotherLastName,
+                  }))
+              }
+        }, [paternalMaternalGreatGrandmothersFatherDetails.lastName, paternalMaternalGreatGrandmotherLastName]);
+
+        useEffect(() => {
+            if (!paternalMaternalGreatGrandmothersFatherDetails.ethnicity  && paternalMaternalGreatGrandmotherEthnicity) {
+                setPaternalMaternalGreatGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalMaternalGreatGrandmotherEthnicity,
+                  }))
+              }
+        }, [paternalMaternalGreatGrandmothersFatherDetails.ethnicity, paternalMaternalGreatGrandmotherEthnicity]);
+
+        //updates paternalMaternalGreatGrandmothersMotherDetails whenever it changes
+        useEffect(() => {
+            if (!paternalMaternalGreatGrandmothersMotherDetails.ethnicity  && paternalMaternalGreatGrandmotherEthnicity) {
+                setPaternalMaternalGreatGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalMaternalGreatGrandmotherEthnicity,
+                  }))
+              }
+        }, [paternalMaternalGreatGrandmothersMotherDetails.ethnicity, paternalMaternalGreatGrandmotherEthnicity]);
+
 
         
 
@@ -2006,7 +2035,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         }
 
         const saveMaternalPaternalGreatGrandmothersFatherChanges = async () => {
-            setShowMaternalPaternalGreatGrandfathersFather(false);
+            setShowMaternalPaternalGreatGrandmothersFather(false);
             try {
                 const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmotherID, "male");
             } catch (error) {
@@ -2265,6 +2294,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
     }
 
     checkIfGGHasParents(paternalPaternalGreatGrandfatherProfileNumber, setPaternalPaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(paternalPaternalGreatGrandmotherProfileNumber, setPaternalPaternalGreatGrandmotherHasParents)
+
+    checkIfGGHasParents(paternalMaternalGreatGrandfatherProfileNumber, setPaternalMaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(paternalMaternalGreatGrandmotherProfileNumber, setPaternalMaternalGreatGrandmotherHasParents)
+
+    checkIfGGHasParents(maternalPaternalGreatGrandfatherProfileNumber, setMaternalPaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(maternalPaternalGreatGrandmotherProfileNumber, setMaternalPaternalGreatGrandmotherHasParents)
+
+    checkIfGGHasParents(maternalMaternalGreatGrandfatherProfileNumber, setMaternalMaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(maternalMaternalGreatGrandmotherProfileNumber, setMaternalMaternalGreatGrandmotherHasParents)
 
 
     return (
@@ -2407,11 +2446,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {maternalPaternalGreatGrandfatherProfileNumber ? (
+                                {paternalMaternalGreatGrandfatherProfileNumber ? (
                                     <>
-                                    {maternalPaternalGreatGrandfatherHasParents ? (
+                                    {paternalMaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2429,13 +2468,13 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                                     )
                                 }
                             </div>
-
+                               
                             <div className="col">
-                                {maternalPaternalGreatGrandmotherProfileNumber ? (
+                                {paternalMaternalGreatGrandmotherProfileNumber ? (
                                     <>
-                                    {maternalPaternalGreatGrandmotherHasParents ? (
+                                    {paternalMaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandmotherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandmotherProfileNumber)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
