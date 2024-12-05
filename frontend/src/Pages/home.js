@@ -260,7 +260,6 @@ const homePageStats = useCallback(async () => {
   }
 
 
-console.log(isEmpty)
   return (
     <div>
       <h1>The {capitaliseFirstLetter(treeName)} Tree</h1>
@@ -329,11 +328,16 @@ console.log(isEmpty)
           {loading ? (
             <div className="spinner"></div>
           ) : (
+            <>
             <ul>
               <li>{numOfAncestors} ancestors</li>
               <li>{numOfPlaces} places {listOfPlaces}</li>
               <li>{numOfOccupations} occupations {listOfOccupations}</li>
           </ul>
+
+          <h2>Where You Left Off...</h2>
+          <p></p>
+          </>
           )}
       </div>
       )}
@@ -388,7 +392,7 @@ const Home = () => {
         const treeId = Date.now();
         
         try {
-          console.log("nee tree")
+    
             const response = await fetch('http://localhost:5000/make-new-tree', {
               method: 'POST',
               headers: {

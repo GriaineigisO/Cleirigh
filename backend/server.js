@@ -443,14 +443,33 @@ app.post('/count-places', async (req, res) => {
         // Extract an array of place_of_birth values
         const deathPlaces = deathPlace.rows.map(row => row.place_of_death);
 
+        for (let i = 0; i < deathPlaces.length; i++) {
+            for (let j = 0; j < deathPlaces[i].length; j++) {
+                if (deathPlaces[i][j] === ",") {
+                    deathPlaces[i] = deathPlaces[i].slice(0, j);
+                    continue;
+                }
+            }
+        }
+
         const allPlacesArray = birthPlaces.concat(deathPlaces);
 
         //filters empty arrays which are the result of the birth or death place being left blank
         const filteredArray = allPlacesArray.filter((i) => i !== "");
-        const allPlacesJoined = filteredArray.join(", ")
+
+        //filters out duplicates
+        let filteredNoDuplicatedArray = [];
+        for(let i = 0; i < filteredArray.length; i++) {
+            if(filteredNoDuplicatedArray.includes(filteredArray[i]) === false) {
+                filteredNoDuplicatedArray.push(filteredArray[i]);
+            };
+        };
+       
+
+        const allPlacesJoined = filteredNoDuplicatedArray.join(", ")
 
         res.json({
-            numOfPlaces: filteredArray.length,
+            numOfPlaces: filteredNoDuplicatedArray.length,
             listOfPlaces: allPlacesJoined
         });
 
@@ -473,7 +492,16 @@ app.post('/count-occupations', async (req, res) => {
         `)
 
         const occupationList = occupations.rows.map(row => row.occupation);
-        const occupationJoined = occupationList.join(", ")
+
+        //filters out duplicates
+        let filteredNoDuplicatedArray = [];
+        for(let i = 0; i < occupationList.length; i++) {
+            if(filteredNoDuplicatedArray.includes(occupationList[i]) === false) {
+                filteredNoDuplicatedArray.push(occupationList[i]);
+            };
+        };
+        
+        const occupationJoined = filteredNoDuplicatedArray.join(", ")
 
 
         res.json({
@@ -964,8 +992,7 @@ app.post('/save-ancestor', async (req, res) => {
     try {
 
     const { userId, ancestorDetails, childID, sex} = req.body;
-    console.log(ancestorDetails)
-    
+
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(
             'SELECT current_tree_id FROM users WHERE id = $1',

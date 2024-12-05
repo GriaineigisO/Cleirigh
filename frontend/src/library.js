@@ -76,3 +76,14 @@ export const convertNumToRelation = (num, sex) => {
         }
     }
 }
+
+//copies all the items, to a new array, but leaves out any duplicates
+export function removeDuplicates(array) {
+    let newArray = [];
+    for(let i = 0; i < array.length; i++) {
+        if(newArray.includes(array[i]) === false) {
+            newArray.push(array[i]);
+        };
+    };
+    return newArray;
+};
