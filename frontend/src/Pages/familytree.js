@@ -2,8 +2,7 @@ import LeftSidebar from "../Components/leftSidebar"
 import React, { useState, useEffect, Component } from 'react';
 import { convertDate, convertNumToRelation } from '../library.js';
 import { Modal, Button } from 'react-bootstrap';
-
-
+import editLogo from '../Images/edit.png';
 
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
 //paternalmaternalgreatgrandparents = paternal grandmother's parents
@@ -46,6 +45,43 @@ const FamilyTree = () => {
     const [showMaternalMaternalGreatGrandfathersMother, setShowMaternalMaternalGreatGrandfathersMother] = useState(false);
     const [showMaternalMaternalGreatGrandmothersFather, setShowMaternalMaternalGreatGrandmothersFather] = useState(false);
     const [showMaternalMaternalGreatGrandmothersMother, setShowMaternalMaternalGreatGrandmothersMother] = useState(false);
+
+    const [editShowFather, seteditShowFather] = useState(false);
+    const [editShowMother, seteditShowMother] = useState(false);
+    const [editShowPaternalGrandfather, seteditShowPaternalGrandfather] = useState(false);
+    const [editShowPaternalGrandmother, seteditShowPaternalGrandmother] = useState(false);
+    const [editShowMaternalGrandfather, seteditShowMaternalGrandfather] = useState(false);
+    const [editShowMaternalGrandmother, seteditShowMaternalGrandmother] = useState(false);
+    const [editShowPaternalPaternalGreatGrandfather, seteditShowPaternalPaternalGreatGrandfather] = useState(false);
+    const [editShowPaternalPaternalGreatGrandmother, seteditShowPaternalPaternalGreatGrandmother] = useState(false);
+    const [editShowPaternalMaternalGreatGrandfather, seteditShowPaternalMaternalGreatGrandfather] = useState(false);
+    const [editShowPaternalMaternalGreatGrandmother, seteditShowPaternalMaternalGreatGrandmother] = useState(false);
+    const [editShowMaternalPaternalGreatGrandfather, seteditShowMaternalPaternalGreatGrandfather] = useState(false);
+    const [editShowMaternalPaternalGreatGrandmother, seteditShowMaternalPaternalGreatGrandmother] = useState(false);
+    const [editShowMaternalMaternalGreatGrandfather, seteditShowMaternalMaternalGreatGrandfather] = useState(false);
+    const [editShowMaternalMaternalGreatGrandmother, seteditShowMaternalMaternalGreatGrandmother] = useState(false);
+
+    const [editShowPaternalPaternalGreatGrandfathersFather, seteditShowPaternalPaternalGreatGrandfathersFather] = useState(false);
+    const [editShowPaternalPaternalGreatGrandfathersMother, seteditShowPaternalPaternalGreatGrandfathersMother] = useState(false);
+    const [editShowPaternalPaternalGreatGrandmothersFather, seteditShowPaternalPaternalGreatGrandmothersFather] = useState(false);
+    const [editShowPaternalPaternalGreatGrandmothersMother, seteditShowPaternalPaternalGreatGrandmothersMother] = useState(false);
+
+    const [editShowPaternalMaternalGreatGrandfathersFather, seteditShowPaternalMaternalGreatGrandfathersFather] = useState(false);
+    const [editShowPaternalMaternalGreatGrandfathersMother, seteditShowPaternalMaternalGreatGrandfathersMother] = useState(false);
+    const [editShowPaternalMaternalGreatGrandmothersFather, seteditShowPaternalMaternalGreatGrandmothersFather] = useState(false);
+    const [editShowPaternalMaternalGreatGrandmothersMother, seteditShowPaternalMaternalGreatGrandmothersMother] = useState(false);
+
+    const [editShowMaternalPaternalGreatGrandfathersFather, seteditShowMaternalPaternalGreatGrandfathersFather] = useState(false);
+    const [editShowMaternalPaternalGreatGrandfathersMother, seteditShowMaternalPaternalGreatGrandfathersMother] = useState(false);
+    const [editShowMaternalPaternalGreatGrandmothersFather, seteditShowMaternalPaternalGreatGrandmothersFather] = useState(false);
+    const [editShowMaternalPaternalGreatGrandmothersMother, seteditShowMaternalPaternalGreatGrandmothersMother] = useState(false);
+
+    const [editShowMaternalMaternalGreatGrandfathersFather, seteditShowMaternalMaternalGreatGrandfathersFather] = useState(false);
+    const [editShowMaternalMaternalGreatGrandfathersMother, seteditShowMaternalMaternalGreatGrandfathersMother] = useState(false);
+    const [editShowMaternalMaternalGreatGrandmothersFather, seteditShowMaternalMaternalGreatGrandmothersFather] = useState(false);
+    const [editShowMaternalMaternalGreatGrandmothersMother, seteditShowMaternalMaternalGreatGrandmothersMother] = useState(false);
+
+
 
     const closeAddFatherModal = () => setShowFather(false);
     const openAddFatherModal = () => setShowFather(true);
@@ -130,676 +166,162 @@ const FamilyTree = () => {
     const closeAddMaternalMaternalGreatGrandmothersMotherModal = () => setShowMaternalMaternalGreatGrandmothersMother(false);
     const openAddMaternalMaternalGreatGrandmothersMotherModal = () => setShowMaternalMaternalGreatGrandmothersMother(true);
 
+    
 
 
-    const [fatherDetails, setFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditFatherModal = () => seteditShowFather(false);
+    const openEditFatherModal = () => seteditShowFather(true);
 
-      const [motherDetails, setMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMotherModal = () => seteditShowMother(false);
+    const openEditMotherModal = () => seteditShowMother(true);
 
-      const [paternalGrandfatherDetails, setPaternalGrandfatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditPaternalGrandfatherModal = () => seteditShowPaternalGrandfather(false);
+    const openEditPaternalGrandfatherModal = () => seteditShowPaternalGrandfather(true);
 
-      const [paternalGrandmotherDetails, setPaternalGrandmotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditPaternalGrandmotherModal = () => seteditShowPaternalGrandmother(false);
+    const openEditPaternalGrandmotherModal = () => seteditShowPaternalGrandmother(true);
 
-      const [maternalGrandfatherDetails, setMaternalGrandfatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMaternalGrandfatherModal = () => seteditShowMaternalGrandfather(false);
+    const openEditMaternalGrandfatherModal = () => seteditShowMaternalGrandfather(true);
 
-      const [maternalGrandmotherDetails, setMaternalGrandmotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMaternalGrandmotherModal = () => seteditShowMaternalGrandmother(false);
+    const openEditMaternalGrandmotherModal = () => seteditShowMaternalGrandmother(true);
 
-      const [paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditPaternalPaternalGreatGrandfatherModal = () => seteditShowPaternalPaternalGreatGrandfather(false);
+    const openEditPaternalPaternalGreatGrandfatherModal = () => seteditShowPaternalPaternalGreatGrandfather(true);
 
-      const [paternalPaternalGreatGrandfathersFatherDetails, setPaternalPaternalGreatGrandfathersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditPaternalPaternalGreatGrandmotherModal = () => seteditShowPaternalPaternalGreatGrandmother(false);
+    const openEditPaternalPaternalGreatGrandmotherModal = () => seteditShowPaternalPaternalGreatGrandmother(true);
 
-      const [paternalPaternalGreatGrandfathersMotherDetails, setPaternalPaternalGreatGrandfathersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditPaternalMaternalGreatGrandfatherModal = () => seteditShowPaternalMaternalGreatGrandfather(false);
+    const openEditPaternalMaternalGreatGrandfatherModal = () => seteditShowPaternalMaternalGreatGrandfather(true);
 
-      const [paternalPaternalGreatGrandmotherDetails, setPaternalPaternalGreatGrandmotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditPaternalMaternalGreatGrandmotherModal = () => seteditShowPaternalMaternalGreatGrandmother(false);
+    const openEditPaternalMaternalGreatGrandmotherModal = () => seteditShowPaternalMaternalGreatGrandmother(true);
 
-      const [paternalPaternalGreatGrandmothersFatherDetails, setPaternalPaternalGreatGrandmothersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
 
-      const [paternalPaternalGreatGrandmothersMotherDetails, setPaternalPaternalGreatGrandmothersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMaternalPaternalGreatGrandfatherModal = () => seteditShowMaternalPaternalGreatGrandfather(false);
+    const openEditMaternalPaternalGreatGrandfatherModal = () => seteditShowMaternalPaternalGreatGrandfather(true);
 
-      const [paternalMaternalGreatGrandfatherDetails, setPaternalMaternalGreatGrandfatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMaternalPaternalGreatGrandmotherModal = () => seteditShowMaternalPaternalGreatGrandmother(false);
+    const openEditMaternalPaternalGreatGrandmotherModal = () => seteditShowMaternalPaternalGreatGrandmother(true);
 
-      const [paternalMaternalGreatGrandfathersFatherDetails, setPaternalMaternalGreatGrandfathersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMaternalMaternalGreatGrandfatherModal = () => seteditShowMaternalMaternalGreatGrandfather(false);
+    const openEditMaternalMaternalGreatGrandfatherModal = () => seteditShowMaternalMaternalGreatGrandfather(true);
 
-      const [paternalMaternalGreatGrandfathersMotherDetails, setPaternalMaternalGreatGrandfathersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+    const closeEditMaternalMaternalGreatGrandmotherModal = () => seteditShowMaternalMaternalGreatGrandmother(false);
+    const openEditMaternalMaternalGreatGrandmotherModal = () => seteditShowMaternalMaternalGreatGrandmother(true);
+
+    const closeEditPaternalPaternalGreatGrandfathersFatherModal = () => seteditShowPaternalPaternalGreatGrandfathersFather(false);
+    const openEditPaternalPaternalGreatGrandfathersFatherModal = () => seteditShowPaternalPaternalGreatGrandfathersFather(true);
+    const closeEditPaternalPaternalGreatGrandfathersMotherModal = () => seteditShowPaternalPaternalGreatGrandfathersMother(false);
+    const openEditPaternalPaternalGreatGrandfathersMotherModal = () => seteditShowPaternalPaternalGreatGrandfathersMother(true);
+
+    const closeEditPaternalPaternalGreatGrandmothersFatherModal = () => seteditShowPaternalPaternalGreatGrandmothersFather(false);
+    const openEditPaternalPaternalGreatGrandmothersFatherModal = () => seteditShowPaternalPaternalGreatGrandmothersFather(true);
+    const closeEditPaternalPaternalGreatGrandmothersMotherModal = () => seteditShowPaternalPaternalGreatGrandmothersMother(false);
+    const openEditPaternalPaternalGreatGrandmothersMotherModal = () => seteditShowPaternalPaternalGreatGrandmothersMother(true);
+
+    const closeEditPaternalMaternalGreatGrandfathersFatherModal = () => seteditShowPaternalMaternalGreatGrandfathersFather(false);
+    const openEditPaternalMaternalGreatGrandfathersFatherModal = () => seteditShowPaternalMaternalGreatGrandfathersFather(true);
+    const closeEditPaternalMaternalGreatGrandfathersMotherModal = () => seteditShowPaternalMaternalGreatGrandfathersMother(false);
+    const openEditPaternalMaternalGreatGrandfathersMotherModal = () => seteditShowPaternalMaternalGreatGrandfathersMother(true);
+
+    const closeEditPaternalMaternalGreatGrandmothersFatherModal = () => seteditShowPaternalMaternalGreatGrandmothersFather(false);
+    const openEditPaternalMaternalGreatGrandmothersFatherModal = () => seteditShowPaternalMaternalGreatGrandmothersFather(true);
+    const closeEditPaternalMaternalGreatGrandmothersMotherModal = () => seteditShowPaternalMaternalGreatGrandmothersMother(false);
+    const openEditPaternalMaternalGreatGrandmothersMotherModal = () => seteditShowPaternalMaternalGreatGrandmothersMother(true);
+
+    const closeEditMaternalPaternalGreatGrandfathersFatherModal = () => seteditShowMaternalPaternalGreatGrandfathersFather(false);
+    const openEditMaternalPaternalGreatGrandfathersFatherModal = () => seteditShowMaternalPaternalGreatGrandfathersFather(true);
+    const closeEditMaternalPaternalGreatGrandfathersMotherModal = () => seteditShowMaternalPaternalGreatGrandfathersMother(false);
+    const openEditMaternalPaternalGreatGrandfathersMotherModal = () => seteditShowMaternalPaternalGreatGrandfathersMother(true);
+
+    const closeEditMaternalPaternalGreatGrandmothersFatherModal = () => seteditShowMaternalPaternalGreatGrandmothersFather(false);
+    const openEditMaternalPaternalGreatGrandmothersFatherModal = () => seteditShowMaternalPaternalGreatGrandmothersFather(true);
+    const closeEditMaternalPaternalGreatGrandmothersMotherModal = () => seteditShowMaternalPaternalGreatGrandmothersMother(false);
+    const openEditMaternalPaternalGreatGrandmothersMotherModal = () => seteditShowMaternalPaternalGreatGrandmothersMother(true);
+
+    const closeEditMaternalMaternalGreatGrandfathersFatherModal = () => seteditShowMaternalMaternalGreatGrandfathersFather(false);
+    const openEditMaternalMaternalGreatGrandfathersFatherModal = () => seteditShowMaternalMaternalGreatGrandfathersFather(true);
+    const closeEditMaternalMaternalGreatGrandfathersMotherModal = () => seteditShowMaternalMaternalGreatGrandfathersMother(false);
+    const openEditMaternalMaternalGreatGrandfathersMotherModal = () => seteditShowMaternalMaternalGreatGrandfathersMother(true);
+
+    const closeEditMaternalMaternalGreatGrandmothersFatherModal = () => seteditShowMaternalMaternalGreatGrandmothersFather(false);
+    const openEditMaternalMaternalGreatGrandmothersFatherModal = () => seteditShowMaternalMaternalGreatGrandmothersFather(true);
+    const closeEditMaternalMaternalGreatGrandmothersMotherModal = () => seteditShowMaternalMaternalGreatGrandmothersMother(false);
+    const openEditMaternalMaternalGreatGrandmothersMotherModal = () => seteditShowMaternalMaternalGreatGrandmothersMother(true);
+
+
+    const [basePersonDetails, setBasePersonDetails] = useState({});
+
+    const [bottomPersonDetails, setBottomPersonDetails] = useState({});
+
+    const [fatherDetails, setFatherDetails] = useState({});
+
+    const [motherDetails, setMotherDetails] = useState({});
+
+    const [paternalGrandfatherDetails, setPaternalGrandfatherDetails] = useState({});
+
+    const [paternalGrandmotherDetails, setPaternalGrandmotherDetails] = useState({});
+
+    const [maternalGrandfatherDetails, setMaternalGrandfatherDetails] = useState({});
+
+      const [maternalGrandmotherDetails, setMaternalGrandmotherDetails] = useState({});
+
+      const [paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfatherDetails] = useState({});
+
+      const [paternalPaternalGreatGrandfathersFatherDetails, setPaternalPaternalGreatGrandfathersFatherDetails] = useState({});
+
+      const [paternalPaternalGreatGrandfathersMotherDetails, setPaternalPaternalGreatGrandfathersMotherDetails] = useState({});
+
+      const [paternalPaternalGreatGrandmotherDetails, setPaternalPaternalGreatGrandmotherDetails] = useState({});
+
+      const [paternalPaternalGreatGrandmothersFatherDetails, setPaternalPaternalGreatGrandmothersFatherDetails] = useState({});
+
+      const [paternalPaternalGreatGrandmothersMotherDetails, setPaternalPaternalGreatGrandmothersMotherDetails] = useState({});
+
+      const [paternalMaternalGreatGrandfatherDetails, setPaternalMaternalGreatGrandfatherDetails] = useState({});
+
+      const [paternalMaternalGreatGrandfathersFatherDetails, setPaternalMaternalGreatGrandfathersFatherDetails] = useState({});
+
+      const [paternalMaternalGreatGrandfathersMotherDetails, setPaternalMaternalGreatGrandfathersMotherDetails] = useState({});
+   
+      const [paternalMaternalGreatGrandmotherDetails, setPaternalMaternalGreatGrandmotherDetails] = useState({});
+
+      const [paternalMaternalGreatGrandmothersFatherDetails, setPaternalMaternalGreatGrandmothersFatherDetails] = useState({});
+
+      const [paternalMaternalGreatGrandmothersMotherDetails, setPaternalMaternalGreatGrandmothersMotherDetails] = useState({});
+
+      const [maternalPaternalGreatGrandfatherDetails, setMaternalPaternalGreatGrandfatherDetails] = useState({});
+
+      const [maternalPaternalGreatGrandfathersFatherDetails, setMaternalPaternalGreatGrandfathersFatherDetails] = useState({});
+
+      const [maternalPaternalGreatGrandfathersMotherDetails, setMaternalPaternalGreatGrandfathersMotherDetails] = useState({});
+   
+      const [maternalPaternalGreatGrandmotherDetails, setMaternalPaternalGreatGrandmotherDetails] = useState({});
+
+      const [maternalPaternalGreatGrandmothersFatherDetails, setMaternalPaternalGreatGrandmothersFatherDetails] = useState({});
+
+      const [maternalPaternalGreatGrandmothersMotherDetails, setMaternalPaternalGreatGrandmothersMotherDetails] = useState({});
+   
+      const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfatherDetails] = useState({});
+
+      const [maternalMaternalGreatGrandfathersFatherDetails, setMaternalMaternalGreatGrandfathersFatherDetails] = useState({});
+
+      const [maternalMaternalGreatGrandfathersMotherDetails, setMaternalMaternalGreatGrandfathersMotherDetails] = useState({});
    
 
-      const [paternalMaternalGreatGrandmotherDetails, setPaternalMaternalGreatGrandmotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+      const [maternalMaternalGreatGrandmotherDetails, setMaternalMaternalGreatGrandmotherDetails] = useState({});
 
-      const [paternalMaternalGreatGrandmothersFatherDetails, setPaternalMaternalGreatGrandmothersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+      const [maternalMaternalGreatGrandmothersFatherDetails, setMaternalMaternalGreatGrandmothersFatherDetails] = useState({});
 
-      const [paternalMaternalGreatGrandmothersMotherDetails, setPaternalMaternalGreatGrandmothersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalPaternalGreatGrandfatherDetails, setMaternalPaternalGreatGrandfatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalPaternalGreatGrandfathersFatherDetails, setMaternalPaternalGreatGrandfathersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalPaternalGreatGrandfathersMotherDetails, setMaternalPaternalGreatGrandfathersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-   
-
-      const [maternalPaternalGreatGrandmotherDetails, setMaternalPaternalGreatGrandmotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalPaternalGreatGrandmothersFatherDetails, setMaternalPaternalGreatGrandmothersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalPaternalGreatGrandmothersMotherDetails, setMaternalPaternalGreatGrandmothersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-   
-
-
-const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalMaternalGreatGrandfathersFatherDetails, setMaternalMaternalGreatGrandfathersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalMaternalGreatGrandfathersMotherDetails, setMaternalMaternalGreatGrandfathersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-   
-
-      const [maternalMaternalGreatGrandmotherDetails, setMaternalMaternalGreatGrandmotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalMaternalGreatGrandmothersFatherDetails, setMaternalMaternalGreatGrandmothersFatherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
-
-      const [maternalMaternalGreatGrandmothersMotherDetails, setMaternalMaternalGreatGrandmothersMotherDetails] = React.useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        birthDate: null,
-        birthPlace: null,
-        deathDate: null,
-        deathPlace: null,
-        causeOfDeath: null,
-        occupation: null,
-        ethnicity: null,
-        relationTouser: null,
-      });
+      const [maternalMaternalGreatGrandmothersMotherDetails, setMaternalMaternalGreatGrandmothersMotherDetails] = useState({});
 
 
     const [pageNumber, setPageNumber] = useState(1);
     const [totalNumOfPages, setTotalNumOfPages] = useState(1)
     const [pageEntry, setPageEntry] = useState();
-
-    const [bottomPagePersonFirstName, setBottomPagePersonFirstName] = useState('');
-    const [bottomPagePersonLastName, setBottomPagePersonLastName] = useState('');
-    const [bottomPagePersonFullName, setBottomPagePersonFullName] = useState('');
-    const [bottomPagePersonEthnicity, setBottomPagePersonEthnicity] = useState('');
-    const [bottomPersonSex, setBottomPersonSex] = useState('');
-    const [bottomRelationToBaseUser, setBottomRelationToBaseUser] = useState(0);
-    const [basePersonSex, setBasePersonSex] = useState('');
-    const [basePersonEthnicity, setBasePersonEthnicity] = useState('');
-
-    const [basePersonFirstName, setBasePersonFirstName] = useState('');
-    const [basePersonFullName, setBasePersonFullName] = useState('');
-    const [basePersonLastName, setBasePersonLastName] = useState('');
-    const [fatherName, setFatherName] = useState('');
-    const [motherName, setMotherName] = useState('');
-    const [paternalGrandmotherName, setPaternalGrandmotherName] = useState('');
-    const [paternalGrandfatherName, setPaternalGrandfatherName] = useState('');
-    const [maternalGrandmotherName, setMaternalGrandmotherName] = useState('');
-    const [maternalGrandfatherName, setMaternalGrandfatherName] = useState('');
-    const [paternalPaternalGreatGrandmotherName, setPaternalPaternalGreatGrandmotherName] = useState('');
-    const [paternalPaternalGreatGrandfatherName, setPaternalPaternalGreatGrandfatherName] = useState('');
-    const [paternalMaternalGreatGrandmotherName, setPaternalMaternalGreatGrandmotherName] = useState('');
-    const [paternalMaternalGreatGrandfatherName, setPaternalMaternalGreatGrandfatherName] = useState('');
-    const [maternalPaternalGreatGrandmotherName, setMaternalPaternalGreatGrandmotherName] = useState('');
-    const [maternalPaternalGreatGrandfatherName, setMaternalPaternalGreatGrandfatherName] = useState('');
-    const [maternalMaternalGreatGrandmotherName, setMaternalMaternalGreatGrandmotherName] = useState('');
-    const [maternalMaternalGreatGrandfatherName, setMaternalMaternalGreatGrandfatherName] = useState('');
-
-    const [fatherFirstName, setFatherFirstName] = useState('');
-    const [motherFirstName, setMotherFirstName] = useState('');
-    const [paternalGrandmotherFirstName, setPaternalGrandmotherFirstName] = useState('');
-    const [paternalGrandfatherFirstName, setPaternalGrandfatherFirstName] = useState('');
-    const [maternalGrandmotherFirstName, setMaternalGrandmotherFirstName] = useState('');
-    const [maternalGrandfatherFirstName, setMaternalGrandfatherFirstName] = useState('');
-    const [paternalPaternalGreatGrandmotherFirstName, setPaternalPaternalGreatGrandmotherFirstName] = useState('');
-    const [paternalPaternalGreatGrandfatherFirstName, setPaternalPaternalGreatGrandfatherFirstName] = useState('');
-    const [paternalMaternalGreatGrandmotherFirstName, setPaternalMaternalGreatGrandmotherFirstName] = useState('');
-    const [paternalMaternalGreatGrandfatherFirstName, setPaternalMaternalGreatGrandfatherFirstName] = useState('');
-    const [maternalPaternalGreatGrandmotherFirstName, setMaternalPaternalGreatGrandmotherFirstName] = useState('');
-    const [maternalPaternalGreatGrandfatherFirstName, setMaternalPaternalGreatGrandfatherFirstName] = useState('');
-    const [maternalMaternalGreatGrandmotherFirstName, setMaternalMaternalGreatGrandmotherFirstName] = useState('');
-    const [maternalMaternalGreatGrandfatherFirstName, setMaternalMaternalGreatGrandfatherFirstName] = useState('');
-
-    const [fatherMiddleName, setFatherMiddleName] = useState('');
-    const [motherMiddleName, setMotherMiddleName] = useState('');
-    const [paternalGrandmotherMiddleName, setPaternalGrandmotherMiddleName] = useState('');
-    const [paternalGrandfatherMiddleName, setPaternalGrandfatherMiddleName] = useState('');
-    const [maternalGrandmotherMiddleName, setMaternalGrandmotherMiddleName] = useState('');
-    const [maternalGrandfatherMiddleName, setMaternalGrandfatherMiddleName] = useState('');
-    const [paternalPaternalGreatGrandmotherMiddleName, setPaternalPaternalGreatGrandmotherMiddleName] = useState('');
-    const [paternalPaternalGreatGrandfatherMiddleName, setPaternalPaternalGreatGrandfatherMiddleName] = useState('');
-    const [paternalMaternalGreatGrandmotherMiddleName, setPaternalMaternalGreatGrandmotherMiddleName] = useState('');
-    const [paternalMaternalGreatGrandfatherMiddleName, setPaternalMaternalGreatGrandfatherMiddleName] = useState('');
-    const [maternalPaternalGreatGrandmotherMiddleName, setMaternalPaternalGreatGrandmotherMiddleName] = useState('');
-    const [maternalPaternalGreatGrandfatherMiddleName, setMaternalPaternalGreatGrandfatherMiddleName] = useState('');
-    const [maternalMaternalGreatGrandmotherMiddleName, setMaternalMaternalGreatGrandmotherMiddleName] = useState('');
-    const [maternalMaternalGreatGrandfatherMiddleName, setMaternalMaternalGreatGrandfatherMiddleName] = useState('');
-
-
-    const [fatherLastName, setFatherLastName] = useState('');
-    const [motherLastName, setMotherLastName] = useState('');
-    const [paternalGrandmotherLastName, setPaternalGrandmotherLastName] = useState('');
-    const [paternalGrandfatherLastName, setPaternalGrandfatherLastName] = useState('');
-    const [maternalGrandmotherLastName, setMaternalGrandmotherLastName] = useState('');
-    const [maternalGrandfatherLastName, setMaternalGrandfatherLastName] = useState('');
-    const [paternalPaternalGreatGrandmotherLastName, setPaternalPaternalGreatGrandmotherLastName] = useState('');
-    const [paternalPaternalGreatGrandfatherLastName, setPaternalPaternalGreatGrandfatherLastName] = useState('');
-    const [paternalMaternalGreatGrandmotherLastName, setPaternalMaternalGreatGrandmotherLastName] = useState('');
-    const [paternalMaternalGreatGrandfatherLastName, setPaternalMaternalGreatGrandfatherLastName] = useState('');
-    const [maternalPaternalGreatGrandmotherLastName, setMaternalPaternalGreatGrandmotherLastName] = useState('');
-    const [maternalPaternalGreatGrandfatherLastName, setMaternalPaternalGreatGrandfatherLastName] = useState('');
-    const [maternalMaternalGreatGrandmotherLastName, setMaternalMaternalGreatGrandmotherLastName] = useState('');
-    const [maternalMaternalGreatGrandfatherLastName, setMaternalMaternalGreatGrandfatherLastName] = useState('');
-
-    const [basePersonID, setBasePersonID] = useState('');
-    const [bottomPagePersonID, setBottomPagePersonID] = useState('');
-    const [fatherID, setFatherID] = useState('');
-    const [motherID, setMotherID] = useState('');
-    const [paternalGrandmotherID, setPaternalGrandmotherID] = useState('');
-    const [paternalGrandfatherID, setPaternalGrandfatherID] = useState('');
-    const [maternalGrandmotherID, setMaternalGrandmotherID] = useState('');
-    const [maternalGrandfatherID, setMaternalGrandfatherID] = useState('');
-    const [paternalPaternalGreatGrandmotherID, setPaternalPaternalGreatGrandmotherID] = useState('');
-    const [paternalPaternalGreatGrandfatherID, setPaternalPaternalGreatGrandfatherID] = useState('');
-    const [paternalMaternalGreatGrandmotherID, setPaternalMaternalGreatGrandmotherID] = useState('');
-    const [paternalMaternalGreatGrandfatherID, setPaternalMaternalGreatGrandfatherID] = useState('');
-    const [maternalPaternalGreatGrandmotherID, setMaternalPaternalGreatGrandmotherID] = useState('');
-    const [maternalPaternalGreatGrandfatherID, setMaternalPaternalGreatGrandfatherID] = useState('');
-    const [maternalMaternalGreatGrandmotherID, setMaternalMaternalGreatGrandmotherID] = useState('');
-    const [maternalMaternalGreatGrandfatherID, setMaternalMaternalGreatGrandfatherID] = useState('');
-
-
-    const [basePersonBirthDate, setBasePersonBirthDate] = useState('');
-    const [bottomPagePersonBirthDate, setBottomPagePersonBirthDate] = useState('');
-    const [fatherBirthDate, setFatherBirthDate] = useState('');
-    const [motherBirthDate, setMotherBirthDate] = useState('');
-    const [paternalGrandmotherBirthDate, setPaternalGrandmotherBirthDate] = useState('');
-    const [paternalGrandfatherBirthDate, setPaternalGrandfatherBirthDate] = useState('');
-    const [maternalGrandmotherBirthDate, setMaternalGrandmotherBirthDate] = useState('');
-    const [maternalGrandfatherBirthDate, setMaternalGrandfatherBirthDate] = useState('');
-    const [paternalPaternalGreatGrandmotherBirthDate, setPaternalPaternalGreatGrandmotherBirthDate] = useState('');
-    const [paternalPaternalGreatGrandfatherBirthDate, setPaternalPaternalGreatGrandfatherBirthDate] = useState('');
-    const [paternalMaternalGreatGrandmotherBirthDate, setPaternalMaternalGreatGrandmotherBirthDate] = useState('');
-    const [paternalMaternalGreatGrandfatherBirthDate, setPaternalMaternalGreatGrandfatherBirthDate] = useState('');
-    const [maternalPaternalGreatGrandmotherBirthDate, setMaternalPaternalGreatGrandmotherBirthDate] = useState('');
-    const [maternalPaternalGreatGrandfatherBirthDate, setMaternalPaternalGreatGrandfatherBirthDate] = useState('');
-    const [maternalMaternalGreatGrandmotherBirthDate, setMaternalMaternalGreatGrandmotherBirthDate] = useState('');
-    const [maternalMaternalGreatGrandfatherBirthDate, setMaternalMaternalGreatGrandfatherBirthDate] = useState('');
-
-    const [basePersonBirthPlace, setBasePersonBirthPlace] = useState('');
-    const [bottomPagePersonBirthPlace, setBottomPagePersonBirthPlace] = useState('');
-    const [fatherBirthPlace, setFatherBirthPlace] = useState('');
-    const [motherBirthPlace, setMotherBirthPlace] = useState('');
-    const [paternalGrandmotherBirthPlace, setPaternalGrandmotherBirthPlace] = useState('');
-    const [paternalGrandfatherBirthPlace, setPaternalGrandfatherBirthPlace] = useState('');
-    const [maternalGrandmotherBirthPlace, setMaternalGrandmotherBirthPlace] = useState('');
-    const [maternalGrandfatherBirthPlace, setMaternalGrandfatherBirthPlace] = useState('');
-    const [paternalPaternalGreatGrandmotherBirthPlace, setPaternalPaternalGreatGrandmotherBirthPlace] = useState('');
-    const [paternalPaternalGreatGrandfatherBirthPlace, setPaternalPaternalGreatGrandfatherBirthPlace] = useState('');
-    const [paternalMaternalGreatGrandmotherBirthPlace, setPaternalMaternalGreatGrandmotherBirthPlace] = useState('');
-    const [paternalMaternalGreatGrandfatherBirthPlace, setPaternalMaternalGreatGrandfatherBirthPlace] = useState('');
-    const [maternalPaternalGreatGrandmotherBirthPlace, setMaternalPaternalGreatGrandmotherBirthPlace] = useState('');
-    const [maternalPaternalGreatGrandfatherBirthPlace, setMaternalPaternalGreatGrandfatherBirthPlace] = useState('');
-    const [maternalMaternalGreatGrandmotherBirthPlace, setMaternalMaternalGreatGrandmotherBirthPlace] = useState('');
-    const [maternalMaternalGreatGrandfatherBirthPlace, setMaternalMaternalGreatGrandfatherBirthPlace] = useState('');
-
-    const [basePersonDeathDate, setBasePersonDeathDate] = useState('');
-    const [bottomPagePersonDeathDate, setBottomPagePersonDeathDate] = useState('');
-    const [fatherDeathDate, setFatherDeathDate] = useState('');
-    const [motherDeathDate, setMotherDeathDate] = useState('');
-    const [paternalGrandmotherDeathDate, setPaternalGrandmotherDeathDate] = useState('');
-    const [paternalGrandfatherDeathDate, setPaternalGrandfatherDeathDate] = useState('');
-    const [maternalGrandmotherDeathDate, setMaternalGrandmotherDeathDate] = useState('');
-    const [maternalGrandfatherDeathDate, setMaternalGrandfatherDeathDate] = useState('');
-    const [paternalPaternalGreatGrandmotherDeathDate, setPaternalPaternalGreatGrandmotherDeathDate] = useState('');
-    const [paternalPaternalGreatGrandfatherDeathDate, setPaternalPaternalGreatGrandfatherDeathDate] = useState('');
-    const [paternalMaternalGreatGrandmotherDeathDate, setPaternalMaternalGreatGrandmotherDeathDate] = useState('');
-    const [paternalMaternalGreatGrandfatherDeathDate, setPaternalMaternalGreatGrandfatherDeathDate] = useState('');
-    const [maternalPaternalGreatGrandmotherDeathDate, setMaternalPaternalGreatGrandmotherDeathDate] = useState('');
-    const [maternalPaternalGreatGrandfatherDeathDate, setMaternalPaternalGreatGrandfatherDeathDate] = useState('');
-    const [maternalMaternalGreatGrandmotherDeathDate, setMaternalMaternalGreatGrandmotherDeathDate] = useState('');
-    const [maternalMaternalGreatGrandfatherDeathDate, setMaternalMaternalGreatGrandfatherDeathDate] = useState('');
-
-
-    const [basePersonDeathPlace, setBasePersonDeathPlace] = useState('');
-    const [bottomPagePersonDeathPlace, setBottomPagePersonDeathPlace] = useState('');
-    const [fatherDeathPlace, setFatherDeathPlace] = useState('');
-    const [motherDeathPlace, setMotherDeathPlace] = useState('');
-    const [paternalGrandmotherDeathPlace, setPaternalGrandmotherDeathPlace] = useState('');
-    const [paternalGrandfatherDeathPlace, setPaternalGrandfatherDeathPlace] = useState('');
-    const [maternalGrandmotherDeathPlace, setMaternalGrandmotherDeathPlace] = useState('');
-    const [maternalGrandfatherDeathPlace, setMaternalGrandfatherDeathPlace] = useState('');
-    const [paternalPaternalGreatGrandmotherDeathPlace, setPaternalPaternalGreatGrandmotherDeathPlace] = useState('');
-    const [paternalPaternalGreatGrandfatherDeathPlace, setPaternalPaternalGreatGrandfatherDeathPlace] = useState('');
-    const [paternalMaternalGreatGrandmotherDeathPlace, setPaternalMaternalGreatGrandmotherDeathPlace] = useState('');
-    const [paternalMaternalGreatGrandfatherDeathPlace, setPaternalMaternalGreatGrandfatherDeathPlace] = useState('');
-    const [maternalPaternalGreatGrandmotherDeathPlace, setMaternalPaternalGreatGrandmotherDeathPlace] = useState('');
-    const [maternalPaternalGreatGrandfatherDeathPlace, setMaternalPaternalGreatGrandfatherDeathPlace] = useState('');
-    const [maternalMaternalGreatGrandmotherDeathPlace, setMaternalMaternalGreatGrandmotherDeathPlace] = useState('');
-    const [maternalMaternalGreatGrandfatherDeathPlace, setMaternalMaternalGreatGrandfatherDeathPlace] = useState('');
-
-    const [basePersonOccupation, setBasePersonOccupation] = useState('');
-    const [bottomPagePersonOccupation, setBottomPagePersonOccupation] = useState('');
-    const [fatherOccupation, setFatherOccupation] = useState('');
-    const [motherOccupation, setMotherOccupation] = useState('');
-    const [paternalGrandmotherOccupation, setPaternalGrandmotherOccupation] = useState('');
-    const [paternalGrandfatherOccupation, setPaternalGrandfatherOccupation] = useState('');
-    const [maternalGrandmotherOccupation, setMaternalGrandmotherOccupation] = useState('');
-    const [maternalGrandfatherOccupation, setMaternalGrandfatherOccupation] = useState('');
-    const [paternalPaternalGreatGrandmotherOccupation, setPaternalPaternalGreatGrandmotherOccupation] = useState('');
-    const [paternalPaternalGreatGrandfatherOccupation, setPaternalPaternalGreatGrandfatherOccupation] = useState('');
-    const [paternalMaternalGreatGrandmotherOccupation, setPaternalMaternalGreatGrandmotherOccupation] = useState('');
-    const [paternalMaternalGreatGrandfatherOccupation, setPaternalMaternalGreatGrandfatherOccupation] = useState('');
-    const [maternalPaternalGreatGrandmotherOccupation, setMaternalPaternalGreatGrandmotherOccupation] = useState('');
-    const [maternalPaternalGreatGrandfatherOccupation, setMaternalPaternalGreatGrandfatherOccupation] = useState('');
-    const [maternalMaternalGreatGrandmotherOccupation, setMaternalMaternalGreatGrandmotherOccupation] = useState('');
-    const [maternalMaternalGreatGrandfatherOccupation, setMaternalMaternalGreatGrandfatherOccupation] = useState('');
-
-    const [basePersonProfileNumber, setBasePersonProfileNumber] = useState('');
-    const [bottomPagePersonProfileNumber, setBottomPagePersonProfileNumber] = useState('');
-    const [fatherProfileNumber, setFatherProfileNumber] = useState('');
-    const [motherProfileNumber, setMotherProfileNumber] = useState('');
-    const [paternalGrandmotherProfileNumber, setPaternalGrandmotherProfileNumber] = useState('');
-    const [paternalGrandfatherProfileNumber, setPaternalGrandfatherProfileNumber] = useState('');
-    const [maternalGrandmotherProfileNumber, setMaternalGrandmotherProfileNumber] = useState('');
-    const [maternalGrandfatherProfileNumber, setMaternalGrandfatherProfileNumber] = useState('');
-    const [paternalPaternalGreatGrandmotherProfileNumber, setPaternalPaternalGreatGrandmotherProfileNumber] = useState('');
-    const [paternalPaternalGreatGrandfatherProfileNumber, setPaternalPaternalGreatGrandfatherProfileNumber] = useState('');
-    const [paternalMaternalGreatGrandmotherProfileNumber, setPaternalMaternalGreatGrandmotherProfileNumber] = useState('');
-    const [paternalMaternalGreatGrandfatherProfileNumber, setPaternalMaternalGreatGrandfatherProfileNumber] = useState('');
-    const [maternalPaternalGreatGrandmotherProfileNumber, setMaternalPaternalGreatGrandmotherProfileNumber] = useState('');
-    const [maternalPaternalGreatGrandfatherProfileNumber, setMaternalPaternalGreatGrandfatherProfileNumber] = useState('');
-    const [maternalMaternalGreatGrandmotherProfileNumber, setMaternalMaternalGreatGrandmotherProfileNumber] = useState('');
-    const [maternalMaternalGreatGrandfatherProfileNumber, setMaternalMaternalGreatGrandfatherProfileNumber] = useState('');
-
-    const [fatherRelationToUser, setFatherRelationToUser] = useState('');
-    const [motherRelationToUser, setMotherRelationToUser] = useState('');
-    const [paternalGrandmotherRelationToUser, setPaternalGrandmotherRelationToUser] = useState('');
-    const [paternalGrandfatherRelationToUser, setPaternalGrandfatherRelationToUser] = useState('');
-    const [maternalGrandmotherRelationToUser, setMaternalGrandmotherRelationToUser] = useState('');
-    const [maternalGrandfatherRelationToUser, setMaternalGrandfatherRelationToUser] = useState('');
-    const [paternalPaternalGreatGrandmotherRelationToUser, setPaternalPaternalGreatGrandmotherRelationToUser] = useState('');
-    const [paternalPaternalGreatGrandfatherRelationToUser, setPaternalPaternalGreatGrandfatherRelationToUser] = useState('');
-    const [paternalMaternalGreatGrandmotherRelationToUser, setPaternalMaternalGreatGrandmotherRelationToUser] = useState('');
-    const [paternalMaternalGreatGrandfatherRelationToUser, setPaternalMaternalGreatGrandfatherRelationToUser] = useState('');
-    const [maternalPaternalGreatGrandmotherRelationToUser, setMaternalPaternalGreatGrandmotherRelationToUser] = useState('');
-    const [maternalPaternalGreatGrandfatherRelationToUser, setMaternalPaternalGreatGrandfatherRelationToUser] = useState('');
-    const [maternalMaternalGreatGrandmotherRelationToUser, setMaternalMaternalGreatGrandmotherRelationToUser] = useState('');
-    const [maternalMaternalGreatGrandfatherRelationToUser, setMaternalMaternalGreatGrandfatherRelationToUser] = useState('');
-
-    const [fatherEthnicity, setFatherEthnicity] = useState('');
-    const [motherEthnicity, setMotherEthnicity] = useState('');
-    const [paternalGrandmotherEthnicity, setPaternalGrandmotherEthnicity] = useState('');
-    const [paternalGrandfatherEthnicity, setPaternalGrandfatherEthnicity] = useState('');
-    const [maternalGrandmotherEthnicity, setMaternalGrandmotherEthnicity] = useState('');
-    const [maternalGrandfatherEthnicity, setMaternalGrandfatherEthnicity] = useState('');
-    const [paternalPaternalGreatGrandmotherEthnicity, setPaternalPaternalGreatGrandmotherEthnicity] = useState('');
-    const [paternalPaternalGreatGrandfatherEthnicity, setPaternalPaternalGreatGrandfatherEthnicity] = useState('');
-    const [paternalMaternalGreatGrandmotherEthnicity, setPaternalMaternalGreatGrandmotherEthnicity] = useState('');
-    const [paternalMaternalGreatGrandfatherEthnicity, setPaternalMaternalGreatGrandfatherEthnicity] = useState('');
-    const [maternalPaternalGreatGrandmotherEthnicity, setMaternalPaternalGreatGrandmotherEthnicity] = useState('');
-    const [maternalPaternalGreatGrandfatherEthnicity, setMaternalPaternalGreatGrandfatherEthnicity] = useState('');
-    const [maternalMaternalGreatGrandmotherEthnicity, setMaternalMaternalGreatGrandmotherEthnicity] = useState('');
-    const [maternalMaternalGreatGrandfatherEthnicity, setMaternalMaternalGreatGrandfatherEthnicity] = useState('');
-
-    const [fatherCauseOfDeath, setFatherCauseOfDeath] = useState('');
-    const [motherCauseOfDeath, setMotherCauseOfDeath] = useState('');
-    const [paternalGrandmotherCauseOfDeath, setPaternalGrandmotherCauseOfDeath] = useState('');
-    const [paternalGrandfatherCauseOfDeath, setPaternalGrandfatherCauseOfDeath] = useState('');
-    const [maternalGrandmotherCauseOfDeath, setMaternalGrandmotherCauseOfDeath] = useState('');
-    const [maternalGrandfatherCauseOfDeath, setMaternalGrandfatherCauseOfDeath] = useState('');
-    const [paternalPaternalGreatGrandmotherCauseOfDeath, setPaternalPaternalGreatGrandmotherCauseOfDeath] = useState('');
-    const [paternalPaternalGreatGrandfatherCauseOfDeath, setPaternalPaternalGreatGrandfatherCauseOfDeath] = useState('');
-    const [paternalMaternalGreatGrandmotherCauseOfDeath, setPaternalMaternalGreatGrandmotherCauseOfDeath] = useState('');
-    const [paternalMaternalGreatGrandfatherCauseOfDeath, setPaternalMaternalGreatGrandfatherCauseOfDeath] = useState('');
-    const [maternalPaternalGreatGrandmotherCauseOfDeath, setMaternalPaternalGreatGrandmotherCauseOfDeath] = useState('');
-    const [maternalPaternalGreatGrandfatherCauseOfDeath, setMaternalPaternalGreatGrandfatherCauseOfDeath] = useState('');
-    const [maternalMaternalGreatGrandmotherCauseOfDeath, setMaternalMaternalGreatGrandmotherCauseOfDeath] = useState('');
-    const [maternalMaternalGreatGrandfatherCauseOfDeath, setMaternalMaternalGreatGrandfatherCauseOfDeath] = useState('');
 
     const [paternalPaternalGreatGrandfatherHasParents, setPaternalPaternalGreatGrandfatherHasParents] = useState(false);
     const [paternalPaternalGreatGrandmotherHasParents, setPaternalPaternalGreatGrandmotherHasParents] = useState(false);
@@ -828,25 +350,31 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                 body: JSON.stringify({ userId }),
             });
 
-            const baseData = await baseResponse.json();
-            setBasePersonFirstName(baseData.firstName);
-            setBasePersonFullName(baseData.fullName);
-            setBasePersonLastName(baseData.lastName);
-            setBasePersonID(baseData.basePersonID);
-            setBasePersonBirthDate(baseData.birthDate);
-            setBasePersonBirthPlace(baseData.birthPlace);
-            setBasePersonDeathDate(baseData.deathDate);
-            setBasePersonDeathPlace(baseData.deathPlace);
-            setBasePersonOccupation(baseData.occupation);
-            setBasePersonEthnicity(baseData.ethnicity);
-            setBasePersonProfileNumber(baseData.profileNumber);
-            setBasePersonSex(baseData.sex);           
+            const baseData = await baseResponse.json();      
+            setBasePersonDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: baseData.fullName,
+                firstName: baseData.firstName,
+                middleName: baseData.fatherMiddleName,
+                lastName: baseData.lastName,
+                id: baseData.id,
+                birthDate: baseData.birthDate,
+                birthPlace: baseData.birthPlace,
+                deathPlace: baseData.deathPlace,
+                deathDate: baseData.deathDate,
+                occupation: baseData.occupation,
+                relationToUser: 0,
+                sex: baseData.sex,
+                ethnicity: baseData.ethnicity
+              }));
         } catch (error) {
             console.error("Error fetching initial data:", error);
         }
     };
 
+    useEffect(() => {
     fetchInitialData();
+    }, [])
 
     //grabs the current page number as stored in the database. This only runs once upon the page's reload
     useEffect(() => {
@@ -864,8 +392,8 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         initialPageNum();
     }, [])
 
-
     const setNewPageNum = (num) => {
+        console.log(num)
         const userId = localStorage.getItem('userId');
             const pageResponse = fetch('http://localhost:5000/set-current-page-number', {
             method: "POST",
@@ -875,7 +403,6 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         setPageNumber(num)
         window.location.reload()
     }
-
 
     useEffect(() => {
             const getNewPageNum = async () => {
@@ -887,32 +414,34 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             });
             
             const pageData = await pageResponse.json();
-            setBottomPagePersonFirstName(pageData.firstName);
-            setBottomPagePersonLastName(pageData.lastName);
-            setBottomPagePersonFullName(pageData.fullName);
-            setBottomPagePersonID(pageData.id);
-            setBottomPagePersonBirthDate(pageData.birthDate);
-            setBottomPagePersonBirthPlace(pageData.birthPlace);
-            setBottomPagePersonDeathDate(pageData.deathDate);
-            setBottomPagePersonDeathPlace(pageData.deathPlace);
-            setBottomPagePersonOccupation(pageData.occupation);
-            setBottomPagePersonEthnicity(pageData.ethnicity);
-            setBottomPagePersonProfileNumber(pageData.id);
-            setBottomPersonSex(pageData.sex);
-            setBottomRelationToBaseUser(pageData.relationToUser);
+            setBottomPersonDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: pageData.fullName,
+                firstName: pageData.firstName,
+                middleName: pageData.middleName,
+                lastName: pageData.lastName,
+                id: pageData.id,
+                birthDate: pageData.birthDate,
+                birthPlace: pageData.birthPlace,
+                deathPlace: pageData.deathPlace,
+                deathDate: pageData.deathDate,
+                occupation: pageData.occupation,
+                relationToUser: pageData.relationToUser,
+                ethnicity: pageData.ethnicity,
+                causeOfDeath: pageData.causeOfDeath,
+                sex: pageData.sex
+              }));
         }
         getNewPageNum();
     }, [pageNumber])
 
     const navigateDown = async (personID) => {
-        console.log(personID)
         const userId = localStorage.getItem('userId');
         const response = await fetch('http://localhost:5000/get-previous-page', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, personID })
         })
-
         const data = await response.json();
         setPageNumber(data.pageNum);
         window.location.reload();
@@ -950,8 +479,8 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
 
     const getFather = async () => {
-        if (bottomPagePersonID) {
-            const personID = bottomPagePersonID;
+        if (bottomPersonDetails.id) {
+            const personID = bottomPersonDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -960,32 +489,33 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setFatherName(data.fatherName);
-            setFatherFirstName(data.fatherFirstName);
-            setFatherMiddleName(data.fatherMiddleName);
-            setFatherLastName(data.fatherLastName);
-            setFatherID(data.fatherID);
-            setFatherBirthDate(data.fatherBirthDate);
-            setFatherBirthPlace(data.fatherBirthPlace);
-            setFatherDeathDate(data.fatherDeathDate);
-            setFatherDeathPlace(data.fatherDeathPlace);
-            setFatherOccupation(data.fatherOccupation);
-            setFatherProfileNumber(data.fatherProfileNumber);
-            setFatherRelationToUser(data.relation_to_user)
-            setFatherEthnicity(data.fatherEthnicity);
-            setFatherCauseOfDeath(data.causeOfDeath);
+            setFatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
 
     useEffect(() => {
         getFather();
-    }, [bottomPagePersonID])
-
+    }, [bottomPersonDetails.id])
 
 
     const getMother = async () => {
-        if (bottomPagePersonID) {
-            const personID = bottomPagePersonID;
+        if (bottomPersonDetails.id) {
+            const personID = bottomPersonDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -994,32 +524,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMotherName(data.motherName);
-            setMotherID(data.motherID);
-            setMotherFirstName(data.motherFirstName);
-            setMotherMiddleName(data.motherMiddleName);
-            setMotherLastName(data.motherLastName);
-            setMotherBirthDate(data.motherBirthDate);
-            setMotherBirthPlace(data.motherBirthPlace);
-            setMotherDeathDate(data.motherDeathDate);
-            setMotherDeathPlace(data.motherDeathPlace);
-            setMotherOccupation(data.motherOccupation);
-            setMotherProfileNumber(data.motherProfileNumber);
-            setMotherRelationToUser(data.relation_to_user);
-            setMotherEthnicity(data.ethnicity);
-            setMotherCauseOfDeath(data.causeOfDeath);
+            setMotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
 
     useEffect(() => {
         getMother();
-    }, [bottomPagePersonID])
-
-
+    }, [bottomPersonDetails.id])
 
     const getPaternalGrandFather = async () => {
-        if (fatherID) {
-            const personID = fatherID;
+        if (fatherDetails.id) {
+            const personID = fatherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -1028,30 +558,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setPaternalGrandfatherName(data.fatherName);
-            setPaternalGrandfatherFirstName(data.fatherFirstName);
-            setPaternalGrandfatherMiddleName(data.fatherMiddleName);
-            setPaternalGrandfatherLastName(data.fatherLastName);
-            setPaternalGrandfatherID(data.fatherID);
-            setPaternalGrandfatherBirthDate(data.fatherBirthDate);
-            setPaternalGrandfatherBirthPlace(data.fatherBirthPlace);
-            setPaternalGrandfatherDeathDate(data.fatherDeathDate);
-            setPaternalGrandfatherDeathPlace(data.fatherDeathPlace);
-            setPaternalGrandfatherOccupation(data.fatherOccupation);
-            setPaternalGrandfatherProfileNumber(data.fatherProfileNumber);
-            setPaternalGrandfatherRelationToUser(data.relation_to_user)
-            setPaternalGrandfatherEthnicity(data.fatherEthnicity);
-            setPaternalGrandfatherCauseOfDeath(data.causeOfDeath);
+            setPaternalGrandfatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
 
     useEffect(() => {
         getPaternalGrandFather();
-    }, [fatherID])
+    }, [fatherDetails.id])
 
     const getPaternalGrandMother= async () => {
-        if (fatherID) {
-            const personID = fatherID;
+        if (fatherDetails.id) {
+            const personID = fatherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -1060,30 +592,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setPaternalGrandmotherName(data.motherName);
-            setPaternalGrandmotherID(data.motherID);
-            setPaternalGrandmotherFirstName(data.motherFirstName);
-            setPaternalGrandmotherMiddleName(data.motherMiddleName);
-            setPaternalGrandmotherLastName(data.motherLastName);
-            setPaternalGrandmotherBirthDate(data.motherBirthDate);
-            setPaternalGrandmotherBirthPlace(data.motherBirthPlace);
-            setPaternalGrandmotherDeathDate(data.motherDeathDate);
-            setPaternalGrandmotherDeathPlace(data.motherDeathPlace);
-            setPaternalGrandmotherOccupation(data.motherOccupation);
-            setPaternalGrandmotherProfileNumber(data.motherProfileNumber);
-            setPaternalGrandmotherEthnicity(data.motherEthnicity);
-            setPaternalGrandmotherCauseOfDeath(data.causeOfDeath);
-            setPaternalGrandmotherRelationToUser(data.relation_to_user)
+            setPaternalGrandmotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
 
     useEffect(() => {
         getPaternalGrandMother();
-    }, [fatherID])
+    }, [fatherDetails.id])
 
     const getMaternalGrandFather = async () => {
-        if (motherID) {
-            const personID = motherID;
+        if (motherDetails.id) {
+            const personID = motherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -1092,30 +626,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMaternalGrandfatherName(data.fatherName);
-            setMaternalGrandfatherID(data.fatherID);
-            setMaternalGrandfatherFirstName(data.fatherFirstName);
-            setMaternalGrandfatherMiddleName(data.fatherMiddleName);
-            setMaternalGrandfatherLastName(data.fatherLastName);
-            setMaternalGrandfatherBirthDate(data.fatherBirthDate);
-            setMaternalGrandfatherBirthPlace(data.fatherBirthPlace);
-            setMaternalGrandfatherDeathDate(data.fatherDeathDate);
-            setMaternalGrandfatherDeathPlace(data.fatherDeathPlace);
-            setMaternalGrandfatherOccupation(data.fatherOccupation);
-            setMaternalGrandfatherProfileNumber(data.fatherProfileNumber);
-            setMaternalGrandfatherEthnicity(data.fatherEthnicity);
-            setMaternalGrandfatherCauseOfDeath(data.causeOfDeath);
-            setMaternalGrandfatherRelationToUser(data.relation_to_user)
+            setMaternalGrandfatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
 
     useEffect(() => {
         getMaternalGrandFather();
-    }, [motherID])
+    }, [motherDetails.id])
 
     const getMaternalGrandMother = async () => {
-        if (motherID) {
-            const personID = motherID;
+        if (motherDetails.id) {
+            const personID = motherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -1124,30 +660,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMaternalGrandmotherName(data.motherName);
-            setMaternalGrandmotherID(data.motherID);
-            setMaternalGrandmotherFirstName(data.motherFirstName);
-            setMaternalGrandmotherMiddleName(data.motherMiddleName);
-            setMaternalGrandmotherLastName(data.motherLastName);
-            setMaternalGrandmotherBirthDate(data.motherBirthDate);
-            setMaternalGrandmotherBirthPlace(data.motherBirthPlace);
-            setMaternalGrandmotherDeathDate(data.motherDeathDate);
-            setMaternalGrandmotherDeathPlace(data.motherDeathPlace);
-            setMaternalGrandmotherOccupation(data.motherOccupation);
-            setMaternalGrandmotherProfileNumber(data.motherProfileNumber);
-            setMaternalGrandmotherEthnicity(data.motherEthnicity);
-            setMaternalGrandmotherCauseOfDeath(data.causeOfDeath);
-            setMaternalGrandmotherRelationToUser(data.relation_to_user)
+            setMaternalGrandmotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getMaternalGrandMother();
-    }, [motherID])
+    }, [motherDetails.id])
 
    
    const getPaternalPaternalGreatGrandFather = async () => {
-        if (paternalGrandfatherID) {
-            const personID = paternalGrandfatherID;
+        if (paternalGrandfatherDetails.id) {
+            const personID = paternalGrandfatherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -1156,30 +694,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setPaternalPaternalGreatGrandfatherName(data.fatherName);
-            setPaternalPaternalGreatGrandfatherID(data.fatherID);
-            setPaternalPaternalGreatGrandfatherFirstName(data.fatherFirstName);
-            setPaternalPaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
-            setPaternalPaternalGreatGrandfatherLastName(data.fatherLastName);
-            setPaternalPaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
-            setPaternalPaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setPaternalPaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
-            setPaternalPaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
-            setPaternalPaternalGreatGrandfatherOccupation(data.fatherOccupation);
-            setPaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
-            setPaternalPaternalGreatGrandfatherEthnicity(data.fatherEthnicity);
-            setPaternalPaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
-            setPaternalPaternalGreatGrandfatherRelationToUser(data.relation_to_user)
+            setPaternalPaternalGreatGrandfatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getPaternalPaternalGreatGrandFather();
-    }, [paternalGrandfatherID])
+    }, [paternalGrandfatherDetails.id])
 
 
     const getPaternalPaternalGreatGrandMother = async () => {
-        if (paternalGrandfatherID) {
-            const personID = paternalGrandfatherID;
+        if (paternalGrandfatherDetails.id) {
+            const personID = paternalGrandfatherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -1188,30 +728,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setPaternalPaternalGreatGrandmotherName(data.motherName);
-            setPaternalPaternalGreatGrandmotherID(data.motherID);
-            setPaternalPaternalGreatGrandmotherFirstName(data.motherFirstName);
-            setPaternalPaternalGreatGrandmotherMiddleName(data.motherMiddleName);
-            setPaternalPaternalGreatGrandmotherLastName(data.motherLastName);
-            setPaternalPaternalGreatGrandmotherBirthDate(data.motherBirthDate);
-            setPaternalPaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setPaternalPaternalGreatGrandmotherDeathDate(data.motherDeathDate);
-            setPaternalPaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
-            setPaternalPaternalGreatGrandmotherOccupation(data.motherOccupation);
-            setPaternalPaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
-            setPaternalPaternalGreatGrandmotherEthnicity(data.motherEthnicity);
-            setPaternalPaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
-            setPaternalPaternalGreatGrandmotherRelationToUser(data.relation_to_user)
+            setPaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getPaternalPaternalGreatGrandMother();
-    }, [paternalGrandfatherID])
+    }, [paternalGrandfatherDetails.id])
 
 
     const getPaternalMaternalGreatGrandFather = async () => {
-        if (paternalGrandmotherID) {
-            const personID = paternalGrandmotherID;
+        if (paternalGrandmotherDetails.id) {
+            const personID = paternalGrandmotherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -1220,30 +762,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setPaternalMaternalGreatGrandfatherName(data.fatherName);
-            setPaternalMaternalGreatGrandfatherID(data.fatherID);
-            setPaternalMaternalGreatGrandfatherFirstName(data.fatherFirstName);
-            setPaternalMaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
-            setPaternalMaternalGreatGrandfatherLastName(data.fatherLastName);
-            setPaternalMaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
-            setPaternalMaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setPaternalMaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
-            setPaternalMaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
-            setPaternalMaternalGreatGrandfatherOccupation(data.fatherOccupation);
-            setPaternalMaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
-            setPaternalMaternalGreatGrandfatherEthnicity(data.fatherEthnicity);
-            setPaternalMaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
-            setPaternalMaternalGreatGrandfatherRelationToUser(data.relation_to_user)
+            setPaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getPaternalMaternalGreatGrandFather();
-    }, [paternalGrandmotherID])
+    }, [paternalGrandmotherDetails.id])
 
 
     const getPaternalMaternalGreatGrandMother = async () => {
-        if (paternalGrandmotherID) {
-            const personID = paternalGrandmotherID;
+        if (paternalGrandmotherDetails.id) {
+            const personID = paternalGrandmotherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -1252,30 +796,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setPaternalMaternalGreatGrandmotherName(data.motherName);
-            setPaternalMaternalGreatGrandmotherID(data.motherID);
-            setPaternalMaternalGreatGrandmotherFirstName(data.motherFirstName);
-            setPaternalMaternalGreatGrandmotherMiddleName(data.motherMiddleName);
-            setPaternalMaternalGreatGrandmotherLastName(data.motherLastName);
-            setPaternalMaternalGreatGrandmotherBirthDate(data.motherBirthDate);
-            setPaternalMaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setPaternalMaternalGreatGrandmotherDeathDate(data.motherDeathDate);
-            setPaternalMaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
-            setPaternalMaternalGreatGrandmotherOccupation(data.motherOccupation);
-            setPaternalMaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
-            setPaternalMaternalGreatGrandmotherEthnicity(data.motherEthnicity);
-            setPaternalMaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
-            setPaternalMaternalGreatGrandmotherRelationToUser(data.relation_to_user)
+            setPaternalMaternalGreatGrandmotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getPaternalMaternalGreatGrandMother();
-    }, [paternalGrandmotherID])
+    }, [paternalGrandmotherDetails.id])
 
 
     const getMaternalPaternalGreatGrandFather = async () => {
-        if (maternalGrandfatherID) {
-            const personID = maternalGrandfatherID;
+        if (maternalGrandfatherDetails.id) {
+            const personID = maternalGrandfatherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -1284,30 +830,32 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMaternalPaternalGreatGrandfatherName(data.fatherName);
-            setMaternalPaternalGreatGrandfatherID(data.fatherID);
-            setMaternalPaternalGreatGrandfatherFirstName(data.fatherFirstName);
-            setMaternalPaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
-            setMaternalPaternalGreatGrandfatherLastName(data.fatherLastName);
-            setMaternalPaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
-            setMaternalPaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setMaternalPaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
-            setMaternalPaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
-            setMaternalPaternalGreatGrandfatherOccupation(data.fatherOccupation);
-            setMaternalPaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
-            setMaternalPaternalGreatGrandfatherEthnicity(data.fatherEthnicity);
-            setMaternalPaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
-            setMaternalPaternalGreatGrandfatherRelationToUser(data.relation_to_user)
+            setMaternalPaternalGreatGrandfatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
         
     }
     useEffect(() => {
         getMaternalPaternalGreatGrandFather();
-    }, [maternalGrandfatherID])
+    }, [maternalGrandfatherDetails.id])
 
     const getMaternalPaternalGreatGrandmother = async () => {
-        if (maternalGrandfatherID) {
-            const personID = maternalGrandfatherID;
+        if (maternalGrandfatherDetails.id) {
+            const personID = maternalGrandfatherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -1316,29 +864,31 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMaternalPaternalGreatGrandmotherName(data.motherName);
-            setMaternalPaternalGreatGrandmotherID(data.motherID);
-            setMaternalPaternalGreatGrandmotherFirstName(data.motherFirstName);
-            setMaternalPaternalGreatGrandmotherMiddleName(data.motherMiddleName);
-            setMaternalPaternalGreatGrandmotherLastName(data.motherLastName);
-            setMaternalPaternalGreatGrandmotherBirthDate(data.motherBirthDate);
-            setMaternalPaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setMaternalPaternalGreatGrandmotherDeathDate(data.motherDeathDate);
-            setMaternalPaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
-            setMaternalPaternalGreatGrandmotherOccupation(data.motherOccupation);
-            setMaternalPaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
-            setMaternalPaternalGreatGrandmotherEthnicity(data.motherEthnicity);
-            setMaternalPaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
-            setMaternalPaternalGreatGrandmotherRelationToUser(data.relation_to_user)
+            setMaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getMaternalPaternalGreatGrandmother();
-    }, [maternalGrandfatherID])
+    }, [maternalGrandfatherDetails.id])
 
     const getMaternalMaternalGreatGrandFather = async () => {
-        if (maternalGrandmotherID) {
-            const personID = maternalGrandmotherID;
+        if (maternalGrandmotherDetails.id) {
+            const personID = maternalGrandmotherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-father', {
                 method: "POST",
@@ -1347,29 +897,31 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMaternalMaternalGreatGrandfatherName(data.fatherName);
-            setMaternalMaternalGreatGrandfatherID(data.fatherID);
-            setMaternalMaternalGreatGrandfatherFirstName(data.fatherFirstName);
-            setMaternalMaternalGreatGrandfatherMiddleName(data.fatherMiddleName);
-            setMaternalMaternalGreatGrandfatherLastName(data.fatherLastName);
-            setMaternalMaternalGreatGrandfatherBirthDate(data.fatherBirthDate);
-            setMaternalMaternalGreatGrandfatherBirthPlace(data.fatherBirthPlace);
-            setMaternalMaternalGreatGrandfatherDeathDate(data.fatherDeathDate);
-            setMaternalMaternalGreatGrandfatherDeathPlace(data.fatherDeathPlace);
-            setMaternalMaternalGreatGrandfatherOccupation(data.fatherOccupation);
-            setMaternalMaternalGreatGrandfatherProfileNumber(data.fatherProfileNumber);
-            setMaternalMaternalGreatGrandfatherEthnicity(data.fatherEthnicity);
-            setMaternalMaternalGreatGrandfatherCauseOfDeath(data.causeOfDeath);
-            setMaternalMaternalGreatGrandfatherRelationToUser(data.relation_to_user)
+            setMaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.fatherFullName,
+                firstName: data.fatherFirstName,
+                middleName: data.fatherMiddleName,
+                lastName: data.fatherLastName,
+                id: data.fatherID,
+                birthDate: data.fatherBirthDate,
+                birthPlace: data.fatherBirthPlace,
+                deathPlace: data.fatherDeathPlace,
+                deathDate: data.fatherDeathDate,
+                occupation: data.fatherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.fatherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getMaternalMaternalGreatGrandFather();
-    }, [maternalGrandmotherID])
+    }, [maternalGrandmotherDetails.id])
 
     const getMaternalMaternalGreatGrandMother = async () => {
-        if (maternalGrandmotherID) {
-            const personID = maternalGrandmotherID;
+        if (maternalGrandmotherDetails.id) {
+            const personID = maternalGrandmotherDetails.id;
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/get-mother', {
                 method: "POST",
@@ -1378,457 +930,457 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             })
 
             const data = await response.json();
-            setMaternalMaternalGreatGrandmotherName(data.motherName);
-            setMaternalMaternalGreatGrandmotherID(data.motherID);
-            setMaternalMaternalGreatGrandmotherFirstName(data.motherFirstName);
-            setMaternalMaternalGreatGrandmotherMiddleName(data.motherMiddleName);
-            setMaternalMaternalGreatGrandmotherLastName(data.motherLastName);
-            setMaternalMaternalGreatGrandmotherBirthDate(data.motherBirthDate);
-            setMaternalMaternalGreatGrandmotherBirthPlace(data.motherBirthPlace);
-            setMaternalMaternalGreatGrandmotherDeathDate(data.motherDeathDate);
-            setMaternalMaternalGreatGrandmotherDeathPlace(data.motherDeathPlace);
-            setMaternalMaternalGreatGrandmotherOccupation(data.motherOccupation);
-            setMaternalMaternalGreatGrandmotherProfileNumber(data.motherProfileNumber);
-            setMaternalMaternalGreatGrandmotherEthnicity(data.motherEthnicity);
-            setMaternalMaternalGreatGrandmotherCauseOfDeath(data.causeOfDeath);
-            setMaternalMaternalGreatGrandmotherRelationToUser(data.relation_to_user)
+            setMaternalMaternalGreatGrandmotherDetails((prevDetails) => ({
+                ...prevDetails,
+                fullName: data.motherFullName,
+                firstName: data.motherFirstName,
+                middleName: data.motherMiddleName,
+                lastName: data.motherLastName,
+                id: data.motherID,
+                birthDate: data.motherBirthDate,
+                birthPlace: data.motherBirthPlace,
+                deathPlace: data.motherDeathPlace,
+                deathDate: data.motherDeathDate,
+                occupation: data.motherOccupation,
+                relationToUser: data.relation_to_user,
+                ethnicity: data.motherEthnicity,
+                causeOfDeath: data.causeOfDeath
+              }));
         }
     }
     useEffect(() => {
         getMaternalMaternalGreatGrandMother();
-    }, [maternalGrandmotherID])
+    }, [maternalGrandmotherDetails.id])
 
 
-    
-    //updates fatherDetails whenever it changes
-        useEffect(() => {
-            if (!fatherDetails.lastName && bottomPagePersonLastName) {
-                setFatherDetails((prev) => ({
-                  ...prev,
-                  lastName: bottomPagePersonLastName,
-                }));
-              }
-        }, [fatherDetails.lastName, bottomPagePersonLastName]);
+    // //below useEffects automatically supply the surname and ethnicity of the child
+    // //updates fatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!fatherDetails.lastName && bottomPersonDetails.lastName) {
+    //             setFatherDetails((prev) => ({
+    //               ...prev,
+    //               lastName: bottomPersonDetails.lastName,
+    //             }));
+    //           }
+    //     }, [fatherDetails.lastName, bottomPersonDetails.lastName]);
 
-        useEffect(() => {
-            if (!fatherDetails.ethnicity && bottomPagePersonEthnicity) {
-                setFatherDetails((prev) => ({
-                  ...prev,
-                  ethnicity: bottomPagePersonEthnicity,
-                }));
-              }
-        }, [fatherDetails.ethnicity, bottomPagePersonEthnicity]);
+    //     useEffect(() => {
+    //         if (!fatherDetails.ethnicity && bottomPersonDetails.ethnicity) {
+    //             setFatherDetails((prev) => ({
+    //               ...prev,
+    //               ethnicity: bottomPersonDetails.ethnicity,
+    //             }));
+    //           }
+    //     }, [fatherDetails.ethnicity, bottomPersonDetails.ethnicity]);
 
-        //updates motherDetails whenever it changes
-        useEffect(() => {
-            if (!motherDetails.ethnicity && bottomPagePersonEthnicity) {
-                setMotherDetails((prev) => ({
-                  ...prev,
-                  ethnicity: bottomPagePersonEthnicity,
-                }));
-              }
-        }, [motherDetails.ethnicity, bottomPagePersonEthnicity]);
+    //     //updates motherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!motherDetails.ethnicity && bottomPersonDetails.ethnicity) {
+    //             setMotherDetails((prev) => ({
+    //               ...prev,
+    //               ethnicity: bottomPersonDetails.ethnicity,
+    //             }));
+    //           }
+    //     }, [motherDetails.ethnicity, bottomPersonDetails.ethnicity]);
 
-        //updates paternalGrandfatherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalGrandfatherDetails.lastName && fatherLastName) {
-                setPaternalGrandfatherDetails((prev) => ({
-                    ...prev,
-                    lastName: fatherLastName,
-                  }))
-              }
-        }, [paternalGrandfatherDetails.lastName, fatherLastName]);
+    //     //updates paternalGrandfatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalGrandfatherDetails.lastName && fatherDetails.lastName) {
+    //             setPaternalGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: fatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [paternalGrandfatherDetails.lastName, fatherDetails.lastName]);
 
-        useEffect(() => {
-            if (!paternalGrandfatherDetails.ethnicity  && fatherEthnicity) {
-                setPaternalGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: fatherEthnicity,
-                  }))
-              }
-        }, [paternalGrandfatherDetails.ethnicity, fatherEthnicity]);
+    //     useEffect(() => {
+    //         if (!paternalGrandfatherDetails.ethnicity  && fatherDetails.ethnicity) {
+    //             setPaternalGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: fatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalGrandfatherDetails.ethnicity, fatherDetails.ethnicity]);
 
-        //updates paternalGrandmotherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalGrandmotherDetails.ethnicity  && fatherEthnicity) {
-                setPaternalGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: fatherEthnicity,
-                  }))
-              }
-        }, [paternalGrandmotherDetails.ethnicity, fatherEthnicity]);
+    //     //updates paternalGrandmotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalGrandmotherDetails.ethnicity  && fatherDetails.ethnicity) {
+    //             setPaternalGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: fatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalGrandmotherDetails.ethnicity, fatherDetails.ethnicity]);
 
-        //updates maternalGrandfatherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalGrandfatherDetails.lastName && motherLastName) {
-                setMaternalGrandfatherDetails((prev) => ({
-                    ...prev,
-                    lastName: motherLastName,
-                  }))
-              }
-        }, [maternalGrandfatherDetails.lastName, motherLastName]);
+    //     //updates maternalGrandfatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalGrandfatherDetails.lastName && motherDetails.lastName) {
+    //             setMaternalGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: motherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [maternalGrandfatherDetails.lastName, motherDetails.lastName]);
 
-        useEffect(() => {
-            if (!maternalGrandfatherDetails.ethnicity  && motherEthnicity) {
-                setMaternalGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: motherEthnicity,
-                  }))
-              }
-        }, [maternalGrandfatherDetails.ethnicity, motherEthnicity]);
+    //     useEffect(() => {
+    //         if (!maternalGrandfatherDetails.ethnicity  && motherDetails.ethnicity) {
+    //             setMaternalGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: motherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalGrandfatherDetails.ethnicity, motherDetails.ethnicity]);
 
-        //updates maternalGrandmotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalGrandmotherDetails.ethnicity  && motherEthnicity) {
-                setMaternalGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: motherEthnicity,
-                  }))
-              }
-        }, [maternalGrandmotherDetails.ethnicity, motherEthnicity]);
+    //     //updates maternalGrandmotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalGrandmotherDetails.ethnicity  && motherDetails.ethnicity) {
+    //             setMaternalGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: motherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalGrandmotherDetails.ethnicity, motherDetails.ethnicity]);
 
-        //updates paternalPaternalGreatGrandfatherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalPaternalGreatGrandfatherDetails.lastName && paternalGrandfatherLastName) {
-                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    lastName: paternalGrandfatherLastName,
-                  }))
-              }
-        }, [paternalPaternalGreatGrandfatherDetails.lastName, paternalGrandfatherLastName]);
+    //     //updates paternalPaternalGreatGrandfatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalPaternalGreatGrandfatherDetails.lastName && paternalGrandfatherDetails.lastName) {
+    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: paternalGrandfatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [paternalPaternalGreatGrandfatherDetails.lastName, paternalGrandfatherDetails.lastName]);
 
-        useEffect(() => {
-            if (!paternalPaternalGreatGrandfatherDetails.ethnicity  && paternalGrandfatherEthnicity) {
-                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalGrandfatherEthnicity,
-                  }))
-              }
-        }, [paternalPaternalGreatGrandfatherDetails.ethnicity, paternalGrandfatherEthnicity]);
+    //     useEffect(() => {
+    //         if (!paternalPaternalGreatGrandfatherDetails.ethnicity  && paternalGrandfatherDetails.ethnicity) {
+    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalPaternalGreatGrandfatherDetails.ethnicity, paternalGrandfatherDetails.ethnicity]);
 
-        //updates paternalPaternalGreatGrandmotherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalPaternalGreatGrandmotherDetails.ethnicity  && paternalGrandfatherEthnicity) {
-                setPaternalPaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalGrandfatherEthnicity,
-                  }))
-              }
-        }, [paternalPaternalGreatGrandmotherDetails.ethnicity, paternalGrandfatherEthnicity]);
+    //     //updates paternalPaternalGreatGrandmotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalPaternalGreatGrandmotherDetails.ethnicity  && paternalGrandfatherDetails.ethnicity) {
+    //             setPaternalPaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalPaternalGreatGrandmotherDetails.ethnicity, paternalGrandfatherDetails.ethnicity]);
 
-        //updates paternalMaternalGreatGrandfatherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandfatherDetails.lastName && paternalGrandmotherLastName) {
-                setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    lastName: paternalGrandmotherLastName,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandfatherDetails.lastName, paternalGrandmotherLastName]);
+    //     //updates paternalMaternalGreatGrandfatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandfatherDetails.lastName && paternalGrandmotherDetails.lastName) {
+    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: paternalGrandmotherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandfatherDetails.lastName, paternalGrandmotherDetails.lastName]);
 
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandfatherDetails.ethnicity  && paternalGrandmotherEthnicity) {
-                setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalGrandmotherEthnicity,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandfatherDetails.ethnicity, paternalGrandmotherEthnicity]);
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandfatherDetails.ethnicity  && paternalGrandmotherDetails.ethnicity) {
+    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandfatherDetails.ethnicity, paternalGrandmotherDetails.ethnicity]);
 
-        //updates paternalMaternalGreatGrandmotherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandmotherDetails.ethnicity  && paternalGrandmotherEthnicity) {
-                setPaternalMaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalGrandmotherEthnicity,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandmotherDetails.ethnicity, paternalGrandmotherEthnicity]);
+    //     //updates paternalMaternalGreatGrandmotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandmotherDetails.ethnicity  && paternalGrandmotherDetails.ethnicity) {
+    //             setPaternalMaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandmotherDetails.ethnicity, paternalGrandmotherDetails.ethnicity]);
 
-        //updates maternalPaternalGreatGrandfatherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandfatherDetails.lastName && maternalGrandfatherLastName) {
-                setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    lastName: maternalGrandfatherLastName,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandfatherDetails.lastName, maternalGrandfatherLastName]);
+    //     //updates maternalPaternalGreatGrandfatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandfatherDetails.lastName && maternalGrandfatherDetails.lastName) {
+    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: maternalGrandfatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandfatherDetails.lastName, maternalGrandfatherDetails.lastName]);
 
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandfatherDetails.ethnicity  && maternalGrandfatherEthnicity) {
-                setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalGrandfatherEthnicity,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandfatherDetails.ethnicity, maternalGrandfatherEthnicity]);
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandfatherDetails.ethnicity  && maternalGrandfatherDetails.ethnicity) {
+    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandfatherDetails.ethnicity, maternalGrandfatherDetails.ethnicity]);
 
-        //updates maternalPaternalGreatGrandmotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandmotherDetails.ethnicity  && maternalGrandfatherEthnicity) {
-                setMaternalPaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalGrandfatherEthnicity,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandmotherDetails.ethnicity, maternalGrandfatherEthnicity]);
+    //     //updates maternalPaternalGreatGrandmotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandmotherDetails.ethnicity  && maternalGrandfatherDetails.ethnicity) {
+    //             setMaternalPaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandmotherDetails.ethnicity, maternalGrandfatherDetails.ethnicity]);
 
-        //updates maternalMaternalGreatGrandfatherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandfatherDetails.lastName && maternalGrandmotherLastName) {
-                setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    lastName: maternalGrandmotherLastName,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandfatherDetails.lastName, maternalGrandmotherLastName]);
+    //     //updates maternalMaternalGreatGrandfatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandfatherDetails.lastName && maternalGrandmotherDetails.lastName) {
+    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: maternalGrandmotherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandfatherDetails.lastName, maternalGrandmotherDetails.lastName]);
 
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandfatherDetails.ethnicity  && maternalGrandmotherEthnicity) {
-                setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalGrandmotherEthnicity,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandfatherDetails.ethnicity, maternalGrandmotherEthnicity]);
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandfatherDetails.ethnicity  && maternalGrandmotherDetails.ethnicity) {
+    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandfatherDetails.ethnicity, maternalGrandmotherDetails.ethnicity]);
 
-        //updates maternalMaternalGreatGrandmotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandmotherDetails.ethnicity  && maternalGrandmotherEthnicity) {
-                setMaternalMaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalGrandmotherEthnicity,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandmotherDetails.ethnicity, maternalGrandmotherEthnicity]);
+    //     //updates maternalMaternalGreatGrandmotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandmotherDetails.ethnicity  && maternalGrandmotherDetails.ethnicity) {
+    //             setMaternalMaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandmotherDetails.ethnicity, maternalGrandmotherDetails.ethnicity]);
 
+    //     //updates paternalPaternalGreatGrandfathersFatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalPaternalGreatGrandfathersFatherDetails.lastName && paternalPaternalGreatGrandfatherDetails.lastName) {
+    //             setPaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: paternalPaternalGreatGrandfatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [paternalPaternalGreatGrandfathersFatherDetails.lastName, paternalPaternalGreatGrandfatherDetails.lastName]);
 
+    //     useEffect(() => {
+    //         if (!paternalPaternalGreatGrandfathersFatherDetails.ethnicity  && paternalPaternalGreatGrandfatherDetails.ethnicity) {
+    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalPaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalPaternalGreatGrandfathersFatherDetails.ethnicity, paternalPaternalGreatGrandfatherDetails.ethnicity]);
 
-
-
-
-        
-        //updates paternalPaternalGreatGrandfathersFatherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalPaternalGreatGrandfathersFatherDetails.lastName && paternalPaternalGreatGrandfatherLastName) {
-                setPaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: paternalPaternalGreatGrandfatherLastName,
-                  }))
-              }
-        }, [paternalPaternalGreatGrandfathersFatherDetails.lastName, paternalPaternalGreatGrandfatherLastName]);
-
-        useEffect(() => {
-            if (!paternalPaternalGreatGrandfathersFatherDetails.ethnicity  && paternalPaternalGreatGrandfatherEthnicity) {
-                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalPaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [paternalPaternalGreatGrandfathersFatherDetails.ethnicity, paternalPaternalGreatGrandfatherEthnicity]);
-
-        //updates paternalPaternalGreatGrandfathersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalPaternalGreatGrandfathersMotherDetails.ethnicity  && paternalPaternalGreatGrandfatherEthnicity) {
-                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalPaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [paternalPaternalGreatGrandfathersMotherDetails.ethnicity, paternalPaternalGreatGrandfatherEthnicity]);
+    //     //updates paternalPaternalGreatGrandfathersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalPaternalGreatGrandfathersMotherDetails.ethnicity  && paternalPaternalGreatGrandfatherDetails.ethnicity) {
+    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalPaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalPaternalGreatGrandfathersMotherDetails.ethnicity, paternalPaternalGreatGrandfatherDetails.ethnicity]);
 
 
 
-        //updates paternalMaternalGreatGrandfathersFatherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandfathersFatherDetails.lastName && paternalMaternalGreatGrandfatherLastName) {
-                setPaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: paternalMaternalGreatGrandfatherLastName,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandfathersFatherDetails.lastName, paternalMaternalGreatGrandfatherLastName]);
+    //     //updates paternalMaternalGreatGrandfathersFatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandfathersFatherDetails.lastName && paternalMaternalGreatGrandfatherDetails.lastName) {
+    //             setPaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: paternalMaternalGreatGrandfatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandfathersFatherDetails.lastName, paternalMaternalGreatGrandfatherDetails.lastName]);
 
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandfathersFatherDetails.ethnicity  && paternalMaternalGreatGrandfatherEthnicity) {
-                setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalMaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandfathersFatherDetails.ethnicity, paternalMaternalGreatGrandfatherEthnicity]);
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandfathersFatherDetails.ethnicity  && paternalMaternalGreatGrandfatherDetails.ethnicity) {
+    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandfathersFatherDetails.ethnicity, paternalMaternalGreatGrandfatherDetails.ethnicity]);
 
-        //updates paternalMaternalGreatGrandfathersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandfathersMotherDetails.ethnicity  && paternalMaternalGreatGrandfatherEthnicity) {
-                setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalMaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandfathersMotherDetails.ethnicity, paternalMaternalGreatGrandfatherEthnicity]);
+    //     //updates paternalMaternalGreatGrandfathersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandfathersMotherDetails.ethnicity  && paternalMaternalGreatGrandfatherDetails.ethnicity) {
+    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandfathersMotherDetails.ethnicity, paternalMaternalGreatGrandfatherDetails.ethnicity]);
 
-        //updates paternalMaternalGreatGrandmothersFatherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandmothersFatherDetails.lastName && paternalMaternalGreatGrandmotherLastName) {
-                setPaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: paternalMaternalGreatGrandmotherLastName,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandmothersFatherDetails.lastName, paternalMaternalGreatGrandmotherLastName]);
+    //     //updates paternalMaternalGreatGrandmothersFatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandmothersFatherDetails.lastName && paternalMaternalGreatGrandmotherDetails.lastName) {
+    //             setPaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: paternalMaternalGreatGrandmotherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandmothersFatherDetails.lastName, paternalMaternalGreatGrandmotherDetails.lastName]);
 
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandmothersFatherDetails.ethnicity  && paternalMaternalGreatGrandmotherEthnicity) {
-                setPaternalMaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalMaternalGreatGrandmotherEthnicity,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandmothersFatherDetails.ethnicity, paternalMaternalGreatGrandmotherEthnicity]);
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandmothersFatherDetails.ethnicity  && paternalMaternalGreatGrandmotherDetails.ethnicity) {
+    //             setPaternalMaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalMaternalGreatGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandmothersFatherDetails.ethnicity, paternalMaternalGreatGrandmotherDetails.ethnicity]);
 
-        //updates paternalMaternalGreatGrandmothersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!paternalMaternalGreatGrandmothersMotherDetails.ethnicity  && paternalMaternalGreatGrandmotherEthnicity) {
-                setPaternalMaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: paternalMaternalGreatGrandmotherEthnicity,
-                  }))
-              }
-        }, [paternalMaternalGreatGrandmothersMotherDetails.ethnicity, paternalMaternalGreatGrandmotherEthnicity]);
+    //     //updates paternalMaternalGreatGrandmothersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!paternalMaternalGreatGrandmothersMotherDetails.ethnicity  && paternalMaternalGreatGrandmotherDetails.ethnicity) {
+    //             setPaternalMaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: paternalMaternalGreatGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [paternalMaternalGreatGrandmothersMotherDetails.ethnicity, paternalMaternalGreatGrandmotherDetails.ethnicity]);
 
 
         
 
 
-         //updates maternalPaternalGreatGrandfathersFatherDetails whenever it changes
-         useEffect(() => {
-            if (!maternalPaternalGreatGrandfathersFatherDetails.lastName && maternalPaternalGreatGrandfatherLastName) {
-                setMaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: maternalPaternalGreatGrandfatherLastName,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandfathersFatherDetails.lastName, maternalPaternalGreatGrandfatherLastName]);
+    //      //updates maternalPaternalGreatGrandfathersFatherDetails whenever it changes
+    //      useEffect(() => {
+    //         if (!maternalPaternalGreatGrandfathersFatherDetails.lastName && maternalPaternalGreatGrandfatherDetails.lastName) {
+    //             setMaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: maternalPaternalGreatGrandfatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandfathersFatherDetails.lastName, maternalPaternalGreatGrandfatherDetails.lastName]);
 
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandfathersFatherDetails.ethnicity  && maternalPaternalGreatGrandfatherEthnicity) {
-                setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalPaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandfathersFatherDetails.ethnicity, maternalPaternalGreatGrandfatherEthnicity]);
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandfathersFatherDetails.ethnicity  && maternalPaternalGreatGrandfatherDetails.ethnicity) {
+    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalPaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandfathersFatherDetails.ethnicity, maternalPaternalGreatGrandfatherDetails.ethnicity]);
 
-        //updates maternalPaternalGreatGrandfathersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandfathersMotherDetails.ethnicity  && maternalPaternalGreatGrandfatherEthnicity) {
-                setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalPaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandfathersMotherDetails.ethnicity, maternalPaternalGreatGrandfatherEthnicity]);
+    //     //updates maternalPaternalGreatGrandfathersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandfathersMotherDetails.ethnicity  && maternalPaternalGreatGrandfatherDetails.ethnicity) {
+    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalPaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandfathersMotherDetails.ethnicity, maternalPaternalGreatGrandfatherDetails.ethnicity]);
 
+    //      //updates maternalPaternalGreatGrandmothersFatherDetails whenever it changes
+    //      useEffect(() => {
+    //         if (!maternalPaternalGreatGrandmothersFatherDetails.lastName && maternalPaternalGreatGrandmotherDetails.lastName) {
+    //             setMaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: maternalPaternalGreatGrandmotherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandmothersFatherDetails.lastName, maternalPaternalGreatGrandmotherDetails.lastName]);
 
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandmothersFatherDetails.ethnicity  && maternalPaternalGreatGrandmotherDetails.ethnicity) {
+    //             setMaternalPaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalPaternalGreatGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandmothersFatherDetails.ethnicity, maternalPaternalGreatGrandmotherDetails.ethnicity]);
 
-
-
-         //updates maternalPaternalGreatGrandmothersFatherDetails whenever it changes
-         useEffect(() => {
-            if (!maternalPaternalGreatGrandmothersFatherDetails.lastName && maternalPaternalGreatGrandmotherLastName) {
-                setMaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: maternalPaternalGreatGrandmotherLastName,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandmothersFatherDetails.lastName, maternalPaternalGreatGrandmotherLastName]);
-
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandmothersFatherDetails.ethnicity  && maternalPaternalGreatGrandmotherEthnicity) {
-                setMaternalPaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalPaternalGreatGrandmotherEthnicity,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandmothersFatherDetails.ethnicity, maternalPaternalGreatGrandmotherEthnicity]);
-
-        //updates maternalPaternalGreatGrandmothersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalPaternalGreatGrandmothersMotherDetails.ethnicity  && maternalPaternalGreatGrandmotherEthnicity) {
-                setMaternalPaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalPaternalGreatGrandmotherEthnicity,
-                  }))
-              }
-        }, [maternalPaternalGreatGrandmothersMotherDetails.ethnicity, maternalPaternalGreatGrandmotherEthnicity]);
+    //     //updates maternalPaternalGreatGrandmothersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalPaternalGreatGrandmothersMotherDetails.ethnicity  && maternalPaternalGreatGrandmotherDetails.ethnicity) {
+    //             setMaternalPaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalPaternalGreatGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalPaternalGreatGrandmothersMotherDetails.ethnicity, maternalPaternalGreatGrandmotherDetails.ethnicity]);
 
 
 
 
 
-        //updates MaternalMaternalGreatGrandfathersFatherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandfathersFatherDetails.lastName && maternalMaternalGreatGrandfatherLastName) {
-                setMaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: maternalMaternalGreatGrandfatherLastName,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandfathersFatherDetails.lastName, maternalMaternalGreatGrandfatherLastName]);
+    //     //updates MaternalMaternalGreatGrandfathersFatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandfathersFatherDetails.lastName && maternalMaternalGreatGrandfatherDetails.lastName) {
+    //             setMaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: maternalMaternalGreatGrandfatherDetails.lastName,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandfathersFatherDetails.lastName, maternalMaternalGreatGrandfatherDetails.lastName]);
 
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandfathersFatherDetails.ethnicity  && maternalMaternalGreatGrandfatherEthnicity) {
-                setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalMaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandfathersFatherDetails.ethnicity, maternalMaternalGreatGrandfatherEthnicity]);
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandfathersFatherDetails.ethnicity  && maternalMaternalGreatGrandfatherDetails.ethnicity) {
+    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalMaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandfathersFatherDetails.ethnicity, maternalMaternalGreatGrandfatherDetails.ethnicity]);
 
-        //updates maternalMaternalGreatGrandfathersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandfathersMotherDetails.ethnicity  && maternalMaternalGreatGrandfatherEthnicity) {
-                setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalMaternalGreatGrandfatherEthnicity,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandfathersMotherDetails.ethnicity, maternalMaternalGreatGrandfatherEthnicity]);
-
-
-        //updates MaternalMaternalGreatGrandmothersFatherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandmothersFatherDetails.lastName && maternalMaternalGreatGrandmotherLastName) {
-                setMaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
-                    ...prev,
-                    lastName: maternalMaternalGreatGrandmotherLastName,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandmothersFatherDetails.lastName, maternalMaternalGreatGrandmotherLastName]);
-
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandmothersFatherDetails.ethnicity  && maternalMaternalGreatGrandmotherEthnicity) {
-                setMaternalMaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalMaternalGreatGrandmotherEthnicity,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandmothersFatherDetails.ethnicity, maternalMaternalGreatGrandmotherEthnicity]);
-
-        //updates maternalMaternalGreatGrandmothersMotherDetails whenever it changes
-        useEffect(() => {
-            if (!maternalMaternalGreatGrandmothersMotherDetails.ethnicity  && maternalMaternalGreatGrandmotherEthnicity) {
-                setMaternalMaternalGreatGrandmotherDetails((prev) => ({
-                    ...prev,
-                    ethnicity: maternalMaternalGreatGrandmotherEthnicity,
-                  }))
-              }
-        }, [maternalMaternalGreatGrandmothersMotherDetails.ethnicity, maternalMaternalGreatGrandmotherEthnicity]);
+    //     //updates maternalMaternalGreatGrandfathersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandfathersMotherDetails.ethnicity  && maternalMaternalGreatGrandfatherDetails.ethnicity) {
+    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalMaternalGreatGrandfatherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandfathersMotherDetails.ethnicity, maternalMaternalGreatGrandfatherDetails.ethnicity]);
 
 
+    //     //updates MaternalMaternalGreatGrandmothersFatherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandmothersFatherDetails.lastName && maternalMaternalGreatGrandmotherDetails.lastName) {
+    //             setMaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+    //                 ...prev,
+    //                 lastName: maternalMaternalGreatGrandmotherDetails.kastName,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandmothersFatherDetails.lastName, maternalMaternalGreatGrandmotherDetails.lastName]);
 
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandmothersFatherDetails.ethnicity  && maternalMaternalGreatGrandmotherDetails.ethnicity) {
+    //             setMaternalMaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalMaternalGreatGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandmothersFatherDetails.ethnicity, maternalMaternalGreatGrandmotherDetails.ethnicity]);
+
+    //     //updates maternalMaternalGreatGrandmothersMotherDetails whenever it changes
+    //     useEffect(() => {
+    //         if (!maternalMaternalGreatGrandmothersMotherDetails.ethnicity  && maternalMaternalGreatGrandmotherDetails.ethnicity) {
+    //             setMaternalMaternalGreatGrandmotherDetails((prev) => ({
+    //                 ...prev,
+    //                 ethnicity: maternalMaternalGreatGrandmotherDetails.ethnicity,
+    //               }))
+    //           }
+    //     }, [maternalMaternalGreatGrandmothersMotherDetails.ethnicity, maternalMaternalGreatGrandmotherDetails.ethnicity]);
+
+
+
+    //     //below useEffects automatically supply the details of an ancestor for the edit modal
+    //     useEffect(() => {
+    //             setFatherDetails((prev) => ({
+    //             ...prev,
+    //             firsName: fatherDetails.firstName,
+    //             lastName: fatherDetails.lastName,
+    //             }));
+    //     }, [fatherDetails]);
         
 
 
@@ -1855,8 +1407,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveFatherChanges = async () => {
             setShowFather(false);
             try {
-                const data = await saveAncestorChanges(fatherDetails, bottomPagePersonID, "male");
-                setFatherID(data);
+                const data = await saveAncestorChanges(fatherDetails, bottomPersonDetails.id, "male");
+                setFatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getFather();
             } catch (error) {
                 console.log("Error saving father changes:", error);
@@ -1866,8 +1421,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMotherChanges = async () => {
             setShowMother(false);
             try {
-                const data = await saveAncestorChanges(motherDetails, bottomPagePersonID, "female");
-                setMotherID(data);
+                const data = await saveAncestorChanges(motherDetails, bottomPersonDetails.id, "female");
+                setMotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));;
                 getMother();
             } catch (error) {
                 console.log("Error saving mother changes:", error);
@@ -1877,8 +1435,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const savePaternalGrandfatherChanges = async () => {
             setShowPaternalGrandfather(false);
             try {
-                const data = await saveAncestorChanges(paternalGrandfatherDetails, fatherID, "male");
-                setPaternalGrandfatherID(data);
+                const data = await saveAncestorChanges(paternalGrandfatherDetails, fatherDetails.id, "male");
+                setPaternalGrandfatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getPaternalGrandFather();
             } catch (error) {
                 console.log("Error saving paternal grandfather changes:", error);
@@ -1888,8 +1449,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const savePaternalGrandmotherChanges = async () => {
             setShowPaternalGrandmother(false);
             try {
-                const data = await saveAncestorChanges(paternalGrandmotherDetails, fatherID, "female");
-                setPaternalGrandmotherID(data);
+                const data = await saveAncestorChanges(paternalGrandmotherDetails, fatherDetails.id, "female");
+                setPaternalGrandmotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getPaternalGrandMother();
             } catch (error) {
                 console.log("Error saving paternal grandmother changes:", error);
@@ -1899,8 +1463,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMaternalGrandfatherChanges = async () => {
             setShowMaternalGrandfather(false);
             try {
-                const data = await saveAncestorChanges(maternalGrandfatherDetails, motherID, "male");
-                setMaternalGrandfatherID(data);
+                const data = await saveAncestorChanges(maternalGrandfatherDetails, motherDetails.id, "male");
+                setMaternalGrandfatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getMaternalGrandFather();
             } catch (error) {
                 console.log("Error saving maternal grandfather changes:", error);
@@ -1910,23 +1477,26 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMaternalGrandmotherChanges = async () => {
             setShowMaternalGrandmother(false);
             try {
-                const data = await saveAncestorChanges(maternalGrandmotherDetails, motherID, "female");
-                setMaternalGrandmotherID(data);
+                const data = await saveAncestorChanges(maternalGrandmotherDetails, motherDetails.id, "female");
+                setMaternalGrandmotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getMaternalGrandMother();
             } catch (error) {
                 console.log("Error saving maternal grandfather changes:", error);
             }
         }
 
-
-
-
         const savePaternalPaternalGreatGrandfatherChanges = async () => {
             setShowPaternalPaternalGreatGrandfather(false);
 
             try {
-                const data = await saveAncestorChanges(paternalPaternalGreatGrandfatherDetails, paternalGrandfatherID, "male");
-                setPaternalPaternalGreatGrandfatherID(data);
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, "male");
+                setPaternalPaternalGreatGrandfatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getPaternalPaternalGreatGrandFather();
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
@@ -1937,8 +1507,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             setShowPaternalPaternalGreatGrandmother(false);
      
             try {
-                const data = await saveAncestorChanges(paternalPaternalGreatGrandmotherDetails, paternalGrandfatherID, "female");
-                setPaternalPaternalGreatGrandmotherID(data);
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, "female");
+                setPaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getPaternalPaternalGreatGrandMother();
             } catch (error) {
                 console.log("Error saving paternal paternal great grandmother changes:", error);
@@ -1949,8 +1522,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             setShowPaternalMaternalGreatGrandfather(false);
             console.log(paternalMaternalGreatGrandfatherDetails)
             try {
-                const data = await saveAncestorChanges(paternalMaternalGreatGrandfatherDetails, paternalGrandmotherID, "male");
-                setPaternalMaternalGreatGrandfatherID(data);
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, "male");
+                setPaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getPaternalMaternalGreatGrandFather();
             } catch (error) {
                 console.log("Error saving paternal maternal great grandfather changes:", error);
@@ -1960,8 +1536,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const savePaternalMaternalGreatGrandmotherChanges = async () => {
             setShowPaternalMaternalGreatGrandmother(false);
             try {
-                const data = await saveAncestorChanges(paternalMaternalGreatGrandmotherDetails, paternalGrandmotherID, "female");
-                setPaternalMaternalGreatGrandmotherID(data);
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandmotherDetails, paternalGrandmotherDetails.id, "female");
+                setPaternalMaternalGreatGrandmotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getPaternalMaternalGreatGrandMother();
             } catch (error) {
                 console.log("Error saving paternal maternal great grandmother changes:", error);
@@ -1971,8 +1550,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMaternalPaternalGreatGrandfatherChanges = async () => {
             setShowMaternalPaternalGreatGrandfather(false);
             try {
-                const data = await saveAncestorChanges(maternalPaternalGreatGrandfatherDetails, maternalGrandfatherID, "male");
-                setMaternalPaternalGreatGrandfatherID(data);
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandfatherDetails, maternalGrandfatherDetails.id, "male");
+                setMaternalPaternalGreatGrandfatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getMaternalPaternalGreatGrandFather();
             } catch (error) {
                 console.log("Error saving maternal paternal great grandfather changes:", error);
@@ -1982,8 +1564,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMaternalPaternalGreatGrandmotherChanges = async () => {
             setShowMaternalPaternalGreatGrandmother(false);
             try {
-                const data = await saveAncestorChanges(maternalPaternalGreatGrandmotherDetails, maternalGrandfatherID, "female");
-                setMaternalPaternalGreatGrandmotherID(data);
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandmotherDetails, maternalGrandfatherDetails.id, "female");
+                setMaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getMaternalPaternalGreatGrandmother();
             } catch (error) {
                 console.log("Error saving maternal paternal great grandmother changes:", error);
@@ -1993,8 +1578,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMaternalMaternalGreatGrandfatherChanges = async () => {
             setShowMaternalMaternalGreatGrandfather(false);
             try {
-                const data = await saveAncestorChanges(maternalMaternalGreatGrandfatherDetails, maternalGrandmotherID, "male");
-                setMaternalMaternalGreatGrandfatherID(data);
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandfatherDetails, maternalGrandmotherDetails.id, "male");
+                setMaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getMaternalMaternalGreatGrandFather();
             } catch (error) {
                 console.log("Error saving maternal maternal great grandfather changes:", error);
@@ -2004,15 +1592,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         const saveMaternalMaternalGreatGrandmotherChanges = async () => {
             setShowMaternalMaternalGreatGrandmother(false);
             try {
-                const data = await saveAncestorChanges(maternalMaternalGreatGrandmotherDetails, maternalGrandmotherID, "female");
-                setMaternalMaternalGreatGrandmotherID(data);
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandmotherDetails, maternalGrandmotherDetails.id, "female");
+                setMaternalMaternalGreatGrandmotherDetails((prevDetails) => ({
+                    ...prevDetails,
+                    id: data
+                  }));
                 getMaternalMaternalGreatGrandMother();
             } catch (error) {
                 console.log("Error saving maternal maternal great grandmother changes:", error);
             }
         }
-
-
 
         const savePaternalPaternalGreatGrandfathersFatherChanges = async () => {
             setShowPaternalPaternalGreatGrandfathersFather(false);
@@ -2020,19 +1609,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
              if (!paternalPaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalPaternalGreatGrandfatherID;
+                const personID = paternalPaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
-
-            
-
             try {
-                const data = await saveAncestorChanges(paternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfatherID, "male");
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfatherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2044,21 +1630,20 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!paternalPaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalPaternalGreatGrandfatherID;
+                const personID = paternalPaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID , pageNumber}),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(paternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfatherID, "female");
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfatherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
         }
-
 
         const savePaternalPaternalGreatGrandmothersFatherChanges = async () => {
             setShowPaternalPaternalGreatGrandmothersFather(false);
@@ -2066,17 +1651,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!paternalPaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalPaternalGreatGrandmotherID;
+                const personID = paternalPaternalGreatGrandmotherDetails.id; 
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
 
             try {
-                const data = await saveAncestorChanges(paternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmotherID, "male");
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmotherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2088,23 +1673,20 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
              //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
              if (!paternalPaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalPaternalGreatGrandmotherID;
+                const personID = paternalPaternalGreatGrandmotherDetails.id; 
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(paternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmotherID, "female");
+                const data = await saveAncestorChanges(paternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmotherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
         }
-
-
-
 
         const savePaternalMaternalGreatGrandfathersFatherChanges = async () => {
             setShowPaternalMaternalGreatGrandfathersFather(false);
@@ -2112,16 +1694,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
              //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
              if (!paternalMaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalMaternalGreatGrandfatherID;
+                const personID = paternalMaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(paternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfatherID, "male");
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfatherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2132,16 +1714,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!paternalMaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalMaternalGreatGrandfatherID;
+                const personID = paternalMaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(paternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfatherID, "female");
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfatherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2152,16 +1734,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!paternalMaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalMaternalGreatGrandmotherID;
+                const personID = paternalMaternalGreatGrandmotherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(paternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmotherID, "male");
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmotherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2172,39 +1754,36 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!paternalMaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = paternalMaternalGreatGrandmotherID;
+                const personID = paternalMaternalGreatGrandmotherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(paternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmotherID, "female");
+                const data = await saveAncestorChanges(paternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmotherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
         }
-
-
-
 
         const saveMaternalPaternalGreatGrandfathersFatherChanges = async () => {
             setShowMaternalPaternalGreatGrandfathersFather(false);
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!maternalPaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalPaternalGreatGrandfatherID;
+                const personID = maternalPaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfatherID, "male");
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfatherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2215,16 +1794,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!maternalPaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalPaternalGreatGrandfatherID;
+                const personID = maternalPaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfatherID, "female");
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfatherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2235,16 +1814,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!maternalPaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalPaternalGreatGrandmotherID;
+                const personID = maternalPaternalGreatGrandmotherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmotherID, "male");
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmotherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2255,38 +1834,36 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!maternalPaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalPaternalGreatGrandmotherID;
+                const personID = maternalPaternalGreatGrandmotherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmotherID, "female");
+                const data = await saveAncestorChanges(maternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmotherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
         }
-
-
 
         const saveMaternalMaternalGreatGrandfathersFatherChanges = async () => {
             setShowMaternalMaternalGreatGrandfathersFather(false);
             //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
             if (!maternalMaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalMaternalGreatGrandfatherID;
+                const personID = maternalMaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfatherID, "male");
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfatherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2297,16 +1874,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
              //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
              if (!maternalMaternalGreatGrandfatherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalMaternalGreatGrandfatherID;
+                const personID = maternalMaternalGreatGrandfatherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfatherID, "female");
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfatherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2317,16 +1894,16 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
              //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
              if (!maternalMaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalMaternalGreatGrandmotherID;
+                const personID = maternalMaternalGreatGrandmotherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmotherID, "male");
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmotherDetails.id, "male");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
@@ -2337,19 +1914,50 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
              //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
              if (!maternalMaternalGreatGrandmotherHasParents) {
                 const userId = localStorage.getItem('userId');
-                const personID = maternalMaternalGreatGrandmotherID;
+                const personID = maternalMaternalGreatGrandmotherDetails.id;
                 const response = fetch('http://localhost:5000/make-new-page', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId, personID }),
+                    body: JSON.stringify({ userId, personID, pageNumber }),
                 })
                 countTotalPageNum();
             }
             try {
-                const data = await saveAncestorChanges(maternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmotherID, "female");
+                const data = await saveAncestorChanges(maternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmotherDetails.id, "female");
             } catch (error) {
                 console.log("Error saving paternal paternal great grandfather changes:", error);
             }
+        }
+
+
+        const saveFatherEdits = () => {
+            console.log("hellooo")
+            seteditShowFather(false);
+            try {
+                const userId = localStorage.getItem('userId');
+                const personDetails = fatherDetails;
+                const response = fetch('http://localhost:5000/edit-person', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personDetails}),
+                })
+                getFather();
+            } catch (error) {
+                console.log("Error saving edits:", error);
+            }
+        }
+
+        const deletePerson = async (personID) => {
+            // try {
+            //     const userId = localStorage.getItem('userId');
+            //     const response = fetch('http://localhost:5000/delete-person', {
+            //         method: "POST",
+            //         headers: { 'Content-Type': 'application/json' },
+            //         body: JSON.stringify({ userId, personID }),
+            //     })
+            // } catch (error) {
+            //     console.log(`Error deleting ${personID}: `, error);
+            // }
         }
         
 
@@ -2417,7 +2025,63 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         )
     }
 
-    function showAncestorTable(ID, basePersonFirstName, relationToUser, sex, name, birthDate, deathDate, birthPlace, deathPlace, occupation, profileNumber, childID, openAddModal) {
+    function makeEditModal(showPerson, closeEditPerson, setDetails, details, save, closeAdd, deletePerson, name) {
+
+        return (
+
+        <Modal show={showPerson} onHide={closeEditPerson} dialogClassName="custom-modal-width">
+                <Modal.Header closeButton>
+                <Modal.Title>Edit {details.fullName}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="input-modal">
+
+                        <input  type="text" placeholder="First Name" value={details.firstName} onChange={(e) => setDetails({ ...details, firstName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Middle Name" value={details.middleName} onChange={(e) => setDetails({ ...details, middleName: e.target.value })}></input>
+
+                        <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+                        
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Birth Date" value={details.birthDate} onChange={(e) => setDetails({ ...details, birthDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Birth Place" value={details.birthPlace} onChange={(e) => setDetails({ ...details, birthPlace: e.target.value })}></input>
+                    </div>
+
+                    <div className="input-modal">
+                    <input type="text" placeholder="Death Date" value={details.deathDate} onChange={(e) => setDetails({ ...details, deathDate: e.target.value })}></input>
+
+                    <input type="text" placeholder="Death Place" value={details.deathPlace}  onChange={(e) => setDetails({ ...details, deathPlace: e.target.value })}></input>
+
+                    <input type="text" placeholder="Cause of Death" value={details.causeOfDeath} onChange={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                    </div>
+                   
+                    <div className="input-modal">
+                    <input type="text" placeholder="Titles/Occupations" value={details.occupation} onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+
+                    <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={deletePerson(details.profileNumber)}>
+                    Delete Person
+                </Button>
+                <Button variant="secondary" onClick={closeAdd}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={save}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+
+        )
+    }
+
+    function showAncestorTable(basePersonDetails, sex, details, childID, openAddModal, openEditModal) {
 
         let motherFather = "";
         if (sex === "male") {
@@ -2428,35 +2092,36 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
         return (
             <>
-            {ID ? (
+            {details.id ? (
                 <table  className="ancestor-box">
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}: </td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(relationToUser, sex)}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonDetails.firstName}: </td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(details.relationToUser, sex)}</td>
                     <td className="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
-                    <td className="ancestor-box-border-bottom table-content shrink">{profileNumber}</td>
+                    <td className="ancestor-box-border-bottom table-content shrink">{details.id}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{name}</b></td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{details.fullName}</b></td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom birth-date-cell table-label" rowSpan="2">Birth</td>
                     <td className="ancestor-box-border-bottom table-label shrink">date:</td>
-                    <td className="ancestor-box-border-bottom table-content">{birthDate}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.birthDate}</td>
                     <td className="ancestor-box-border-bottom birth-date-cell table-label" rowSpan="2">Death</td>
                     <td className="ancestor-box-border-bottom table-label shrink">date:</td>
-                    <td className="ancestor-box-border-bottom table-content">{deathDate}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.deathDate}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">place:</td>
-                    <td className="ancestor-box-border-bottom table-content">{birthPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.birthPlace}</td>
                     <td className="ancestor-box-border-bottom table-label shrink">place:</td>
-                    <td className="ancestor-box-border-bottom table-content">{deathPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.deathPlace}</td>
                 </tr>
                 <tr>
                     <td className=" ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                    <td className="table-content" colSpan="5">{occupation}</td>
+                    <td className="table-content" colSpan="4">{details.occupation}</td>
+                    <td className="table-content" >{<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
                 </table>
            ) : (
@@ -2481,7 +2146,7 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
         )
     }
 
-    function showGreatGrandParentTable(ID, basePersonFirstName, relationToUser, sex, name, birthDate, deathDate, birthPlace, deathPlace, occupation, profileNumber, childID, openAddModal) {
+    function showGreatGrandParentTable(basePersonDetails, sex, details, childID, openAddModal, openEditModal) {
 
         let motherFather = "";
         if (sex === "male") {
@@ -2490,33 +2155,35 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             motherFather = "Mother";
         }
 
+      
+
         return(
             <>
-             {ID ? (
+             {details.id ? (
             <table className="ancestor-box">
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonFirstName}:</td>
-                    <td className="ancestor-box-border-bottom table-content">{convertNumToRelation(relationToUser, sex)}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonDetails.firstName}:</td>
+                    <td className="ancestor-box-border-bottom table-content">{convertNumToRelation(details.relationToUser, sex)}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
-                    <td className="ancestor-box-border-bottom table-content"><b>{name}</b></td>
+                    <td className="ancestor-box-border-bottom table-content"><b>{details.fullName}</b></td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                    <td className="ancestor-box-border-bottom table-content">{birthDate} <br />{birthPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.birthDate} <br />{details.birthPlace}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Death:</td>
-                    <td className="ancestor-box-border-bottom table-content">{deathDate} <br />{deathPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.deathDate} <br />{details.deathPlace}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                    <td className="ancestor-box-border-bottom table-content">{occupation}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.occupation}</td>
                 </tr>
                 <tr>
                     <td className=" table-label shrink">Profile <br/>Number:</td>
-                    <td className="table-content">{profileNumber}</td>
+                    <td className="table-content">{details.id}</td>
                 </tr>
             </table>
         ) : (
@@ -2554,17 +2221,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
      }
     }
 
-    checkIfGGHasParents(paternalPaternalGreatGrandfatherProfileNumber, setPaternalPaternalGreatGrandfatherHasParents)
-    checkIfGGHasParents(paternalPaternalGreatGrandmotherProfileNumber, setPaternalPaternalGreatGrandmotherHasParents)
+    checkIfGGHasParents(paternalPaternalGreatGrandfatherDetails.id, setPaternalPaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(paternalPaternalGreatGrandmotherDetails.id, setPaternalPaternalGreatGrandmotherHasParents)
 
-    checkIfGGHasParents(paternalMaternalGreatGrandfatherProfileNumber, setPaternalMaternalGreatGrandfatherHasParents)
-    checkIfGGHasParents(paternalMaternalGreatGrandmotherProfileNumber, setPaternalMaternalGreatGrandmotherHasParents)
+    checkIfGGHasParents(paternalMaternalGreatGrandfatherDetails.id, setPaternalMaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(paternalMaternalGreatGrandmotherDetails.id, setPaternalMaternalGreatGrandmotherHasParents)
 
-    checkIfGGHasParents(maternalPaternalGreatGrandfatherProfileNumber, setMaternalPaternalGreatGrandfatherHasParents)
-    checkIfGGHasParents(maternalPaternalGreatGrandmotherProfileNumber, setMaternalPaternalGreatGrandmotherHasParents)
+    checkIfGGHasParents(maternalPaternalGreatGrandfatherDetails.id, setMaternalPaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(maternalPaternalGreatGrandmotherDetails.id, setMaternalPaternalGreatGrandmotherHasParents)
 
-    checkIfGGHasParents(maternalMaternalGreatGrandfatherProfileNumber, setMaternalMaternalGreatGrandfatherHasParents)
-    checkIfGGHasParents(maternalMaternalGreatGrandmotherProfileNumber, setMaternalMaternalGreatGrandmotherHasParents)
+    checkIfGGHasParents(maternalMaternalGreatGrandfatherDetails.id, setMaternalMaternalGreatGrandfatherHasParents)
+    checkIfGGHasParents(maternalMaternalGreatGrandmotherDetails.id, setMaternalMaternalGreatGrandmotherHasParents)
 
 
         // const printPageNum = async (id, setPage) => {
@@ -2580,85 +2247,75 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
             
         //     setPageEntry(data.pageNum)
         // };
-        // printPageNum(paternalPaternalGreatGrandfatherID, setPaternalPaternalGreatGrandfatherPage)
+        // printPageNum(paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfatherPage)
  
 
 
     return (
         <div>
 
-            {makeModal(showFather, closeAddFatherModal, bottomPagePersonFirstName, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
+            {makeModal(showFather, closeAddFatherModal, bottomPersonDetails.firstName, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
 
-            {makeModal(showMother, closeAddMotherModal, bottomPagePersonFirstName, setMotherDetails, motherDetails, "female", saveMotherChanges, closeAddMotherModal)}
+            {makeModal(showMother, closeAddMotherModal, bottomPersonDetails.firstNameName, setMotherDetails, motherDetails, "female", saveMotherChanges, closeAddMotherModal)}
 
-            {makeModal(showPaternalGrandfather, closeAddPaternalGrandfatherModal, fatherName, setPaternalGrandfatherDetails, paternalGrandfatherDetails, "male", savePaternalGrandfatherChanges, closeAddPaternalGrandfatherModal)}
+            {makeModal(showPaternalGrandfather, closeAddPaternalGrandfatherModal, fatherDetails.fullName, setPaternalGrandfatherDetails, paternalGrandfatherDetails, "male", savePaternalGrandfatherChanges, closeAddPaternalGrandfatherModal)}
             
-            {makeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherName, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
+            {makeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherDetails.fullName, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
 
-            {makeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherName, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
+            {makeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherDetails.fullName, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
 
-            {makeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherName, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
+            {makeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherDetails.fullName, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherName, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
+            {makeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherName, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
+            {makeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherName, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
+            {makeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherName, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
+            {makeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherName, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
+            {makeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherName, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
+            {makeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherName, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
+            {makeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherName, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
+            {makeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
 
+            {makeModal(showPaternalPaternalGreatGrandfathersFather, closeAddPaternalPaternalGreatGrandfathersFatherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfathersFatherDetails, "male", savePaternalPaternalGreatGrandfathersFatherChanges, closeAddPaternalPaternalGreatGrandfathersFatherModal)}
 
+            {makeModal(showPaternalPaternalGreatGrandfathersMother, closeAddPaternalPaternalGreatGrandfathersMotherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfathersMotherDetails, "female", savePaternalPaternalGreatGrandfathersMotherChanges, closeAddPaternalPaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandfathersFather, closeAddPaternalPaternalGreatGrandfathersFatherModal, paternalPaternalGreatGrandfatherName, setPaternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfathersFatherDetails, "male", savePaternalPaternalGreatGrandfathersFatherChanges, closeAddPaternalPaternalGreatGrandfathersFatherModal)}
+            {makeModal(showPaternalPaternalGreatGrandmothersFather, closeAddPaternalPaternalGreatGrandmothersFatherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmothersFatherDetails, "male", savePaternalPaternalGreatGrandmothersFatherChanges, closeAddPaternalPaternalGreatGrandmothersFatherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandfathersMother, closeAddPaternalPaternalGreatGrandfathersMotherModal, paternalPaternalGreatGrandfatherName, setPaternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfathersMotherDetails, "female", savePaternalPaternalGreatGrandfathersMotherChanges, closeAddPaternalPaternalGreatGrandfathersMotherModal)}
+            {makeModal(showPaternalPaternalGreatGrandmothersMother, closeAddPaternalPaternalGreatGrandmothersMotherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmothersMotherDetails, "female", savePaternalPaternalGreatGrandmothersMotherChanges, closeAddPaternalPaternalGreatGrandmothersMotherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandmothersFather, closeAddPaternalPaternalGreatGrandmothersFatherModal, paternalPaternalGreatGrandmotherName, setPaternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmothersFatherDetails, "male", savePaternalPaternalGreatGrandmothersFatherChanges, closeAddPaternalPaternalGreatGrandmothersFatherModal)}
+            {makeModal(showPaternalMaternalGreatGrandfathersFather, closeAddPaternalMaternalGreatGrandfathersFatherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfathersFatherDetails, "male", savePaternalMaternalGreatGrandfathersFatherChanges, closeAddPaternalMaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandmothersMother, closeAddPaternalPaternalGreatGrandmothersMotherModal, paternalPaternalGreatGrandmotherName, setPaternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmothersMotherDetails, "female", savePaternalPaternalGreatGrandmothersMotherChanges, closeAddPaternalPaternalGreatGrandmothersMotherModal)}
+            {makeModal(showPaternalMaternalGreatGrandfathersMother, closeAddPaternalMaternalGreatGrandfathersMotherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfathersMotherDetails, "female", savePaternalMaternalGreatGrandfathersMotherChanges, closeAddPaternalMaternalGreatGrandfathersMotherModal)}
 
-          
+            {makeModal(showPaternalMaternalGreatGrandmothersFather, closeAddPaternalMaternalGreatGrandmothersFatherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmothersFatherDetails, "male", savePaternalMaternalGreatGrandmothersFatherChanges, closeAddPaternalMaternalGreatGrandmothersFatherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandfathersFather, closeAddPaternalMaternalGreatGrandfathersFatherModal, paternalMaternalGreatGrandfatherName, setPaternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfathersFatherDetails, "male", savePaternalMaternalGreatGrandfathersFatherChanges, closeAddPaternalMaternalGreatGrandfathersFatherModal)}
+            {makeModal(showPaternalMaternalGreatGrandmothersMother, closeAddPaternalMaternalGreatGrandmothersMotherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmothersMotherDetails, "female", savePaternalMaternalGreatGrandmothersMotherChanges, closeAddPaternalMaternalGreatGrandmothersMotherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandfathersMother, closeAddPaternalMaternalGreatGrandfathersMotherModal, paternalMaternalGreatGrandfatherName, setPaternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfathersMotherDetails, "female", savePaternalMaternalGreatGrandfathersMotherChanges, closeAddPaternalMaternalGreatGrandfathersMotherModal)}
+            {makeModal(showMaternalPaternalGreatGrandfathersFather, closeAddMaternalPaternalGreatGrandfathersFatherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfathersFatherDetails, "male", saveMaternalPaternalGreatGrandfathersFatherChanges, closeAddMaternalPaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandmothersFather, closeAddPaternalMaternalGreatGrandmothersFatherModal, paternalMaternalGreatGrandmotherName, setPaternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmothersFatherDetails, "male", savePaternalMaternalGreatGrandmothersFatherChanges, closeAddPaternalMaternalGreatGrandmothersFatherModal)}
+            {makeModal(showMaternalPaternalGreatGrandfathersMother, closeAddMaternalPaternalGreatGrandfathersMotherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfathersMotherDetails, "female", saveMaternalPaternalGreatGrandfathersMotherChanges, closeAddMaternalPaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandmothersMother, closeAddPaternalMaternalGreatGrandmothersMotherModal, paternalMaternalGreatGrandmotherName, setPaternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmothersMotherDetails, "female", savePaternalMaternalGreatGrandmothersMotherChanges, closeAddPaternalMaternalGreatGrandmothersMotherModal)}
+            {makeModal(showMaternalPaternalGreatGrandmothersFather, closeAddMaternalPaternalGreatGrandmothersFatherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmothersFatherDetails, "male", saveMaternalPaternalGreatGrandmothersFatherChanges, closeAddMaternalPaternalGreatGrandmothersFatherModal)}
 
+            {makeModal(showMaternalPaternalGreatGrandmothersMother, closeAddMaternalPaternalGreatGrandmothersMotherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmothersMotherDetails, "female", saveMaternalPaternalGreatGrandmothersMotherChanges, closeAddMaternalPaternalGreatGrandmothersMotherModal)}
 
+            {makeModal(showMaternalMaternalGreatGrandfathersFather, closeAddMaternalMaternalGreatGrandfathersFatherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfathersFatherDetails, "male", saveMaternalMaternalGreatGrandfathersFatherChanges, closeAddMaternalMaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandfathersFather, closeAddMaternalPaternalGreatGrandfathersFatherModal, maternalPaternalGreatGrandfatherName, setMaternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfathersFatherDetails, "male", saveMaternalPaternalGreatGrandfathersFatherChanges, closeAddMaternalPaternalGreatGrandfathersFatherModal)}
+            {makeModal(showMaternalMaternalGreatGrandfathersMother, closeAddMaternalMaternalGreatGrandfathersMotherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfathersMotherDetails, "female", saveMaternalMaternalGreatGrandfathersMotherChanges, closeAddMaternalMaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandfathersMother, closeAddMaternalPaternalGreatGrandfathersMotherModal, maternalPaternalGreatGrandfatherName, setMaternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfathersMotherDetails, "female", saveMaternalPaternalGreatGrandfathersMotherChanges, closeAddMaternalPaternalGreatGrandfathersMotherModal)}
+            {makeModal(showMaternalMaternalGreatGrandmothersFather, closeAddMaternalMaternalGreatGrandmothersFatherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmothersFatherDetails, "male", saveMaternalMaternalGreatGrandmothersFatherChanges, closeAddMaternalMaternalGreatGrandmothersFatherModal)}
 
-
-            {makeModal(showMaternalPaternalGreatGrandmothersFather, closeAddMaternalPaternalGreatGrandmothersFatherModal, maternalPaternalGreatGrandmotherName, setMaternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmothersFatherDetails, "male", saveMaternalPaternalGreatGrandmothersFatherChanges, closeAddMaternalPaternalGreatGrandmothersFatherModal)}
-
-            {makeModal(showMaternalPaternalGreatGrandmothersMother, closeAddMaternalPaternalGreatGrandmothersMotherModal, maternalPaternalGreatGrandmotherName, setMaternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmothersMotherDetails, "female", saveMaternalPaternalGreatGrandmothersMotherChanges, closeAddMaternalPaternalGreatGrandmothersMotherModal)}
-
-
-
-            {makeModal(showMaternalMaternalGreatGrandfathersFather, closeAddMaternalMaternalGreatGrandfathersFatherModal, maternalMaternalGreatGrandfatherName, setMaternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfathersFatherDetails, "male", saveMaternalMaternalGreatGrandfathersFatherChanges, closeAddMaternalMaternalGreatGrandfathersFatherModal)}
-
-            {makeModal(showMaternalMaternalGreatGrandfathersMother, closeAddMaternalMaternalGreatGrandfathersMotherModal, maternalMaternalGreatGrandfatherName, setMaternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfathersMotherDetails, "female", saveMaternalMaternalGreatGrandfathersMotherChanges, closeAddMaternalMaternalGreatGrandfathersMotherModal)}
-
-            {makeModal(showMaternalMaternalGreatGrandmothersFather, closeAddMaternalMaternalGreatGrandmothersFatherModal, maternalMaternalGreatGrandmotherName, setMaternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmothersFatherDetails, "male", saveMaternalMaternalGreatGrandmothersFatherChanges, closeAddMaternalMaternalGreatGrandmothersFatherModal)}
-
-            {makeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
+            {makeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
 
 
-
-            
+            {makeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveFatherEdits, closeAddFatherModal, deletePerson)}
             
             <div className="row">
                 <LeftSidebar />
@@ -2676,11 +2333,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                         <div className="row arrow-page-num-div">
 
                             <div className="col">
-                                {paternalPaternalGreatGrandfatherProfileNumber ? (
+                                {paternalPaternalGreatGrandfatherDetails.id ? ( 
                                     <>
                                     {paternalPaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2700,11 +2357,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {paternalPaternalGreatGrandmotherProfileNumber ? (
+                                {paternalPaternalGreatGrandmotherDetails.id ? (
                                     <>
                                     {paternalPaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandmotherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2724,11 +2381,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {paternalMaternalGreatGrandfatherProfileNumber ? (
+                                {paternalMaternalGreatGrandfatherDetails.id ? ( 
                                     <>
                                     {paternalMaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2748,11 +2405,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
                                
                             <div className="col">
-                                {paternalMaternalGreatGrandmotherProfileNumber ? (
-                                    <>
+                                {paternalMaternalGreatGrandmotherDetails.id ? (  
+                                    <> 
                                     {paternalMaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandmotherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2772,11 +2429,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {maternalPaternalGreatGrandfatherProfileNumber ? (
+                                {maternalPaternalGreatGrandfatherDetails.id ? ( 
                                     <>
                                     {maternalPaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2796,11 +2453,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {maternalPaternalGreatGrandmotherProfileNumber ? (
+                                {maternalPaternalGreatGrandmotherDetails.id ? ( 
                                     <>
                                     {maternalPaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandmotherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2820,11 +2477,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {maternalMaternalGreatGrandfatherProfileNumber ? (
+                                {maternalMaternalGreatGrandfatherDetails.id ? (   
                                     <>
                                     {maternalMaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandfatherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2844,11 +2501,11 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                             </div>
 
                             <div className="col">
-                                {maternalMaternalGreatGrandmotherProfileNumber ? (
+                                {maternalMaternalGreatGrandmotherDetails.id ? (  
                                     <>
                                     {maternalMaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandmotherProfileNumber)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2867,26 +2524,26 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
                                 }
                             </div>
 
-                                
+                            
                         </div>
 
                         <div className="tree-row justify-content-center">
 
-                            {showGreatGrandParentTable(paternalPaternalGreatGrandfatherID, basePersonFirstName, paternalPaternalGreatGrandfatherRelationToUser, "male", paternalPaternalGreatGrandfatherName, paternalPaternalGreatGrandfatherBirthDate, paternalPaternalGreatGrandfatherDeathDate, paternalPaternalGreatGrandfatherBirthPlace, paternalPaternalGreatGrandfatherDeathPlace, paternalPaternalGreatGrandfatherOccupation, paternalPaternalGreatGrandfatherProfileNumber, paternalGrandfatherID, openAddPaternalPaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(paternalPaternalGreatGrandmotherID, basePersonFirstName, paternalPaternalGreatGrandmotherRelationToUser, "female", paternalPaternalGreatGrandmotherName, paternalPaternalGreatGrandmotherBirthDate, paternalPaternalGreatGrandmotherDeathDate, paternalPaternalGreatGrandmotherBirthPlace, paternalPaternalGreatGrandmotherDeathPlace, paternalPaternalGreatGrandmotherOccupation, paternalPaternalGreatGrandmotherProfileNumber, paternalGrandfatherID, openAddPaternalPaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(paternalMaternalGreatGrandfatherID, basePersonFirstName, paternalMaternalGreatGrandfatherRelationToUser, "male", paternalMaternalGreatGrandfatherName, paternalMaternalGreatGrandfatherBirthDate, paternalMaternalGreatGrandfatherDeathDate, paternalMaternalGreatGrandfatherBirthPlace, paternalMaternalGreatGrandfatherDeathPlace, paternalMaternalGreatGrandfatherOccupation, paternalMaternalGreatGrandfatherProfileNumber, paternalGrandmotherID, openAddPaternalMaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(paternalMaternalGreatGrandmotherID, basePersonFirstName, paternalMaternalGreatGrandmotherRelationToUser, "female", paternalMaternalGreatGrandmotherName, paternalMaternalGreatGrandmotherBirthDate, paternalMaternalGreatGrandmotherDeathDate, paternalMaternalGreatGrandmotherBirthPlace, paternalMaternalGreatGrandmotherDeathPlace, paternalMaternalGreatGrandmotherOccupation, paternalMaternalGreatGrandmotherProfileNumber, paternalGrandmotherID, openAddPaternalMaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", paternalMaternalGreatGrandmotherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(maternalPaternalGreatGrandfatherID, basePersonFirstName, maternalPaternalGreatGrandfatherRelationToUser, "male", maternalPaternalGreatGrandfatherName, maternalPaternalGreatGrandfatherBirthDate, maternalPaternalGreatGrandfatherDeathDate, maternalPaternalGreatGrandfatherBirthPlace, maternalPaternalGreatGrandfatherDeathPlace, maternalPaternalGreatGrandfatherOccupation, maternalPaternalGreatGrandfatherProfileNumber, maternalGrandfatherID, openAddMaternalPaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", maternalPaternalGreatGrandfatherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(maternalPaternalGreatGrandmotherID, basePersonFirstName, maternalPaternalGreatGrandmotherRelationToUser, "female", maternalPaternalGreatGrandmotherName, maternalPaternalGreatGrandmotherBirthDate, maternalPaternalGreatGrandmotherDeathDate, maternalPaternalGreatGrandmotherBirthPlace, maternalPaternalGreatGrandmotherDeathPlace, maternalPaternalGreatGrandmotherOccupation, maternalPaternalGreatGrandmotherProfileNumber, maternalGrandfatherID, openAddMaternalPaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", maternalPaternalGreatGrandmotherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(maternalMaternalGreatGrandfatherID, basePersonFirstName, maternalMaternalGreatGrandfatherRelationToUser, "male", maternalMaternalGreatGrandfatherName, maternalMaternalGreatGrandfatherBirthDate, maternalMaternalGreatGrandfatherDeathDate, maternalMaternalGreatGrandfatherBirthPlace, maternalMaternalGreatGrandfatherDeathPlace, maternalMaternalGreatGrandfatherOccupation, maternalMaternalGreatGrandfatherProfileNumber, maternalGrandmotherID, openAddMaternalMaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", maternalMaternalGreatGrandfatherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(maternalMaternalGreatGrandmotherID, basePersonFirstName, maternalMaternalGreatGrandmotherRelationToUser, "female", maternalMaternalGreatGrandmotherName, maternalMaternalGreatGrandmotherBirthDate, maternalMaternalGreatGrandmotherDeathDate, maternalMaternalGreatGrandmotherBirthPlace, maternalMaternalGreatGrandmotherDeathPlace, maternalMaternalGreatGrandmotherOccupation, maternalMaternalGreatGrandmotherProfileNumber, maternalGrandmotherID, openAddMaternalMaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", maternalMaternalGreatGrandmotherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandmotherModal)}
                            
                         </div>
 
@@ -2897,13 +2554,13 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
                         <div className="tree-row justify-content-center">
 
-                        {showAncestorTable(paternalGrandfatherID, basePersonFirstName, paternalGrandfatherRelationToUser, "male", paternalGrandfatherName, paternalGrandfatherBirthDate, paternalGrandfatherDeathDate, paternalGrandfatherBirthPlace, paternalGrandfatherDeathPlace, paternalGrandfatherOccupation, paternalGrandfatherProfileNumber, fatherID, openAddPaternalGrandfatherModal)}
+                        {showAncestorTable(basePersonDetails, "male", paternalGrandfatherDetails, fatherDetails.id, openAddPaternalGrandfatherModal)}
 
-                        {showAncestorTable(paternalGrandmotherID, basePersonFirstName, paternalGrandmotherRelationToUser, "female", paternalGrandmotherName, paternalGrandmotherBirthDate, paternalGrandmotherDeathDate, paternalGrandmotherBirthPlace, paternalGrandmotherDeathPlace, paternalGrandmotherOccupation, paternalGrandmotherProfileNumber, fatherID, openAddPaternalGrandmotherModal)}
+                        {showAncestorTable(basePersonDetails, "female", paternalGrandmotherDetails, fatherDetails.id, openAddPaternalGrandmotherModal)}
 
-                        {showAncestorTable(maternalGrandfatherID, basePersonFirstName, maternalGrandfatherRelationToUser, "male", maternalGrandfatherName, maternalGrandfatherBirthDate, maternalGrandfatherDeathDate, maternalGrandfatherBirthPlace, maternalGrandfatherDeathPlace, maternalGrandfatherOccupation, maternalGrandfatherProfileNumber, motherID, openAddMaternalGrandfatherModal)}
+                        {showAncestorTable(basePersonDetails, "male", maternalGrandfatherDetails, motherDetails.id, openAddMaternalGrandfatherModal)}
 
-                        {showAncestorTable(maternalGrandmotherID, basePersonFirstName, maternalGrandmotherRelationToUser, "female", maternalGrandmotherName, maternalGrandmotherBirthDate, maternalGrandmotherDeathDate, maternalGrandmotherBirthPlace, maternalGrandmotherDeathPlace, maternalGrandmotherOccupation, maternalGrandmotherProfileNumber, motherID, openAddMaternalGrandmotherModal)}
+                        {showAncestorTable(basePersonDetails, "female", maternalGrandmotherDetails, motherDetails.id, openAddMaternalGrandmotherModal)}
 
                         </div>
 
@@ -2914,13 +2571,9 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
                         <div className="tree-row justify-content-center">
 
-                        {showAncestorTable(fatherID, basePersonFirstName, fatherRelationToUser, "male", fatherName, fatherBirthDate, fatherDeathDate, fatherBirthPlace, fatherDeathPlace, fatherOccupation, fatherProfileNumber, basePersonID, openAddFatherModal)}
+                            {showAncestorTable(basePersonDetails, "male", fatherDetails, bottomPersonDetails.id, openAddFatherModal, openEditFatherModal)}
 
-                        {showAncestorTable(motherID, basePersonFirstName, motherRelationToUser, "female", motherName, motherBirthDate, motherDeathDate, motherBirthPlace, motherDeathPlace, motherOccupation, motherProfileNumber, basePersonID, openAddMotherModal)}
-
-         
-                        
-                        
+                            {showAncestorTable(basePersonDetails, "female", motherDetails, bottomPersonDetails.id, openAddMotherModal)}
 
                         </div>
 
@@ -2933,22 +2586,17 @@ const [maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfat
 
                             <div className="tree-row justify-content-center">
 
-                            {showAncestorTable(true, basePersonFirstName, bottomRelationToBaseUser, bottomPersonSex, bottomPagePersonFullName, bottomPagePersonBirthDate, bottomPagePersonDeathDate, bottomPagePersonBirthPlace, bottomPagePersonDeathPlace, bottomPagePersonOccupation, bottomPagePersonProfileNumber, basePersonID)}
+                            {showAncestorTable(basePersonDetails, bottomPersonDetails.sex, bottomPersonDetails)}
 
-                            
                             </div>
                             
                             {pageNumber !== 1 ? (
                                 <div className="col">
-                                    <p className="up-arrow" onClick={() => navigateDown(bottomPagePersonProfileNumber)}>⇓</p>
+                                    <p className="up-arrow" onClick={() => navigateDown(bottomPersonDetails.id)}>⇓</p>
                                 </div>
                             ) : (
                                 <></>
                             )}
-                                
-                            
-
-                            
                         </div>
                     </div>
 

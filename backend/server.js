@@ -376,7 +376,7 @@ app.post('/add-first-person', async (req, res) => {
             ethnicity,
             birthDate,
             birthPlace,
-            birthDate,
+            deathDate,
             deathPlace,
             deathCause,
             occupation,
@@ -586,7 +586,7 @@ app.post('/get-base-person', async (req, res) => {
         res.json({
             firstName:baseUserquery.rows[0].first_name,
             lastName:baseUserquery.rows[0].last_name,
-            basePersonID:baseUserquery.rows[0].ancestor_id,
+            id:baseUserquery.rows[0].ancestor_id,
             fullName: fullName,
             birthDate: baseUserquery.rows[0].date_of_birth,
             birthPlace: baseUserquery.rows[0].place_of_birth,
@@ -657,7 +657,9 @@ app.post('/get-father', async (req, res) => {
 
             res.json({
                 fatherID:fatherID,
-                fatherName:fatherFullName,
+                fatherFullName:fatherFullName,
+                fatherFirstName: fatherFirstName,
+                fatherMiddleName: fatherMiddleName,
                 fatherLastName:fatherLastName,
                 fatherBirthDate:fatherQuery.rows[0].date_of_birth,
                 fatherBirthPlace:fatherQuery.rows[0].place_of_birth,
@@ -730,7 +732,7 @@ app.post('/get-mother', async (req, res) => {
 
             res.json({
                 motherID:motherID,
-                motherName:motherFullName,
+                motherFullName:motherFullName,
                 motherLastName:motherLastName,
                 motherBirthDate:motherQuery.rows[0].date_of_birth,
                 motherBirthPlace:motherQuery.rows[0].place_of_birth,
@@ -842,7 +844,7 @@ app.post('/get-current-page-number', async (req, res) => {
 
 app.post('/make-new-page', async (req, res) => {
     try {
-        const {userId, personID} = req.body;
+        const {userId, personID, pageNumber} = req.body;
 
         //finds the current tree that the user is on
         const getCurrentTreeId = await pool.query(
@@ -868,6 +870,13 @@ app.post('/make-new-page', async (req, res) => {
                 base_of_page = ${newPageNum}
             WHERE ancestor_id = ${personID}
         `);
+
+        //the previous page that the person is mentioned on is saved in previous_page
+        const previous = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET previous_page = ${pageNumber}
+            WHERE ancestor_id = ${personID}
+            `)
 
         } catch (error) {
             console.log("Error making new page: ", error)
@@ -903,6 +912,7 @@ app.post('/count-all-pages', async (req, res) => {
 
 
 app.post('/get-previous-page', async (req, res) => {
+
     try {
         const {userId, personID} = req.body;
     
@@ -915,35 +925,42 @@ app.post('/get-previous-page', async (req, res) => {
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
         //finds sex of person
-        const sex = await pool.query (
-            `
-            SELECT sex FROM tree_${currentTree}
-            WHERE ancestor_id = ${personID}
-            `
-        )
+        // const sex = await pool.query (
+        //     `
+        //     SELECT sex FROM tree_${currentTree}
+        //     WHERE ancestor_id = ${personID}
+        //     `
+        // )
 
-        let goDown = "";
-        if (sex.rows[0].sex === "male") {
-            goDown = await pool.query(`
+        // let goDown = "";
+        // if (sex.rows[0].sex === "male") {
+        //     goDown = await pool.query(`
+        //         SELECT * FROM tree_${currentTree}
+        //         WHERE father_id = ${personID};
+        //         `)
+        // } else {
+        //     goDown = await pool.query(`
+        //         SELECT * FROM tree_${currentTree}
+        //         WHERE mother_id = ${personID};
+        //         `)
+        // }
+
+        const previous = await pool.query(`
                 SELECT * FROM tree_${currentTree}
-                WHERE father_id = ${personID};
-                `)
-        } else {
-            goDown = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE mother_id = ${personID};
-                `)
-        }
+                WHERE ancestor_id = ${personID}
+            `)
+
+        const previousPage = Number(previous.rows[0].previous_page);
 
 
         //updates the current page number in the database
         const update = await pool.query(`
             UPDATE users
-            SET current_page = ${Number(goDown.rows[0].page_number)}
+            SET current_page = ${previousPage}
             WHERE id = ${userId}
             `)
 
-        res.json({pageNum: Number(goDown.rows[0].page_number)});
+        res.json({pageNum: previousPage});
         
 
     } catch (error) {
@@ -1098,15 +1115,12 @@ app.post('/check-if-great-grandparent-has-parents', async (req, res) => {
         );
 
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
         const request = await pool.query(
             `
             SELECT * FROM tree_${currentTree}
             WHERE ancestor_id = ${greatgrandparentID}
             `
         )
-
-
 
         if (request.rows[0].father_id === null && request.rows[0].mother_id === null) {
             res.json(false)
@@ -1118,6 +1132,157 @@ app.post('/check-if-great-grandparent-has-parents', async (req, res) => {
         console.log("Error checking greatgrandparent's parents:", error)
     }
 });
+
+
+app.post('/edit-person', async (req, res) => {
+    try {
+
+    const { userId, personDetails} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const ancestoridQuery = await pool.query(`
+            SELECT ancestor_id FROM tree_${currentTree}
+        `)  
+
+
+        const ancestorQuery = await pool.query(
+            `UPDATE tree_${currentTree} 
+             SET
+                first_name = $1,
+                middle_name = $2,
+                last_name = $3,
+                ethnicity = $4,
+                date_of_birth = $5,
+                place_of_birth = $6,
+                date_of_death = $7,
+                place_of_death = $8,
+                cause_of_death = $9,
+                occupation = $10
+             WHERE ancestor_id = $11`,
+            [
+                personDetails.firstName,
+                personDetails.middleName,
+                personDetails.lastName,
+                personDetails.ethnicity,
+                personDetails.birthDate,
+                personDetails.birthPlace,
+                personDetails.deathDate,
+                personDetails.deathPlace,
+                personDetails.causeOfDeath,
+                personDetails.occupation,
+                personDetails.id,
+            ]
+        );
+        
+
+    } catch (error) {
+        console.log("Error saving ancestor:", error)
+    }
+})
+
+// app.post('/delete-person', async (req, res) => {
+//     // try {
+
+//     // const { userId, ancestorDetails, childID, sex} = req.body;
+
+//     //     // Query to get the current tree
+//     //     const getCurrentTreeId = await pool.query(
+//     //         'SELECT current_tree_id FROM users WHERE id = $1',
+//     //         [userId]
+//     //     );
+
+//     //     const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+//     //     const ancestoridQuery = await pool.query(`
+//     //         SELECT ancestor_id FROM tree_${currentTree}
+//     //     `)
+
+//     //     const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+
+//     //     let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+//     //     while (allAncestorIds.includes( ancestor_id)) {
+//     //         ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
+//     //     }
+        
+//     //     if (sex === "male") {
+//     //         const childQuery = await pool.query(`
+//     //             UPDATE tree_${currentTree}
+//     //             SET father_id = ${ancestor_id }
+//     //             WHERE ancestor_id = ${childID}
+//     //             `)
+//     //     } else if (sex === "female") {
+//     //         const childQuery = await pool.query(`
+//     //             UPDATE tree_${currentTree}
+//     //             SET mother_id = ${ancestor_id }
+//     //             WHERE ancestor_id = ${childID}
+//     //             `)
+//     //     }      
+
+//     //     //father of bottom page person has same page number
+//     //     const pageNumQuery = await pool.query(`
+//     //         SELECT * FROM tree_${currentTree}
+//     //         WHERE ancestor_id = ${childID}
+//     //     `)
+//     //     const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+
+//     //     const relationToUserQuery = await pool.query(`
+//     //        SELECT * FROM tree_${currentTree}
+//     //         WHERE ancestor_id = ${childID}
+//     //         `)
+
+//     //     const ancestorRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+
+//     //     const ancestorQuery = await pool.query(`
+//     //         INSERT INTO tree_${currentTree} (
+//     //             first_name,
+//     //             middle_name,
+//     //             last_name,
+//     //             ancestor_id,
+//     //             page_number,
+//     //             base_person,
+//     //             sex,
+//     //             ethnicity,
+//     //             date_of_birth,
+//     //             place_of_birth,
+//     //             date_of_death,
+//     //             place_of_death,
+//     //             cause_of_death,
+//     //             occupation,
+//     //             relation_to_user
+//     //         )  
+//     //         VALUES (
+//     //             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+//     //         ) 
+//     //     `, [
+//     //         ancestorDetails.firstName,
+//     //         ancestorDetails.middleName,
+//     //         ancestorDetails.lastName,
+//     //         ancestor_id,
+//     //         page_number,
+//     //         "false", 
+//     //         sex,
+//     //         ancestorDetails.ethnicity,
+//     //         ancestorDetails.birthDate,
+//     //         ancestorDetails.birthPlace,
+//     //         ancestorDetails.deathDate,
+//     //         ancestorDetails.deathPlace,
+//     //         ancestorDetails.causeOfDeath,
+//     //         ancestorDetails.occupation,
+//     //         ancestorRelation
+//     //     ]);
+
+//     //     res.json(ancestor_id)
+//     // } catch (error) {
+//     //     console.log("Error saving ancestor:", error)
+//     // }
+// })
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
