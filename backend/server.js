@@ -733,6 +733,8 @@ app.post('/get-mother', async (req, res) => {
             res.json({
                 motherID:motherID,
                 motherFullName:motherFullName,
+                motherFirstName: motherFirstName,
+                motherMiddleName:motherMiddleName,
                 motherLastName:motherLastName,
                 motherBirthDate:motherQuery.rows[0].date_of_birth,
                 motherBirthPlace:motherQuery.rows[0].place_of_birth,
@@ -1138,6 +1140,7 @@ app.post('/edit-person', async (req, res) => {
     try {
 
     const { userId, personDetails} = req.body;
+    console.log(personDetails)
 
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(

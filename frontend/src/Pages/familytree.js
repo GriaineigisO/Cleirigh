@@ -953,438 +953,363 @@ const FamilyTree = () => {
     }, [maternalGrandmotherDetails.id])
 
 
-    // //below useEffects automatically supply the surname and ethnicity of the child
-    // //updates fatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!fatherDetails.lastName && bottomPersonDetails.lastName) {
-    //             setFatherDetails((prev) => ({
-    //               ...prev,
-    //               lastName: bottomPersonDetails.lastName,
-    //             }));
-    //           }
-    //     }, [fatherDetails.lastName, bottomPersonDetails.lastName]);
+    //below useEffects automatically supply the surname and ethnicity of the child
+    //updates fatherDetails whenever it changes
+        useEffect(() => {
+                setFatherDetails((prev) => ({
+                  ...prev,
+                  lastName: bottomPersonDetails.lastName,
+                }));
+              
+        }, [bottomPersonDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!fatherDetails.ethnicity && bottomPersonDetails.ethnicity) {
-    //             setFatherDetails((prev) => ({
-    //               ...prev,
-    //               ethnicity: bottomPersonDetails.ethnicity,
-    //             }));
-    //           }
-    //     }, [fatherDetails.ethnicity, bottomPersonDetails.ethnicity]);
+        useEffect(() => {
+                setFatherDetails((prev) => ({
+                  ...prev,
+                  ethnicity: bottomPersonDetails.ethnicity,
+                }));
+              
+        }, [bottomPersonDetails.ethnicity]);
 
-    //     //updates motherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!motherDetails.ethnicity && bottomPersonDetails.ethnicity) {
-    //             setMotherDetails((prev) => ({
-    //               ...prev,
-    //               ethnicity: bottomPersonDetails.ethnicity,
-    //             }));
-    //           }
-    //     }, [motherDetails.ethnicity, bottomPersonDetails.ethnicity]);
+        //updates motherDetails whenever it changes
+        useEffect(() => {
+                setMotherDetails((prev) => ({
+                  ...prev,
+                  ethnicity: bottomPersonDetails.ethnicity,
+                }));
+              
+        }, [bottomPersonDetails.ethnicity]);
 
-    //     //updates paternalGrandfatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalGrandfatherDetails.lastName && fatherDetails.lastName) {
-    //             setPaternalGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: fatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [paternalGrandfatherDetails.lastName, fatherDetails.lastName]);
+        //updates paternalGrandfatherDetails whenever it changes
+        useEffect(() => {
+                setPaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: fatherDetails.lastName,
+                  }))
+              
+        }, [fatherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!paternalGrandfatherDetails.ethnicity  && fatherDetails.ethnicity) {
-    //             setPaternalGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: fatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalGrandfatherDetails.ethnicity, fatherDetails.ethnicity]);
+        useEffect(() => {
+                setPaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: fatherDetails.ethnicity,
+                  }))
+              
+        }, [fatherDetails.ethnicity]);
 
-    //     //updates paternalGrandmotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalGrandmotherDetails.ethnicity  && fatherDetails.ethnicity) {
-    //             setPaternalGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: fatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalGrandmotherDetails.ethnicity, fatherDetails.ethnicity]);
+        //updates paternalGrandmotherDetails whenever it changes
+        useEffect(() => {
+                setPaternalGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: fatherDetails.ethnicity,
+                  }))
+        }, [fatherDetails.ethnicity]);
 
-    //     //updates maternalGrandfatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalGrandfatherDetails.lastName && motherDetails.lastName) {
-    //             setMaternalGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: motherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [maternalGrandfatherDetails.lastName, motherDetails.lastName]);
+        //updates maternalGrandfatherDetails whenever it changes
+        useEffect(() => {
+                setMaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: motherDetails.lastName,
+                  }))
+        }, [motherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!maternalGrandfatherDetails.ethnicity  && motherDetails.ethnicity) {
-    //             setMaternalGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: motherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalGrandfatherDetails.ethnicity, motherDetails.ethnicity]);
+        useEffect(() => {
+                setMaternalGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: motherDetails.ethnicity,
+                  }))
+        }, [motherDetails.ethnicity]);
 
-    //     //updates maternalGrandmotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalGrandmotherDetails.ethnicity  && motherDetails.ethnicity) {
-    //             setMaternalGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: motherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalGrandmotherDetails.ethnicity, motherDetails.ethnicity]);
+        //updates maternalGrandmotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: motherDetails.ethnicity,
+                  }))
+        }, [motherDetails.ethnicity]);
 
-    //     //updates paternalPaternalGreatGrandfatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalPaternalGreatGrandfatherDetails.lastName && paternalGrandfatherDetails.lastName) {
-    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: paternalGrandfatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [paternalPaternalGreatGrandfatherDetails.lastName, paternalGrandfatherDetails.lastName]);
+        //updates paternalPaternalGreatGrandfatherDetails whenever it changes
+        useEffect(() => {
+                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalGrandfatherDetails.lastName,
+                  }))
+        }, [paternalGrandfatherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!paternalPaternalGreatGrandfatherDetails.ethnicity  && paternalGrandfatherDetails.ethnicity) {
-    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalPaternalGreatGrandfatherDetails.ethnicity, paternalGrandfatherDetails.ethnicity]);
+        useEffect(() => {
+                setPaternalPaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalGrandfatherDetails.ethnicity,
+                  }))
+        }, [paternalGrandfatherDetails.ethnicity]);
 
-    //     //updates paternalPaternalGreatGrandmotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalPaternalGreatGrandmotherDetails.ethnicity  && paternalGrandfatherDetails.ethnicity) {
-    //             setPaternalPaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalPaternalGreatGrandmotherDetails.ethnicity, paternalGrandfatherDetails.ethnicity]);
+        //updates paternalPaternalGreatGrandmotherDetails whenever it changes
+        useEffect(() => {
+                setPaternalPaternalGreatGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalGrandfatherDetails.ethnicity,
+                  }))
+        }, [paternalGrandfatherDetails.ethnicity]);
 
-    //     //updates paternalMaternalGreatGrandfatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandfatherDetails.lastName && paternalGrandmotherDetails.lastName) {
-    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: paternalGrandmotherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandfatherDetails.lastName, paternalGrandmotherDetails.lastName]);
+        //updates paternalMaternalGreatGrandfatherDetails whenever it changes
+        useEffect(() => {
+                setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalGrandmotherDetails.lastName,
+                  }))
+        }, [paternalGrandmotherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandfatherDetails.ethnicity  && paternalGrandmotherDetails.ethnicity) {
-    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandfatherDetails.ethnicity, paternalGrandmotherDetails.ethnicity]);
+        useEffect(() => {
+                setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalGrandmotherDetails.ethnicity,
+                  }))
+        }, [paternalGrandmotherDetails.ethnicity]);
 
-    //     //updates paternalMaternalGreatGrandmotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandmotherDetails.ethnicity  && paternalGrandmotherDetails.ethnicity) {
-    //             setPaternalMaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandmotherDetails.ethnicity, paternalGrandmotherDetails.ethnicity]);
+        //updates paternalMaternalGreatGrandmotherDetails whenever it changes
+        useEffect(() => {
+                setPaternalMaternalGreatGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalGrandmotherDetails.ethnicity,
+                  }))
+        }, [paternalGrandmotherDetails.ethnicity]);
 
-    //     //updates maternalPaternalGreatGrandfatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandfatherDetails.lastName && maternalGrandfatherDetails.lastName) {
-    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: maternalGrandfatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandfatherDetails.lastName, maternalGrandfatherDetails.lastName]);
+        //updates maternalPaternalGreatGrandfatherDetails whenever it changes
+        useEffect(() => {
+                setMaternalPaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: maternalGrandfatherDetails.lastName,
+                  }))
+        }, [maternalGrandfatherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandfatherDetails.ethnicity  && maternalGrandfatherDetails.ethnicity) {
-    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandfatherDetails.ethnicity, maternalGrandfatherDetails.ethnicity]);
+        useEffect(() => {
+                setMaternalPaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalGrandfatherDetails.ethnicity,
+                  }))
+        }, [maternalGrandfatherDetails.ethnicity]);
 
-    //     //updates maternalPaternalGreatGrandmotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandmotherDetails.ethnicity  && maternalGrandfatherDetails.ethnicity) {
-    //             setMaternalPaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandmotherDetails.ethnicity, maternalGrandfatherDetails.ethnicity]);
+        //updates maternalPaternalGreatGrandmotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalPaternalGreatGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalGrandfatherDetails.ethnicity,
+                  }))
+        }, [maternalGrandfatherDetails.ethnicity]);
 
-    //     //updates maternalMaternalGreatGrandfatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandfatherDetails.lastName && maternalGrandmotherDetails.lastName) {
-    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: maternalGrandmotherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandfatherDetails.lastName, maternalGrandmotherDetails.lastName]);
+        //updates maternalMaternalGreatGrandfatherDetails whenever it changes
+        useEffect(() => {
+                setMaternalMaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    lastName: maternalGrandmotherDetails.lastName,
+                  }))
+        }, [maternalGrandmotherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandfatherDetails.ethnicity  && maternalGrandmotherDetails.ethnicity) {
-    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandfatherDetails.ethnicity, maternalGrandmotherDetails.ethnicity]);
+        useEffect(() => {
+                setMaternalMaternalGreatGrandfatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalGrandmotherDetails.ethnicity,
+                  }))
+        }, [maternalGrandmotherDetails.ethnicity]);
 
-    //     //updates maternalMaternalGreatGrandmotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandmotherDetails.ethnicity  && maternalGrandmotherDetails.ethnicity) {
-    //             setMaternalMaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandmotherDetails.ethnicity, maternalGrandmotherDetails.ethnicity]);
+        //updates maternalMaternalGreatGrandmotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalMaternalGreatGrandmotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalGrandmotherDetails.ethnicity,
+                  }))
+        }, [maternalGrandmotherDetails.ethnicity]);
 
-    //     //updates paternalPaternalGreatGrandfathersFatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalPaternalGreatGrandfathersFatherDetails.lastName && paternalPaternalGreatGrandfatherDetails.lastName) {
-    //             setPaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: paternalPaternalGreatGrandfatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [paternalPaternalGreatGrandfathersFatherDetails.lastName, paternalPaternalGreatGrandfatherDetails.lastName]);
+        //updates paternalPaternalGreatGrandfathersFatherDetails whenever it changes
+        useEffect(() => {
+                setPaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalPaternalGreatGrandfatherDetails.lastName,
+                  }))
+        }, [paternalPaternalGreatGrandfatherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!paternalPaternalGreatGrandfathersFatherDetails.ethnicity  && paternalPaternalGreatGrandfatherDetails.ethnicity) {
-    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalPaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalPaternalGreatGrandfathersFatherDetails.ethnicity, paternalPaternalGreatGrandfatherDetails.ethnicity]);
+        useEffect(() => {
+                setPaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalPaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [paternalPaternalGreatGrandfatherDetails.ethnicity]);
 
-    //     //updates paternalPaternalGreatGrandfathersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalPaternalGreatGrandfathersMotherDetails.ethnicity  && paternalPaternalGreatGrandfatherDetails.ethnicity) {
-    //             setPaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalPaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalPaternalGreatGrandfathersMotherDetails.ethnicity, paternalPaternalGreatGrandfatherDetails.ethnicity]);
+        //updates paternalPaternalGreatGrandfathersMotherDetails whenever it changes
+        useEffect(() => {
+                setPaternalPaternalGreatGrandfathersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalPaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [paternalPaternalGreatGrandfatherDetails.ethnicity]);
 
 
 
-    //     //updates paternalMaternalGreatGrandfathersFatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandfathersFatherDetails.lastName && paternalMaternalGreatGrandfatherDetails.lastName) {
-    //             setPaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: paternalMaternalGreatGrandfatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandfathersFatherDetails.lastName, paternalMaternalGreatGrandfatherDetails.lastName]);
+        //updates paternalPaternalGreatGrandmothersFatherDetails whenever it changes
+        useEffect(() => {
+            setPaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
+                ...prev,
+                lastName: paternalPaternalGreatGrandmotherDetails.lastName,
+              }))
+    }, [paternalPaternalGreatGrandmotherDetails.lastName]);
 
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandfathersFatherDetails.ethnicity  && paternalMaternalGreatGrandfatherDetails.ethnicity) {
-    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandfathersFatherDetails.ethnicity, paternalMaternalGreatGrandfatherDetails.ethnicity]);
+    useEffect(() => {
+            setPaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
+                ...prev,
+                ethnicity: paternalPaternalGreatGrandmotherDetails.ethnicity,
+              }))
+    }, [paternalPaternalGreatGrandmotherDetails.ethnicity]);
 
-    //     //updates paternalMaternalGreatGrandfathersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandfathersMotherDetails.ethnicity  && paternalMaternalGreatGrandfatherDetails.ethnicity) {
-    //             setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandfathersMotherDetails.ethnicity, paternalMaternalGreatGrandfatherDetails.ethnicity]);
-
-    //     //updates paternalMaternalGreatGrandmothersFatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandmothersFatherDetails.lastName && paternalMaternalGreatGrandmotherDetails.lastName) {
-    //             setPaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: paternalMaternalGreatGrandmotherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandmothersFatherDetails.lastName, paternalMaternalGreatGrandmotherDetails.lastName]);
-
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandmothersFatherDetails.ethnicity  && paternalMaternalGreatGrandmotherDetails.ethnicity) {
-    //             setPaternalMaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalMaternalGreatGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandmothersFatherDetails.ethnicity, paternalMaternalGreatGrandmotherDetails.ethnicity]);
-
-    //     //updates paternalMaternalGreatGrandmothersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!paternalMaternalGreatGrandmothersMotherDetails.ethnicity  && paternalMaternalGreatGrandmotherDetails.ethnicity) {
-    //             setPaternalMaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: paternalMaternalGreatGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [paternalMaternalGreatGrandmothersMotherDetails.ethnicity, paternalMaternalGreatGrandmotherDetails.ethnicity]);
-
-
-        
-
-
-    //      //updates maternalPaternalGreatGrandfathersFatherDetails whenever it changes
-    //      useEffect(() => {
-    //         if (!maternalPaternalGreatGrandfathersFatherDetails.lastName && maternalPaternalGreatGrandfatherDetails.lastName) {
-    //             setMaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: maternalPaternalGreatGrandfatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandfathersFatherDetails.lastName, maternalPaternalGreatGrandfatherDetails.lastName]);
-
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandfathersFatherDetails.ethnicity  && maternalPaternalGreatGrandfatherDetails.ethnicity) {
-    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalPaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandfathersFatherDetails.ethnicity, maternalPaternalGreatGrandfatherDetails.ethnicity]);
-
-    //     //updates maternalPaternalGreatGrandfathersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandfathersMotherDetails.ethnicity  && maternalPaternalGreatGrandfatherDetails.ethnicity) {
-    //             setMaternalPaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalPaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandfathersMotherDetails.ethnicity, maternalPaternalGreatGrandfatherDetails.ethnicity]);
-
-    //      //updates maternalPaternalGreatGrandmothersFatherDetails whenever it changes
-    //      useEffect(() => {
-    //         if (!maternalPaternalGreatGrandmothersFatherDetails.lastName && maternalPaternalGreatGrandmotherDetails.lastName) {
-    //             setMaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: maternalPaternalGreatGrandmotherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandmothersFatherDetails.lastName, maternalPaternalGreatGrandmotherDetails.lastName]);
-
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandmothersFatherDetails.ethnicity  && maternalPaternalGreatGrandmotherDetails.ethnicity) {
-    //             setMaternalPaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalPaternalGreatGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandmothersFatherDetails.ethnicity, maternalPaternalGreatGrandmotherDetails.ethnicity]);
-
-    //     //updates maternalPaternalGreatGrandmothersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalPaternalGreatGrandmothersMotherDetails.ethnicity  && maternalPaternalGreatGrandmotherDetails.ethnicity) {
-    //             setMaternalPaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalPaternalGreatGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalPaternalGreatGrandmothersMotherDetails.ethnicity, maternalPaternalGreatGrandmotherDetails.ethnicity]);
+    //updates paternalPaternalGreatGrandmothersMotherDetails whenever it changes
+    useEffect(() => {
+            setPaternalPaternalGreatGrandmothersMotherDetails((prev) => ({
+                ...prev,
+                ethnicity: paternalPaternalGreatGrandmotherDetails.ethnicity,
+              }))
+    }, [paternalPaternalGreatGrandmotherDetails.ethnicity]);
 
 
 
+        //updates paternalMaternalGreatGrandfathersFatherDetails whenever it changes
+        useEffect(() => {
+                setPaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalMaternalGreatGrandfatherDetails.lastName,
+                  }))
+        }, [paternalMaternalGreatGrandfatherDetails.lastName]);
 
+        useEffect(() => {
+                setPaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [paternalMaternalGreatGrandfatherDetails.ethnicity]);
 
-    //     //updates MaternalMaternalGreatGrandfathersFatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandfathersFatherDetails.lastName && maternalMaternalGreatGrandfatherDetails.lastName) {
-    //             setMaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: maternalMaternalGreatGrandfatherDetails.lastName,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandfathersFatherDetails.lastName, maternalMaternalGreatGrandfatherDetails.lastName]);
+        //updates paternalMaternalGreatGrandfathersMotherDetails whenever it changes
+        useEffect(() => {
+                setPaternalMaternalGreatGrandfathersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [paternalMaternalGreatGrandfatherDetails.ethnicity]);
 
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandfathersFatherDetails.ethnicity  && maternalMaternalGreatGrandfatherDetails.ethnicity) {
-    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalMaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandfathersFatherDetails.ethnicity, maternalMaternalGreatGrandfatherDetails.ethnicity]);
+        //updates paternalMaternalGreatGrandmothersFatherDetails whenever it changes
+        useEffect(() => {
+                setPaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: paternalMaternalGreatGrandmotherDetails.lastName,
+                  }))
+        }, [paternalMaternalGreatGrandmotherDetails.lastName]);
 
-    //     //updates maternalMaternalGreatGrandfathersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandfathersMotherDetails.ethnicity  && maternalMaternalGreatGrandfatherDetails.ethnicity) {
-    //             setMaternalMaternalGreatGrandfatherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalMaternalGreatGrandfatherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandfathersMotherDetails.ethnicity, maternalMaternalGreatGrandfatherDetails.ethnicity]);
+        useEffect(() => {
+                setPaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalMaternalGreatGrandmotherDetails.ethnicity,
+                  }))
+        }, [paternalMaternalGreatGrandmotherDetails.ethnicity]);
 
-
-    //     //updates MaternalMaternalGreatGrandmothersFatherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandmothersFatherDetails.lastName && maternalMaternalGreatGrandmotherDetails.lastName) {
-    //             setMaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
-    //                 ...prev,
-    //                 lastName: maternalMaternalGreatGrandmotherDetails.kastName,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandmothersFatherDetails.lastName, maternalMaternalGreatGrandmotherDetails.lastName]);
-
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandmothersFatherDetails.ethnicity  && maternalMaternalGreatGrandmotherDetails.ethnicity) {
-    //             setMaternalMaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalMaternalGreatGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandmothersFatherDetails.ethnicity, maternalMaternalGreatGrandmotherDetails.ethnicity]);
-
-    //     //updates maternalMaternalGreatGrandmothersMotherDetails whenever it changes
-    //     useEffect(() => {
-    //         if (!maternalMaternalGreatGrandmothersMotherDetails.ethnicity  && maternalMaternalGreatGrandmotherDetails.ethnicity) {
-    //             setMaternalMaternalGreatGrandmotherDetails((prev) => ({
-    //                 ...prev,
-    //                 ethnicity: maternalMaternalGreatGrandmotherDetails.ethnicity,
-    //               }))
-    //           }
-    //     }, [maternalMaternalGreatGrandmothersMotherDetails.ethnicity, maternalMaternalGreatGrandmotherDetails.ethnicity]);
+        //updates paternalMaternalGreatGrandmothersMotherDetails whenever it changes
+        useEffect(() => {
+                setPaternalMaternalGreatGrandmothersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: paternalMaternalGreatGrandmotherDetails.ethnicity,
+                  }))
+        }, [paternalMaternalGreatGrandmotherDetails.ethnicity]);
 
 
 
-    //     //below useEffects automatically supply the details of an ancestor for the edit modal
-    //     useEffect(() => {
-    //             setFatherDetails((prev) => ({
-    //             ...prev,
-    //             firsName: fatherDetails.firstName,
-    //             lastName: fatherDetails.lastName,
-    //             }));
-    //     }, [fatherDetails]);
-        
+         //updates maternalPaternalGreatGrandfathersFatherDetails whenever it changes
+         useEffect(() => {
+                setMaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: maternalPaternalGreatGrandfatherDetails.lastName,
+                  }))
+        }, [maternalPaternalGreatGrandfatherDetails.lastName]);
+
+        useEffect(() => {
+                setMaternalPaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalPaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [maternalPaternalGreatGrandfatherDetails.ethnicity]);
+
+        //updates maternalPaternalGreatGrandfathersMotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalPaternalGreatGrandfathersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalPaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [maternalPaternalGreatGrandfatherDetails.ethnicity]);
+
+         //updates maternalPaternalGreatGrandmothersFatherDetails whenever it changes
+         useEffect(() => {
+                setMaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: maternalPaternalGreatGrandmotherDetails.lastName,
+                  }))
+        }, [maternalPaternalGreatGrandmotherDetails.lastName]);
+
+        useEffect(() => {
+                setMaternalPaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalPaternalGreatGrandmotherDetails.ethnicity,
+                  }))
+        }, [maternalPaternalGreatGrandmotherDetails.ethnicity]);
+
+        //updates maternalPaternalGreatGrandmothersMotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalPaternalGreatGrandmothersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalPaternalGreatGrandmotherDetails.ethnicity,
+                  }))
+        }, [maternalPaternalGreatGrandmotherDetails.ethnicity]);
+
+        //updates MaternalMaternalGreatGrandfathersFatherDetails whenever it changes
+        useEffect(() => {
+                setMaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: maternalMaternalGreatGrandfatherDetails.lastName,
+                  }))
+        }, [maternalMaternalGreatGrandfatherDetails.lastName]);
+
+        useEffect(() => {
+                setMaternalMaternalGreatGrandfathersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalMaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [maternalMaternalGreatGrandfatherDetails.ethnicity]);
+
+        //updates maternalMaternalGreatGrandfathersMotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalMaternalGreatGrandfathersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalMaternalGreatGrandfatherDetails.ethnicity,
+                  }))
+        }, [maternalMaternalGreatGrandfatherDetails.ethnicity]);
 
 
+        //updates MaternalMaternalGreatGrandmothersFatherDetails whenever it changes
+        useEffect(() => {
+                setMaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    lastName: maternalMaternalGreatGrandmotherDetails.lastName,
+                  }))
+        }, [maternalMaternalGreatGrandmotherDetails.lastName]);
 
+        useEffect(() => {
+                setMaternalMaternalGreatGrandmothersFatherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalMaternalGreatGrandmotherDetails.ethnicity,
+                  }))
+        }, [maternalMaternalGreatGrandmotherDetails.ethnicity]);
+
+        //updates maternalMaternalGreatGrandmothersMotherDetails whenever it changes
+        useEffect(() => {
+                setMaternalMaternalGreatGrandmothersMotherDetails((prev) => ({
+                    ...prev,
+                    ethnicity: maternalMaternalGreatGrandmotherDetails.ethnicity,
+                  }))
+        }, [maternalMaternalGreatGrandmotherDetails.ethnicity]);
 
 
         const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
@@ -1930,22 +1855,21 @@ const FamilyTree = () => {
         }
 
 
-        const saveFatherEdits = () => {
-            console.log("hellooo")
-            seteditShowFather(false);
+        const saveEdits = (personDetails, setEditShow, getPerson) => {
+            setEditShow(false);
             try {
                 const userId = localStorage.getItem('userId');
-                const personDetails = fatherDetails;
                 const response = fetch('http://localhost:5000/edit-person', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId, personDetails}),
                 })
-                getFather();
+                getPerson();
             } catch (error) {
                 console.log("Error saving edits:", error);
             }
         }
+
 
         const deletePerson = async (personID) => {
             // try {
@@ -2025,8 +1949,8 @@ const FamilyTree = () => {
         )
     }
 
-    function makeEditModal(showPerson, closeEditPerson, setDetails, details, save, closeAdd, deletePerson, name) {
-
+    function makeEditModal(showPerson, closeEditPerson, setDetails, details, save, seteditShowPerson, getPerson, closeAdd, deletePerson) {
+console.log(details)
         return (
 
         <Modal show={showPerson} onHide={closeEditPerson} dialogClassName="custom-modal-width">
@@ -2069,10 +1993,10 @@ const FamilyTree = () => {
                 <Button variant="secondary" onClick={deletePerson(details.profileNumber)}>
                     Delete Person
                 </Button>
-                <Button variant="secondary" onClick={closeAdd}>
+                <Button variant="secondary" onClick={closeEditPerson}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={save}>
+                <Button variant="primary" onClick={() => save(details, seteditShowPerson, getPerson)}>
                     Save Changes
                 </Button>
                 </Modal.Footer>
@@ -2105,18 +2029,12 @@ const FamilyTree = () => {
                     <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{details.fullName}</b></td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom birth-date-cell table-label" rowSpan="2">Birth</td>
-                    <td className="ancestor-box-border-bottom table-label shrink">date:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.birthDate}</td>
-                    <td className="ancestor-box-border-bottom birth-date-cell table-label" rowSpan="2">Death</td>
-                    <td className="ancestor-box-border-bottom table-label shrink">date:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.deathDate}</td>
+                    <td className="ancestor-box-border-bottom birth-date-cell table-label">Birth</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.birthDate} {details.birthPlace}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">place:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.birthPlace}</td>
-                    <td className="ancestor-box-border-bottom table-label shrink">place:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.deathPlace}</td>
+                    <td className="ancestor-box-border-bottom birth-date-cell table-label">Death</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.deathDate} {details.deathPlace}</td>
                 </tr>
                 <tr>
                     <td className=" ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
@@ -2155,8 +2073,6 @@ const FamilyTree = () => {
             motherFather = "Mother";
         }
 
-      
-
         return(
             <>
              {details.id ? (
@@ -2183,7 +2099,7 @@ const FamilyTree = () => {
                 </tr>
                 <tr>
                     <td className=" table-label shrink">Profile <br/>Number:</td>
-                    <td className="table-content">{details.id}</td>
+                    <td className="table-content">{details.id} {<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
             </table>
         ) : (
@@ -2315,7 +2231,35 @@ const FamilyTree = () => {
             {makeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
 
 
-            {makeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveFatherEdits, closeAddFatherModal, deletePerson)}
+            {makeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveEdits, seteditShowFather, getFather, closeAddFatherModal, deletePerson)}
+
+            {makeEditModal(editShowMother, closeEditMotherModal, setMotherDetails, motherDetails, saveEdits, seteditShowMother, getMother, closeAddMotherModal, deletePerson)}
+
+            {makeEditModal(editShowPaternalGrandfather, closeEditPaternalGrandfatherModal, setPaternalGrandfatherDetails, paternalGrandfatherDetails,  saveEdits, seteditShowPaternalGrandfather, getPaternalGrandFather, closeAddPaternalGrandfatherModal, deletePerson)}
+
+            {makeEditModal(editShowPaternalGrandmother, closeEditPaternalGrandmotherModal, setPaternalGrandmotherDetails, paternalGrandmotherDetails,  saveEdits, seteditShowPaternalGrandmother, getPaternalGrandMother, closeAddPaternalGrandmotherModal, deletePerson)}
+
+            {makeEditModal(editShowMaternalGrandfather, closeEditMaternalGrandfatherModal, setMaternalGrandfatherDetails, maternalGrandfatherDetails,  saveEdits, seteditShowMaternalGrandfather, getMaternalGrandFather, closeAddMaternalGrandfatherModal, deletePerson)}
+
+            {makeEditModal(editShowMaternalGrandmother, closeEditMaternalGrandmotherModal, setMaternalGrandmotherDetails, maternalGrandmotherDetails,  saveEdits, seteditShowMaternalGrandmother, getMaternalGrandMother, closeAddMaternalGrandmotherModal, deletePerson)}
+
+            {makeEditModal(editShowPaternalPaternalGreatGrandfather, closeEditPaternalPaternalGreatGrandfatherModal, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandfather, getPaternalPaternalGreatGrandFather, closeAddPaternalPaternalGreatGrandfatherModal, deletePerson)}
+
+            {makeEditModal(editShowPaternalPaternalGreatGrandmother, closeEditPaternalPaternalGreatGrandmotherModal, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandmother, getPaternalPaternalGreatGrandMother, closeAddPaternalPaternalGreatGrandmotherModal, deletePerson)}
+
+            {makeEditModal(editShowPaternalMaternalGreatGrandfather, closeEditPaternalMaternalGreatGrandfatherModal, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandfather, getPaternalMaternalGreatGrandFather, closeAddPaternalMaternalGreatGrandfatherModal, deletePerson)}
+
+            {makeEditModal(editShowPaternalMaternalGreatGrandmother, closeEditPaternalMaternalGreatGrandmotherModal, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandmother, getPaternalMaternalGreatGrandMother, closeAddPaternalMaternalGreatGrandmotherModal, deletePerson)}
+
+            {makeEditModal(editShowMaternalPaternalGreatGrandfather, closeEditMaternalPaternalGreatGrandfatherModal, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandfather, getMaternalPaternalGreatGrandFather, closeAddMaternalPaternalGreatGrandfatherModal, deletePerson)}
+
+            {makeEditModal(editShowMaternalPaternalGreatGrandmother, closeEditMaternalPaternalGreatGrandmotherModal, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandmother, getMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, deletePerson)}
+
+            {makeEditModal(editShowMaternalMaternalGreatGrandfather, closeEditMaternalMaternalGreatGrandfatherModal, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandfather, getMaternalMaternalGreatGrandFather, closeAddMaternalMaternalGreatGrandfatherModal, deletePerson)}
+
+            {makeEditModal(editShowMaternalMaternalGreatGrandmother, closeEditMaternalMaternalGreatGrandmotherModal, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandmother, getMaternalMaternalGreatGrandMother, closeAddMaternalMaternalGreatGrandmotherModal, deletePerson)}
+
+            
             
             <div className="row">
                 <LeftSidebar />
@@ -2529,21 +2473,21 @@ const FamilyTree = () => {
 
                         <div className="tree-row justify-content-center">
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandfatherModal, openEditPaternalPaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandmotherModal, openEditPaternalPaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandfatherModal, openEditPaternalMaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", paternalMaternalGreatGrandmotherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", paternalMaternalGreatGrandmotherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandmotherModal,openEditPaternalMaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", maternalPaternalGreatGrandfatherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", maternalPaternalGreatGrandfatherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandfatherModal, openEditMaternalPaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", maternalPaternalGreatGrandmotherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", maternalPaternalGreatGrandmotherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandmotherModal, openEditMaternalPaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", maternalMaternalGreatGrandfatherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandfatherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "male", maternalMaternalGreatGrandfatherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandfatherModal, openEditMaternalMaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", maternalMaternalGreatGrandmotherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandmotherModal)}
+                            {showGreatGrandParentTable(basePersonDetails, "female", maternalMaternalGreatGrandmotherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandmotherModal, openEditMaternalMaternalGreatGrandmotherModal)}
                            
                         </div>
 
@@ -2554,13 +2498,13 @@ const FamilyTree = () => {
 
                         <div className="tree-row justify-content-center">
 
-                        {showAncestorTable(basePersonDetails, "male", paternalGrandfatherDetails, fatherDetails.id, openAddPaternalGrandfatherModal)}
+                        {showAncestorTable(basePersonDetails, "male", paternalGrandfatherDetails, fatherDetails.id, openAddPaternalGrandfatherModal, openEditPaternalGrandfatherModal)}
 
-                        {showAncestorTable(basePersonDetails, "female", paternalGrandmotherDetails, fatherDetails.id, openAddPaternalGrandmotherModal)}
+                        {showAncestorTable(basePersonDetails, "female", paternalGrandmotherDetails, fatherDetails.id, openAddPaternalGrandmotherModal, openEditPaternalGrandmotherModal)}
 
-                        {showAncestorTable(basePersonDetails, "male", maternalGrandfatherDetails, motherDetails.id, openAddMaternalGrandfatherModal)}
+                        {showAncestorTable(basePersonDetails, "male", maternalGrandfatherDetails, motherDetails.id, openAddMaternalGrandfatherModal, openEditMaternalGrandfatherModal)}
 
-                        {showAncestorTable(basePersonDetails, "female", maternalGrandmotherDetails, motherDetails.id, openAddMaternalGrandmotherModal)}
+                        {showAncestorTable(basePersonDetails, "female", maternalGrandmotherDetails, motherDetails.id, openAddMaternalGrandmotherModal, openEditMaternalGrandmotherModal)}
 
                         </div>
 
@@ -2573,7 +2517,7 @@ const FamilyTree = () => {
 
                             {showAncestorTable(basePersonDetails, "male", fatherDetails, bottomPersonDetails.id, openAddFatherModal, openEditFatherModal)}
 
-                            {showAncestorTable(basePersonDetails, "female", motherDetails, bottomPersonDetails.id, openAddMotherModal)}
+                            {showAncestorTable(basePersonDetails, "female", motherDetails, bottomPersonDetails.id, openAddMotherModal, openEditMotherModal)}
 
                         </div>
 
