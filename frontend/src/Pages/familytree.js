@@ -2,6 +2,7 @@ import LeftSidebar from "../Components/leftSidebar"
 import React, { useState, useEffect, Component } from 'react';
 import { convertDate, convertNumToRelation } from '../library.js';
 import { Modal, Button } from 'react-bootstrap';
+import DeleteModal from '../Components/deletePopup.js'
 import editLogo from '../Images/edit.png';
 
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
@@ -99,7 +100,6 @@ const FamilyTree = () => {
     const [editShowMaternalMaternalGreatGrandfathersMother, seteditShowMaternalMaternalGreatGrandfathersMother] = useState(false);
     const [editShowMaternalMaternalGreatGrandmothersFather, seteditShowMaternalMaternalGreatGrandmothersFather] = useState(false);
     const [editShowMaternalMaternalGreatGrandmothersMother, seteditShowMaternalMaternalGreatGrandmothersMother] = useState(false);
-
 
 
     const closeAddFatherModal = () => setShowFather(false);
@@ -1616,7 +1616,6 @@ uncertainFirstName: data.uncertainFirstName,
 
         const savePaternalMaternalGreatGrandfatherChanges = async () => {
             setShowPaternalMaternalGreatGrandfather(false);
-            console.log(paternalMaternalGreatGrandfatherDetails)
             try {
                 const data = await saveAncestorChanges(paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, "male");
                 setPaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
@@ -2042,18 +2041,7 @@ uncertainFirstName: data.uncertainFirstName,
         }
 
 
-        const deletePerson = async (personID) => {
-            // try {
-            //     const userId = localStorage.getItem('userId');
-            //     const response = fetch('http://localhost:5000/delete-person', {
-            //         method: "POST",
-            //         headers: { 'Content-Type': 'application/json' },
-            //         body: JSON.stringify({ userId, personID }),
-            //     })
-            // } catch (error) {
-            //     console.log(`Error deleting ${personID}: `, error);
-            // }
-        }
+      
 
 
         /*UNCERTAIN STATUS - will update whether the "uncertain" label will appear next to a piece of information (name, birth date ect) on an ancestor's node in the tree*/
@@ -2194,7 +2182,7 @@ uncertainFirstName: data.uncertainFirstName,
                     </div>
 
                     <div className="inputandQuestionMark">
-                        <input type="text" placeholder="Cause of Death" onChage={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                        <input type="text" placeholder="Cause of Death" onChange={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
                     </div>
                     </div>
                    
@@ -2222,7 +2210,14 @@ uncertainFirstName: data.uncertainFirstName,
         )
     }
 
-    function MakeEditModal(showPerson, closeEditPerson, setDetails, details, save, seteditShowPerson, getPerson, closeAdd, deletePerson) {
+
+
+
+ 
+    
+    
+
+    function MakeEditModal(showPerson, closeEditPerson, setDetails, details, save, seteditShowPerson, getPerson, closeAdd,  sex) {
 
         let questionMarkFirstNameColor = "grey";
         if (details.uncertainFirstName) {
@@ -2268,7 +2263,7 @@ uncertainFirstName: data.uncertainFirstName,
 
         return (
 
-        <Modal show={showPerson} onHide={closeEditPerson} dialogclassName="custom-modal-width">
+        <Modal show={showPerson} onHide={closeEditPerson} dialogclassName="custom-modal-width" backdrop="static">
                 <Modal.Header closeButton>
                 <Modal.Title>Edit {details.fullName}</Modal.Title>
                 </Modal.Header>
@@ -2337,15 +2332,23 @@ uncertainFirstName: data.uncertainFirstName,
 
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={deletePerson(details.profileNumber)}>
-                    Delete Person
-                </Button>
-                <Button variant="secondary" onClick={closeEditPerson}>
-                    Cancel
-                </Button>
-                <Button variant="primary" onClick={() => save(details, seteditShowPerson, getPerson)}>
-                    Save Changes
-                </Button>
+                
+                <div className="modal-footer-buttons">
+
+                    <Button variant="secondary" onClick={() => {DeleteModal(details, setDetails, sex, getPerson, closeEditPerson)}}>
+                        Delete Person
+                    </Button>
+
+                    <div className="non-delete-buttons">
+                        <Button variant="secondary" onClick={closeEditPerson}>
+                            Cancel
+                        </Button>
+                        <Button variant="primary" onClick={() => save(details, seteditShowPerson, getPerson)}>
+                            Save Changes
+                        </Button>
+                    </div>
+
+                </div>
                 </Modal.Footer>
             </Modal>
 
@@ -2521,7 +2524,9 @@ uncertainFirstName: data.uncertainFirstName,
 
 
     return (
-        <div>
+        <div className="family-tree-parent-div">
+
+            <DeleteModal />
 
             {MakeModal(showFather, closeAddFatherModal, bottomPersonDetails.firstName, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
 
@@ -2584,33 +2589,33 @@ uncertainFirstName: data.uncertainFirstName,
             {MakeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
 
 
-            {MakeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveEdits, seteditShowFather, getFather, closeAddFatherModal, deletePerson)}
+            {MakeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveEdits, seteditShowFather, getFather, closeAddFatherModal,  "male")}
 
-            {MakeEditModal(editShowMother, closeEditMotherModal, setMotherDetails, motherDetails, saveEdits, seteditShowMother, getMother, closeAddMotherModal, deletePerson)}
+            {MakeEditModal(editShowMother, closeEditMotherModal, setMotherDetails, motherDetails, saveEdits, seteditShowMother, getMother, closeAddMotherModal,  "female")}
 
-            {MakeEditModal(editShowPaternalGrandfather, closeEditPaternalGrandfatherModal, setPaternalGrandfatherDetails, paternalGrandfatherDetails,  saveEdits, seteditShowPaternalGrandfather, getPaternalGrandFather, closeAddPaternalGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalGrandfather, closeEditPaternalGrandfatherModal, setPaternalGrandfatherDetails, paternalGrandfatherDetails,  saveEdits, seteditShowPaternalGrandfather, getPaternalGrandFather, closeAddPaternalGrandfatherModal,  "male")}
 
-            {MakeEditModal(editShowPaternalGrandmother, closeEditPaternalGrandmotherModal, setPaternalGrandmotherDetails, paternalGrandmotherDetails,  saveEdits, seteditShowPaternalGrandmother, getPaternalGrandMother, closeAddPaternalGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalGrandmother, closeEditPaternalGrandmotherModal, setPaternalGrandmotherDetails, paternalGrandmotherDetails,  saveEdits, seteditShowPaternalGrandmother, getPaternalGrandMother, closeAddPaternalGrandmotherModal,  "female")}
 
-            {MakeEditModal(editShowMaternalGrandfather, closeEditMaternalGrandfatherModal, setMaternalGrandfatherDetails, maternalGrandfatherDetails,  saveEdits, seteditShowMaternalGrandfather, getMaternalGrandFather, closeAddMaternalGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalGrandfather, closeEditMaternalGrandfatherModal, setMaternalGrandfatherDetails, maternalGrandfatherDetails,  saveEdits, seteditShowMaternalGrandfather, getMaternalGrandFather, closeAddMaternalGrandfatherModal,  "male")}
 
-            {MakeEditModal(editShowMaternalGrandmother, closeEditMaternalGrandmotherModal, setMaternalGrandmotherDetails, maternalGrandmotherDetails,  saveEdits, seteditShowMaternalGrandmother, getMaternalGrandMother, closeAddMaternalGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalGrandmother, closeEditMaternalGrandmotherModal, setMaternalGrandmotherDetails, maternalGrandmotherDetails,  saveEdits, seteditShowMaternalGrandmother, getMaternalGrandMother, closeAddMaternalGrandmotherModal,  "female")}
 
-            {MakeEditModal(editShowPaternalPaternalGreatGrandfather, closeEditPaternalPaternalGreatGrandfatherModal, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandfather, getPaternalPaternalGreatGrandFather, closeAddPaternalPaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalPaternalGreatGrandfather, closeEditPaternalPaternalGreatGrandfatherModal, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandfather, getPaternalPaternalGreatGrandFather, closeAddPaternalPaternalGreatGrandfatherModal,  "male")}
 
-            {MakeEditModal(editShowPaternalPaternalGreatGrandmother, closeEditPaternalPaternalGreatGrandmotherModal, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandmother, getPaternalPaternalGreatGrandMother, closeAddPaternalPaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalPaternalGreatGrandmother, closeEditPaternalPaternalGreatGrandmotherModal, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandmother, getPaternalPaternalGreatGrandMother, closeAddPaternalPaternalGreatGrandmotherModal,  "female")}
 
-            {MakeEditModal(editShowPaternalMaternalGreatGrandfather, closeEditPaternalMaternalGreatGrandfatherModal, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandfather, getPaternalMaternalGreatGrandFather, closeAddPaternalMaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalMaternalGreatGrandfather, closeEditPaternalMaternalGreatGrandfatherModal, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandfather, getPaternalMaternalGreatGrandFather, closeAddPaternalMaternalGreatGrandfatherModal,  "male")}
 
-            {MakeEditModal(editShowPaternalMaternalGreatGrandmother, closeEditPaternalMaternalGreatGrandmotherModal, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandmother, getPaternalMaternalGreatGrandMother, closeAddPaternalMaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalMaternalGreatGrandmother, closeEditPaternalMaternalGreatGrandmotherModal, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandmother, getPaternalMaternalGreatGrandMother, closeAddPaternalMaternalGreatGrandmotherModal,  "female")}
 
-            {MakeEditModal(editShowMaternalPaternalGreatGrandfather, closeEditMaternalPaternalGreatGrandfatherModal, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandfather, getMaternalPaternalGreatGrandFather, closeAddMaternalPaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalPaternalGreatGrandfather, closeEditMaternalPaternalGreatGrandfatherModal, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandfather, getMaternalPaternalGreatGrandFather, closeAddMaternalPaternalGreatGrandfatherModal,  "male")}
 
-            {MakeEditModal(editShowMaternalPaternalGreatGrandmother, closeEditMaternalPaternalGreatGrandmotherModal, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandmother, getMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalPaternalGreatGrandmother, closeEditMaternalPaternalGreatGrandmotherModal, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandmother, getMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal,  "female")}
 
-            {MakeEditModal(editShowMaternalMaternalGreatGrandfather, closeEditMaternalMaternalGreatGrandfatherModal, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandfather, getMaternalMaternalGreatGrandFather, closeAddMaternalMaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalMaternalGreatGrandfather, closeEditMaternalMaternalGreatGrandfatherModal, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandfather, getMaternalMaternalGreatGrandFather, closeAddMaternalMaternalGreatGrandfatherModal,  "male")}
 
-            {MakeEditModal(editShowMaternalMaternalGreatGrandmother, closeEditMaternalMaternalGreatGrandmotherModal, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandmother, getMaternalMaternalGreatGrandMother, closeAddMaternalMaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalMaternalGreatGrandmother, closeEditMaternalMaternalGreatGrandmotherModal, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandmother, getMaternalMaternalGreatGrandMother, closeAddMaternalMaternalGreatGrandmotherModal,  "female")}
 
             
             
@@ -2826,6 +2831,7 @@ uncertainFirstName: data.uncertainFirstName,
 
                         <div className="tree-row justify-content-center">
 
+                            
                             {showGreatGrandParentTable(basePersonDetails, "male", paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandfatherModal, openEditPaternalPaternalGreatGrandfatherModal)}
 
                             {showGreatGrandParentTable(basePersonDetails, "female", paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandmotherModal, openEditPaternalPaternalGreatGrandmotherModal)}

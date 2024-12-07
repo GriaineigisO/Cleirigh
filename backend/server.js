@@ -1165,7 +1165,7 @@ app.post('/check-if-great-grandparent-has-parents', async (req, res) => {
             WHERE ancestor_id = ${greatgrandparentID}
             `
         )
-
+        
         if (request.rows[0].father_id === null && request.rows[0].mother_id === null) {
             res.json(false)
         } else {
@@ -1299,102 +1299,109 @@ app.post('/toggle-uncertain', async (req, res) => {
     }
 })
 
-// app.post('/delete-person', async (req, res) => {
-//     // try {
+app.post('/delete-person', async (req, res) => {
+    console.log("API triggered")
+    try {
 
-//     // const { userId, ancestorDetails, childID, sex} = req.body;
+    const { userId, personID, sex} = req.body;
 
-//     //     // Query to get the current tree
-//     //     const getCurrentTreeId = await pool.query(
-//     //         'SELECT current_tree_id FROM users WHERE id = $1',
-//     //         [userId]
-//     //     );
+    console.log("PersonID is:" + " " + personID)
 
-//     //     const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
 
-//     //     const ancestoridQuery = await pool.query(`
-//     //         SELECT ancestor_id FROM tree_${currentTree}
-//     //     `)
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
-//     //     const allAncestorIds = ancestoridQuery.rows.map(row => row.ancestor_id);
+        //removes any mention of the person's ID in anyone else's father_id or mother_id
+        if (sex === "male") {
+            const removeMentionAsParent = await pool.query(`
+                UPDATE tree_${currentTree}
+                SET father_id = NULL
+                WHERE father_id = ${personID}
+            `)
+        } else {
+            const removeMentionAsParent = await pool.query(`
+                UPDATE tree_${currentTree}
+                SET mother_id = NULL
+                WHERE mother_id = ${personID}
+            `)
+        }
 
-//     //     let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
-//     //     while (allAncestorIds.includes( ancestor_id)) {
-//     //         ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
-//     //     }
-        
-//     //     if (sex === "male") {
-//     //         const childQuery = await pool.query(`
-//     //             UPDATE tree_${currentTree}
-//     //             SET father_id = ${ancestor_id }
-//     //             WHERE ancestor_id = ${childID}
-//     //             `)
-//     //     } else if (sex === "female") {
-//     //         const childQuery = await pool.query(`
-//     //             UPDATE tree_${currentTree}
-//     //             SET mother_id = ${ancestor_id }
-//     //             WHERE ancestor_id = ${childID}
-//     //             `)
-//     //     }      
+        console.log("has been removed as parent")
 
-//     //     //father of bottom page person has same page number
-//     //     const pageNumQuery = await pool.query(`
-//     //         SELECT * FROM tree_${currentTree}
-//     //         WHERE ancestor_id = ${childID}
-//     //     `)
-//     //     const page_number = Number(pageNumQuery.rows.map(row => row.page_number));
+        //now that the person is no longer associated with any children, he, and all his own ancestors, may be deleted. If one of his own ancestors is a repeat ancestor, then thsi repeat ancestor will be safe from deletion thanks to only people with no listed children wil be deleted - the existence of the other descent path disqualifies repeat ancestors from this condition
 
-//     //     const relationToUserQuery = await pool.query(`
-//     //        SELECT * FROM tree_${currentTree}
-//     //         WHERE ancestor_id = ${childID}
-//     //         `)
+        const deleteRecursively = async (ID, personSex) => {
+            console.log(ID + " " + personSex)
 
-//     //     const ancestorRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+            //find parents, store their IDs
+            const findParents = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE ancestor_id = ${ID}
+            `)           
 
-//     //     const ancestorQuery = await pool.query(`
-//     //         INSERT INTO tree_${currentTree} (
-//     //             first_name,
-//     //             middle_name,
-//     //             last_name,
-//     //             ancestor_id,
-//     //             page_number,
-//     //             base_person,
-//     //             sex,
-//     //             ethnicity,
-//     //             date_of_birth,
-//     //             place_of_birth,
-//     //             date_of_death,
-//     //             place_of_death,
-//     //             cause_of_death,
-//     //             occupation,
-//     //             relation_to_user
-//     //         )  
-//     //         VALUES (
-//     //             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
-//     //         ) 
-//     //     `, [
-//     //         ancestorDetails.firstName,
-//     //         ancestorDetails.middleName,
-//     //         ancestorDetails.lastName,
-//     //         ancestor_id,
-//     //         page_number,
-//     //         "false", 
-//     //         sex,
-//     //         ancestorDetails.ethnicity,
-//     //         ancestorDetails.birthDate,
-//     //         ancestorDetails.birthPlace,
-//     //         ancestorDetails.deathDate,
-//     //         ancestorDetails.deathPlace,
-//     //         ancestorDetails.causeOfDeath,
-//     //         ancestorDetails.occupation,
-//     //         ancestorRelation
-//     //     ]);
+            let fatherID = findParents.rows[0].father_id;
+            let motherID = findParents.rows[0].mother_id;
 
-//     //     res.json(ancestor_id)
-//     // } catch (error) {
-//     //     console.log("Error saving ancestor:", error)
-//     // }
-// })
+            //delete person if his ID does not appear as in anyone's father_id or mother_id
+            if (personSex === "male") {
+
+                const determineIfParent = await pool.query(`
+                    SELECT * FROM tree_${currentTree}
+                    WHERE father_id = ${ID}
+                `)
+
+                if (determineIfParent.rows.length === 0) {
+                    const deletePerson = pool.query(`
+                        DELETE FROM tree_${currentTree}
+                        WHERE ancestor_id = ${ID}
+                    `)
+
+                    //now that the person is deleted, his parents will get the same treatment. The recursion will stop if the person has no parents
+                    if (fatherID) {
+                        deleteRecursively(fatherID, "male");
+                    }
+                    if (motherID) {
+                        deleteRecursively(motherID, "female");
+                    }
+                     
+                }
+
+            } else {
+
+                    const determineIfParent = await pool.query(`
+                        SELECT * FROM tree_${currentTree}
+                        WHERE mother_id = ${ID}
+                    `)
+    
+                    if (determineIfParent.rows.length === 0) {
+                        const deletePerson = pool.query(`
+                            DELETE FROM tree_${currentTree}
+                            WHERE ancestor_id = ${ID}
+                        `)
+
+                        //now that the person is deleted, his parents will get the same treatment. The recursion will stop if the person has no parents
+                        if (fatherID) {
+                            deleteRecursively(fatherID, "male");
+                        }
+                        if (motherID) {
+                            deleteRecursively(motherID, "female");
+                        }
+                    }
+                }
+        }
+
+        deleteRecursively(personID, sex);
+
+        console.log("deletion complete")
+ 
+    } catch (error) {
+        console.log("Error saving ancestor:", error)
+    }
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
