@@ -174,6 +174,7 @@ app.post('/make-new-tree', async (req, res) => {
             father_id INT DEFAULT NULL, 
             mother_id INT DEFAULT NULL,
             relation_to_user INT,
+
             UNIQUE (ancestor_id)
             )
         `);
@@ -670,6 +671,14 @@ app.post('/get-father', async (req, res) => {
                 fatherEthnicity:fatherQuery.rows[0].ethnicity,
                 fatherCauseOfDeath:fatherQuery.rows[0].cause_of_death,
                 relation_to_user:fatherQuery.rows[0].relation_to_user,
+                uncertainFirstName:fatherQuery.rows[0].uncertain_first_name,
+                uncertainMiddleName:fatherQuery.rows[0].uncertain_middle_name,
+                uncertainLastName:fatherQuery.rows[0].uncertain_last_name,
+                uncertainBirthDate:fatherQuery.rows[0].uncertain_birth_date,
+                uncertainBirthPlace:fatherQuery.rows[0].uncertain_birth_place,
+                uncertainDeathDate:fatherQuery.rows[0].uncertain_death_date,
+                uncertainDeathPlace:fatherQuery.rows[0].uncertain_death_place,
+                uncertainOccupation:fatherQuery.rows[0].uncertain_occupation,
             })
         }
 
@@ -745,6 +754,14 @@ app.post('/get-mother', async (req, res) => {
                 motherEthnicity:motherQuery.rows[0].ethnicity,
                 motherCauseOfDeath:motherQuery.rows[0].cause_of_death,
                 relation_to_user:motherQuery.rows[0].relation_to_user,
+                uncertainFirstName:motherQuery.rows[0].uncertain_first_name,
+                uncertainMiddleName:motherQuery.rows[0].uncertain_middle_name,
+                uncertainLastName:motherQuery.rows[0].uncertain_last_name,
+                uncertainBirthDate:motherQuery.rows[0].uncertain_birth_date,
+                uncertainBirthPlace:motherQuery.rows[0].uncertain_birth_place,
+                uncertainDeathDate:motherQuery.rows[0].uncertain_death_date,
+                uncertainDeathPlace:motherQuery.rows[0].uncertain_death_place,
+                uncertainOccupation:motherQuery.rows[0].uncertain_occupation,
             })
         }
 
@@ -837,6 +854,15 @@ app.post('/get-current-page-number', async (req, res) => {
             ethnicity: baseOfPage.rows[0].ethnicity,
             relationToUser: baseOfPage.rows[0].relation_to_user,
             sex: baseOfPage.rows[0].sex,
+            uncertainFirstName:baseOfPage.rows[0].uncertain_first_name,
+            uncertainMiddleName:baseOfPage.rows[0].uncertain_middle_name,
+            uncertainLastName:baseOfPage.rows[0].uncertain_last_name,
+            uncertainBirthDate:baseOfPage.rows[0].uncertain_birth_date,
+            uncertainBirthPlace:baseOfPage.rows[0].uncertain_birth_place,
+            uncertainDeathDate:baseOfPage.rows[0].uncertain_death_date,
+            uncertainDeathPlace:baseOfPage.rows[0].uncertain_death_place,
+            uncertainOccupation:baseOfPage.rows[0].uncertain_occupation,
+            
         })
         
     } catch (error) {
@@ -1075,10 +1101,18 @@ app.post('/save-ancestor', async (req, res) => {
                 place_of_death,
                 cause_of_death,
                 occupation,
-                relation_to_user
+                relation_to_user,
+                uncertain_first_name,
+                uncertain_middle_name,
+                uncertain_last_name,
+                uncertain_birth_date,
+                uncertain_birth_place,
+                uncertain_death_date,
+                uncertain_death_place,
+                uncertain_occupation
             )  
             VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23
             ) 
         `, [
             ancestorDetails.firstName,
@@ -1095,7 +1129,15 @@ app.post('/save-ancestor', async (req, res) => {
             ancestorDetails.deathPlace,
             ancestorDetails.causeOfDeath,
             ancestorDetails.occupation,
-            ancestorRelation
+            ancestorRelation,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
         ]);
 
         res.json(ancestor_id)
@@ -1140,7 +1182,6 @@ app.post('/edit-person', async (req, res) => {
     try {
 
     const { userId, personDetails} = req.body;
-    console.log(personDetails)
 
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(
@@ -1183,6 +1224,74 @@ app.post('/edit-person', async (req, res) => {
                 personDetails.id,
             ]
         );
+        
+
+    } catch (error) {
+        console.log("Error saving ancestor:", error)
+    }
+})
+
+app.post('/toggle-uncertain', async (req, res) => {
+    try {
+
+    const { userId, details, infoType} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const checkBoolean = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${details.id}
+            `)
+
+        let bool = "";
+        switch (infoType) {
+            case "first_name":
+                bool = checkBoolean.rows[0].uncertain_first_name;
+                break;
+            case "middle_name":
+                bool = checkBoolean.rows[0].uncertain_middle_name;
+                break;
+            case "last_name":
+                bool = checkBoolean.rows[0].uncertain_last_name;
+                break;
+            case "birth_date":
+                bool = checkBoolean.rows[0].uncertain_birth_date;
+                break;
+            case "birth_place":
+                bool = checkBoolean.rows[0].uncertain_birth_place;
+                break;
+            case "death_date":
+                bool = checkBoolean.rows[0].uncertain_death_date;
+                break;
+            case "death_place":
+                bool = checkBoolean.rows[0].uncertain_death_place;
+                break;
+            case "occupation":
+                bool = checkBoolean.rows[0].uncertain_occupation;
+                break;
+        };
+        
+        //toggles the boolean
+        if (bool) {
+            bool = false;
+        } else {
+            bool = true;
+        }
+
+        const ancestorQuery = await pool.query(
+            `UPDATE tree_${currentTree} 
+             SET
+                uncertain_${infoType} = ${bool}
+             WHERE ancestor_id = ${details.id}`,
+        );
+
+        res.json(bool);
         
 
     } catch (error) {

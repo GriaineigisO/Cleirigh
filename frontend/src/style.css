@@ -35,13 +35,45 @@
     
 }
 
-.input-modal input {
-    background-color: rgb(32, 40, 31) ;
+.input-modal {
+    display: flex;
+    flex-direction: row;
+}
+
+.input-modal div input {
+    background-color: rgb(32, 40, 31);
     color: rgb(210, 255, 126) !important;
     margin-right: 5px;
     margin-top: 5px;
     border: none;
     border-radius: 5px;
+}
+
+.inputandQuestionMark {
+    display: flex;
+    flex-direction: row;
+    align-items:first baseline;
+    margin-right: 15px;
+}
+
+.uncertainMark {
+    color: rgb(196, 143, 143) !important;
+    font-size: 20px;
+    position: absolute;
+    left: 190px;
+}
+
+.uncertainMarkMiddleRow {
+    left: 400px;
+}
+
+.uncertainMarkRightRow {
+    left: 610px;
+}
+
+.uncertainMark p:hover {
+    color: red;
+    cursor: pointer;
 }
 
 

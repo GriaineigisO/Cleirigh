@@ -11,6 +11,25 @@ import editLogo from '../Images/edit.png';
 
 const FamilyTree = () => {
 
+    const [firstNameUncertain, setFirstNameUncertain] = useState(false);
+    const [uncertainFirstNames, setUncertainFirstNames] = useState([]);
+    const [middleNameUncertain, setMiddleNameUncertain] = useState(false);
+    const [uncertainMiddleNames, setUncertainMiddleNames] = useState([]);
+    const [lastNameUncertain, setLastNameUncertain] = useState(false);
+    const [uncertainLastNames, setUncertainLastNames] = useState([]);
+
+    const [birthDateUncertain, setBirthDateUncertain] = useState(false);
+    const [uncertainBirthDates, setUncertainBirthDates] = useState([]);
+    const [birthPlaceUncertain, setBirthPlaceUncertain] = useState(false);
+    const [uncertainBirthPlaces, setUncertainBirthPlaces] = useState([]);
+    const [deathDateUncertain, setDeathDatesUncertain] = useState(false);
+    const [uncertainDeathDates, setUncertainDeathDates] = useState([]);
+    const [deathPlaceUncertain, setDeathPlaceUncertain] = useState(false);
+    const [uncertainDeathPlaces, setUncertainDeathPlaces] = useState([]);
+    const [occupationUncertain, setOccupationUncertain] = useState(false);
+    const [uncertainOccupations, setUncertainOccupations] = useState([]);
+
+
     const [showFather, setShowFather] = useState(false);
     const [showMother, setShowMother] = useState(false);
     const [showPaternalGrandfather, setShowPaternalGrandfather] = useState(false);
@@ -429,7 +448,15 @@ const FamilyTree = () => {
                 relationToUser: pageData.relationToUser,
                 ethnicity: pageData.ethnicity,
                 causeOfDeath: pageData.causeOfDeath,
-                sex: pageData.sex
+                sex: pageData.sex,
+                uncertainFirstName: pageData.uncertainFirstName,
+                uncertainMiddleName: pageData.uncertainMiddleName,
+                uncertainLastName: pageData.uncertainLastName,
+                uncertainBirthDate: pageData.uncertainBirthDate,
+                uncertainBirthPlace: pageData.uncertainBirthPlace,
+                uncertainDeathDate: pageData.uncertainDeathDate,
+                uncertainDeathPlace: pageData.uncertainDeathPlace,
+                uncertainOccupation: pageData.uncertainOccupation
               }));
         }
         getNewPageNum();
@@ -503,7 +530,23 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation,
+                uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -538,7 +581,23 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation,
+                uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -572,7 +631,23 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation,
+                uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -606,7 +681,23 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation,
+                uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -640,7 +731,15 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+                uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -674,7 +773,15 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -708,7 +815,15 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -742,7 +857,15 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -776,7 +899,15 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -810,7 +941,15 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -844,7 +983,15 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
         
@@ -878,7 +1025,15 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -911,7 +1066,15 @@ const FamilyTree = () => {
                 occupation: data.fatherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -944,7 +1107,15 @@ const FamilyTree = () => {
                 occupation: data.motherOccupation,
                 relationToUser: data.relation_to_user,
                 ethnicity: data.motherEthnicity,
-                causeOfDeath: data.causeOfDeath
+                causeOfDeath: data.causeOfDeath,
+uncertainFirstName: data.uncertainFirstName,
+                uncertainMiddleName: data.uncertainMiddleName,
+                uncertainLastName: data.uncertainLastName,
+                uncertainBirthDate: data.uncertainBirthDate,
+                uncertainBirthPlace: data.uncertainBirthPlace,
+                uncertainDeathDate: data.uncertainDeathDate,
+                uncertainDeathPlace: data.uncertainDeathPlace,
+                uncertainOccupation: data.uncertainOccupation
               }));
         }
     }
@@ -1883,9 +2054,76 @@ const FamilyTree = () => {
             //     console.log(`Error deleting ${personID}: `, error);
             // }
         }
-        
 
-    function makeModal(showPerson, closeAddPerson, childName, setDetails, details, sex, save, closeAdd) {
+
+        /*UNCERTAIN STATUS - will update whether the "uncertain" label will appear next to a piece of information (name, birth date ect) on an ancestor's node in the tree*/
+        const toggleUncertain = async (details, setDetails, infoType) => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const response = await fetch('http://localhost:5000/toggle-uncertain', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, details, infoType}),
+                })
+                const data = await response.json();
+
+                switch (infoType) {
+                    case "first_name":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainFirstName: data
+                        }))
+                        break;
+                    case "middle_name":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainMiddleName: data
+                        }))
+                        break;
+                    case "last_name":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainLastName: data
+                        }))
+                        break;
+                    case "birth_date":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainBirthDate: data
+                        }))
+                        break;
+                    case "birth_place":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainBirthPlace: data
+                        }))
+                        break;
+                    case "death_date":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainDeathDate: data
+                        }))
+                        break;
+                    case "death_place":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainDeathPlace: data
+                        }))
+                        break;
+                    case "occupation":
+                        setDetails((prev) => ({
+                            ...prev,
+                            uncertainOccupation: data
+                        }))
+                        break;
+                }
+            } catch (error) {
+                console.log("Error toggling uncertain:", error);
+            }
+        }
+
+
+    function MakeModal(showPerson, closeAddPerson, childName, setDetails, details, sex, save, closeAdd) {
 
         let motherOrFather = "";
         if (sex === "male") {
@@ -1894,45 +2132,80 @@ const FamilyTree = () => {
             motherOrFather = "Mother";
         }
 
+
         return (
 
-        <Modal show={showPerson} onHide={closeAddPerson} dialogClassName="custom-modal-width">
+        <Modal show={showPerson} onHide={closeAddPerson} dialogclassName="custom-modal-width">
                 <Modal.Header closeButton>
                 <Modal.Title>Add {childName}'s {motherOrFather}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="input-modal">
-                        <input  type="text" placeholder="First Name" onChange={(e) => setDetails({ ...details, firstName: e.target.value })}></input>
 
-                        <input type="text" placeholder="Middle Name" onChange={(e) => setDetails({ ...details, middleName: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input  type="text" placeholder="First Name" onChange={(e) => setDetails({ ...details, firstName: e.target.value })}></input>
+
+                            
+                        </div>
+
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Middle Name" onChange={(e) => setDetails({ ...details, middleName: e.target.value })}></input>
+
+                            
+                        </div>
 
                         {/*if the person is male, then his default surname is the same as his childrens'*/}
                         {sex === "male" ? ( 
-                            <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+                            <div className="inputandQuestionMark">
+                                <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+                                
+                            </div>
                         ): (
-                            <input type="text" placeholder="Last Name" onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+                            <div className="inputandQuestionMark">
+                                 <input type="text" placeholder="Last Name" onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
+
+                            </div>
                         )}
+                    </div>
                         
-                    </div>
 
                     <div className="input-modal">
-                    <input type="text" placeholder="Birth Date" onChange={(e) => setDetails({ ...details, birthDate: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Birth Date" onChange={(e) => setDetails({ ...details, birthDate: e.target.value })}></input>
+                        </div>
+                        
+                        <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Birth Place" onChange={(e) => setDetails({ ...details, birthPlace: e.target.value })}></input>
+                        
+                        </div>
+                        </div>
 
-                    <input type="text" placeholder="Birth Place" onChange={(e) => setDetails({ ...details, birthPlace: e.target.value })}></input>
-                    </div>
+                 
 
                     <div className="input-modal">
-                    <input type="text" placeholder="Death Date" onChange={(e) => setDetails({ ...details, deathDate: e.target.value })}></input>
 
-                    <input type="text" placeholder="Death Place" onChange={(e) => setDetails({ ...details, deathPlace: e.target.value })}></input>
+                    <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Death Date" onChange={(e) => setDetails({ ...details, deathDate: e.target.value })}></input>
+                    </div>
 
-                    <input type="text" placeholder="Cause of Death" onChange={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                    <div className="inputandQuestionMark">
+                    
+                        <input type="text" placeholder="Death Place" onChange={(e) => setDetails({ ...details, deathPlace: e.target.value })}></input>
+                    </div>
+
+                    <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Cause of Death" onChage={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                    </div>
                     </div>
                    
                     <div className="input-modal">
-                    <input type="text" placeholder="Titles/Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
-
-                    <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                    <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Titles/Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+                        </div>
+                    
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                        </div>
                     </div>
 
                 </Modal.Body>
@@ -1949,43 +2222,117 @@ const FamilyTree = () => {
         )
     }
 
-    function makeEditModal(showPerson, closeEditPerson, setDetails, details, save, seteditShowPerson, getPerson, closeAdd, deletePerson) {
-console.log(details)
+    function MakeEditModal(showPerson, closeEditPerson, setDetails, details, save, seteditShowPerson, getPerson, closeAdd, deletePerson) {
+
+        let questionMarkFirstNameColor = "grey";
+        if (details.uncertainFirstName) {
+            questionMarkFirstNameColor = "red";
+        }
+
+        let questionMarkMiddleNameColor = "grey";
+        if (details.uncertainMiddleName) {
+            questionMarkMiddleNameColor = "red";
+        }
+
+        let questionMarkLastNameColor = "grey";
+        if (details.uncertainLastName) {
+            questionMarkLastNameColor = "red";
+        }
+
+        let questionMarkBirthDateColor = "grey";
+        if (details.uncertainBirthDate) {
+            questionMarkBirthDateColor = "red";
+        }
+
+        let questionMarkBirthPlaceColor = "grey";
+        if (details.uncertainBirthPlace) {
+            questionMarkBirthPlaceColor = "red";
+        }
+
+        let questionMarkDeathDateColor = "grey";
+        if (details.uncertainDeathDate) {
+            questionMarkDeathDateColor = "red";
+        }
+
+        let questionMarkDeathPlaceColor = "grey";
+        if (details.uncertainDeathPlace) {
+            questionMarkDeathPlaceColor = "red";
+        }
+
+        let questionMarkOccupationColor = "grey";
+        if (details.uncertainOccupation) {
+            questionMarkOccupationColor = "red";
+        }
+
+
+
         return (
 
-        <Modal show={showPerson} onHide={closeEditPerson} dialogClassName="custom-modal-width">
+        <Modal show={showPerson} onHide={closeEditPerson} dialogclassName="custom-modal-width">
                 <Modal.Header closeButton>
                 <Modal.Title>Edit {details.fullName}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="input-modal">
 
-                        <input  type="text" placeholder="First Name" value={details.firstName} onChange={(e) => setDetails({ ...details, firstName: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input  type="text" placeholder="First Name" value={details.firstName} onChange={(e) => setDetails({ ...details, firstName: e.target.value })}></input>
+                            <div className="uncertainMark"><p onClick={() => toggleUncertain(details, setDetails, "first_name")} style={{color:questionMarkFirstNameColor}}>?</p></div>
+                        </div>
 
-                        <input type="text" placeholder="Middle Name" value={details.middleName} onChange={(e) => setDetails({ ...details, middleName: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Middle Name" value={details.middleName} onChange={(e) => setDetails({ ...details, middleName: e.target.value })}></input>
+                            <div className="uncertainMark uncertainMarkMiddleRow"><p onClick={() => toggleUncertain(details, setDetails, "middle_name")}  style={{color:questionMarkMiddleNameColor}}>?</p></div>
+                        </div>
 
-                        <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
-                        
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input> 
+                            <div className="uncertainMark uncertainMarkRightRow"><p onClick={() => toggleUncertain(details, setDetails, "last_name")} style={{color:questionMarkLastNameColor}}>?</p></div>                        
+                        </div>
+
+                    </div>
+                    
+                    <div className="input-modal">
+                        <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Birth Date" value={details.birthDate} onChange={(e) => setDetails({ ...details, birthDate: e.target.value })}></input>
+                        <div className="uncertainMark"><p onClick={() => toggleUncertain(details, setDetails, "birth_date")} style={{color:questionMarkBirthDateColor}}>?</p></div>
+                        </div>
+
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Birth Place" value={details.birthPlace} onChange={(e) => setDetails({ ...details, birthPlace: e.target.value })}></input>
+                            <div className="uncertainMark uncertainMarkMiddleRow"><p onClick={() => toggleUncertain(details, setDetails, "birth_place")} style={{color:questionMarkBirthPlaceColor}}>?</p></div>
+                        </div>
                     </div>
 
+                    
                     <div className="input-modal">
-                    <input type="text" placeholder="Birth Date" value={details.birthDate} onChange={(e) => setDetails({ ...details, birthDate: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Death Date" value={details.deathDate} onChange={(e) => setDetails({ ...details, deathDate: e.target.value })}></input>
+                            <div className="uncertainMark"><p onClick={() => toggleUncertain(details, setDetails, "death_date")} style={{color:questionMarkDeathDateColor}}>?</p></div>
+                        </div>
 
-                    <input type="text" placeholder="Birth Place" value={details.birthPlace} onChange={(e) => setDetails({ ...details, birthPlace: e.target.value })}></input>
-                    </div>
+                        <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Death Place" value={details.deathPlace}  onChange={(e) => setDetails({ ...details, deathPlace: e.target.value })}></input>
+                        <div className="uncertainMark uncertainMarkMiddleRow"><p onClick={() => toggleUncertain(details, setDetails, "death_place")} style={{color:questionMarkDeathPlaceColor}}>?</p></div>
+                        </div>
 
-                    <div className="input-modal">
-                    <input type="text" placeholder="Death Date" value={details.deathDate} onChange={(e) => setDetails({ ...details, deathDate: e.target.value })}></input>
-
-                    <input type="text" placeholder="Death Place" value={details.deathPlace}  onChange={(e) => setDetails({ ...details, deathPlace: e.target.value })}></input>
-
-                    <input type="text" placeholder="Cause of Death" value={details.causeOfDeath} onChange={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                        <input type="text" placeholder="Cause of Death" value={details.causeOfDeath} onChange={(e) => setDetails({ ...details, causeOfDeath: e.target.value })}></input>
+                       
+                        </div>
                     </div>
                    
+                    
                     <div className="input-modal">
-                    <input type="text" placeholder="Titles/Occupations" value={details.occupation} onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Titles/Occupations" value={details.occupation} onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+                            
+                            <div className="uncertainMark"><p onClick={() => toggleUncertain(details, setDetails, "occupation")} style={{color:questionMarkOccupationColor}}>?</p></div>
+                        </div>
 
-                    <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                        </div>
                     </div>
 
                 </Modal.Body>
@@ -2012,7 +2359,9 @@ console.log(details)
             motherFather = "Father";
         } else {
             motherFather = "Mother";
-        }
+        };
+        
+        const uncertainText = <sup>(uncertain)</sup>;
 
         return (
             <>
@@ -2026,19 +2375,19 @@ console.log(details)
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{details.fullName}</b></td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{details.firstName}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{details.middleName}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{details.lastName}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom birth-date-cell table-label">Birth</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.birthDate} {details.birthPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.birthDate}{details.uncertainBirthDate ? (uncertainText) : (<></>)} {details.birthPlace}{details.uncertainBirthPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom birth-date-cell table-label">Death</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.deathDate} {details.deathPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {details.deathPlace}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
                     <td className=" ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                    <td className="table-content" colSpan="4">{details.occupation}</td>
+                    <td className="table-content" colSpan="4">{details.occupation}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
                     <td className="table-content" >{<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
                 </table>
@@ -2073,6 +2422,9 @@ console.log(details)
             motherFather = "Mother";
         }
 
+        const uncertainText = <sup>(uncertain)</sup>;
+
+
         return(
             <>
              {details.id ? (
@@ -2083,19 +2435,20 @@ console.log(details)
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
-                    <td className="ancestor-box-border-bottom table-content"><b>{details.fullName}</b></td>
+                    <td className="ancestor-box-border-bottom table-content"><b>{details.firstName}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{details.middleName}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{details.lastName}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
+                    </td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                    <td className="ancestor-box-border-bottom table-content">{details.birthDate} <br />{details.birthPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.birthDate}{details.uncertainBirthDate ? (uncertainText) : (<></>)} {details.birthPlace}{details.uncertainBirthPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink">Death:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.deathDate} <br />{details.deathPlace}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {details.deathPlace}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.occupation}</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.occupation}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
                     <td className=" table-label shrink">Profile <br/>Number:</td>
@@ -2170,94 +2523,94 @@ console.log(details)
     return (
         <div>
 
-            {makeModal(showFather, closeAddFatherModal, bottomPersonDetails.firstName, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
+            {MakeModal(showFather, closeAddFatherModal, bottomPersonDetails.firstName, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
 
-            {makeModal(showMother, closeAddMotherModal, bottomPersonDetails.firstNameName, setMotherDetails, motherDetails, "female", saveMotherChanges, closeAddMotherModal)}
+            {MakeModal(showMother, closeAddMotherModal, bottomPersonDetails.firstNameName, setMotherDetails, motherDetails, "female", saveMotherChanges, closeAddMotherModal)}
 
-            {makeModal(showPaternalGrandfather, closeAddPaternalGrandfatherModal, fatherDetails.fullName, setPaternalGrandfatherDetails, paternalGrandfatherDetails, "male", savePaternalGrandfatherChanges, closeAddPaternalGrandfatherModal)}
+            {MakeModal(showPaternalGrandfather, closeAddPaternalGrandfatherModal, fatherDetails.fullName, setPaternalGrandfatherDetails, paternalGrandfatherDetails, "male", savePaternalGrandfatherChanges, closeAddPaternalGrandfatherModal)}
             
-            {makeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherDetails.fullName, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
+            {MakeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherDetails.fullName, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
 
-            {makeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherDetails.fullName, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
+            {MakeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherDetails.fullName, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
 
-            {makeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherDetails.fullName, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
+            {MakeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherDetails.fullName, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandfathersFather, closeAddPaternalPaternalGreatGrandfathersFatherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfathersFatherDetails, "male", savePaternalPaternalGreatGrandfathersFatherChanges, closeAddPaternalPaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandfathersFather, closeAddPaternalPaternalGreatGrandfathersFatherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfathersFatherDetails, "male", savePaternalPaternalGreatGrandfathersFatherChanges, closeAddPaternalPaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandfathersMother, closeAddPaternalPaternalGreatGrandfathersMotherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfathersMotherDetails, "female", savePaternalPaternalGreatGrandfathersMotherChanges, closeAddPaternalPaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandfathersMother, closeAddPaternalPaternalGreatGrandfathersMotherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfathersMotherDetails, "female", savePaternalPaternalGreatGrandfathersMotherChanges, closeAddPaternalPaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandmothersFather, closeAddPaternalPaternalGreatGrandmothersFatherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmothersFatherDetails, "male", savePaternalPaternalGreatGrandmothersFatherChanges, closeAddPaternalPaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandmothersFather, closeAddPaternalPaternalGreatGrandmothersFatherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmothersFatherDetails, "male", savePaternalPaternalGreatGrandmothersFatherChanges, closeAddPaternalPaternalGreatGrandmothersFatherModal)}
 
-            {makeModal(showPaternalPaternalGreatGrandmothersMother, closeAddPaternalPaternalGreatGrandmothersMotherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmothersMotherDetails, "female", savePaternalPaternalGreatGrandmothersMotherChanges, closeAddPaternalPaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandmothersMother, closeAddPaternalPaternalGreatGrandmothersMotherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmothersMotherDetails, "female", savePaternalPaternalGreatGrandmothersMotherChanges, closeAddPaternalPaternalGreatGrandmothersMotherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandfathersFather, closeAddPaternalMaternalGreatGrandfathersFatherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfathersFatherDetails, "male", savePaternalMaternalGreatGrandfathersFatherChanges, closeAddPaternalMaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandfathersFather, closeAddPaternalMaternalGreatGrandfathersFatherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfathersFatherDetails, "male", savePaternalMaternalGreatGrandfathersFatherChanges, closeAddPaternalMaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandfathersMother, closeAddPaternalMaternalGreatGrandfathersMotherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfathersMotherDetails, "female", savePaternalMaternalGreatGrandfathersMotherChanges, closeAddPaternalMaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandfathersMother, closeAddPaternalMaternalGreatGrandfathersMotherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfathersMotherDetails, "female", savePaternalMaternalGreatGrandfathersMotherChanges, closeAddPaternalMaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandmothersFather, closeAddPaternalMaternalGreatGrandmothersFatherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmothersFatherDetails, "male", savePaternalMaternalGreatGrandmothersFatherChanges, closeAddPaternalMaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandmothersFather, closeAddPaternalMaternalGreatGrandmothersFatherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmothersFatherDetails, "male", savePaternalMaternalGreatGrandmothersFatherChanges, closeAddPaternalMaternalGreatGrandmothersFatherModal)}
 
-            {makeModal(showPaternalMaternalGreatGrandmothersMother, closeAddPaternalMaternalGreatGrandmothersMotherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmothersMotherDetails, "female", savePaternalMaternalGreatGrandmothersMotherChanges, closeAddPaternalMaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandmothersMother, closeAddPaternalMaternalGreatGrandmothersMotherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmothersMotherDetails, "female", savePaternalMaternalGreatGrandmothersMotherChanges, closeAddPaternalMaternalGreatGrandmothersMotherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandfathersFather, closeAddMaternalPaternalGreatGrandfathersFatherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfathersFatherDetails, "male", saveMaternalPaternalGreatGrandfathersFatherChanges, closeAddMaternalPaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandfathersFather, closeAddMaternalPaternalGreatGrandfathersFatherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfathersFatherDetails, "male", saveMaternalPaternalGreatGrandfathersFatherChanges, closeAddMaternalPaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandfathersMother, closeAddMaternalPaternalGreatGrandfathersMotherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfathersMotherDetails, "female", saveMaternalPaternalGreatGrandfathersMotherChanges, closeAddMaternalPaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandfathersMother, closeAddMaternalPaternalGreatGrandfathersMotherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfathersMotherDetails, "female", saveMaternalPaternalGreatGrandfathersMotherChanges, closeAddMaternalPaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandmothersFather, closeAddMaternalPaternalGreatGrandmothersFatherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmothersFatherDetails, "male", saveMaternalPaternalGreatGrandmothersFatherChanges, closeAddMaternalPaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandmothersFather, closeAddMaternalPaternalGreatGrandmothersFatherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmothersFatherDetails, "male", saveMaternalPaternalGreatGrandmothersFatherChanges, closeAddMaternalPaternalGreatGrandmothersFatherModal)}
 
-            {makeModal(showMaternalPaternalGreatGrandmothersMother, closeAddMaternalPaternalGreatGrandmothersMotherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmothersMotherDetails, "female", saveMaternalPaternalGreatGrandmothersMotherChanges, closeAddMaternalPaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandmothersMother, closeAddMaternalPaternalGreatGrandmothersMotherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmothersMotherDetails, "female", saveMaternalPaternalGreatGrandmothersMotherChanges, closeAddMaternalPaternalGreatGrandmothersMotherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandfathersFather, closeAddMaternalMaternalGreatGrandfathersFatherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfathersFatherDetails, "male", saveMaternalMaternalGreatGrandfathersFatherChanges, closeAddMaternalMaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandfathersFather, closeAddMaternalMaternalGreatGrandfathersFatherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfathersFatherDetails, "male", saveMaternalMaternalGreatGrandfathersFatherChanges, closeAddMaternalMaternalGreatGrandfathersFatherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandfathersMother, closeAddMaternalMaternalGreatGrandfathersMotherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfathersMotherDetails, "female", saveMaternalMaternalGreatGrandfathersMotherChanges, closeAddMaternalMaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandfathersMother, closeAddMaternalMaternalGreatGrandfathersMotherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfathersMotherDetails, "female", saveMaternalMaternalGreatGrandfathersMotherChanges, closeAddMaternalMaternalGreatGrandfathersMotherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandmothersFather, closeAddMaternalMaternalGreatGrandmothersFatherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmothersFatherDetails, "male", saveMaternalMaternalGreatGrandmothersFatherChanges, closeAddMaternalMaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandmothersFather, closeAddMaternalMaternalGreatGrandmothersFatherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmothersFatherDetails, "male", saveMaternalMaternalGreatGrandmothersFatherChanges, closeAddMaternalMaternalGreatGrandmothersFatherModal)}
 
-            {makeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
 
 
-            {makeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveEdits, seteditShowFather, getFather, closeAddFatherModal, deletePerson)}
+            {MakeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveEdits, seteditShowFather, getFather, closeAddFatherModal, deletePerson)}
 
-            {makeEditModal(editShowMother, closeEditMotherModal, setMotherDetails, motherDetails, saveEdits, seteditShowMother, getMother, closeAddMotherModal, deletePerson)}
+            {MakeEditModal(editShowMother, closeEditMotherModal, setMotherDetails, motherDetails, saveEdits, seteditShowMother, getMother, closeAddMotherModal, deletePerson)}
 
-            {makeEditModal(editShowPaternalGrandfather, closeEditPaternalGrandfatherModal, setPaternalGrandfatherDetails, paternalGrandfatherDetails,  saveEdits, seteditShowPaternalGrandfather, getPaternalGrandFather, closeAddPaternalGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalGrandfather, closeEditPaternalGrandfatherModal, setPaternalGrandfatherDetails, paternalGrandfatherDetails,  saveEdits, seteditShowPaternalGrandfather, getPaternalGrandFather, closeAddPaternalGrandfatherModal, deletePerson)}
 
-            {makeEditModal(editShowPaternalGrandmother, closeEditPaternalGrandmotherModal, setPaternalGrandmotherDetails, paternalGrandmotherDetails,  saveEdits, seteditShowPaternalGrandmother, getPaternalGrandMother, closeAddPaternalGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalGrandmother, closeEditPaternalGrandmotherModal, setPaternalGrandmotherDetails, paternalGrandmotherDetails,  saveEdits, seteditShowPaternalGrandmother, getPaternalGrandMother, closeAddPaternalGrandmotherModal, deletePerson)}
 
-            {makeEditModal(editShowMaternalGrandfather, closeEditMaternalGrandfatherModal, setMaternalGrandfatherDetails, maternalGrandfatherDetails,  saveEdits, seteditShowMaternalGrandfather, getMaternalGrandFather, closeAddMaternalGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalGrandfather, closeEditMaternalGrandfatherModal, setMaternalGrandfatherDetails, maternalGrandfatherDetails,  saveEdits, seteditShowMaternalGrandfather, getMaternalGrandFather, closeAddMaternalGrandfatherModal, deletePerson)}
 
-            {makeEditModal(editShowMaternalGrandmother, closeEditMaternalGrandmotherModal, setMaternalGrandmotherDetails, maternalGrandmotherDetails,  saveEdits, seteditShowMaternalGrandmother, getMaternalGrandMother, closeAddMaternalGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalGrandmother, closeEditMaternalGrandmotherModal, setMaternalGrandmotherDetails, maternalGrandmotherDetails,  saveEdits, seteditShowMaternalGrandmother, getMaternalGrandMother, closeAddMaternalGrandmotherModal, deletePerson)}
 
-            {makeEditModal(editShowPaternalPaternalGreatGrandfather, closeEditPaternalPaternalGreatGrandfatherModal, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandfather, getPaternalPaternalGreatGrandFather, closeAddPaternalPaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalPaternalGreatGrandfather, closeEditPaternalPaternalGreatGrandfatherModal, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandfather, getPaternalPaternalGreatGrandFather, closeAddPaternalPaternalGreatGrandfatherModal, deletePerson)}
 
-            {makeEditModal(editShowPaternalPaternalGreatGrandmother, closeEditPaternalPaternalGreatGrandmotherModal, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandmother, getPaternalPaternalGreatGrandMother, closeAddPaternalPaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalPaternalGreatGrandmother, closeEditPaternalPaternalGreatGrandmotherModal, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalPaternalGreatGrandmother, getPaternalPaternalGreatGrandMother, closeAddPaternalPaternalGreatGrandmotherModal, deletePerson)}
 
-            {makeEditModal(editShowPaternalMaternalGreatGrandfather, closeEditPaternalMaternalGreatGrandfatherModal, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandfather, getPaternalMaternalGreatGrandFather, closeAddPaternalMaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalMaternalGreatGrandfather, closeEditPaternalMaternalGreatGrandfatherModal, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandfather, getPaternalMaternalGreatGrandFather, closeAddPaternalMaternalGreatGrandfatherModal, deletePerson)}
 
-            {makeEditModal(editShowPaternalMaternalGreatGrandmother, closeEditPaternalMaternalGreatGrandmotherModal, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandmother, getPaternalMaternalGreatGrandMother, closeAddPaternalMaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowPaternalMaternalGreatGrandmother, closeEditPaternalMaternalGreatGrandmotherModal, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowPaternalMaternalGreatGrandmother, getPaternalMaternalGreatGrandMother, closeAddPaternalMaternalGreatGrandmotherModal, deletePerson)}
 
-            {makeEditModal(editShowMaternalPaternalGreatGrandfather, closeEditMaternalPaternalGreatGrandfatherModal, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandfather, getMaternalPaternalGreatGrandFather, closeAddMaternalPaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalPaternalGreatGrandfather, closeEditMaternalPaternalGreatGrandfatherModal, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandfather, getMaternalPaternalGreatGrandFather, closeAddMaternalPaternalGreatGrandfatherModal, deletePerson)}
 
-            {makeEditModal(editShowMaternalPaternalGreatGrandmother, closeEditMaternalPaternalGreatGrandmotherModal, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandmother, getMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalPaternalGreatGrandmother, closeEditMaternalPaternalGreatGrandmotherModal, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalPaternalGreatGrandmother, getMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, deletePerson)}
 
-            {makeEditModal(editShowMaternalMaternalGreatGrandfather, closeEditMaternalMaternalGreatGrandfatherModal, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandfather, getMaternalMaternalGreatGrandFather, closeAddMaternalMaternalGreatGrandfatherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalMaternalGreatGrandfather, closeEditMaternalMaternalGreatGrandfatherModal, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandfather, getMaternalMaternalGreatGrandFather, closeAddMaternalMaternalGreatGrandfatherModal, deletePerson)}
 
-            {makeEditModal(editShowMaternalMaternalGreatGrandmother, closeEditMaternalMaternalGreatGrandmotherModal, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandmother, getMaternalMaternalGreatGrandMother, closeAddMaternalMaternalGreatGrandmotherModal, deletePerson)}
+            {MakeEditModal(editShowMaternalMaternalGreatGrandmother, closeEditMaternalMaternalGreatGrandmotherModal, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails,  saveEdits, seteditShowMaternalMaternalGreatGrandmother, getMaternalMaternalGreatGrandMother, closeAddMaternalMaternalGreatGrandmotherModal, deletePerson)}
 
             
             
