@@ -4,6 +4,8 @@ import { convertDate, convertNumToRelation } from '../library.js';
 import { Modal, Button } from 'react-bootstrap';
 import editLogo from '../Images/edit.png';
 import warningLogo from '../Images/warning.png';
+import '../style.css';
+import treeLines from '../cleirighTreeLines.png'
 
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
 //paternalmaternalgreatgrandparents = paternal grandmother's parents
@@ -2060,10 +2062,11 @@ uncertainFirstName: data.uncertainFirstName,
                 }));
                 closeDeletePopup();
                 closeEditPerson();
-                window.location.reload()
+                
             } catch (error) {
                 console.log(`Error deleting ${personID}: `, error);
             }
+            window.location.reload();
         }
 
 
@@ -2211,7 +2214,7 @@ uncertainFirstName: data.uncertainFirstName,
                    
                     <div className="input-modal">
                     <div className="inputandQuestionMark">
-                        <input type="text" placeholder="Titles/Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+                        <input type="text" placeholder="Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
                         </div>
                     
                         <div className="inputandQuestionMark">
@@ -2383,7 +2386,7 @@ uncertainFirstName: data.uncertainFirstName,
                     
                     <div className="input-modal">
                         <div className="inputandQuestionMark">
-                            <input type="text" placeholder="Titles/Occupations" value={details.occupation} onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+                            <input type="text" placeholder="Occupations" value={details.occupation} onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
                             
                             <div className="uncertainMark"><p onClick={() => toggleUncertain(details, setDetails, "occupation")} style={{color:questionMarkOccupationColor}}>?</p></div>
                         </div>
@@ -2476,7 +2479,7 @@ uncertainFirstName: data.uncertainFirstName,
                     <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {details.deathPlace}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className=" ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                    <td className=" ancestor-box-border-top table-label shrink">Occupation:</td>
                     <td className="table-content" colSpan="4">{details.occupation}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
                     <td className="table-content" >{<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
@@ -2537,7 +2540,7 @@ uncertainFirstName: data.uncertainFirstName,
                     <td className="ancestor-box-border-bottom table-content">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {details.deathPlace}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Titles/Occupation:</td>
+                    <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Occupation:</td>
                     <td className="ancestor-box-border-bottom table-content">{details.occupation}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
@@ -2611,7 +2614,7 @@ uncertainFirstName: data.uncertainFirstName,
 
 
     return (
-        <div className="family-tree-parent-div">
+        <div id="family-tree-parent-div" >
 
             
 
@@ -2706,11 +2709,13 @@ uncertainFirstName: data.uncertainFirstName,
 
             
             
-            <div className="row">
-                <LeftSidebar />
+            <div className="row" >
+                {/* <LeftSidebar /> */}
 
                 {/*contains the whole tree*/}
                 <div className="col">
+
+                <img id="treeLines" src={treeLines}></img>
 
                 <div className="row scrollable">
 

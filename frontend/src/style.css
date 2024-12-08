@@ -8,6 +8,14 @@
       "YTLC" 500;
   }
 
+
+#treeLines { 
+    position: absolute;
+    top: 200px;
+    left: 100px;
+    width: 90%;
+}
+
   #welcomePage {
     background: linear-gradient(rgba(60, 195, 107, 0.9), rgba(124, 225, 159, 0.6)), url("welcomePageBackground.png");
     background-size: 100%;
@@ -308,6 +316,8 @@ body {
 .empty-slot, .unknown-ancestor {
     border: dashed 1px black;
     border-radius: 5px !important;
+    background-color: #ebf9e3;
+    z-index: 1000
 }
 
 .ancestor-box, .unknown-ancestor, .empty-slot {
@@ -320,6 +330,7 @@ body {
 
 .ancestor-box {
     filter: drop-shadow(5px 5px 15px rgb(2, 110, 2));
+    margin-top: 15px;
 }
 
 
@@ -422,12 +433,13 @@ table tr:first-child td:last-child {
     font-variant: small-caps;
     font-weight: bold;
     text-align: center;
+    font-size: 10px;
 
 }
 
 .table-content {
     background-color: #c7eed4;
-    font-size: 13px;
+    font-size: 10px;
     text-align: center;
 }
 
@@ -492,14 +504,9 @@ button:hover {
 }
 
 
-
 .popup-delete-content {
     display: flex;
     flex-direction: column;
-}
-
-.family-tree-parent-div {
-    z-index: 2000;
 }
 
 .warning-message {

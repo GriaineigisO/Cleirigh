@@ -952,26 +952,6 @@ app.post('/get-previous-page', async (req, res) => {
 
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
-        //finds sex of person
-        // const sex = await pool.query (
-        //     `
-        //     SELECT sex FROM tree_${currentTree}
-        //     WHERE ancestor_id = ${personID}
-        //     `
-        // )
-
-        // let goDown = "";
-        // if (sex.rows[0].sex === "male") {
-        //     goDown = await pool.query(`
-        //         SELECT * FROM tree_${currentTree}
-        //         WHERE father_id = ${personID};
-        //         `)
-        // } else {
-        //     goDown = await pool.query(`
-        //         SELECT * FROM tree_${currentTree}
-        //         WHERE mother_id = ${personID};
-        //         `)
-        // }
 
         const previous = await pool.query(`
                 SELECT * FROM tree_${currentTree}
@@ -1171,6 +1151,7 @@ app.post('/check-if-great-grandparent-has-parents', async (req, res) => {
         } else {
             res.json(true);
         }
+        
 
     } catch (error) {
         console.log("Error checking greatgrandparent's parents:", error)
