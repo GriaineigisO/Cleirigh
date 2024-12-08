@@ -7,6 +7,13 @@ import {capitaliseFirstLetter} from '../library.js';
 
 const Navbar = ({onLogin, onLogout}) => {
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('username'));
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [currentTreeName, setCurrentTreeName] = useState('');
+    const [currentTreeID, setCurrentTreeID] = useState('');
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
     const handleSignOut = () => {
         setCurrentUser(null);
@@ -51,6 +58,54 @@ const Navbar = ({onLogin, onLogout}) => {
             setCurrentUser(username);
         }
     }, [isLoggedIn]);
+
+
+    useEffect(() => { 
+        const getAllTrees = async () => {
+            try {
+                //gets user's id
+                const userId = localStorage.getItem('userId');
+                const response = await fetch('http://localhost:5000/get-all-trees', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId })
+                })
+
+                const data = await response.json();
+                setCurrentTreeName(data.treeName);
+                setCurrentTreeID(data.treeID);
+            } catch (error) {
+                console.log('Error getting list of all trees:', error)
+            }
+        };
+
+        getAllTrees();
+    }, []);
+
+    const switchTree = async (treeId) => {
+        try {
+            //gets user's id
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/switch-trees', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId, treeId })
+            })
+        
+            const data = await response.json();
+            if (data) {
+                window.location.href = "/home"
+            }
+
+
+        } catch (error) {
+            console.log('Error getting list of all trees:', error)
+        }
+    }
 
 
 
@@ -101,38 +156,58 @@ const Navbar = ({onLogin, onLogout}) => {
 
     return (
         <div id="navbar">
-        
-            {isLoggedIn ? (
-                <>
-                    <div className="title-logo">
-                        <img className="logo" src={logo} alt="Ó Cléirigh Cl"></img>
-                        <h1 className="uncial-antiqua-regular"><Link to={"/home"}>Cleirigh</Link></h1>
-                        <p className="subtitle">Geneological Archive</p>
-                    </div>
-                    <ul className="nav-ul">
-                        <Link className="navlink">{capitaliseFirstLetter(treeName)} Tree</Link>
-                        <Link to={`/${currentUser}`} className="navlink">Account</Link>
-                        <Link onClick={handleSignOut} className="navlink">Sign Out</Link>
-                    </ul>
-                    
-                </>
-            ) : (
-                <>
-                    <div className="title-logo">
-                        <img className="logo" src={logo} alt="Ó Cléirigh Cl"></img>
-                        <h1 className="uncial-antiqua-regular"><a href="/">Cleirigh</a></h1>
-                        <p className="subtitle">Geneological Archive</p>
-                    </div>
-                    <ul className="nav-ul">
-                        <Link to="/login" className="navlink">Login</Link>
-                        <Link to="/register" className="navlink">Register</Link>
-                    </ul>
-                    
-                </>
-            )}
+        {isLoggedIn ? (
+            <>
+                <div className="title-logo">
+                    <img className="logo" src={logo} alt="Ó Cléirigh Cl"></img>
+                    <h1 className="uncial-antiqua-regular"><Link to={"/home"}>Cleirigh</Link></h1>
+                    <p className="subtitle">Geneological Archive</p>
+                </div>
+                <ul className="nav-ul">
+                    {/* Tree Link with Dropdown */}
+                    <div className="dropdown">
+                        <Link
+                            className="navlink"
+                            onClick={toggleDropdown}
+                        >
+                            {capitaliseFirstLetter(treeName)} Tree
+                        </Link>
+                        {isDropdownOpen && (
+                            <ul className="dropdown-menu">
+                                <li><Link to="/tree/settings">Tree Settings</Link></li>
+                                <li><Link><i>--Switch Tree--</i></Link></li>
+                                
+                                {currentTreeName.map((trees, index) => (
+                                    <li key={index} onClick={() => switchTree(currentTreeID[index])}>
+                                        <Link>{currentTreeName[index]} Tree</Link>
+                                    </li>
+                                ))}
 
-        </div>
-    )
+
+
+
+                            </ul>
+                        )}
+                    </div>
+                    <Link to={`/${currentUser}`} className="navlink">Account</Link>
+                    <Link onClick={handleSignOut} className="navlink">Sign Out</Link>
+                </ul>
+            </>
+        ) : (
+            <>
+                <div className="title-logo">
+                    <img className="logo" src={logo} alt="Ó Cléirigh Cl"></img>
+                    <h1 className="uncial-antiqua-regular"><a href="/">Cleirigh</a></h1>
+                    <p className="subtitle">Geneological Archive</p>
+                </div>
+                <ul className="nav-ul">
+                    <Link to="/login" className="navlink">Login</Link>
+                    <Link to="/register" className="navlink">Register</Link>
+                </ul>
+            </>
+        )}
+    </div>
+    );
 };
 
 export default Navbar;

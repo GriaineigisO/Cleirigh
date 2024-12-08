@@ -11,6 +11,7 @@ import {Home} from './Pages/home.js';
 import Profiles from './Pages/profiles.js';
 import FamilyTree from './Pages/familytree.js';
 import Queries from './Pages/queries.js';
+import NewTree from './Pages/newTree.js';
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/:pageNumber" element={<FamilyTree />} />
+          <Route path="/newTree" element={<NewTree />}></Route>
         </Routes>
       </div>
     </Router>

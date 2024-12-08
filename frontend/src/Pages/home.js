@@ -5,10 +5,10 @@ import '../style.css';
 import {Link} from "react-router-dom";
 import LeftSidebar from '../Components/leftSidebar.js';
 
-
 const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
     return (
       <div>
+       
         <h1>Begin Your New Archive</h1>
         <p>To begin creating your first tree, enter its name below.</p>
         <input
@@ -48,7 +48,7 @@ const HomePageWithTree = () => {
   const [loading, setLoading] = useState(false);
 
   // returns name of user's tree
-  useEffect (() => {
+
   
       const getTreeName = async () => {
           const token = localStorage.getItem('token');
@@ -76,6 +76,7 @@ const HomePageWithTree = () => {
   
           
           const data = await response.json();
+
           setTreeName(data.treeName); // Update state based on response
           } catch (error) {
           console.error('Error checking trees:', error);
@@ -85,7 +86,7 @@ const HomePageWithTree = () => {
       };
 
       getTreeName();
-  }, [])
+
 
   const getCurrentTree = async () => {
 
@@ -261,7 +262,8 @@ const homePageStats = useCallback(async () => {
 
 
   return (
-    <div>
+    <div className="oghamleaves">
+      
       <h1>The {capitaliseFirstLetter(treeName)} Tree</h1>
       {isEmpty ? (
         <div>
@@ -348,6 +350,7 @@ const homePageStats = useCallback(async () => {
 const Home = () => {
     const [treeName, setTreeName] = useState('');
     const [hasTrees, setHasTrees] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -429,13 +432,16 @@ const Home = () => {
         
     };    
 
+    
+
     return (
         <div >
             <div className="row">
 
                 <LeftSidebar />
 
-                <div className="col-lg centre-col ">
+                <div className="col-lg centre-col">
+                
                     {hasTrees ? (
                         <HomePageWithTree />
                     ) : (
@@ -446,10 +452,11 @@ const Home = () => {
                         />
                     )}
                 </div>
-
+              
 
                 <div className="col-sm-3 right-sidebar">
-                        <div className="row"><a href="">Make a New Tree</a></div>
+                  
+                        <div className="row"><Link to={"/newTree"}>Make a New Tree</Link></div>
                         <div className="row"><a href="">Add New Ancestor</a></div>
                         <div className="row"><a href="">Random Ancestor's Profile</a></div>
                         <div className="row"><a href="">On This Day</a></div>

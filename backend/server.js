@@ -219,14 +219,25 @@ app.post('/get-tree-name', async (req, res) => {
     try {
       const { userId } = req.body; 
   
-      const result = await pool.query('SELECT * FROM trees WHERE user_id = $1',
-            [userId]);
+    //   const result = await pool.query('SELECT * FROM trees WHERE user_id = $1',
+    //         [userId]);
 
-            if (result.rows.length > 0) {
-                res.json({ treeName: result.rows[0].tree_name });
-            } else {
-                res.status(404).json({ message: 'No trees found for this user' });
-            }
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id
+
+        //find tree in the trees tables
+        const getName = await pool.query(`
+            SELECT * FROM trees WHERE tree_id = ${currentTree}
+        `)
+
+        const treeName = getName.rows[0].tree_name;
+
+        res.json({treeName:treeName})
 
     } catch (err) {
       console.error(err);
@@ -321,6 +332,7 @@ app.post('/check-if-tree-empty', async (req, res) => {
 
 //adds the very first person to the tree as a base user
 app.post('/add-first-person', async (req, res) => {
+
     try {
         const {
             firstName, 
@@ -561,6 +573,50 @@ app.post('/get-all-ancestors', async (req, res) => {
 
     } catch (error) {
         console.log('Error creating profile list:', error)
+    }
+})
+
+//gets a list of all trees that a user has
+app.post('/get-all-trees', async (req, res) => {
+    try {
+
+        const { userId } = req.body; 
+
+        // Query to get the current tree
+        const allTrees = await pool.query(
+            'SELECT *FROM trees WHERE user_id = $1',
+            [userId]
+        );
+
+        const treeName = allTrees.rows.map(row => row.tree_name);
+        const treeID = allTrees.rows.map(row => row.tree_id);
+        
+        res.json({
+            treeName:treeName,
+            treeID:treeID
+        })
+
+    } catch (error) {
+        console.log('Error getting list of all trees:', error)
+    }
+})
+
+app.post('/switch-trees', async (req, res) => {
+    try {
+        const { userId, treeId } = req.body;
+        
+
+        const switchTree = await pool.query(`
+            UPDATE users
+            SET current_tree_id = ${treeId}
+            WHERE id = ${userId}
+        `)
+
+        res.json(true)
+        
+
+    } catch (error) {
+        console.log("Error switching trees: ", error)
     }
 })
 
