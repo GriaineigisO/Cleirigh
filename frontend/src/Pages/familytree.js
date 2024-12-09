@@ -1,6 +1,6 @@
 import LeftSidebar from "../Components/leftSidebar"
 import React, { useState, useEffect, Component } from 'react';
-import { convertDate, convertNumToRelation } from '../library.js';
+import { convertDate, convertNumToRelation, capitaliseFirstLetter } from '../library.js';
 import { Modal, Button } from 'react-bootstrap';
 import editLogo from '../Images/edit.png';
 import warningLogo from '../Images/warning.png';
@@ -14,6 +14,7 @@ import treeLines from '../cleirighTreeLines.png'
 
 const FamilyTree = () => {
 
+    
     const [firstNameUncertain, setFirstNameUncertain] = useState(false);
     const [uncertainFirstNames, setUncertainFirstNames] = useState([]);
     const [middleNameUncertain, setMiddleNameUncertain] = useState(false);
@@ -68,6 +69,7 @@ const FamilyTree = () => {
     const [showMaternalMaternalGreatGrandmothersFather, setShowMaternalMaternalGreatGrandmothersFather] = useState(false);
     const [showMaternalMaternalGreatGrandmothersMother, setShowMaternalMaternalGreatGrandmothersMother] = useState(false);
 
+    const [editShowBottomPerson, seteditShowBottomPerson] = useState(false);
     const [editShowFather, seteditShowFather] = useState(false);
     const [editShowMother, seteditShowMother] = useState(false);
     const [editShowPaternalGrandfather, seteditShowPaternalGrandfather] = useState(false);
@@ -193,6 +195,8 @@ const FamilyTree = () => {
 
     
 
+    const closeEditBottomPersonModal = () => seteditShowBottomPerson(false);
+    const openEditBottomPersonModal = () => seteditShowBottomPerson(true);
 
     const closeEditFatherModal = () => seteditShowFather(false);
     const openEditFatherModal = () => seteditShowFather(true);
@@ -380,7 +384,7 @@ const FamilyTree = () => {
                 ...prevDetails,
                 fullName: baseData.fullName,
                 firstName: baseData.firstName,
-                middleName: baseData.fatherMiddleName,
+                middleName: baseData.middleName,
                 lastName: baseData.lastName,
                 id: baseData.id,
                 birthDate: baseData.birthDate,
@@ -429,7 +433,7 @@ const FamilyTree = () => {
         window.location.reload()
     }
 
-    useEffect(() => {
+    
             const getNewPageNum = async () => {
             const userId = localStorage.getItem('userId');
                 const pageResponse = await fetch('http://localhost:5000/get-current-page-number', {
@@ -462,9 +466,12 @@ const FamilyTree = () => {
                 uncertainBirthPlace: pageData.uncertainBirthPlace,
                 uncertainDeathDate: pageData.uncertainDeathDate,
                 uncertainDeathPlace: pageData.uncertainDeathPlace,
-                uncertainOccupation: pageData.uncertainOccupation
+                uncertainOccupation: pageData.uncertainOccupation,
+                memberOfNobility:pageData.memberOfNobility
               }));
         }
+    
+        useEffect(() => {
         getNewPageNum();
     }, [pageNumber])
 
@@ -537,14 +544,6 @@ const FamilyTree = () => {
                 relationToUser: data.relation_to_user,
                 ethnicity: data.fatherEthnicity,
                 causeOfDeath: data.causeOfDeath,
-uncertainFirstName: data.uncertainFirstName,
-                uncertainMiddleName: data.uncertainMiddleName,
-                uncertainLastName: data.uncertainLastName,
-                uncertainBirthDate: data.uncertainBirthDate,
-                uncertainBirthPlace: data.uncertainBirthPlace,
-                uncertainDeathDate: data.uncertainDeathDate,
-                uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation,
                 uncertainFirstName: data.uncertainFirstName,
                 uncertainMiddleName: data.uncertainMiddleName,
                 uncertainLastName: data.uncertainLastName,
@@ -552,7 +551,8 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility
               }));
         }
     }
@@ -596,14 +596,7 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
                 uncertainOccupation: data.uncertainOccupation,
-                uncertainFirstName: data.uncertainFirstName,
-                uncertainMiddleName: data.uncertainMiddleName,
-                uncertainLastName: data.uncertainLastName,
-                uncertainBirthDate: data.uncertainBirthDate,
-                uncertainBirthPlace: data.uncertainBirthPlace,
-                uncertainDeathDate: data.uncertainDeathDate,
-                uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                memberOfNobility:data.memberOfNobility
               }));
         }
     }
@@ -646,14 +639,7 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
                 uncertainOccupation: data.uncertainOccupation,
-                uncertainFirstName: data.uncertainFirstName,
-                uncertainMiddleName: data.uncertainMiddleName,
-                uncertainLastName: data.uncertainLastName,
-                uncertainBirthDate: data.uncertainBirthDate,
-                uncertainBirthPlace: data.uncertainBirthPlace,
-                uncertainDeathDate: data.uncertainDeathDate,
-                uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                memberOfNobility:data.memberOfNobility
               }));
         }
     }
@@ -703,7 +689,8 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility
               }));
         }
     }
@@ -829,7 +816,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -871,7 +860,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -913,7 +904,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -955,7 +948,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -997,7 +992,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
         
@@ -1039,7 +1036,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -1080,7 +1079,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -1121,7 +1122,9 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility,
+                pageNum:data.pageNum
               }));
         }
     }
@@ -1564,6 +1567,8 @@ uncertainFirstName: data.uncertainFirstName,
 
         const saveMaternalGrandfatherChanges = async () => {
             setShowMaternalGrandfather(false);
+            console.log(`This is his daughter: ${motherDetails.firstName}`)
+            console.log(maternalGrandfatherDetails)
             try {
                 const data = await saveAncestorChanges(maternalGrandfatherDetails, motherDetails.id, "male");
                 setMaternalGrandfatherDetails((prevDetails) => ({
@@ -2062,11 +2067,12 @@ uncertainFirstName: data.uncertainFirstName,
                 }));
                 closeDeletePopup();
                 closeEditPerson();
+                 window.location.reload();
                 
             } catch (error) {
                 console.log(`Error deleting ${personID}: `, error);
             }
-            window.location.reload();
+           
         }
 
 
@@ -2138,6 +2144,7 @@ uncertainFirstName: data.uncertainFirstName,
 
 
     function MakeModal(showPerson, closeAddPerson, childName, setDetails, details, sex, save, closeAdd) {
+        const [isNobility, setIsNobility] = useState(false);
 
         let motherOrFather = "";
         if (sex === "male") {
@@ -2146,6 +2153,18 @@ uncertainFirstName: data.uncertainFirstName,
             motherOrFather = "Mother";
         }
 
+        const handleNobility = () => {
+            if (isNobility) {
+                setIsNobility(false)
+            } else {
+                setIsNobility(true)
+            }
+
+            setDetails((prev) => ({
+                ...prev,
+                memberOfNobility: isNobility
+            }))
+        }
 
         return (
 
@@ -2213,12 +2232,19 @@ uncertainFirstName: data.uncertainFirstName,
                     </div>
                    
                     <div className="input-modal">
-                    <div className="inputandQuestionMark">
-                        <input type="text" placeholder="Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
+                        <div className="inputandQuestionMark">
+                            <input type="text" placeholder="Occupations" onChange={(e) => setDetails({ ...details, occupation: e.target.value })}></input>
                         </div>
                     
                         <div className="inputandQuestionMark">
                             <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
+                        </div>
+                    </div>
+
+                    <div className="input-modal">
+                        <div className="inputandQuestionMark">
+                                <label>Member of Nobility</label>
+                                <input type="checkbox" onClick={handleNobility}/>
                         </div>
                     </div>
 
@@ -2283,6 +2309,21 @@ uncertainFirstName: data.uncertainFirstName,
             hisHer = "his"
         } else {
             hisHer = "her"
+        }
+
+        const [isNobility, setIsNobility] = useState(false);
+
+        const handleNobility = () => {
+            if (isNobility) {
+                setIsNobility(false)
+            } else {
+                setIsNobility(true)
+            }
+
+            setDetails((prev) => ({
+                ...prev,
+                memberOfNobility: isNobility
+            }))
         }
 
         let questionMarkFirstNameColor = "grey";
@@ -2456,31 +2497,42 @@ uncertainFirstName: data.uncertainFirstName,
         
         const uncertainText = <sup>(uncertain)</sup>;
 
+        let boxShadowColor = "5px 5px 35px rgba(2, 110, 2)";
+        let tableColor = "#75b74f"
+
+        console.log(`${details.fullName} ${details.id} ${details.memberOfNobility}`)
+
+        
+        if(details.memberOfNobility) {
+            boxShadowColor = "5px 5px 35px rgba(5, 94, 237)";
+            tableColor = "rgba(5, 94, 237)"
+        } 
+
         return (
             <>
             {details.id ? (
-                <table  className="ancestor-box">
+                <table  className="ancestor-box" style={{boxShadow: boxShadowColor}} >
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonDetails.firstName}: </td>
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}: </td>
                     <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(details.relationToUser, sex)}</td>
-                    <td className="ancestor-box-border-bottom table-label shrink">Profile Number:</td>
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Profile Number:</td>
                     <td className="ancestor-box-border-bottom table-content shrink">{details.id}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{details.firstName}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{details.middleName}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{details.lastName}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom birth-date-cell table-label">Birth</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.birthDate}{details.uncertainBirthDate ? (uncertainText) : (<></>)} {details.birthPlace}{details.uncertainBirthPlace ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom birth-date-cell table-label" style={{backgroundColor:tableColor}}>Birth</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.birthDate}{details.uncertainBirthDate ? (uncertainText) : (<></>)} {capitaliseFirstLetter(details.birthPlace)}{details.uncertainBirthPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom birth-date-cell table-label">Death</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {details.deathPlace}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom birth-date-cell table-label"style={{backgroundColor:tableColor}} >Death</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {capitaliseFirstLetter(details.deathPlace)}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className=" ancestor-box-border-top table-label shrink">Occupation:</td>
-                    <td className="table-content" colSpan="4">{details.occupation}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
+                    <td className=" ancestor-box-border-top table-label shrink" style={{backgroundColor:tableColor}}>Occupation:</td>
+                    <td className="table-content" colSpan="4">{capitaliseFirstLetter(details.occupation)}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
                     <td className="table-content" >{<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
                 </table>
@@ -2506,7 +2558,8 @@ uncertainFirstName: data.uncertainFirstName,
         )
     }
 
-    function showGreatGrandParentTable(basePersonDetails, sex, details, childID, openAddModal, openEditModal) {
+    function ShowGreatGrandParentTable(basePersonDetails, sex, details, childID, openAddModal, openEditModal) {
+        
 
         let motherFather = "";
         if (sex === "male") {
@@ -2518,33 +2571,43 @@ uncertainFirstName: data.uncertainFirstName,
         const uncertainText = <sup>(uncertain)</sup>;
 
 
+        let boxShadowColor = "5px 5px 35px rgba(2, 110, 2)";
+        let tableColor = "#75b74f"
+
+        
+        if(details.memberOfNobility) {
+            boxShadowColor = "5px 5px 35px rgba(5, 94, 237)";
+            tableColor = "rgba(5, 94, 237)"
+        } 
+
+
         return(
             <>
              {details.id ? (
-            <table className="ancestor-box">
+            <table className="ancestor-box" style={{boxShadow: boxShadowColor}}>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Relation to {basePersonDetails.firstName}:</td>
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}:</td>
                     <td className="ancestor-box-border-bottom table-content">{convertNumToRelation(details.relationToUser, sex)}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Name:</td>
-                    <td className="ancestor-box-border-bottom table-content"><b>{details.firstName}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{details.middleName}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{details.lastName}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
+                    <td className="ancestor-box-border-bottom table-content"><b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
                     </td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Birth: </td>
-                    <td className="ancestor-box-border-bottom table-content">{details.birthDate}{details.uncertainBirthDate ? (uncertainText) : (<></>)} {details.birthPlace}{details.uncertainBirthPlace ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Birth: </td>
+                    <td className="ancestor-box-border-bottom table-content">{details.birthDate}{details.uncertainBirthDate ? (uncertainText) : (<></>)} {capitaliseFirstLetter(details.birthPlace)}{details.uncertainBirthPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink">Death:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {details.deathPlace}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Death:</td>
+                    <td className="ancestor-box-border-bottom table-content">{details.deathDate}{details.uncertainDeathDate ? (uncertainText) : (<></>)} {capitaliseFirstLetter(details.deathPlace)}{details.uncertainDeathPlace ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink">Occupation:</td>
-                    <td className="ancestor-box-border-bottom table-content">{details.occupation}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom ancestor-box-border-top table-label shrink" style={{backgroundColor:tableColor}}>Occupation:</td>
+                    <td className="ancestor-box-border-bottom table-content">{capitaliseFirstLetter(details.occupation)}{details.uncertainOccupation ? (uncertainText) : (<></>)}</td>
                 </tr>
                 <tr>
-                    <td className=" table-label shrink">Profile <br/>Number:</td>
+                    <td className=" table-label shrink" style={{backgroundColor:tableColor}}>Profile <br/>Number:</td>
                     <td className="table-content">{details.id} {<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
             </table>
@@ -2595,22 +2658,6 @@ uncertainFirstName: data.uncertainFirstName,
     checkIfGGHasParents(maternalMaternalGreatGrandfatherDetails.id, setMaternalMaternalGreatGrandfatherHasParents)
     checkIfGGHasParents(maternalMaternalGreatGrandmotherDetails.id, setMaternalMaternalGreatGrandmotherHasParents)
 
-
-        // const printPageNum = async (id, setPage) => {
-
-        //     const userId = localStorage.getItem('userId');
-        //     const personID = id;
-        //     const response = await fetch('http://localhost:5000/get-next-page', {
-        //         method: "POST",
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify({ userId, personID }),
-        //     })
-        //     const data = await response.json();
-            
-        //     setPageEntry(data.pageNum)
-        // };
-        // printPageNum(paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfatherPage)
- 
 
 
     return (
@@ -2678,6 +2725,7 @@ uncertainFirstName: data.uncertainFirstName,
 
             {MakeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
 
+            {MakeEditModal(editShowBottomPerson, closeEditBottomPersonModal, setBottomPersonDetails, bottomPersonDetails, saveEdits, seteditShowBottomPerson, getNewPageNum, closeAddFatherModal, deletePerson, bottomPersonDetails.sex)}
 
             {MakeEditModal(editShowFather, closeEditFatherModal, setFatherDetails, fatherDetails, saveEdits, seteditShowFather, getFather, closeAddFatherModal, deletePerson, "male")}
 
@@ -2710,7 +2758,6 @@ uncertainFirstName: data.uncertainFirstName,
             
             
             <div className="row" >
-                {/* <LeftSidebar /> */}
 
                 {/*contains the whole tree*/}
                 <div className="col">
@@ -2731,7 +2778,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {paternalPaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandfatherDetails.id)}>Page: {paternalPaternalGreatGrandfatherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2755,7 +2802,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {paternalPaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalPaternalGreatGrandmotherDetails.id)}>Page: {paternalPaternalGreatGrandmotherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2779,7 +2826,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {paternalMaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandfatherDetails.id)}>Page: {paternalMaternalGreatGrandfatherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2803,7 +2850,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <> 
                                     {paternalMaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(paternalMaternalGreatGrandmotherDetails.id)}>Page: {paternalMaternalGreatGrandmotherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2827,7 +2874,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {maternalPaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandfatherDetails.id)}>Page: {maternalPaternalGreatGrandfatherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2851,7 +2898,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {maternalPaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalPaternalGreatGrandmotherDetails.id)}>Page: {maternalPaternalGreatGrandmotherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2875,7 +2922,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {maternalMaternalGreatGrandfatherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandfatherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandfatherDetails.id)}>Page: {maternalMaternalGreatGrandfatherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2899,7 +2946,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     <>
                                     {maternalMaternalGreatGrandmotherHasParents ? (
                                         <div >
-                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandmotherDetails.id)}>Page: <br />⇑</p>
+                                            <p className="up-arrow" onClick={() => handleNavigateUpwards(maternalMaternalGreatGrandmotherDetails.id)}>Page: {maternalMaternalGreatGrandmotherDetails.pageNum}<br />⇑</p>
                                         </div>
                                     ) : (
                                         <div>
@@ -2924,21 +2971,21 @@ uncertainFirstName: data.uncertainFirstName,
                         <div className="tree-row justify-content-center">
 
                             
-                            {showGreatGrandParentTable(basePersonDetails, "male", paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandfatherModal, openEditPaternalPaternalGreatGrandfatherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "male", paternalPaternalGreatGrandfatherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandfatherModal, openEditPaternalPaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandmotherModal, openEditPaternalPaternalGreatGrandmotherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "female", paternalPaternalGreatGrandmotherDetails, paternalGrandfatherDetails.id, openAddPaternalPaternalGreatGrandmotherModal, openEditPaternalPaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandfatherModal, openEditPaternalMaternalGreatGrandfatherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "male", paternalMaternalGreatGrandfatherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandfatherModal, openEditPaternalMaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", paternalMaternalGreatGrandmotherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandmotherModal,openEditPaternalMaternalGreatGrandmotherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "female", paternalMaternalGreatGrandmotherDetails, paternalGrandmotherDetails.id, openAddPaternalMaternalGreatGrandmotherModal,openEditPaternalMaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", maternalPaternalGreatGrandfatherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandfatherModal, openEditMaternalPaternalGreatGrandfatherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "male", maternalPaternalGreatGrandfatherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandfatherModal, openEditMaternalPaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", maternalPaternalGreatGrandmotherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandmotherModal, openEditMaternalPaternalGreatGrandmotherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "female", maternalPaternalGreatGrandmotherDetails, maternalGrandfatherDetails.id, openAddMaternalPaternalGreatGrandmotherModal, openEditMaternalPaternalGreatGrandmotherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "male", maternalMaternalGreatGrandfatherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandfatherModal, openEditMaternalMaternalGreatGrandfatherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "male", maternalMaternalGreatGrandfatherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandfatherModal, openEditMaternalMaternalGreatGrandfatherModal)}
 
-                            {showGreatGrandParentTable(basePersonDetails, "female", maternalMaternalGreatGrandmotherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandmotherModal, openEditMaternalMaternalGreatGrandmotherModal)}
+                            {ShowGreatGrandParentTable(basePersonDetails, "female", maternalMaternalGreatGrandmotherDetails, maternalGrandmotherDetails.id, openAddMaternalMaternalGreatGrandmotherModal, openEditMaternalMaternalGreatGrandmotherModal)}
                            
                         </div>
 
@@ -2981,7 +3028,7 @@ uncertainFirstName: data.uncertainFirstName,
 
                             <div className="tree-row justify-content-center">
 
-                            {showAncestorTable(basePersonDetails, bottomPersonDetails.sex, bottomPersonDetails)}
+                            {showAncestorTable(basePersonDetails, bottomPersonDetails.sex, bottomPersonDetails, bottomPersonDetails.id, true, openEditBottomPersonModal)}
 
                             </div>
                             

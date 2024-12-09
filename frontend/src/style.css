@@ -20,6 +20,7 @@
     top: 200px;
     left: 100px;
     width: 90%;
+    z-index:1;
 }
 
 /* Style for the dropdown container */
@@ -378,11 +379,12 @@ body {
     font-size: 10px;
     margin: 6px;
     height: 150px;
-    border-radius: 5px !important;
+    border-radius: 10px ;
+    z-index: 100;
 }
 
 .ancestor-box {
-    filter: drop-shadow(5px 5px 15px rgb(2, 110, 2));
+    /*filter: drop-shadow(5px 5px 15px rgb(2, 110, 2));*/
     margin-top: 15px;
 }
 
@@ -440,6 +442,7 @@ table tr:first-child td:last-child {
     bottom: 0;
     left: 0;
     width: 100%; 
+    z-index: 200;
 }
 
 .bottom-bar-content {
@@ -482,7 +485,7 @@ table tr:first-child td:last-child {
 }
 
 .table-label {
-    background-color: #75b74f;
+    /*background-color: #75b74f;*/
     font-variant: small-caps;
     font-weight: bold;
     text-align: center;
@@ -646,3 +649,4 @@ button:hover {
     display: flex;
     flex-direction: column;
 }
+

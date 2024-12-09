@@ -1,5 +1,7 @@
 export const capitaliseFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    if (str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 }
 
 //converts date format yyy-mm-dd e.g 1995-08-22 into 22 Aug 1995

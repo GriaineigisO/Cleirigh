@@ -73,7 +73,7 @@ const Profiles = () => {
                     <ul>
                         {firstNames.map((firstName, index) => (
                             <li key={index} className="profileListing">
-                                <span className="li-span">name:</span> {firstNames[index]} {middleNames[index]} {lastNames[index]} <span className="li-span">sex:</span> {sexes[index]} <span className="li-span">born:</span> {convertDate(datesOfBirth[index])} <span className="li-span">in</span> {placesOfBirth[index]} <span className="li-span">died:</span> {convertDate(datesOfDeath[index])} <span className="li-span">in</span> {deathPlace(placesOfDeath[index])} <span className="li-span">ethnicity:</span> {ethnicities[index]} <br /> <MarkBasePerson person={basePerson[index]} />
+                                <span className="li-span">name:</span> {firstNames[index]} {middleNames[index]} {lastNames[index]} <span className="li-span">sex:</span> {sexes[index]} <span className="li-span">born:</span> {datesOfBirth[index]} <span className="li-span"></span> {placesOfBirth[index]} <span className="li-span">died:</span> {datesOfDeath[index]} <span className="li-span"></span> {deathPlace(placesOfDeath[index])} <span className="li-span">ethnicity:</span> {ethnicities[index]} <br /> <MarkBasePerson person={basePerson[index]} />
                             </li>
                         ))}
                     </ul>

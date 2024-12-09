@@ -174,7 +174,17 @@ app.post('/make-new-tree', async (req, res) => {
             father_id INT DEFAULT NULL, 
             mother_id INT DEFAULT NULL,
             relation_to_user INT,
-
+            uncertain_first_name BOOLEAN DEFAULT false,
+            uncertain_middle_name BOOLEAN DEFAULT false,
+            uncertain_last_name BOOLEAN DEFAULT false,
+            uncertain_birth_date BOOLEAN DEFAULT false,
+            uncertain_birth_place BOOLEAN DEFAULT false,
+            uncertain_death_date BOOLEAN DEFAULT false,
+            uncertain_death_place BOOLEAN DEFAULT false,
+            uncertain_occupation BOOLEAN DEFAULT false,
+            marriage_date TEXT DEFAULT NULL,
+            marriage_place TEXT DEFAULT NULL,
+            member_of_nobility BOOLEAN DEFAULT FALSE,
             UNIQUE (ancestor_id)
             )
         `);
@@ -642,6 +652,7 @@ app.post('/get-base-person', async (req, res) => {
 
         res.json({
             firstName:baseUserquery.rows[0].first_name,
+            middleName:baseUserquery.rows[0].middle_name,
             lastName:baseUserquery.rows[0].last_name,
             id:baseUserquery.rows[0].ancestor_id,
             fullName: fullName,
@@ -652,7 +663,8 @@ app.post('/get-base-person', async (req, res) => {
             occupation: baseUserquery.rows[0].occupation,
             ethnicity: baseUserquery.rows[0].ethnicity,
             profileNumber:baseUserquery.rows[0].ancestor_id,
-            sex:baseUserquery.rows[0].sex_id
+            sex:baseUserquery.rows[0].sex_id,
+            memberOfNobility:baseUserquery.rows[0].member_of_nobility
         })
 
     } catch (error) {
@@ -735,6 +747,8 @@ app.post('/get-father', async (req, res) => {
                 uncertainDeathDate:fatherQuery.rows[0].uncertain_death_date,
                 uncertainDeathPlace:fatherQuery.rows[0].uncertain_death_place,
                 uncertainOccupation:fatherQuery.rows[0].uncertain_occupation,
+                pageNum:fatherQuery.rows[0].base_of_page,
+                memberOfNobility:fatherQuery.rows[0].member_of_nobility
             })
         }
 
@@ -818,6 +832,8 @@ app.post('/get-mother', async (req, res) => {
                 uncertainDeathDate:motherQuery.rows[0].uncertain_death_date,
                 uncertainDeathPlace:motherQuery.rows[0].uncertain_death_place,
                 uncertainOccupation:motherQuery.rows[0].uncertain_occupation,
+                pageNum:motherQuery.rows[0].base_of_page,
+                memberOfNobility:motherQuery.rows[0].member_of_nobility
             })
         }
 
@@ -899,6 +915,7 @@ app.post('/get-current-page-number', async (req, res) => {
         res.json({
             pageNum: currentPageNum,
             firstName: baseOfPage.rows[0].first_name,
+            middleName: baseOfPage.rows[0].middle_name,
             lastName: baseOfPage.rows[0].last_name,
             fullName: fullName,
             id: baseOfPage.rows[0].ancestor_id,
@@ -918,6 +935,7 @@ app.post('/get-current-page-number', async (req, res) => {
             uncertainDeathDate:baseOfPage.rows[0].uncertain_death_date,
             uncertainDeathPlace:baseOfPage.rows[0].uncertain_death_place,
             uncertainOccupation:baseOfPage.rows[0].uncertain_occupation,
+            memberOfNobility:baseOfPage.rows[0].member_of_nobility,
             
         })
         
@@ -1070,6 +1088,7 @@ app.post('/get-next-page', async (req, res) => {
 
 
 app.post('/save-ancestor', async (req, res) => {
+ 
     try {
 
     const { userId, ancestorDetails, childID, sex} = req.body;
@@ -1145,10 +1164,13 @@ app.post('/save-ancestor', async (req, res) => {
                 uncertain_birth_place,
                 uncertain_death_date,
                 uncertain_death_place,
-                uncertain_occupation
+                uncertain_occupation,
+                marriage_date,
+                marriage_place,
+                member_of_nobility
             )  
             VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26
             ) 
         `, [
             ancestorDetails.firstName,
@@ -1173,7 +1195,10 @@ app.post('/save-ancestor', async (req, res) => {
             false,
             false,
             false,
-            false
+            false,
+            ancestorDetails.marriagePlace,
+            ancestorDetails.marriageDeath,
+            ancestorDetails.memberOfNobility
         ]);
 
         res.json(ancestor_id)
@@ -1337,12 +1362,10 @@ app.post('/toggle-uncertain', async (req, res) => {
 })
 
 app.post('/delete-person', async (req, res) => {
-    console.log("API triggered")
+
     try {
 
     const { userId, personID, sex} = req.body;
-
-    console.log("PersonID is:" + " " + personID)
 
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(
@@ -1367,12 +1390,10 @@ app.post('/delete-person', async (req, res) => {
             `)
         }
 
-        console.log("has been removed as parent")
-
+      
         //now that the person is no longer associated with any children, he, and all his own ancestors, may be deleted. If one of his own ancestors is a repeat ancestor, then thsi repeat ancestor will be safe from deletion thanks to only people with no listed children wil be deleted - the existence of the other descent path disqualifies repeat ancestors from this condition
 
         const deleteRecursively = async (ID, personSex) => {
-            console.log(ID + " " + personSex)
 
             //find parents, store their IDs
             const findParents = await pool.query(`
@@ -1432,8 +1453,6 @@ app.post('/delete-person', async (req, res) => {
         }
 
         deleteRecursively(personID, sex);
-
-        console.log("deletion complete")
  
     } catch (error) {
         console.log("Error saving ancestor:", error)
