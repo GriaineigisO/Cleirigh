@@ -2526,7 +2526,7 @@ uncertainFirstName: data.uncertainFirstName,
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}: </td>
                     <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(details.relationToUser, sex)}</td>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Profile Number:</td>
-                    <td className="ancestor-box-border-bottom table-content shrink profile-cell" onClick={() => handleOpenProfile(details.id)}>{details.id}</td>
+                    <td className="ancestor-box-border-bottom table-content shrink profile-cell"><span className="span-link"  onClick={() => handleOpenProfile(details.id)}>{details.id}</span></td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
@@ -2580,6 +2580,10 @@ uncertainFirstName: data.uncertainFirstName,
 
         const uncertainText = <sup>(uncertain)</sup>;
 
+        const handleOpenProfile = (id) => {
+            window.location.href = `profile/${id}`
+        }
+
 
         let boxShadowColor = "5px 5px 35px rgba(2, 110, 2)";
         let tableColor = "#75b74f"
@@ -2618,7 +2622,7 @@ uncertainFirstName: data.uncertainFirstName,
                 </tr>
                 <tr>
                     <td className=" table-label shrink" style={{backgroundColor:tableColor}}>Profile <br/>Number:</td>
-                    <td className="table-content">{details.id} {<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
+                    <td className="table-content profile-cell"><span className="span-link" onClick={() => handleOpenProfile(details.id)}>{details.id}</span> {<img className="editLogo" src={editLogo} onClick={openEditModal}></img>}</td>
                 </tr>
             </table>
         ) : (

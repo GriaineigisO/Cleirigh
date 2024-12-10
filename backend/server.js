@@ -1483,6 +1483,267 @@ app.post('/ancestor-profiles', async (req, res) => {
     }
 })
 
+app.post('/get-parents', async (req, res) => {
+    try {
+
+        const {userId, father, mother} = req.body
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getFather = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${father}
+        `)
+
+        let motherFirstName = "";
+        let motherMiddleName = "";
+        let motherLastName = "";
+        let motherId="";
+        if (mother) {
+            const getMother = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE ancestor_id = ${mother}
+            `)
+            motherId = getMother.rows[0].ancestor_id;
+
+            if (getMother.rows[0].first_name === null ) {
+                motherFirstName = "UNKNOWN";
+            } else {
+                motherFirstName = getMother.rows[0].first_name;
+            }
+    
+            if (getMother.rows[0].middle_name === null) {
+                motherMiddleName = "";
+            } else {
+                motherMiddleName = getMother.rows[0].middle_name;
+            }
+    
+            if (getMother.rows[0].last_name === null) {
+                motherLastName = "";
+            } else {
+                motherLastName = getMother.rows[0].last_name;
+            }
+        }
+        
+
+        let fatherFirstName = "";
+        let fatherMiddleName = "";
+        let fatherLastName = "";
+        let fatherId="";
+        if (father) {
+            const getFather = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE ancestor_id = ${father}
+            `)
+                fatherId = getFather.rows[0].ancestor_id;
+
+            if (getFather.rows[0].first_name === null ) {
+                fatherFirstName = "UNKNOWN";
+            } else {
+                fatherFirstName = getFather.rows[0].first_name;
+            }
+    
+            if (getFather.rows[0].middle_name === null) {
+                fatherMiddleName = "";
+            } else {
+                fatherMiddleName = getFather.rows[0].middle_name;
+            }
+    
+            if (getFather.rows[0].last_name === null) {
+                fatherLastName = "";
+            } else {
+                fatherLastName = getFather.rows[0].last_name;
+            }
+        }
+
+        const fatherName = `${fatherFirstName} ${fatherMiddleName} ${fatherLastName}`;
+
+        const motherName = `${motherFirstName} ${motherMiddleName} ${motherLastName}`;;
+
+        res.json({
+            father:fatherName,
+            mother:motherName,
+            fatherId:fatherId,
+            motherId:motherId,
+        });
+
+    } catch (error) {
+        console.log("Error getting ancestor's profile: " , error)
+    }
+})
+
+app.post('/get-child', async (req, res) => {
+    try {
+
+        const {userId, id, sex} = req.body
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        let childFirstName = "";
+        let childMiddleName = "";
+        let childLastName = "";
+        let childName = "";
+        let childId="";
+
+        let spouseFirstName = "";
+        let spouseMiddleName = "";
+        let spouseLastName = "";
+        let spouseName = "";
+        let spouseId="";
+
+        if (sex === "male") {
+
+            const getChild = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE father_id = ${id}
+            `)
+
+            childId = getChild.rows[0].ancestor_id;
+
+            if (getChild.rows[0].first_name === null ) {
+                childFirstName = "UNKNOWN";
+            } else {
+                childFirstName = getChild.rows[0].first_name;
+            }
+    
+            if (getChild.rows[0].middle_name === null) {
+                childMiddleName = "";
+            } else {
+                childMiddleName = getChild.rows[0].middle_name;
+            }
+    
+            if (getChild.rows[0].last_name === null) {
+                childLastName = "";
+            } else {
+                childLastName = getChild.rows[0].last_name;
+            }
+
+            childName = `${childFirstName} ${childMiddleName} ${childLastName}`;
+
+
+
+            const getSpouseId = await pool.query(`
+                SELECT mother_id FROM tree_${currentTree}
+                WHERE ancestor_id = ${childId}
+            `)
+
+            spouseId = getSpouseId.rows[0].mother_id;
+
+            const getSpouse = await pool.query(`
+                SELECT * FROM tree_${currentTree}
+                WHERE ancestor_id = ${spouseId}
+            `)           
+
+            if (getSpouse.rows[0].first_name === null ) {
+                spouseFirstName = "UNKNOWN";
+            } else {
+                spouseFirstName = getSpouse.rows[0].first_name;
+            }
+    
+            if (getSpouse.rows[0].middle_name === null) {
+                spouseMiddleName = "";
+            } else {
+                spouseMiddleName = getSpouse.rows[0].middle_name;
+            }
+    
+            if (getSpouse.rows[0].last_name === null) {
+                spouseLastName = "";
+            } else {
+                spouseLastName = getSpouse.rows[0].last_name;
+            }
+
+            spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
+
+        } else {
+
+                const getChild = await pool.query(`
+                    SELECT * FROM tree_${currentTree}
+                    WHERE mother_id = ${id}
+                `)
+    
+                childId = getChild.rows[0].ancestor_id;
+    
+                if (getChild.rows[0].first_name === null ) {
+                    childFirstName = "UNKNOWN";
+                } else {
+                    childFirstName = getChild.rows[0].first_name;
+                }
+        
+                if (getChild.rows[0].middle_name === null) {
+                    childMiddleName = "";
+                } else {
+                    childMiddleName = getChild.rows[0].middle_name;
+                }
+        
+                if (getChild.rows[0].last_name === null) {
+                    childLastName = "";
+                } else {
+                    childLastName = getChild.rows[0].last_name;
+                }
+    
+                childName = `${childFirstName} ${childMiddleName} ${childLastName}`;
+    
+    
+    
+                const getSpouseId = await pool.query(`
+                    SELECT father_id FROM tree_${currentTree}
+                    WHERE ancestor_id = ${childId}
+                `)
+    
+                spouseId = getSpouseId.rows[0].father_id;
+    
+                const getSpouse = await pool.query(`
+                    SELECT * FROM tree_${currentTree}
+                    WHERE ancestor_id = ${spouseId}
+                `)           
+    
+                if (getSpouse.rows[0].first_name === null ) {
+                    spouseFirstName = "UNKNOWN";
+                } else {
+                    spouseFirstName = getSpouse.rows[0].first_name;
+                }
+        
+                if (getSpouse.rows[0].middle_name === null) {
+                    spouseMiddleName = "";
+                } else {
+                    spouseMiddleName = getSpouse.rows[0].middle_name;
+                }
+        
+                if (getSpouse.rows[0].last_name === null) {
+                    spouseLastName = "";
+                } else {
+                    spouseLastName = getSpouse.rows[0].last_name;
+                }
+    
+                spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
+    
+            
+        }
+
+        res.json({
+            childName:childName,
+            spouseName:spouseName,
+            childId:childId,
+            spouseId:spouseId,
+        });
+
+    } catch (error) {
+        console.log("Error getting ancestor's profile: " , error)
+    }
+})
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

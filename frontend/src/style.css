@@ -655,3 +655,42 @@ button:hover {
     flex-direction: column;
 }
 
+
+.top-section {
+    background-color: rgb(32, 40, 31);
+    color: rgb(210, 255, 126) !important;
+    display: flex;
+    flex-direction: row;
+    padding-left: 100px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.profile-photo {
+    width: 250px;
+    margin-right: 50px;
+    border-radius: 10px;
+}
+
+.profile-photo-frame {
+    width: 220px;
+    margin-right: 50px;
+}
+
+.profile-table-label {
+    margin-right: 20px;
+}
+
+.family-section {
+    padding-left: 100px;
+}
+
+.span-link {
+    text-decoration: underline;
+    color: blue;
+}
+
+.span-link:hover {
+    color: rgb(16, 16, 145);
+    cursor: pointer
+}
