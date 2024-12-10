@@ -2313,18 +2313,18 @@ uncertainFirstName: data.uncertainFirstName,
 
         const [isNobility, setIsNobility] = useState(false);
 
-        const handleNobility = () => {
-            if (isNobility) {
-                setIsNobility(false)
-            } else {
-                setIsNobility(true)
-            }
 
-            setDetails((prev) => ({
-                ...prev,
-                memberOfNobility: isNobility
-            }))
-        }
+        const handleNobility = () => {
+            setIsNobility((prevState) => {
+                const newState = !prevState;
+                setDetails((prevDetails) => ({
+                    ...prevDetails,
+                    memberOfNobility: newState
+                }));
+                return newState;
+            });
+        };
+        
 
         let questionMarkFirstNameColor = "grey";
         if (details.uncertainFirstName) {
@@ -2435,6 +2435,15 @@ uncertainFirstName: data.uncertainFirstName,
                         <div className="inputandQuestionMark">
                             <input type="text" placeholder="Ethnicity" value={details.ethnicity} onChange={(e) => setDetails({ ...details, ethnicity: e.target.value })}></input>
                         </div>
+                        
+                    </div>
+
+                    <div className="input-modal">
+                        <div className="inputandQuestionMark">
+                                <label>Member of Nobility</label>
+                                <input type="checkbox" checked={isNobility} onClick={handleNobility}/>
+                                
+                        </div>
                     </div>
 
                 </Modal.Body>
@@ -2481,7 +2490,7 @@ uncertainFirstName: data.uncertainFirstName,
                 </Modal.Footer>
                 ) : (<></>)}
                 
-            </Modal>
+        </Modal>
 
         )
     }
@@ -2499,14 +2508,15 @@ uncertainFirstName: data.uncertainFirstName,
 
         let boxShadowColor = "5px 5px 35px rgba(2, 110, 2)";
         let tableColor = "#75b74f"
-
-        console.log(`${details.fullName} ${details.id} ${details.memberOfNobility}`)
-
         
         if(details.memberOfNobility) {
             boxShadowColor = "5px 5px 35px rgba(5, 94, 237)";
             tableColor = "rgba(5, 94, 237)"
         } 
+
+        const handleOpenProfile = (id) => {
+            window.location.href = `profile/${id}`
+        }
 
         return (
             <>
@@ -2516,7 +2526,7 @@ uncertainFirstName: data.uncertainFirstName,
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}: </td>
                     <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(details.relationToUser, sex)}</td>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Profile Number:</td>
-                    <td className="ancestor-box-border-bottom table-content shrink">{details.id}</td>
+                    <td className="ancestor-box-border-bottom table-content shrink profile-cell" onClick={() => handleOpenProfile(details.id)}>{details.id}</td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>

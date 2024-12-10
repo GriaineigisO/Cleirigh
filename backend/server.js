@@ -1459,6 +1459,30 @@ app.post('/delete-person', async (req, res) => {
     }
 })
 
+app.post('/ancestor-profiles', async (req, res) => {
+    try {
+        const {userId, id} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getPerson = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${id}
+        `)
+
+        res.json(getPerson.rows[0]);
+
+    } catch (error) {
+        console.log("Error getting ancestor's profile: " , error)
+    }
+})
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

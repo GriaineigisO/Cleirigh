@@ -493,6 +493,11 @@ table tr:first-child td:last-child {
 
 }
 
+.profile-cell:hover {
+    background-color: #9bb4a3;
+    cursor: pointer;
+}
+
 .table-content {
     background-color: #c7eed4;
     font-size: 10px;
