@@ -8,7 +8,7 @@ import Account from './Pages/account.js';
 import Success from './Pages/success.js';
 import Cancel from './Pages/cancel.js';
 import {Home} from './Pages/home.js';
-import Profiles from './Pages/profiles.js';
+import Search from './Pages/search.js';
 import FamilyTree from './Pages/familytree.js';
 import Queries from './Pages/queries.js';
 import NewTree from './Pages/newTree.js';
@@ -41,7 +41,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/profiles" element={<Profiles />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/familytree" element={<FamilyTree />} />
           <Route path="/queries" element={<Queries />} />
           <Route path="/register" element={<Register />} />

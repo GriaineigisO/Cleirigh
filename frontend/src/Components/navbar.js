@@ -164,6 +164,9 @@ const Navbar = ({onLogin, onLogout}) => {
                     <p className="subtitle">Geneological Archive</p>
                 </div>
                 <ul className="nav-ul">
+                    <Link to={'/familytree'} className="navlink">View Tree</Link>
+                    <Link to={'/search'} className="navlink">Search</Link>
+                    <Link to={'/queries'} className="navlink">Queries</Link>
                     {/* Tree Link with Dropdown */}
                     <div className="dropdown">
                         <Link
