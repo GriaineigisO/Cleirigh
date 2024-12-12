@@ -4,9 +4,15 @@ import testPhoto from '../Images/James Ó Donnell.jpg';
 import { convertNumToRelation } from '../library';
 import { propTypes } from 'react-bootstrap/esm/Image';
 import { Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+
 
 
 const Profile = () => {
+
+    const [value, setValue] = useState('');
     const { id } = useParams(); 
     const [profileData, setProfileData] = useState(null); 
     const [loading, setLoading] = useState(true); 
@@ -22,6 +28,11 @@ const Profile = () => {
     const [spouseName, setSpouseName] = useState();
     const [spouseId, setSpouseId] = useState();
     const [spouse, setSpouse] = useState();
+    const [content, setContent] = useState('<p>Describe Your Ancestor.../p>');
+    const [basePersonFirstName, setBasePersonFirstName] = useState();
+    const [ancestryPercent, setAncestryPercent] = useState();
+    const [isEditing, setisEditing] = useState(false);
+      
 
     useEffect(() => {
         const getProfileData = async () => {
@@ -50,6 +61,132 @@ const Profile = () => {
         getProfileData();
     }, [id]);
 
+    useEffect(() => {
+        if (profileData) {
+            setValue(profileData.profile_text);
+        }
+    }, [profileData])
+
+    
+    const openLink = (id) => {
+        window.location.href = `${id}`
+    }
+
+    useEffect(() => {
+        // Fetch base person name
+        const getBasePersonName = async () => {
+            try {
+                const userId = localStorage.getItem('userId');
+                const response = await fetch('http://localhost:5000/get-base-person', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId }),
+                });
+                const data = await response.json();
+                setBasePersonFirstName(data.firstName);
+            } catch (err) {
+                console.error('Error fetching base person name:', err);
+            }
+        };
+
+        getBasePersonName();
+    }, []);
+
+    useEffect(() => {
+        if (!profileData) return;
+
+        // Fetch parents
+        const getParents = async () => {
+            const userId = localStorage.getItem('userId');
+            const father = profileData.father_id;
+            const mother = profileData.mother_id;
+            const response = await fetch('http://localhost:5000/get-parents', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, father, mother }),
+            });
+            const data = await response.json();
+            setFatherName(data.father);
+            setMotherName(data.mother);
+            setFatherId(data.fatherId);
+            setMotherId(data.motherId);
+
+            if (data.fatherId && data.motherId) {
+                setParents(
+                    <>
+                        <span className="span-link" onClick={() => openLink(data.fatherId)}>{data.father}</span> <span>and</span> <span className="span-link" onClick={() => openLink(data.motherId)}>{data.mother}</span>
+                    </>
+                );
+            } else if (data.fatherId) {
+                setParents(
+                    <>
+                        <span className="span-link" onClick={() => openLink(data.fatherId)}>{data.father}</span>
+                    </>
+                );
+            } else if (data.motherId) {
+                setParents(
+                    <>
+                        <span className="span-link" onClick={() => openLink(data.motherId)}>{data.mother}</span>
+                    </>
+                );
+            } else {
+                setParents("Unknown");
+            }
+        };
+
+        getParents();
+    }, [profileData]);
+
+    useEffect(() => {
+        if (!profileData) return;
+
+        // Fetch child data
+        const getChild = async () => {
+            const userId = localStorage.getItem('userId');
+            const sex = profileData.sex;
+            const response = await fetch('http://localhost:5000/get-child', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, id, sex }),
+            });
+            const data = await response.json();
+            setChildName(data.childName);
+            setChildId(data.childId);
+            setSpouseName(data.spouseName);
+            setSpouseId(data.spouseId);
+
+            if (data.childId) {
+                setChild(<span className="span-link" onClick={() => openLink(data.childId)}>{data.childName}</span>);
+
+            }
+            if (data.spouseId) {
+                setSpouse(<span className="span-link" onClick={() => openLink(data.spouseId)}>{data.spouseName}</span>);
+            }
+        };
+
+        getChild();
+    }, [profileData]);
+
+
+    useEffect(() => {
+        if (!profileData) return;
+
+        const calculateAncestryPercent = () => {
+            let inputNum = Number(profileData.relation_to_user - 2) + 3;
+            let hundred = 200;
+            for (let i = 0; i < inputNum; i++) {
+                hundred = hundred / 2;
+            }
+            if (hundred < 0.0000014901161193847656) {
+                setAncestryPercent(hundred.toFixed(10));
+            } else {
+                setAncestryPercent(hundred);
+            }
+        };
+
+        calculateAncestryPercent();
+    }, [profileData]);
+
     
     if (loading) {
         return <div>Loading...</div>;
@@ -60,117 +197,54 @@ const Profile = () => {
         return <div>{error}</div>;
     }
 
-    const openLink = (id) => {
-        window.location.href = `${id}`
+    const handleEdit = () => {
+        setisEditing(true);
     }
 
-
-    const getParents = async () => {
+    const handleSaveText = async () => {
+        setisEditing(false)
         const userId = localStorage.getItem('userId');
-        const father = profileData.father_id;
-        const mother = profileData.mother_id;
-        const response = await fetch('http://localhost:5000/get-parents', {
+        const response = await fetch('http://localhost:5000/save-profile-text', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, father, mother }),
+            body: JSON.stringify({ userId, id, value}),
         });
-        const data = await response.json();
-        setFatherName(data.father);
-        setMotherName(data.mother);
-        setFatherId(data.fatherId);
-        setMotherId(data.motherId);
-
-
-        if (fatherId && motherId) {
-            setParents(
-                <>
-                 <span className="span-link" onClick={() => openLink(fatherId)}>{fatherName}</span> <span>and</span> <span className="span-link" onClick={() => openLink(motherId)}>{motherName}</span>
-                </>
-            );
-        } else if (fatherId && !motherId) {
-            setParents(
-                <>
-                 <span className="span-link" onClick={() => openLink(fatherId)}>{fatherName}</span>
-                </>
-            );
-        } else if (!fatherId && motherId) {
-            setParents(
-                <>
-                 <span className="span-link" onClick={() => openLink(motherId)}>{motherName}</span>
-                </>
-            );
-        } else {
-            setParents("Unknown")
-        }
-
     }
-    getParents();
 
-    const getChild = async () => {
-        const userId = localStorage.getItem('userId');
-        const sex = profileData.sex;
-        const response = await fetch('http://localhost:5000/get-child', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, id, sex }),
-        });
-        const data = await response.json();
-        setChildName(data.childName)
-        setChildId(data.childId);
-        setSpouseName(data.spouseName);
-        setSpouseId(data.spouseId)
-
-
-        if (childId) {
-            setChild(
-                <>
-                 <span className="span-link" onClick={() => openLink(childId)}>{childName}</span>
-                </>
-            );
-        }
-
-        if (spouseId) {
-            setSpouse(
-                <>
-                 <span className="span-link" onClick={() => openLink(spouseId)}>{spouseName}</span>
-                </>
-            );
-        }
-
+    const handleCancelText = async () => {
+        setisEditing(false)
+        setValue(value);
     }
-    getChild();
-
-       
-
         
     return (
-        <div className="profile">
+        <div className="profile"S>
 
             <div className="top-section">
 
                 <div className="profile-photo-div">
-                    {/* <img class="profile-photo-frame" src={frame} style={{height: "80%", width:"5%"}}></img> */}
-                    <img className="profile-photo" src={testPhoto}></img>
+                    {/* <img className="profile-photo" src={testPhoto}></img> */}
                 </div>
 
                 <div className="fact-section">
 
-                    <h1>{profileData.first_name} {profileData.middle_name} {profileData.last_name}</h1>
+                    <h1>{profileData.first_name}{profileData.uncertain_first_name ? (<sup> uncertain</sup>) :(<></>)} {profileData.middle_name}{profileData.uncertain_middle_name ? (<sup> uncertain</sup>) :(<></>)} {profileData.last_name}{profileData.uncertain_lasst_name ? (<sup> uncertain</sup>) :(<></>)}</h1>
 
                     <p>{convertNumToRelation(profileData.relation_to_user, profileData.sex)}</p>
+
+                    <p>{profileData.first_name} is responsible for {ancestryPercent}% of {basePersonFirstName}'s ancestry.</p>
 
                     <div className="other-facts">
 
                         <table>
                             <tr>
                                 <td className="profile-table-label">Born </td>
-                                <td>{profileData.date_of_birth} {profileData.place_of_birth}</td>
+                                <td>{profileData.date_of_birth}{profileData.uncertain_birth_date ? (<sup> uncertain</sup>) :(<></>)} {profileData.place_of_birth}{profileData.uncertain_birth_place ? (<sup> uncertain</sup>) :(<></>)}</td>
                             </tr>
 
                             {profileData.married_date ? (
                                 <tr>
                                     <td className="profile-table-label">Married </td>
-                                    <td>{profileData.marriage_date} {profileData.marriage_place} to placeholder</td>
+                                    <td>{profileData.marriage_date}{profileData.uncertain_marriage_date ? (<sup> uncertain</sup>) :(<></>)} {profileData.marriage_place}{profileData.uncertain_marriage_place ? (<sup> uncertain</sup>) :(<></>)} to placeholder</td>
                                 </tr>
                             ) : (
                                 <></>
@@ -178,13 +252,13 @@ const Profile = () => {
                             
                             <tr>
                                 <td className="profile-table-label">Died </td>
-                                <td>{profileData.date_of_death} {profileData.place_of_death} {profileData.cause_of_death ? (<span>due to {profileData.cause_of_death}</span>) : (<></>)} </td>
+                                <td>{profileData.date_of_death}{profileData.uncertain_death_date ? (<sup> uncertain</sup>) :(<></>)} {profileData.place_of_death}{profileData.uncertain_death_place ? (<sup> uncertain</sup>) :(<></>)} {profileData.cause_of_death ? (<span>due to {profileData.cause_of_death}</span>) : (<></>)} </td>
                             </tr>
 
                             {profileData.occupation ? (
                                  <tr>
                                     <td className="profile-table-label">Occupation </td>
-                                    <td>{profileData.occupation}</td>
+                                    <td>{profileData.occupation}{profileData.uncertain_occupation ? (<sup> uncertain</sup>) :(<></>)}</td>
                                 </tr>
                             ) : (<></>)}
                            
@@ -239,19 +313,30 @@ const Profile = () => {
                     </>
                 )}
              
+             {/*descendancy chart here*/}
 
             </div>
 
             <div className="timeline-section">
+                <hr></hr>
+                <h1>Timeline</h1>
 
             </div>
 
             <div className="article-section">
-
+                <hr></hr>
+                <p className="span-link" onClick={handleEdit}>Edit</p>
+                {isEditing ? (
+                    <div>
+                        <ReactQuill theme="snow" value={value}  style={{ height: '300px' }}  onChange={setValue} />
+                        <button style={{marginTop:"60px"}} onClick={handleCancelText}>Cancel</button>
+                        <button style={{marginTop:"60px"}} onClick={handleSaveText}>Save Text</button>
+                    </div>
+                    ) : (<div dangerouslySetInnerHTML={{ __html: value }} />)}
             </div>
 
             <div className="source-section">
-
+                <h3>Sources</h3>
             </div>
 
         </div>

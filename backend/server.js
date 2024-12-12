@@ -1198,7 +1198,7 @@ app.post('/save-ancestor', async (req, res) => {
             false,
             ancestorDetails.marriagePlace,
             ancestorDetails.marriageDeath,
-            ancestorDetails.memberOfNobility
+            "false"
         ]);
 
         res.json(ancestor_id)
@@ -1639,32 +1639,35 @@ app.post('/get-child', async (req, res) => {
                 WHERE ancestor_id = ${childId}
             `)
 
-            spouseId = getSpouseId.rows[0].mother_id;
+            if (getSpouseId.rows[0].length > 0) {
 
-            const getSpouse = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE ancestor_id = ${spouseId}
-            `)           
+                spouseId = getSpouseId.rows[0].mother_id;
 
-            if (getSpouse.rows[0].first_name === null ) {
-                spouseFirstName = "UNKNOWN";
-            } else {
-                spouseFirstName = getSpouse.rows[0].first_name;
-            }
-    
-            if (getSpouse.rows[0].middle_name === null) {
-                spouseMiddleName = "";
-            } else {
-                spouseMiddleName = getSpouse.rows[0].middle_name;
-            }
-    
-            if (getSpouse.rows[0].last_name === null) {
-                spouseLastName = "";
-            } else {
-                spouseLastName = getSpouse.rows[0].last_name;
-            }
+                const getSpouse = await pool.query(`
+                    SELECT * FROM tree_${currentTree}
+                    WHERE ancestor_id = ${spouseId}
+                `)           
 
-            spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
+                if (getSpouse.rows[0].first_name === null ) {
+                    spouseFirstName = "UNKNOWN";
+                } else {
+                    spouseFirstName = getSpouse.rows[0].first_name;
+                }
+        
+                if (getSpouse.rows[0].middle_name === null) {
+                    spouseMiddleName = "";
+                } else {
+                    spouseMiddleName = getSpouse.rows[0].middle_name;
+                }
+        
+                if (getSpouse.rows[0].last_name === null) {
+                    spouseLastName = "";
+                } else {
+                    spouseLastName = getSpouse.rows[0].last_name;
+                }
+
+                spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
+            }
 
         } else {
 
@@ -1741,6 +1744,30 @@ app.post('/get-child', async (req, res) => {
 
     } catch (error) {
         console.log("Error getting ancestor's profile: " , error)
+    }
+})
+
+app.post('/save-profile-text' , async (req, res) => {
+    try {
+
+        const {userId, id, value} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const saveText = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET profile_text = $1
+            WHERE ancestor_id = ${id}
+        `, [value])
+
+    } catch(error) {
+        console.log("Error saving profile text: ", error);
     }
 })
 
