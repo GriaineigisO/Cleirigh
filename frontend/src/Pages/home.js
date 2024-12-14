@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import {jwtDecode} from 'jwt-decode';
-import {capitaliseFirstLetter} from '../library.js'
+import {capitaliseFirstLetter, convertNumToRelation} from '../library.js'
 import '../style.css';
 import {Link} from "react-router-dom";
 import LeftSidebar from '../Components/leftSidebar.js';
@@ -25,6 +25,7 @@ const HomePageNoTrees = ({ treeName, setTreeName, handleNewTree }) => {
 let treesName = "";
 const HomePageWithTree = () => {
 
+  const [basePersonFirstName, setBasePersonFirstName] = useState();
   const [treeName, setTreeName] = useState('');
   const [isEmpty, setIsEmpty] = useState(true);
   const [currentTree, setCurrentTree] = useState();
@@ -46,6 +47,14 @@ const HomePageWithTree = () => {
   const [listOfPlaces, setListOfPlaces] = useState('');
   const [listOfOccupations, setListOfOccupations] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mostRemovedAncestor, setMostRemovedAncestor] = useState();
+  const [mostRemovedAncestorLink, setMostRemovedAncestorLink] = useState();
+  const [mostRemovedAncestorRelation, setMostRemovedAncestorRelation] = useState();
+  const [mostRemovedAncestorSex, setMostRemovedAncestorSex] = useState();
+  const [progressPersonName, setProgressPersonName] = useState();
+  const [progressPersonLink, setProgressPersonLink] = useState();
+  const [progressNote, setProgressNote] = useState();
+  const [savedProgress, setSavedProgress] = useState(false);
 
   // returns name of user's tree
 
@@ -224,9 +233,51 @@ const homePageStats = useCallback(async () => {
     const occupationData = await occupationResponse.json();
     setNumOfOccupations(occupationData.numOfOccupations);
     setListOfOccupations(`including: ${occupationData.listOfOccupations}`);
+
+    const userId = localStorage.getItem('userId');
+    const removedResponse = await fetch('http://localhost:5000/get-most-removed-ancestor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+    const removedData = await removedResponse.json();
+    setMostRemovedAncestor(removedData.name);
+    setMostRemovedAncestorLink(removedData.link);
+    setMostRemovedAncestorRelation(removedData.relation);
+    setMostRemovedAncestorSex(removedData.sex)
+
+    
+    const baseUserResponse = await fetch('http://localhost:5000/get-base-person', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+    const baseUserData = await baseUserResponse.json();
+    setBasePersonFirstName(baseUserData.firstName);
+
+
+    try {
+      const progressResponse = await fetch('http://localhost:5000/get-progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      const progressData = await progressResponse.json();
+      setProgressPersonName(progressData.name);
+      setProgressPersonLink(progressData.link);
+      setProgressNote(progressData.note);
+      if (progressData.bool) {
+        setSavedProgress(true);
+      }
+    } catch (error) {
+      console.log("error getting progress:", error)
+    }
+
+
   } catch (error) {
     console.error('Error fetching stats:', error);
   }
+  
 }, [currentTree]); // homePageStats now depends on currentTree
 
 
@@ -258,6 +309,17 @@ const homePageStats = useCallback(async () => {
   });
   
   setIsEmpty(false);
+  }
+
+  const handleRemoveNote = async () => {
+    setSavedProgress(false)
+    const userId = localStorage.getItem('userId');
+    const response = await fetch('http://localhost:5000/remove-progress-note', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId}),
+    
+    })
   }
 
 
@@ -331,14 +393,37 @@ const homePageStats = useCallback(async () => {
             <div className="spinner"></div>
           ) : (
             <>
-            <ul>
-              <li>{numOfAncestors} ancestors</li>
-              <li>{numOfPlaces} places {listOfPlaces}</li>
-              <li>{numOfOccupations} occupations {listOfOccupations}</li>
-          </ul>
 
-          <h2>Where You Left Off...</h2>
-          <p></p>
+{
+            savedProgress ? (
+              <div className="homePageDiv">
+                <p className="homePageDivLabel">Where You Left Off</p>
+                <p className="homePageDivContent progressContent"><a style={{color:"rgb(210, 255, 126)"}} href={progressPersonLink}>{progressPersonName}</a> <br/> {progressNote} </p>
+                <button className="remove-progress-button" onClick={handleRemoveNote}>Remove Note</button>
+              </div>
+            ) : (<></>)
+          }
+
+            <div className="homePageDiv">
+                <p className="homePageDivLabel">Number of ancestors in the tree</p>
+                <p className="homePageDivContent">{numOfAncestors}</p>
+            </div>
+
+            <div className="homePageDiv">
+                <p className="homePageDivLabel">Number of places mentioned in the tree</p>
+                <p className="homePageDivContent">{numOfPlaces} {listOfPlaces}</p>
+            </div>
+
+            <div className="homePageDiv">
+                <p className="homePageDivLabel">Number of occupations mentioned in the tree</p>
+                <p className="homePageDivContent">{numOfOccupations} {listOfOccupations}</p>
+            </div>
+
+            <div className="homePageDiv">
+                <p className="homePageDivLabel">Most Removed Ancestor By Generation</p>
+                <p className="homePageDivContent"><a style={{color:"rgb(210, 255, 126)"}} href={mostRemovedAncestorLink}>{mostRemovedAncestor}</a> - {basePersonFirstName}'s {convertNumToRelation(mostRemovedAncestorRelation, mostRemovedAncestorSex)}</p>
+            </div>
+  
           </>
           )}
       </div>

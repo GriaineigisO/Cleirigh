@@ -14,24 +14,8 @@ import treeLines from '../cleirighTreeLines.png'
 
 const FamilyTree = () => {
 
-    
-    const [firstNameUncertain, setFirstNameUncertain] = useState(false);
-    const [uncertainFirstNames, setUncertainFirstNames] = useState([]);
-    const [middleNameUncertain, setMiddleNameUncertain] = useState(false);
-    const [uncertainMiddleNames, setUncertainMiddleNames] = useState([]);
-    const [lastNameUncertain, setLastNameUncertain] = useState(false);
-    const [uncertainLastNames, setUncertainLastNames] = useState([]);
+    const [addRepeatAncestorSection, setAddRepeatAncestorSection] = useState(false)
 
-    const [birthDateUncertain, setBirthDateUncertain] = useState(false);
-    const [uncertainBirthDates, setUncertainBirthDates] = useState([]);
-    const [birthPlaceUncertain, setBirthPlaceUncertain] = useState(false);
-    const [uncertainBirthPlaces, setUncertainBirthPlaces] = useState([]);
-    const [deathDateUncertain, setDeathDatesUncertain] = useState(false);
-    const [uncertainDeathDates, setUncertainDeathDates] = useState([]);
-    const [deathPlaceUncertain, setDeathPlaceUncertain] = useState(false);
-    const [uncertainDeathPlaces, setUncertainDeathPlaces] = useState([]);
-    const [occupationUncertain, setOccupationUncertain] = useState(false);
-    const [uncertainOccupations, setUncertainOccupations] = useState([]);
 
 
     const [showFather, setShowFather] = useState(false);
@@ -106,9 +90,15 @@ const FamilyTree = () => {
     const [editShowMaternalMaternalGreatGrandmothersMother, seteditShowMaternalMaternalGreatGrandmothersMother] = useState(false);
 
     const [showDeletePopup, setShowDeletePop] = useState(false)
+    const [showSaveProgressHerePopup, setShowSaveProgressHerePopup] = useState(false)
+    const [progressNote, setProgressNote] = useState();
+    const [progressPerson, setProgressPerson] = useState();
 
     const closeDeletePopup = () => setShowDeletePop(false);
     const openDeletePopup = () => setShowDeletePop(true);
+
+    const closeSaveProgressHerePopup = () => setShowSaveProgressHerePopup(false);
+    const openSaveProgressHerePopup = () => setShowSaveProgressHerePopup(true);
 
     const closeAddFatherModal = () => setShowFather(false);
     const openAddFatherModal = () => setShowFather(true);
@@ -732,7 +722,8 @@ uncertainFirstName: data.uncertainFirstName,
                 uncertainBirthPlace: data.uncertainBirthPlace,
                 uncertainDeathDate: data.uncertainDeathDate,
                 uncertainDeathPlace: data.uncertainDeathPlace,
-                uncertainOccupation: data.uncertainOccupation
+                uncertainOccupation: data.uncertainOccupation,
+                memberOfNobility:data.memberOfNobility
               }));
         }
     }
@@ -1567,8 +1558,6 @@ uncertainFirstName: data.uncertainFirstName,
 
         const saveMaternalGrandfatherChanges = async () => {
             setShowMaternalGrandfather(false);
-            console.log(`This is his daughter: ${motherDetails.firstName}`)
-            console.log(maternalGrandfatherDetails)
             try {
                 const data = await saveAncestorChanges(maternalGrandfatherDetails, motherDetails.id, "male");
                 setMaternalGrandfatherDetails((prevDetails) => ({
@@ -2142,6 +2131,13 @@ uncertainFirstName: data.uncertainFirstName,
             }
         }
 
+    const handleAddExistingAncestor = () => {
+        if (addRepeatAncestorSection) {
+            setAddRepeatAncestorSection(false)
+        } else {
+            setAddRepeatAncestorSection(true);
+        }
+    }
 
     function MakeModal(showPerson, closeAddPerson, childName, setDetails, details, sex, save, closeAdd) {
         const [isNobility, setIsNobility] = useState(false);
@@ -2154,17 +2150,20 @@ uncertainFirstName: data.uncertainFirstName,
         }
 
         const handleNobility = () => {
-            if (isNobility) {
-                setIsNobility(false)
-            } else {
-                setIsNobility(true)
-            }
+            setIsNobility((prevState) => {
+                const newState = !prevState;
+                setDetails((prevDetails) => ({
+                    ...prevDetails,
+                    memberOfNobility: newState
+                }));
+                return newState;
+            });
+        };
 
-            setDetails((prev) => ({
-                ...prev,
-                memberOfNobility: isNobility
-            }))
+        const saveRepeatAncestor = () => {
+
         }
+
 
         return (
 
@@ -2250,13 +2249,30 @@ uncertainFirstName: data.uncertainFirstName,
 
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={closeAdd}>
-                    Cancel
-                </Button>
-                <Button variant="primary" onClick={save}>
-                    Save Changes
-                </Button>
+                <div className="modal-footer-buttons">
+                    <p class="onclick-text" onClick={handleAddExistingAncestor}><u>Add Pre-Existing Person</u></p>
+                    <div className="non-delete-buttons">
+                    <Button variant="secondary" onClick={closeAdd}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={save}>
+                        Save Changes
+                    </Button>
+                    </div>
+                </div>
+                
                 </Modal.Footer>
+                {addRepeatAncestorSection ? (
+                    <Modal.Footer className="repeatAncestorFooter">
+                        <div className="repeat-ancestor-search-div">
+                            <label>Repeat Ancestor</label>
+                            <input></input>
+                            <button onClick={saveRepeatAncestor}>Select</button>
+                        </div>
+                    </Modal.Footer>
+                ) : (
+                    <></>
+                )}
             </Modal>
 
         )
@@ -2300,6 +2316,21 @@ uncertainFirstName: data.uncertainFirstName,
             </>
         )
 
+    }
+
+    const handleProgressNote = (event) => {
+        setProgressNote(event.target.value)
+    }
+
+    const saveProgress = async (details, closeEditPerson) => {
+        closeSaveProgressHerePopup();
+        closeEditPerson();
+        const userId = localStorage.getItem('userId');
+        const removedResponse = await fetch('http://localhost:5000/save-progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, progressNote, details }),
+        });
     }
 
     function MakeEditModal(showPerson, closeEditPerson, setDetails, details, save, seteditShowPerson, getPerson, closeAdd, deletePerson, sex) {
@@ -2451,9 +2482,19 @@ uncertainFirstName: data.uncertainFirstName,
                 
                 <div className="modal-footer-buttons">
 
-                    <p variant="secondary" onClick={openDeletePopup} className="onclick-text">
-                        <u>Delete {details.fullName}</u>
-                    </p>
+                    <div style={{
+                                display:"flex",
+                                flexDirection:"row"
+                            }}>
+
+                        <p variant="secondary" onClick={openDeletePopup} className="onclick-text">
+                            <u>Delete {details.fullName}</u>
+                        </p>
+                        <p variant="secondary" onClick={openSaveProgressHerePopup} className="onclick-text" style={{marginLeft:"15px"}}>
+                            <u>Save Progress Here</u>
+                        </p>
+                        
+                    </div>
 
                     <div className="non-delete-buttons">
                         <Button variant="secondary" onClick={closeEditPerson}>
@@ -2468,7 +2509,7 @@ uncertainFirstName: data.uncertainFirstName,
                 </Modal.Footer>
                 {showDeletePopup ? (
                     <Modal.Footer>
-                        <div className="">
+                        <div>
                             <div>
                                                                
                                 <div className="warning-message">
@@ -2489,6 +2530,31 @@ uncertainFirstName: data.uncertainFirstName,
                         <button onClick={() => deletePerson(details, setDetails, sex, getPerson, closeEditPerson)}>Delete</button>
                 </Modal.Footer>
                 ) : (<></>)}
+                {showSaveProgressHerePopup ? (
+                    <Modal.Footer>
+                        <div style={{
+                                display:"flex",
+                                flexDirection:"row",
+                                justifyContent:"left"
+                            }}>
+                            <div style={{
+                                display:"flex",
+                                flexDirection:"column",
+                                marginRight:"100px"
+                            }}>
+                                                               
+                                    <p>Leave a note for your future self</p>
+                                    <textarea type="text" onChange={handleProgressNote}></textarea>
+                            
+                            </div>
+                        </div>
+
+                        <button onClick={closeSaveProgressHerePopup}>Cancel</button>
+
+                        <button onClick={() => saveProgress(details, closeEditPerson)}>Save Progress</button>
+                </Modal.Footer>
+                ) : (<></>)}
+
                 
         </Modal>
 

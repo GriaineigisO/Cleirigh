@@ -6,12 +6,19 @@ import { propTypes } from 'react-bootstrap/esm/Image';
 import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Modal, Button } from 'react-bootstrap';
 
 
 
 
 const Profile = () => {
 
+    const [sourceNameLinkArray, setSourceNameLinkArray] = useState([]);
+    const [sourceLinkArray, setSourceLinkArray] = useState([]);
+    const [sourceNameLink, setSourceNameLink] = useState();
+    const [sourceLink, setSourceLink] = useState();
+    const [sourceType, setSourceType] = useState();
+    const [sourceModalOpen, setSourceModalOpen] = useState(false)
     const [value, setValue] = useState('');
     const { id } = useParams(); 
     const [profileData, setProfileData] = useState(null); 
@@ -114,19 +121,19 @@ const Profile = () => {
             if (data.fatherId && data.motherId) {
                 setParents(
                     <>
-                        <span className="span-link" onClick={() => openLink(data.fatherId)}>{data.father}</span> <span>and</span> <span className="span-link" onClick={() => openLink(data.motherId)}>{data.mother}</span>
+                        <a href={data.fatherId}>{data.father}</a> <span>and</span> <a href={data.motherId}>{data.mother}</a>
                     </>
                 );
             } else if (data.fatherId) {
                 setParents(
                     <>
-                        <span className="span-link" onClick={() => openLink(data.fatherId)}>{data.father}</span>
+                        <a href={data.fatherId}>{data.father}</a>
                     </>
                 );
             } else if (data.motherId) {
                 setParents(
                     <>
-                        <span className="span-link" onClick={() => openLink(data.motherId)}>{data.mother}</span>
+                        <a href={data.motherId}>{data.mother}</a>
                     </>
                 );
             } else {
@@ -156,11 +163,11 @@ const Profile = () => {
             setSpouseId(data.spouseId);
 
             if (data.childId) {
-                setChild(<span className="span-link" onClick={() => openLink(data.childId)}>{data.childName}</span>);
+                setChild(<a href={data.childId}>{data.childName}</a>);
 
             }
             if (data.spouseId) {
-                setSpouse(<span className="span-link" onClick={() => openLink(data.spouseId)}>{data.spouseName}</span>);
+                setSpouse(<a href={data.spouseId}>{data.spouseName}</a>);
             }
         };
 
@@ -178,7 +185,7 @@ const Profile = () => {
                 hundred = hundred / 2;
             }
             if (hundred < 0.0000014901161193847656) {
-                setAncestryPercent(hundred.toFixed(10));
+                setAncestryPercent(hundred.toFixed(20));
             } else {
                 setAncestryPercent(hundred);
             }
@@ -215,9 +222,96 @@ const Profile = () => {
         setisEditing(false)
         setValue(value);
     }
+
+    const openAddSource = () => {
+        setSourceModalOpen(true);
+    }
+
+    const closeAddSource = () => {
+        setSourceModalOpen(false);
+    }
+
+    const saveSource = async () => {
+        setSourceNameLinkArray((prev) => ([
+            ...prev,
+            sourceNameLink
+        ]))
+
+        setSourceLinkArray((prev) => ([
+            ...prev,
+            sourceLink
+        ]))
+
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/save-source-link', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, sourceNameLinkArray, sourceLinkArray}),
+        });
+    }
+
+
+    const handleSourceType = (event) => {
+        setSourceType(event.target.value)
+    }
         
     return (
-        <div className="profile"S>
+        <div className="profile">
+
+
+            <Modal show={sourceModalOpen} onHide={closeAddSource} dialogclassName="custom-modal-width" backdrop="static">
+                <Modal.Header closeButton>
+                <Modal.Title>Add Source</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div style={{display:"flex", flexDirection:"column"}}>    
+                        <div style={{width:"300px"}}>
+                            <label>Source Type</label>
+                            <select onChange={handleSourceType}>
+                                <option>--Select Type--</option>
+                                <option value="link">Link</option>
+                                <option value="image">Image</option>
+                                <option value="text">Text</option>
+                            </select>
+                        </div>      
+
+                        <div>
+                            <label>Source Name</label>
+                            {sourceType === "link" ? (
+                                <input type="text" onChange={(event) => setSourceNameLink(event.target.value)}></input>
+                            ) : (
+                                <></>
+                            )}
+                        </div>    
+
+                        {sourceType === "link" ? (
+                            <div>
+                                <label>link</label>
+                                <input type="text" onChange={(event) => setSourceLink(event.target.value)}></input>
+                            </div>
+                        ) : (<></>)}
+                        
+                        
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer>
+                
+                <div className="modal-footer-buttons">
+
+                    <div className="non-delete-buttons">
+                        <Button variant="secondary" onClick={closeAddSource}>
+                            Cancel
+                        </Button>
+                        <Button variant="primary" onClick={saveSource}>
+                            Save Changes
+                        </Button>
+                    </div>
+
+                </div>
+                </Modal.Footer>
+                
+        </Modal>
 
             <div className="top-section">
 
@@ -336,7 +430,16 @@ const Profile = () => {
             </div>
 
             <div className="source-section">
+                <hr></hr>
                 <h3>Sources</h3>
+                <p className="span-link" onClick={openAddSource}>Add Source</p>
+
+                <ul>
+                    {sourceNameLinkArray.map((index) => (
+                        <li key={index}><a href={sourceLinkArray[index]} target="_blank">{sourceNameLinkArray[index]}</a></li>
+                    ))}
+                </ul>
+
             </div>
 
         </div>

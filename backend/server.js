@@ -185,6 +185,9 @@ app.post('/make-new-tree', async (req, res) => {
             marriage_date TEXT DEFAULT NULL,
             marriage_place TEXT DEFAULT NULL,
             member_of_nobility BOOLEAN DEFAULT FALSE,
+            profile_text TEXT DEFAULL NULL,
+            source_name_array TEXT [] DEFAULT NULL,
+            source_link_array TEXT [] DEFAULT NULL,
             UNIQUE (ancestor_id)
             )
         `);
@@ -487,12 +490,19 @@ app.post('/count-places', async (req, res) => {
                 filteredNoDuplicatedArray.push(filteredArray[i]);
             };
         };
+
+        let arrayLength = filteredNoDuplicatedArray.length;
+
+        if (filteredNoDuplicatedArray.length > 20) {
+            filteredNoDuplicatedArray = filteredNoDuplicatedArray.slice(0, 20);
+            filteredNoDuplicatedArray.push("and more...")
+        }
        
 
         const allPlacesJoined = filteredNoDuplicatedArray.join(", ")
 
         res.json({
-            numOfPlaces: filteredNoDuplicatedArray.length,
+            numOfPlaces: arrayLength,
             listOfPlaces: allPlacesJoined
         });
 
@@ -523,12 +533,18 @@ app.post('/count-occupations', async (req, res) => {
                 filteredNoDuplicatedArray.push(occupationList[i]);
             };
         };
+
+        let occupationArrayLength = filteredNoDuplicatedArray.length;
         
+        if (occupationArrayLength > 20) {
+            filteredNoDuplicatedArray = filteredNoDuplicatedArray.slice(0, 20);
+            filteredNoDuplicatedArray.push("and more...")
+        }
+
         const occupationJoined = filteredNoDuplicatedArray.join(", ")
 
-
         res.json({
-            numOfOccupations: occupationList.length,
+            numOfOccupations: occupationArrayLength,
             listOfOccupations: occupationJoined
         });
 
@@ -1198,7 +1214,7 @@ app.post('/save-ancestor', async (req, res) => {
             false,
             ancestorDetails.marriagePlace,
             ancestorDetails.marriageDeath,
-            "false"
+            ancestorDetails.memberOfNobility,
         ]);
 
         res.json(ancestor_id)
@@ -1253,11 +1269,6 @@ app.post('/edit-person', async (req, res) => {
 
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
-        const ancestoridQuery = await pool.query(`
-            SELECT ancestor_id FROM tree_${currentTree}
-        `)  
-
-
         const ancestorQuery = await pool.query(
             `UPDATE tree_${currentTree} 
              SET
@@ -1270,8 +1281,9 @@ app.post('/edit-person', async (req, res) => {
                 date_of_death = $7,
                 place_of_death = $8,
                 cause_of_death = $9,
-                occupation = $10
-             WHERE ancestor_id = $11`,
+                occupation = $10,
+                member_of_nobility = $11
+             WHERE ancestor_id = $12`,
             [
                 personDetails.firstName,
                 personDetails.middleName,
@@ -1283,7 +1295,8 @@ app.post('/edit-person', async (req, res) => {
                 personDetails.deathPlace,
                 personDetails.causeOfDeath,
                 personDetails.occupation,
-                personDetails.id,
+                personDetails.memberOfNobility,
+                personDetails.id
             ]
         );
         
@@ -1632,16 +1645,14 @@ app.post('/get-child', async (req, res) => {
 
             childName = `${childFirstName} ${childMiddleName} ${childLastName}`;
 
-
-
             const getSpouseId = await pool.query(`
                 SELECT mother_id FROM tree_${currentTree}
                 WHERE ancestor_id = ${childId}
             `)
 
-            if (getSpouseId.rows[0].length > 0) {
+            spouseId = getSpouseId.rows[0].mother_id;
 
-                spouseId = getSpouseId.rows[0].mother_id;
+            if (spouseId) {
 
                 const getSpouse = await pool.query(`
                     SELECT * FROM tree_${currentTree}
@@ -1653,6 +1664,7 @@ app.post('/get-child', async (req, res) => {
                 } else {
                     spouseFirstName = getSpouse.rows[0].first_name;
                 }
+            
         
                 if (getSpouse.rows[0].middle_name === null) {
                     spouseMiddleName = "";
@@ -1667,10 +1679,10 @@ app.post('/get-child', async (req, res) => {
                 }
 
                 spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
+                
             }
 
         } else {
-
                 const getChild = await pool.query(`
                     SELECT * FROM tree_${currentTree}
                     WHERE mother_id = ${id}
@@ -1734,6 +1746,7 @@ app.post('/get-child', async (req, res) => {
     
             
         }
+ 
 
         res.json({
             childName:childName,
@@ -1768,6 +1781,170 @@ app.post('/save-profile-text' , async (req, res) => {
 
     } catch(error) {
         console.log("Error saving profile text: ", error);
+    }
+})
+
+app.post('save-source-link', async (req, res) => {
+    console.log("API triggered")
+    try {
+        const {userId, sourceNameLinkArray, sourceLinkArray} = req.body;
+
+         // Query to get the current tree
+         const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const addSources = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET
+                source_name_link_array = ${sourceNameLinkArray}
+                source_link_Array = ${sourceLinkArray}
+        `)
+
+
+    } catch (error) {
+        console.log("Error saving source link:", error)
+    }
+})
+
+app.post('/get-most-removed-ancestor', async (req, res) => {
+    try {
+        const {userId} = req.body;
+
+         // Query to get the current tree
+         const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getMostRemoved = await pool.query(`
+            SELECT MAX(relation_to_user) AS max_relation
+            FROM tree_${currentTree}
+        `)
+
+        const findAncestor = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE relation_to_user = ${getMostRemoved.rows[0].max_relation}
+        `)
+
+
+        res.json({
+            name: `${findAncestor.rows[0].first_name} ${findAncestor.rows[0].middle_name} ${findAncestor.rows[0].last_name}`,
+            link: `profile/${findAncestor.rows[0].ancestor_id}`,
+            relation: findAncestor.rows[0].relation_to_user,
+            sex:findAncestor.rows[0].sex
+        })
+
+    } catch (error) {
+        console.log("Error getting most removed ancestor: " , error)
+    }
+})
+
+app.post('/save-progress', async (req, res) => {
+    try {
+
+        const {userId, progressNote, details} = req.body;
+
+        console.log(progressNote)
+        console.log(details.id)
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const setProgress = await pool.query(
+            `UPDATE trees
+             SET 
+                progress_note = $1,
+                progress_id = $2
+             WHERE tree_id = $3`,
+            [progressNote, details.id, currentTree]
+        );
+        
+
+
+    } catch (error) {
+        console.log("Error saving progress:", error)
+    }
+})
+
+app.post('/get-progress', async (req, res) => {
+    try {
+
+        const {userId} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getProgress = await pool.query(`
+            SELECT * FROM trees
+            WHERE tree_id = ${currentTree}
+        `)
+
+        const getPerson = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${getProgress.rows[0].progress_id}
+        `)
+
+        if (getProgress.rows[0].progress_id) {
+            res.json({
+                name: `${getPerson.rows[0].first_name} ${getPerson.rows[0].middle_name} ${getPerson.rows[0].last_name}`,
+                link: `profile/${getProgress.rows[0].progress_id}`,
+                note:getProgress.rows[0].progress_note,
+                bool: true
+            })
+        } else {
+            res.json({
+                bool:false
+            })
+        }
+
+        
+
+
+    } catch (error) {
+        console.log("Error saving progress:", error)
+    }
+})
+
+app.post('/remove-progress-note', async (req, res) => {
+    try {
+
+        const {userId} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getProgress = await pool.query(`
+            UPDATE trees
+            SET 
+                progress_id = null,
+                progress_note = null
+            WHERE tree_id = ${currentTree}
+        `)
+    
+
+    } catch (error) {
+        console.log("Error saving progress:", error)
     }
 })
 
