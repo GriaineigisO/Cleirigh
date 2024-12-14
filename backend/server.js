@@ -859,9 +859,10 @@ app.post('/get-mother', async (req, res) => {
 })
 
 app.post('/set-current-page-number', async (req, res) => {
-
+console.log("API triggered")
     try {
         const {userId, num} = req.body;
+
 
         const setNum = await pool.query(`
             UPDATE users    
@@ -869,6 +870,8 @@ app.post('/set-current-page-number', async (req, res) => {
             WHERE id = ${userId}
         `)
         
+        res.json(true)
+
     } catch (error) {
         console.log("Error setting page number:", error)
     }
@@ -1945,6 +1948,34 @@ app.post('/remove-progress-note', async (req, res) => {
 
     } catch (error) {
         console.log("Error saving progress:", error)
+    }
+})
+
+app.post('/find-page-number', async (req, res) => {
+    try {
+
+        const {userId, id} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getNum = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${id}
+        `)
+
+        const pageNum = getNum.rows[0].page_number;
+
+        res.json(pageNum);
+
+
+    } catch(error) {
+        console.log("error getting page number:", error)
     }
 })
 

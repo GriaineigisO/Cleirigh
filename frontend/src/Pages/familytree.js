@@ -5,7 +5,8 @@ import { Modal, Button } from 'react-bootstrap';
 import editLogo from '../Images/edit.png';
 import warningLogo from '../Images/warning.png';
 import '../style.css';
-import treeLines from '../cleirighTreeLines.png'
+import treeLines from '../cleirighTreeLines.png';
+import crown from '../Images/crown.png';
 
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
 //paternalmaternalgreatgrandparents = paternal grandmother's parents
@@ -412,7 +413,6 @@ const FamilyTree = () => {
     }, [])
 
     const setNewPageNum = (num) => {
-        console.log(num)
         const userId = localStorage.getItem('userId');
             const pageResponse = fetch('http://localhost:5000/set-current-page-number', {
             method: "POST",
@@ -2561,7 +2561,8 @@ uncertainFirstName: data.uncertainFirstName,
         )
     }
 
-    function showAncestorTable(basePersonDetails, sex, details, childID, openAddModal, openEditModal) {
+    function ShowAncestorTable(basePersonDetails, sex, details, childID, openAddModal, openEditModal) {
+        const [isKing, setIsKing] = useState(false);
 
         let motherFather = "";
         if (sex === "male") {
@@ -2583,6 +2584,7 @@ uncertainFirstName: data.uncertainFirstName,
         const handleOpenProfile = (id) => {
             window.location.href = `profile/${id}`
         }
+       
 
         return (
             <>
@@ -2596,7 +2598,11 @@ uncertainFirstName: data.uncertainFirstName,
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="5"><b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}</td>
+                    <td className="ancestor-box-border-bottom table-content" colSpan="5">
+                        <b>
+                           {details.occupation && (details.occupation.includes("King") || details.occupation.includes("king")) ? (<img width="20px" style={{marginRight:"5px"}} src={crown}></img>) : (<></>)}
+                            {capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
+                    </td>
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom birth-date-cell table-label" style={{backgroundColor:tableColor}}>Birth</td>
@@ -2671,7 +2677,9 @@ uncertainFirstName: data.uncertainFirstName,
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
-                    <td className="ancestor-box-border-bottom table-content"><b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
+                    <td className="ancestor-box-border-bottom table-content">
+                    {details.occupation && (details.occupation.includes("King") || details.occupation.includes("king"))? (<img width="20px" style={{marginRight:"5px"}} src={crown}></img>) : (<></>)}
+                        <b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
                     </td>
                 </tr>
                 <tr>
@@ -3076,13 +3084,13 @@ uncertainFirstName: data.uncertainFirstName,
 
                         <div className="tree-row justify-content-center">
 
-                        {showAncestorTable(basePersonDetails, "male", paternalGrandfatherDetails, fatherDetails.id, openAddPaternalGrandfatherModal, openEditPaternalGrandfatherModal)}
+                        {ShowAncestorTable(basePersonDetails, "male", paternalGrandfatherDetails, fatherDetails.id, openAddPaternalGrandfatherModal, openEditPaternalGrandfatherModal)}
 
-                        {showAncestorTable(basePersonDetails, "female", paternalGrandmotherDetails, fatherDetails.id, openAddPaternalGrandmotherModal, openEditPaternalGrandmotherModal)}
+                        {ShowAncestorTable(basePersonDetails, "female", paternalGrandmotherDetails, fatherDetails.id, openAddPaternalGrandmotherModal, openEditPaternalGrandmotherModal)}
 
-                        {showAncestorTable(basePersonDetails, "male", maternalGrandfatherDetails, motherDetails.id, openAddMaternalGrandfatherModal, openEditMaternalGrandfatherModal)}
+                        {ShowAncestorTable(basePersonDetails, "male", maternalGrandfatherDetails, motherDetails.id, openAddMaternalGrandfatherModal, openEditMaternalGrandfatherModal)}
 
-                        {showAncestorTable(basePersonDetails, "female", maternalGrandmotherDetails, motherDetails.id, openAddMaternalGrandmotherModal, openEditMaternalGrandmotherModal)}
+                        {ShowAncestorTable(basePersonDetails, "female", maternalGrandmotherDetails, motherDetails.id, openAddMaternalGrandmotherModal, openEditMaternalGrandmotherModal)}
 
                         </div>
 
@@ -3093,9 +3101,9 @@ uncertainFirstName: data.uncertainFirstName,
 
                         <div className="tree-row justify-content-center">
 
-                            {showAncestorTable(basePersonDetails, "male", fatherDetails, bottomPersonDetails.id, openAddFatherModal, openEditFatherModal)}
+                            {ShowAncestorTable(basePersonDetails, "male", fatherDetails, bottomPersonDetails.id, openAddFatherModal, openEditFatherModal)}
 
-                            {showAncestorTable(basePersonDetails, "female", motherDetails, bottomPersonDetails.id, openAddMotherModal, openEditMotherModal)}
+                            {ShowAncestorTable(basePersonDetails, "female", motherDetails, bottomPersonDetails.id, openAddMotherModal, openEditMotherModal)}
 
                         </div>
 
@@ -3108,7 +3116,7 @@ uncertainFirstName: data.uncertainFirstName,
 
                             <div className="tree-row justify-content-center">
 
-                            {showAncestorTable(basePersonDetails, bottomPersonDetails.sex, bottomPersonDetails, bottomPersonDetails.id, true, openEditBottomPersonModal)}
+                            {ShowAncestorTable(basePersonDetails, bottomPersonDetails.sex, bottomPersonDetails, bottomPersonDetails.id, true, openEditBottomPersonModal)}
 
                             </div>
                             

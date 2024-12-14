@@ -254,6 +254,32 @@ const Profile = () => {
     const handleSourceType = (event) => {
         setSourceType(event.target.value)
     }
+
+    const handleViewInTreee = async () => {
+
+        //finds what page the ancestor is on
+        const userId = localStorage.getItem('userId');
+        const getPageNum = await fetch('http://localhost:5000/find-page-number', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, id}),
+        });
+        const num = await getPageNum.json();
+
+        //sets current page to ancestor's page
+        const setPageNum = await fetch('http://localhost:5000/set-current-page-number', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, num}),
+        });
+        const pageNumRecieved = await setPageNum.json();
+
+        if (pageNumRecieved) {
+            //redirect to tree
+            window.location.href = '/familytree';
+        }
+
+    }
         
     return (
         <div className="profile">
@@ -384,6 +410,8 @@ const Profile = () => {
 
                     </div>
                     
+                    <button style={{marginTop:"10px"}} onClick={handleViewInTreee}>View in Tree</button>
+
                 </div>
 
 
