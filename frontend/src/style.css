@@ -298,19 +298,31 @@ body {
     max-width: 250px;
 }
 
+
 .profileListing {
-    border-top: solid 2px black;
-    margin-bottom: 2px;
-    max-width: 1000px;
-    padding-left: 5px;
-    list-style: none;
+    background-color: rgb(40, 74, 39); 
+    color: rgb(210, 255, 126);
     padding-bottom: 5px;
 }
 
-.profileListing:hover {
-    background-color: #adbf8f;
+#searchResults {
+    margin-top: 10px;
 }
 
+li:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+li:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.profileListing:hover {
+    background-color: #20231c;
+}
+f
 .li-span {
     font-size: smaller;
     font-weight: bold;
@@ -523,7 +535,7 @@ button {
 }
 
 button:hover {
-    transform: scale(1.2);
+    transform: scale(1.2) !important;
 }
 
 .up-arrow:hover {
@@ -738,4 +750,92 @@ button:hover {
 
 textarea {
     width: 400px;
+}
+
+#tree-notes {
+    position:"absolute";
+    top:"650px" !important;
+    display:flex;
+    flex-direction: row;
+}
+
+#left-note, #right-note {
+    background-color: #bbd7c4;
+    border-radius: 10px;
+    padding: 10px;
+    width: 350px;
+    height: 150px;
+    font-size: 10px
+}
+
+#left-button, #right-button {
+    padding: 10px;
+    width: 350px;
+    height: 150px;
+    font-size: 10px
+}
+
+#search {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(40, 74, 39); 
+    color: rgb(210, 255, 126);
+    padding: 10px;
+    width: 100%;
+    margin-left: -12px;
+    bottom:0px;
+    position: fixed;
+}
+
+#search input {
+    font-size: 12px;
+    margin-right: 5px;
+    background-color: rgb(32, 40, 31);
+    color: rgb(210, 255, 126);
+    border-radius: 5px;
+}
+
+.search-name {
+   width: 200px
+}
+
+.search-place {
+    width: 250px
+ }
+
+.search-label {
+    background-color: #2A8A4C;
+    text-align: right;
+    font-variant: small-caps;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.search-content {
+    background-color: #174226;
+    text-align: center;
+    color: rgb(210, 255, 126);
+    font-size: 12px
+}
+
+.search-name {
+    font-size: 15px;
+}
+
+.search-border-right {
+    border-right: 2px solid #8cc8a1;
+} 
+
+.search-border-bottom {
+    border-bottom: 2px solid #8cc8a1;
+}
+
+.button-cell {
+    background-color: #9ac0a7;
+    color: black;
+}
+
+.button-cell:hover {
+    background-color: #64796c;
 }

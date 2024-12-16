@@ -2519,7 +2519,7 @@ uncertainFirstName: data.uncertainFirstName,
                                     </div>
                                     
                                     <p>By deleting {details.fullName} you will also delete all of {hisHer} ancestors. This is not a reversible action. Do you wish to continue?</p>
-                                    <p>Any of {details.firstName}'s' ancestors who are repeat ancestors will not be deleted, though any connection with {details.firstName} will be deleted.</p>
+                                    <p>Any of {details.firstName}'s ancestors who are repeat ancestors will not be deleted, though any connection with {details.firstName} will be deleted.</p>
                                 </div>
                                 
                             </div>
@@ -3131,6 +3131,52 @@ uncertainFirstName: data.uncertainFirstName,
                     </div>
 
                     </div>
+
+                </div>
+
+                <div id="tree-notes" style={{
+                    position:"absolute",
+                    top:"625px",
+                    left:"100px",
+                    width: "100%"
+                }}>
+
+                    {false ? (
+                        <div id="left-note">
+                            <div style={{display:"flex", flexDirection:"row"}}>
+                                <img src={warningLogo} style={{width:"30px", height:"30px"}}></img>
+                                <h4>Note!</h4>
+                            </div>
+                            
+                            <hr></hr>
+                            <p>nlah blah blah blah</p>
+                        </div>
+                    ) : (
+                        <div id="left-button" style={{display:"flex", justifyContent:"center", alignContent:"center"}}>
+                            <button style={{height:"40px", marginTop:"40px"}}>Add Note</button>
+                        </div>
+                    )}
+
+                    {false ? (
+                        <div id="right-note" style={{
+                            position:"absolute",
+                            left:"1000px"
+                        }}>
+                            <div style={{display:"flex", flexDirection:"row"}}>
+                                <img src={warningLogo} style={{width:"30px", height:"30px"}}></img>
+                                <h4>Note!</h4>
+                            </div>
+                            <hr></hr>
+                            <p>nlah blah blah blah</p>
+                        </div>
+                    ) : (
+                        <div id="right-button" style={{display:"flex", justifyContent:"center", alignContent:"center", position:"absolute",
+                            left:"1000px"}}>
+                            <button style={{height:"40px", marginTop:"40px"}}>Add Note</button>
+                        </div>
+                    )}
+
+                    
 
                 </div>
 

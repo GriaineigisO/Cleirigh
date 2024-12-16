@@ -1,66 +1,54 @@
 import { useState, useEffect } from 'react';
 import {jwtDecode} from 'jwt-decode';
-import {capitaliseFirstLetter, convertDate, deathPlace} from '../library.js'
+import {capitaliseFirstLetter, convertDate, capitalise} from '../library.js'
 import '../style.css';
 import {Link} from "react-router-dom";
 import LeftSidebar from '../Components/leftSidebar.js'
 
-const Profiles = () => {
-    const [firstNames, setFirstNames] = useState([]);
-    const [middleNames, setMiddleNames] = useState([]);
-    const [lastNames, setLastNames] = useState([]);
-    const [sexes, setSexes] = useState([]);
-    const [ethnicities, setEthnicities] = useState([]);
-    const [datesOfBirth, setDatesOfBirth] = useState([]);
-    const [placesOfBirth, setPlacesOfBirth] = useState([]);
-    const [datesOfDeath, setDatesOfDeath] = useState([]);
-    const [placesOfDeath, setPlacesOfDeath] = useState([]);
-    const [basePerson, setBasePerson] = useState([]);
-    
+const Search = () => {
+   
+    const [firstName, setFirstName] = useState();
+    const [middleName, setMiddleName] = useState();
+    const [lastName, setLastName] = useState();
+    const [birthDate, setBirthDate] = useState();
+    const [birthPlace, setBirthPlace] = useState();
+    const [deathDate, setDeathDate] = useState();
+    const [deathPlace, setDeathPlace] = useState();
+    const [ethnicity, setEthnicity] = useState();
+    const [profileNum, setProfileNum] = useState();
+    const [results, setResults] = useState([]);
+    const [profileLinks, setProfileLinks] = useState([]);
+    const [treeLinks, setTreeLinks] = useState([]);
 
-    useEffect(() => { 
-        const getAllProfiles = async () => {
-            try {
-                //gets user's id
-                const userId = localStorage.getItem('userId');
-                const response = await fetch('http://localhost:5000/get-all-ancestors', {
-                    method: 'POST',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ userId })
-                })
+    const searchAncestors = async () => {
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/search-ancestors', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, firstName, middleName, lastName, birthDate, birthPlace, deathDate, deathPlace, ethnicity, profileNum })
+        })
+        const data = await response.json();
+        setResults(data)
 
-                const data = await response.json();
-                setFirstNames(data.firstNames);
-                setMiddleNames(data.middleNames);
-                setLastNames(data.lastNames);  
-                setSexes(data.sexes);
-                setDatesOfBirth(data.datesOfBirth);
-                setPlacesOfBirth(data.placesOfBirth);
-                setDatesOfDeath(data.datesOfDeath);
-                setPlacesOfDeath(data.placesOfDeath)
-                setEthnicities(data.ethnicities);
-                setBasePerson(data.basePerson);
-
-
-            } catch (error) {
-                console.log('Error fetching profile lists:', error)
-            }
-        };
-
-        getAllProfiles();
-    }, []);
-
-    const MarkBasePerson = (basePerson) => {
-        if (basePerson.person) {
-            return (
-                <span className="li-span">Base Person</span>
-            )
-        } else {
-            return (<></>)
+        for (let i = 0; i < data.length; i++) {
+            profileLinks[i] =  `/profile/${data[i].ancestor_id}`;
+            treeLinks[i] = `familytree`
         }
     }
+
+    const changePageNum = async (num) => {
+        const userId = localStorage.getItem('userId');
+        const response = await fetch('http://localhost:5000/set-current-page-number', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, num})
+        })
+    }
+
 
     return (
         <div>
@@ -68,15 +56,61 @@ const Profiles = () => {
                 <LeftSidebar />
 
                 <div className="col">
-                    <h1>Profiles</h1>
 
-                    <ul>
-                        {firstNames.map((firstName, index) => (
-                            <li key={index} className="profileListing">
-                                <span className="li-span">name:</span> {firstNames[index]} {middleNames[index]} {lastNames[index]} <span className="li-span">sex:</span> {sexes[index]} <span className="li-span">born:</span> {datesOfBirth[index]} <span className="li-span"></span> {placesOfBirth[index]} <span className="li-span">died:</span> {datesOfDeath[index]} <span className="li-span"></span> {deathPlace(placesOfDeath[index])} <span className="li-span">ethnicity:</span> {ethnicities[index]} <br /> <MarkBasePerson person={basePerson[index]} />
-                            </li>
+                <div id="search">
+
+                    <input placeholder="First Name" onChange={(event) => setFirstName(event.target.value)}></input>
+                    <input placeholder="Middle Name" onChange={(event) => setMiddleName(event.target.value)}></input>
+                    <input placeholder="Last Name" onChange={(event) => setLastName(event.target.value)}></input>
+                    <input placeholder="Birth Date" onChange={(event) => setBirthDate(event.target.value)}></input>
+                    <input placeholder="Birth Place" onChange={(event) => setBirthPlace(event.target.value)}></input>
+                    <input placeholder="Death Date" onChange={(event) => setDeathDate(event.target.value)}></input>
+                    <input placeholder="Death Place" onChange={(event) => setDeathPlace(event.target.value)}></input>
+                    <input placeholder="Ethnicity" onChange={(event) => setEthnicity(event.target.value)}></input>
+                    <input placeholder="Profile Number" onChange={(event) => setProfileNum(event.target.value)}></input>
+                    <button onClick={searchAncestors}>Search</button>
+
+                </div>
+
+                <div style={{marginBottom: "80px"}}>
+
+                {results.map((firstName, index) => (
+                            <table id="searchResults">
+                                <tr>
+                                    <td className="li-span search-label search-border-right search-border-bottom">profile number</td>
+                                    <td className="search-content search-border-right search-border-bottom search-name">{results[index].ancestor_id}</td>
+                                    <td className="li-span search-label search-border-right search-border-bottom">sex</td>
+                                    <td className="search-content search-border-bottom">{capitalise(results[index].sex)}</td>
+                                    <td className="search-content  search-border-bottom"></td>
+                                </tr>
+                                <tr>
+                                    <td className="li-span search-label search-border-right search-border-bottom">name</td>
+                                    <td className="search-name search-content search-border-right search-border-bottom">{capitalise(results[index].first_name)} {capitalise(results[index].middle_name)} {capitalise(results[index].last_name)}</td>
+                                    <td className="li-span search-label search-border-right search-border-bottom">ethnicity</td>
+                                    <td className="search-content search-border-right search-border-bottom">{capitalise(results[index].ethnicity)}</td>
+                                    
+                                    <td className="search-content search-border-bottom button-cell"><a href={profileLinks[index]} target="_blank" style={{textDecoration:"none", color:"black"}}>View Profile</a></td>
+                                </tr>
+                                <tr>
+                                    <td className="li-span search-label search-border-right search-border-bottom">birth</td>
+                                    <td className="search-content search-border-right search-border-bottom">{results[index].date_of_birth}</td>
+                                    <td className="search-place search-content search-border-right search-border-bottom" colSpan="2">{results[index].place_of_birth}</td>
+                                    <td className="search-content search-border-bottom button-cell"><a href="familytree" onClick={() => changePageNum(results[index].page_number)} target="_blank" style={{textDecoration:"none", color:"black"}}>View in Tree</a></td>
+                                </tr>
+                                <tr>
+                                    <td className="li-span search-label search-border-right">death</td>
+                                    <td className="search-content search-border-right">{results[index].date_of_death} </td>
+                                    <td className="search-place search-content search-border-right"  colSpan="2">{results[index].place_of_death}</td>
+                                    <td className="search-content"></td>
+                                </tr>
+                            </table>
+                            
+                            
                         ))}
-                    </ul>
+
+                </div>
+
+                    
 
                 </div>
 
@@ -85,4 +119,4 @@ const Profiles = () => {
     )
 }
 
-export default Profiles;
+export default Search;

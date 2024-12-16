@@ -4,6 +4,13 @@ export const capitaliseFirstLetter = (str) => {
     }
 }
 
+//places .toUpperCase on str or returns nothing if str is empty
+export const capitalise = (str) => {
+    if (str) {
+        return str.toUpperCase();
+    }
+}
+
 //converts date format yyy-mm-dd e.g 1995-08-22 into 22 Aug 1995
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 export const convertDate = (date) => {

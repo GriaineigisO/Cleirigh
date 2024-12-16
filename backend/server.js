@@ -1835,9 +1835,28 @@ app.post('/get-most-removed-ancestor', async (req, res) => {
             WHERE relation_to_user = ${getMostRemoved.rows[0].max_relation}
         `)
 
+        let firstName = "";
+        let middleName = "";
+        let lastName = "";
+        if (findAncestor.rows[0].first_name === null) {
+            firstName = "";
+        } else {
+            firstName = findAncestor.rows[0].first_name;
+        }
+        if (findAncestor.rows[0].middle_name === null) {
+            middleName = "";
+        } else {
+            middleName = findAncestor.rows[0].middle_name;
+        }
+        if (findAncestor.rows[0].last_name === null) {
+            lastName = "";
+        } else {
+            lastName = findAncestor.rows[0].last_name;
+        }
+        
 
         res.json({
-            name: `${findAncestor.rows[0].first_name} ${findAncestor.rows[0].middle_name} ${findAncestor.rows[0].last_name}`,
+            name: `${firstName} ${middleName} ${lastName}`,
             link: `profile/${findAncestor.rows[0].ancestor_id}`,
             relation: findAncestor.rows[0].relation_to_user,
             sex:findAncestor.rows[0].sex
@@ -1976,6 +1995,60 @@ app.post('/find-page-number', async (req, res) => {
 
     } catch(error) {
         console.log("error getting page number:", error)
+    }
+})
+
+app.post('/search-ancestors', async (req, res) => {
+    try {
+
+        const {userId, firstName, middleName, lastName, birthDate, birthPlace, deathDate, deathPlace, ethnicity, profileNum} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const results = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE 
+                ($1::text IS NULL OR LENGTH($1::text) = 0 OR first_name = $1)
+                AND
+                ($2::text IS NULL OR LENGTH($2::text) = 0 OR middle_name = $2)
+                AND
+                ($3::text IS NULL OR LENGTH($3::text) = 0 OR last_name = $3)
+                AND
+                ($4::text IS NULL OR LENGTH($4::text) = 0 OR date_of_birth = $4)
+                AND
+                ($5::text IS NULL OR LENGTH($5::text) = 0 OR place_of_birth ILIKE $5)
+                AND
+                ($6::text IS NULL OR LENGTH($6::text) = 0 OR date_of_death = $6)
+                AND
+                ($7::text IS NULL OR LENGTH($7::text) = 0 OR place_of_death ILIKE $7)
+                AND
+                ($8::text IS NULL OR LENGTH($8::text) = 0 OR ethnicity = $8)
+                AND
+                ($9::int IS NULL OR $9 = 0 OR ancestor_id = $9)
+                `, [
+            firstName, 
+            middleName,
+            lastName,
+            birthDate, 
+            birthPlace ? `%${birthPlace}%` : null, 
+            deathDate, 
+            deathPlace ? `%${deathPlace}%` : null,
+            ethnicity, 
+            profileNum
+            ])
+
+        const resultsArray = results.rows;
+
+        res.json(resultsArray);
+
+    } catch(error) {
+        console.log("error searching ancestors:", error)
     }
 })
 
