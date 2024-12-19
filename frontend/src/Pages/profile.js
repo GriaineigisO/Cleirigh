@@ -29,9 +29,9 @@ const Profile = () => {
     const [parents, setParents] = useState();
     const [fatherId, setFatherId] = useState();
     const [motherId, setMotherId] = useState();
-    const [childName, setChildName] = useState();
-    const [childId, setChildId] = useState();
-    const [child, setChild] = useState();
+    const [childName, setChildName] = useState([]);
+    const [childId, setChildId] = useState([]);
+    const [child, setChild] = useState([]);
     const [spouseName, setSpouseName] = useState();
     const [spouseId, setSpouseId] = useState();
     const [spouse, setSpouse] = useState();
@@ -162,8 +162,12 @@ const Profile = () => {
             setSpouseName(data.spouseName);
             setSpouseId(data.spouseId);
 
+            let childLinks = []
             if (data.childId) {
-                setChild(<a href={data.childId}>{data.childName}</a>);
+                for (let i = 0; i < data.childId.length; i++) {
+                    childLinks.push(<a href={data.childId[i]}>{data.childName[i]}</a>);
+                }
+                setChild(childLinks);
 
             }
             if (data.spouseId) {
@@ -175,24 +179,50 @@ const Profile = () => {
     }, [profileData]);
 
 
-    useEffect(() => {
-        if (!profileData) return;
 
-        const calculateAncestryPercent = () => {
-            let inputNum = Number(profileData.relation_to_user - 2) + 3;
-            let hundred = 200;
-            for (let i = 0; i < inputNum; i++) {
-                hundred = hundred / 2;
+        const AncestryAmount = () => {
+            let ancestryAmount = 0;
+            for (let i = 0; i < profileData.relation_to_user.length; i++) {
+
+                let inputNum = Number(profileData.relation_to_user[i] - 2) + 3;
+                let hundred = 200;
+                for (let i = 0; i < inputNum; i++) {
+                    hundred = hundred / 2;
+                }
+                if (hundred < 0.0000014901161193847656) {
+                    ancestryAmount += Number(hundred.toFixed(20));
+                } else {
+                    ancestryAmount += hundred;
+                }
+
             }
-            if (hundred < 0.0000014901161193847656) {
-                setAncestryPercent(hundred.toFixed(20));
+
+            if (ancestryAmount < 0.0000014901161193847656) {
+                setAncestryPercent(ancestryAmount.toFixed(20));
             } else {
-                setAncestryPercent(hundred);
+                setAncestryPercent(ancestryAmount);
             }
+
+            //calculated what equivalent non-repeating relationship this ancestor would be
+            let reverseAmount = ancestryPercent;
+            let counter = 0;
+            while (reverseAmount < 100) {
+                reverseAmount *= 2;
+                counter++;
+            } 
+
+            if (profileData.relation_to_user.length > 1) {
+                return (
+                    <p>{profileData.first_name} is responsible for {ancestryPercent}% of {basePersonFirstName}'s ancestry. If {profileData.first_name} was not a repeat ancestor, then this amount would make him equivalent to a {convertNumToRelation(counter, profileData.sex)}</p>
+                )
+            } else {
+                return (
+                    <p>{profileData.first_name} is responsible for {ancestryPercent}% of {basePersonFirstName}'s ancestry.</p>
+                )
+            }
+
         };
 
-        calculateAncestryPercent();
-    }, [profileData]);
 
     
     if (loading) {
@@ -280,6 +310,72 @@ const Profile = () => {
         }
 
     }
+
+    const ListChildren = () => {
+
+            const childList = child.reduce((acc, item, index, array) => {
+                if(child.length > 1) {
+                    if (index === array.length - 1) {
+                        // For the last item, add " and " before it.
+                        acc.push(" and ", item);
+                    } else {
+                        // For all other items, add the item and ", ".
+                        if (child.length > 2) {
+                            acc.push(item, ", ");
+                        } else {
+                            acc.push(item)
+                        }  
+                    }
+                } else {
+                    acc.push(item)
+                }
+                
+                return acc;
+            }, []);
+
+        if (profileData.sex === "male") {
+            return (
+                <p>Father of {childList}</p>
+            )
+        } else {
+            return (
+                <p>Mother of {childList}</p>
+            )
+        }
+        
+    }
+
+    const CalculateRelation = () => {
+
+        const relationArray = profileData.relation_to_user.map((relation) =>
+            convertNumToRelation(relation, profileData.sex)
+        );
+
+        if (profileData.relation_to_user.length > 1) {
+            return (
+                <>
+                    <p>Repeat ancestor! {profileData.first_name} appears as a direct ancestor in your tree {relationArray.length} times.</p>
+                    <ul>
+                        {relationArray.map((relation, index) => (
+                            <li key={index}>{relation}</li>
+                        ))}
+                    </ul>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <ul>
+                        {relationArray.map((relation, index) => (
+                            <li key={index}>{relation}</li>
+                        ))}
+                    </ul>
+                </>
+            );
+        }
+
+    };
+    
         
     return (
         <div className="profile">
@@ -349,9 +445,10 @@ const Profile = () => {
 
                     <h1>{profileData.first_name}{profileData.uncertain_first_name ? (<sup> uncertain</sup>) :(<></>)} {profileData.middle_name}{profileData.uncertain_middle_name ? (<sup> uncertain</sup>) :(<></>)} {profileData.last_name}{profileData.uncertain_lasst_name ? (<sup> uncertain</sup>) :(<></>)}</h1>
 
-                    <p>{convertNumToRelation(profileData.relation_to_user, profileData.sex)}</p>
+                    <CalculateRelation />
 
-                    <p>{profileData.first_name} is responsible for {ancestryPercent}% of {basePersonFirstName}'s ancestry.</p>
+                    <AncestryAmount />
+
 
                     <div className="other-facts">
 
@@ -425,13 +522,14 @@ const Profile = () => {
                     <>
                         <p>Son of {parents}</p>
                         {spouse ? (<p>Husband of {spouse}</p>) : (<></>)}
-                        {child ? (<p>Father of {child}</p>) : (<></>)}
+                        {child ? (<ListChildren />) : (<></>)}
+            
                     </>
                 ) : (
                     <>
                         <p>Daughter of {parents}</p>
                         {spouse ? (<p>Wife of {spouse}</p>) : (<></>)}
-                        {child ? (<p>Mother of {child}</p>) : (<></>)}
+                        {child ? (<ListChildren />) : (<></>)}
                     </>
                 )}
              

@@ -839,3 +839,7 @@ textarea {
 .button-cell:hover {
     background-color: #64796c;
 }
+
+.repeat-ancestor {
+    color: black;
+}

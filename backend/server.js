@@ -8,6 +8,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cleirighUserDB = require('./db');
+const e = require('express');
 
 const corsOptions = {
     origin: 'http://localhost:3000', // Allow only this origin
@@ -859,7 +860,6 @@ app.post('/get-mother', async (req, res) => {
 })
 
 app.post('/set-current-page-number', async (req, res) => {
-console.log("API triggered")
     try {
         const {userId, num} = req.body;
 
@@ -1610,8 +1610,8 @@ app.post('/get-child', async (req, res) => {
         let childFirstName = "";
         let childMiddleName = "";
         let childLastName = "";
-        let childName = "";
-        let childId="";
+        let childName = [];
+        let childId= [];
 
         let spouseFirstName = "";
         let spouseMiddleName = "";
@@ -1626,31 +1626,34 @@ app.post('/get-child', async (req, res) => {
                 WHERE father_id = ${id}
             `)
 
-            childId = getChild.rows[0].ancestor_id;
+            for ( let i = 0; i < getChild.rows.length; i++) {
+                childId.push(getChild.rows[i].ancestor_id);
 
-            if (getChild.rows[0].first_name === null ) {
-                childFirstName = "UNKNOWN";
-            } else {
-                childFirstName = getChild.rows[0].first_name;
-            }
-    
-            if (getChild.rows[0].middle_name === null) {
-                childMiddleName = "";
-            } else {
-                childMiddleName = getChild.rows[0].middle_name;
-            }
-    
-            if (getChild.rows[0].last_name === null) {
-                childLastName = "";
-            } else {
-                childLastName = getChild.rows[0].last_name;
-            }
+                if (getChild.rows[i].first_name === null ) {
+                    childFirstName = "UNKNOWN";
+                } else {
+                    childFirstName = getChild.rows[i].first_name;
+                }
+        
+                if (getChild.rows[i].middle_name === null) {
+                    childMiddleName = "";
+                } else {
+                    childMiddleName = getChild.rows[i].middle_name;
+                }
+        
+                if (getChild.rows[i].last_name === null) {
+                    childLastName = "";
+                } else {
+                    childLastName = getChild.rows[i].last_name;
+                }
 
-            childName = `${childFirstName} ${childMiddleName} ${childLastName}`;
+                childName.push(`${childFirstName} ${childMiddleName} ${childLastName}`);
+
+            }
 
             const getSpouseId = await pool.query(`
                 SELECT mother_id FROM tree_${currentTree}
-                WHERE ancestor_id = ${childId}
+                WHERE ancestor_id = ${childId[0]}
             `)
 
             spouseId = getSpouseId.rows[0].mother_id;
@@ -1691,33 +1694,35 @@ app.post('/get-child', async (req, res) => {
                     WHERE mother_id = ${id}
                 `)
     
-                childId = getChild.rows[0].ancestor_id;
+                for ( let i = 0; i < getChild.rows.length; i++) {
+                    childId.push(getChild.rows[i].ancestor_id);
     
-                if (getChild.rows[0].first_name === null ) {
-                    childFirstName = "UNKNOWN";
-                } else {
-                    childFirstName = getChild.rows[0].first_name;
-                }
-        
-                if (getChild.rows[0].middle_name === null) {
-                    childMiddleName = "";
-                } else {
-                    childMiddleName = getChild.rows[0].middle_name;
-                }
-        
-                if (getChild.rows[0].last_name === null) {
-                    childLastName = "";
-                } else {
-                    childLastName = getChild.rows[0].last_name;
-                }
+                    if (getChild.rows[i].first_name === null ) {
+                        childFirstName = "UNKNOWN";
+                    } else {
+                        childFirstName = getChild.rows[i].first_name;
+                    }
+            
+                    if (getChild.rows[i].middle_name === null) {
+                        childMiddleName = "";
+                    } else {
+                        childMiddleName = getChild.rows[i].middle_name;
+                    }
+            
+                    if (getChild.rows[i].last_name === null) {
+                        childLastName = "";
+                    } else {
+                        childLastName = getChild.rows[i].last_name;
+                    }
     
-                childName = `${childFirstName} ${childMiddleName} ${childLastName}`;
+                    childName.push(`${childFirstName} ${childMiddleName} ${childLastName}`);
     
+                }
     
     
                 const getSpouseId = await pool.query(`
                     SELECT father_id FROM tree_${currentTree}
-                    WHERE ancestor_id = ${childId}
+                    WHERE ancestor_id = ${childId[0]}
                 `)
     
                 spouseId = getSpouseId.rows[0].father_id;
@@ -1788,7 +1793,6 @@ app.post('/save-profile-text' , async (req, res) => {
 })
 
 app.post('save-source-link', async (req, res) => {
-    console.log("API triggered")
     try {
         const {userId, sourceNameLinkArray, sourceLinkArray} = req.body;
 
@@ -1825,14 +1829,19 @@ app.post('/get-most-removed-ancestor', async (req, res) => {
 
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
+
+
         const getMostRemoved = await pool.query(`
-            SELECT MAX(relation_to_user) AS max_relation
-            FROM tree_${currentTree}
+            SELECT MAX(value) AS max_relation
+            FROM (
+                SELECT UNNEST(relation_to_user) AS value
+                FROM tree_${currentTree}
+            ) AS unnested_values;
         `)
 
         const findAncestor = await pool.query(`
             SELECT * FROM tree_${currentTree}
-            WHERE relation_to_user = ${getMostRemoved.rows[0].max_relation}
+            WHERE ${getMostRemoved.rows[0].max_relation} = ANY(relation_to_user)
         `)
 
         let firstName = "";
@@ -1972,7 +1981,7 @@ app.post('/remove-progress-note', async (req, res) => {
 
 app.post('/find-page-number', async (req, res) => {
     try {
-
+console.log("finding")
         const {userId, id} = req.body;
 
         // Query to get the current tree
@@ -1989,7 +1998,7 @@ app.post('/find-page-number', async (req, res) => {
         `)
 
         const pageNum = getNum.rows[0].page_number;
-
+            console.log(pageNum)
         res.json(pageNum);
 
 
@@ -2049,6 +2058,182 @@ app.post('/search-ancestors', async (req, res) => {
 
     } catch(error) {
         console.log("error searching ancestors:", error)
+    }
+})
+
+app.post('/save-repeat-ancestor', async (req, res) => {
+ 
+    try {
+
+        const { userId, childDetails, repeatAncestorId} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        //adds repeat ancestor's id to his/her child's father/mother_id
+        const findSex = await pool.query(`
+            SELECT * FROM tree_${currentTree}
+            WHERE ancestor_id = ${repeatAncestorId}
+        `)
+
+        const sex = findSex.rows[0].sex;
+
+        if (sex === "male") {
+            const addParent = await pool.query(`
+                UPDATE tree_${currentTree}
+                SET father_id = ${repeatAncestorId}
+                WHERE ancestor_id = ${childDetails.id}
+            `)
+        } else {
+            const addParent = await pool.query(`
+                UPDATE tree_${currentTree}
+                SET mother_id = ${repeatAncestorId}
+                WHERE ancestor_id = ${childDetails.id}
+            `)
+        }
+
+
+        const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
+
+            let childId = "";
+            if (child.id) {
+                childId = child.id;
+            } else {
+                childId = child.ancestor_id;
+            }
+
+            //finds child
+            const getPerson = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${childId}`)
+            const person = getPerson.rows[0];
+            //finds parents
+            const getFather = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${person.father_id}`)
+            const father = getFather.rows[0];
+            const getMother = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${person.mother_id}`)
+            const mother = getMother.rows[0];
+            //finds grandparents
+            let pgrandfather = "";
+            let pgrandmother = "";
+            let mgrandfather = "";
+            let mgrandmother = "";
+            if (father) {
+                const getpgrandfather = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${father.father_id}`)
+                pgrandfather = getpgrandfather.rows[0];
+                const getpgrandmother = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${father.mother_id}`)
+                pgrandmother = getpgrandmother.rows[0];
+            }
+            if (mother) {
+                const getmgrandfather = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${mother.father_id}`)
+                mgrandfather = getmgrandfather.rows[0];
+                const getmgrandmother = await pool.query(`SELECT * FROM tree_${currentTree} WHERE ancestor_id = ${mother.mother_id}`)
+                mgrandmother = getmgrandmother.rows[0];
+            }
+            
+            
+            let newRelationNum = [];
+            //if the function is being called for the first time, and not in any subsequent recursive call
+            if(childId === childDetails.id) {
+
+                //increments the items child's ID relation_to_user by one
+                for (let i = 0; i < person.relation_to_user.length; i++) {
+                    newRelationNum.push(person.relation_to_user[i] + 1);
+                }
+
+                //finds the current value of the repeat ancestor's relation_to_user
+                const currentValue = await pool.query(`
+                    SELECT * FROM tree_${currentTree}
+                    WHERE ancestor_id = ${repeatParentId}
+                `)
+
+                const currentRelationToUser = currentValue.rows[0].relation_to_user;
+
+                //appends the new relation_to_user to the old ones
+                for (let i = 0; i < currentRelationToUser.length; i++) {
+                    newRelationNum.push(currentRelationToUser[i]);
+                }
+
+                 //this new array is then added to the repeat ancestor's relation_to_user column
+                const addNewRelationNum = await pool.query(`
+                    UPDATE tree_${currentTree}
+                    SET relation_to_user = $1
+                    WHERE ancestor_id = $2
+                `, [newRelationNum, repeatParentId])
+
+            } else {
+                //determine if user descends from more than one of repeat ancestor's children
+                if (sex === "male") {
+                    const findOtherChildren = await pool.query(`
+                        SELECT * FROM tree_${currentTree}
+                        WHERE father_id = ${repeatParentId}
+                    `)
+
+                    //find relation of all children, increment all by one and add to repeat ancestor's relation
+                    let repeatAncestorRelationArray = [];
+                    for (let i = 0; i < findOtherChildren.rows.length; i++) {
+                        for (let j = 0; j < findOtherChildren.rows[i].relation_to_user.length; j++) {
+                            repeatAncestorRelationArray.push(findOtherChildren.rows[i].relation_to_user[j] + 1)
+                        }
+                    }
+
+                    //this new array is then added to the repeat ancestor's relation_to_user column
+                    const addNewRelationNum = await pool.query(`
+                        UPDATE tree_${currentTree}
+                        SET relation_to_user = $1
+                        WHERE ancestor_id = $2
+                    `, [repeatAncestorRelationArray, repeatParentId])
+            
+
+                } else {
+                    const findOtherChildren = await pool.query(`
+                        SELECT * FROM tree_${currentTree}
+                        WHERE mother_id = ${repeatParentId}
+                    `)
+
+                    //find relation of all children, increment all by one and add to repeat ancestor's relation
+                    let repeatAncestorRelationArray = [];
+                    for (let i = 0; i < findOtherChildren.rows.length; i++) {
+                        for (let j = 0; j < findOtherChildren.rows[i].relation_to_user.length; j++) {
+                            repeatAncestorRelationArray.push(findOtherChildren.rows[i].relation_to_user[j] + 1)
+                        }
+                    }
+
+                    //this new array is then added to the repeat ancestor's relation_to_user column
+                    const addNewRelationNum = await pool.query(`
+                        UPDATE tree_${currentTree}
+                        SET relation_to_user = $1
+                        WHERE ancestor_id = $2
+                    `, [repeatAncestorRelationArray, repeatParentId])
+                }
+               
+                
+            }
+
+    
+
+            if (pgrandfather) {
+                recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
+            }
+            if (pgrandmother) {
+                recursivelyUpdateRelation(father, pgrandmother.ancestor_id, "female");
+            }
+            if (mgrandfather) {
+                recursivelyUpdateRelation(mother, mgrandfather.ancestor_id, "male");
+            }
+            if (mgrandmother) {
+                recursivelyUpdateRelation(mother, mgrandmother.ancestor_id, "female");
+            }
+        }
+
+        recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
+        
+        
+
+    } catch (error) {
+        console.log("Error saving repeat ancestor:", error)
     }
 })
 

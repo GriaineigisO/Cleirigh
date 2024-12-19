@@ -16,7 +16,7 @@ import crown from '../Images/crown.png';
 const FamilyTree = () => {
 
     const [addRepeatAncestorSection, setAddRepeatAncestorSection] = useState(false)
-
+    const [repeatAncestorProfileNum, setRepeatAncestorProfileNum] = useState();
 
 
     const [showFather, setShowFather] = useState(false);
@@ -2139,7 +2139,7 @@ uncertainFirstName: data.uncertainFirstName,
         }
     }
 
-    function MakeModal(showPerson, closeAddPerson, childName, setDetails, details, sex, save, closeAdd) {
+    function MakeModal(showPerson, closeAddPerson, childDetails, setDetails, details, sex, save, closeAdd) {
         const [isNobility, setIsNobility] = useState(false);
 
         let motherOrFather = "";
@@ -2160,8 +2160,15 @@ uncertainFirstName: data.uncertainFirstName,
             });
         };
 
-        const saveRepeatAncestor = () => {
-
+        const saveRepeatAncestor = async (childDetails, repeatAncestorId) => {
+            console.log("saving repeat ancestor")
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/save-repeat-ancestor', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, childDetails, repeatAncestorId}),
+            });
+           window.location.reload();
         }
 
 
@@ -2169,7 +2176,7 @@ uncertainFirstName: data.uncertainFirstName,
 
         <Modal show={showPerson} onHide={closeAddPerson} dialogclassName="custom-modal-width">
                 <Modal.Header closeButton>
-                <Modal.Title>Add {childName}'s {motherOrFather}</Modal.Title>
+                <Modal.Title>Add {childDetails.fullName}'s {motherOrFather}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="input-modal">
@@ -2266,8 +2273,8 @@ uncertainFirstName: data.uncertainFirstName,
                     <Modal.Footer className="repeatAncestorFooter">
                         <div className="repeat-ancestor-search-div">
                             <label>Repeat Ancestor</label>
-                            <input></input>
-                            <button onClick={saveRepeatAncestor}>Select</button>
+                            <input style={{marginLeft:"5px"}}  onChange={(e) => setRepeatAncestorProfileNum(e.target.value)}></input>
+                            <button onClick={() => saveRepeatAncestor(childDetails, repeatAncestorProfileNum)}>Select</button>
                         </div>
                     </Modal.Footer>
                 ) : (
@@ -2584,6 +2591,71 @@ uncertainFirstName: data.uncertainFirstName,
         const handleOpenProfile = (id) => {
             window.location.href = `profile/${id}`
         }
+
+        const handleOpenPage = async (num) => {
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/set-current-page-number', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId, num})
+            })
+            window.location.reload();
+        }
+
+        const Relation = (props) => {
+
+            if (props.relation.length > 1) {
+                
+                const findPageNum = async () => {
+                    try {
+                        console.log("finding")
+                        const userId = localStorage.getItem('userId');
+                        const id = details.id;
+                        const response = await fetch('http://localhost:5000/find-page-number', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ userId, id }),
+                        });
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch page number');
+                        }
+                        const data = await response.json();
+                        console.log("data")
+                        return data;
+                    } catch (error) {
+                        console.error('Error fetching page number:', error);
+                        return null;
+                    }
+                };
+                
+                const handleLinkClick = async () => {
+                    console.log("click")
+                    const pageNum = await findPageNum();
+                    console.log(pageNum)
+                    if (pageNum) {
+                        handleOpenPage(pageNum);
+                    }
+                };
+                
+                return (
+                    <span className="span-link repeat-ancestor" onClick={handleLinkClick}>
+                        Repeat Ancestor
+                    </span>
+                );
+                
+
+            } else {
+                return (
+                    convertNumToRelation(props.relation, props.sex)
+                )
+            }
+            
+        }
+
        
 
         return (
@@ -2591,8 +2663,16 @@ uncertainFirstName: data.uncertainFirstName,
             {details.id ? (
                 <table  className="ancestor-box" style={{boxShadow: boxShadowColor}} >
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}: </td>
-                    <td className="ancestor-box-border-bottom table-content" colSpan="3">{convertNumToRelation(details.relationToUser, sex)}</td>
+                    {details.relationToUser.length > 1 ? (
+                                <td colSpan="4" className="ancestor-box-border-bottom table-label repeat-ancestor" style={{backgroundColor:tableColor, color:"black"}}><Relation relation={details.relationToUser} sex={sex}/>
+                                </td>
+                        ) : (
+                            <>
+                                <td  className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}:</td>
+                                <td colspan="3" className="ancestor-box-border-bottom table-content"><Relation relation={details.relationToUser} sex={sex}/>
+                                </td>
+                            </>
+                        )}
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Profile Number:</td>
                     <td className="ancestor-box-border-bottom table-content shrink profile-cell"><span className="span-link"  onClick={() => handleOpenProfile(details.id)}>{details.id}</span></td>
                 </tr>
@@ -2600,7 +2680,7 @@ uncertainFirstName: data.uncertainFirstName,
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
                     <td className="ancestor-box-border-bottom table-content" colSpan="5">
                         <b>
-                           {details.occupation && (details.occupation.includes("King") || details.occupation.includes("king")) ? (<img width="20px" style={{marginRight:"5px"}} src={crown}></img>) : (<></>)}
+                           {details.occupation && (details.occupation.includes("King ") || details.occupation.includes("king ")) ? (<img width="20px" style={{marginRight:"5px"}} src={crown}></img>) : (<></>)}
                             {capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
                     </td>
                 </tr>
@@ -2666,14 +2746,87 @@ uncertainFirstName: data.uncertainFirstName,
             tableColor = "rgba(5, 94, 237)"
         } 
 
+        const handleOpenPage = async (num) => {
+            const userId = localStorage.getItem('userId');
+            const response = await fetch('http://localhost:5000/set-current-page-number', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId, num})
+            })
+            window.location.reload();
+        }
+
+        const Relation = (props) => {
+
+            if (props.relation.length > 1) {
+                
+                const findPageNum = async () => {
+                    try {
+                        console.log("finding")
+                        const userId = localStorage.getItem('userId');
+                        const id = details.id;
+                        const response = await fetch('http://localhost:5000/find-page-number', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ userId, id }),
+                        });
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch page number');
+                        }
+                        const data = await response.json();
+                        console.log("data")
+                        return data;
+                    } catch (error) {
+                        console.error('Error fetching page number:', error);
+                        return null;
+                    }
+                };
+                
+                const handleLinkClick = async () => {
+                    console.log("click")
+                    const pageNum = await findPageNum();
+                    console.log(pageNum)
+                    if (pageNum) {
+                        handleOpenPage(pageNum);
+                    }
+                };
+                
+                return (
+                    <span className="span-link repeat-ancestor" onClick={handleLinkClick}>
+                        Repeat Ancestor
+                    </span>
+                );
+                
+
+            } else {
+                return (
+                    convertNumToRelation(props.relation, props.sex)
+                )
+            }
+            
+        }
+
 
         return(
             <>
              {details.id ? (
             <table className="ancestor-box" style={{boxShadow: boxShadowColor}}>
                 <tr>
-                    <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}:</td>
-                    <td className="ancestor-box-border-bottom table-content">{convertNumToRelation(details.relationToUser, sex)}</td>
+                    {details.relationToUser.length > 1 ? (
+                            <td colSpan="2" className="ancestor-box-border-bottom table-label repeat-ancestor" style={{backgroundColor:tableColor, color:"black"}}><Relation relation={details.relationToUser} sex={sex}/>
+                            </td>
+                    ) : (
+                        <>
+                            <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Relation to {basePersonDetails.firstName}:</td>
+                            <td className="ancestor-box-border-bottom table-content"><Relation relation={details.relationToUser} sex={sex}/>
+                            </td>
+                        </>
+                    )}
+                    
                 </tr>
                 <tr>
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
@@ -2753,65 +2906,65 @@ uncertainFirstName: data.uncertainFirstName,
 
             
 
-            {MakeModal(showFather, closeAddFatherModal, bottomPersonDetails.firstName, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
+            {MakeModal(showFather, closeAddFatherModal, bottomPersonDetails, setFatherDetails, fatherDetails, "male", saveFatherChanges, closeAddFatherModal)}
 
-            {MakeModal(showMother, closeAddMotherModal, bottomPersonDetails.firstNameName, setMotherDetails, motherDetails, "female", saveMotherChanges, closeAddMotherModal)}
+            {MakeModal(showMother, closeAddMotherModal, bottomPersonDetails, setMotherDetails, motherDetails, "female", saveMotherChanges, closeAddMotherModal)}
 
-            {MakeModal(showPaternalGrandfather, closeAddPaternalGrandfatherModal, fatherDetails.fullName, setPaternalGrandfatherDetails, paternalGrandfatherDetails, "male", savePaternalGrandfatherChanges, closeAddPaternalGrandfatherModal)}
+            {MakeModal(showPaternalGrandfather, closeAddPaternalGrandfatherModal, fatherDetails, setPaternalGrandfatherDetails, paternalGrandfatherDetails, "male", savePaternalGrandfatherChanges, closeAddPaternalGrandfatherModal)}
             
-            {MakeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherDetails.fullName, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
+            {MakeModal(showPaternalGrandmother, closeAddPaternalGrandmotherModal, fatherDetails, setPaternalGrandmotherDetails, paternalGrandmotherDetails, "female", savePaternalGrandmotherChanges, closeAddPaternalGrandmotherModal)}
 
-            {MakeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherDetails.fullName, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
+            {MakeModal(showMaternalGrandfather, closeAddMaternalGrandfatherModal, motherDetails, setMaternalGrandfatherDetails, maternalGrandfatherDetails, "male", saveMaternalGrandfatherChanges, closeAddMaternalGrandfatherModal)}
 
-            {MakeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherDetails.fullName, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
+            {MakeModal(showMaternalGrandmother, closeAddMaternalGrandmotherModal, motherDetails, setMaternalGrandmotherDetails, maternalGrandmotherDetails, "female", saveMaternalGrandmotherChanges, closeAddMaternalGrandmotherModal)}
 
-            {MakeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandfather, closeAddPaternalPaternalGreatGrandfatherModal, paternalGrandfatherDetails, setPaternalPaternalGreatGrandfatherDetails, paternalPaternalGreatGrandfatherDetails, "male", savePaternalPaternalGreatGrandfatherChanges, closeAddPaternalPaternalGreatGrandfatherModal)}
 
-            {MakeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherDetails.fullName, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandmother, closeAddPaternalPaternalGreatGrandmotherModal, paternalGrandfatherDetails, setPaternalPaternalGreatGrandmotherDetails, paternalPaternalGreatGrandmotherDetails, "female", savePaternalPaternalGreatGrandmotherChanges, closeAddPaternalPaternalGreatGrandmotherModal)}
 
-            {MakeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandfather, closeAddPaternalMaternalGreatGrandfatherModal, paternalGrandmotherDetails, setPaternalMaternalGreatGrandfatherDetails, paternalMaternalGreatGrandfatherDetails, "male", savePaternalMaternalGreatGrandfatherChanges, closeAddPaternalMaternalGreatGrandfatherModal)}
 
-            {MakeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandmother, closeAddPaternalMaternalGreatGrandmotherModal, paternalGrandmotherDetails, setPaternalMaternalGreatGrandmotherDetails, paternalMaternalGreatGrandmotherDetails, "female", savePaternalMaternalGreatGrandmotherChanges, closeAddPaternalMaternalGreatGrandmotherModal)}
 
-            {MakeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandfather, closeAddMaternalPaternalGreatGrandfatherModal, maternalGrandfatherDetails, setMaternalPaternalGreatGrandfatherDetails, maternalPaternalGreatGrandfatherDetails, "male", saveMaternalPaternalGreatGrandfatherChanges, closeAddMaternalPaternalGreatGrandfatherModal)}
 
-            {MakeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherDetails.fullName, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandmother, closeAddMaternalPaternalGreatGrandmotherModal, maternalGrandfatherDetails, setMaternalPaternalGreatGrandmotherDetails, maternalPaternalGreatGrandmotherDetails, "female", saveMaternalPaternalGreatGrandmotherChanges, closeAddMaternalPaternalGreatGrandmotherModal)}
 
-            {MakeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandfather, closeAddMaternalMaternalGreatGrandfatherModal, maternalGrandmotherDetails, setMaternalMaternalGreatGrandfatherDetails, maternalMaternalGreatGrandfatherDetails, "male", saveMaternalMaternalGreatGrandfatherChanges, closeAddMaternalMaternalGreatGrandfatherModal)}
 
-            {MakeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandmother, closeAddMaternalMaternalGreatGrandmotherModal, maternalGrandmotherDetails, setMaternalMaternalGreatGrandmotherDetails, maternalMaternalGreatGrandmotherDetails, "female", saveMaternalMaternalGreatGrandmotherChanges, closeAddMaternalMaternalGreatGrandmotherModal)}
 
-            {MakeModal(showPaternalPaternalGreatGrandfathersFather, closeAddPaternalPaternalGreatGrandfathersFatherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfathersFatherDetails, "male", savePaternalPaternalGreatGrandfathersFatherChanges, closeAddPaternalPaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandfathersFather, closeAddPaternalPaternalGreatGrandfathersFatherModal, paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfathersFatherDetails, paternalPaternalGreatGrandfathersFatherDetails, "male", savePaternalPaternalGreatGrandfathersFatherChanges, closeAddPaternalPaternalGreatGrandfathersFatherModal)}
 
-            {MakeModal(showPaternalPaternalGreatGrandfathersMother, closeAddPaternalPaternalGreatGrandfathersMotherModal, paternalPaternalGreatGrandfatherDetails.fullName, setPaternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfathersMotherDetails, "female", savePaternalPaternalGreatGrandfathersMotherChanges, closeAddPaternalPaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandfathersMother, closeAddPaternalPaternalGreatGrandfathersMotherModal, paternalPaternalGreatGrandfatherDetails, setPaternalPaternalGreatGrandfathersMotherDetails, paternalPaternalGreatGrandfathersMotherDetails, "female", savePaternalPaternalGreatGrandfathersMotherChanges, closeAddPaternalPaternalGreatGrandfathersMotherModal)}
 
-            {MakeModal(showPaternalPaternalGreatGrandmothersFather, closeAddPaternalPaternalGreatGrandmothersFatherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmothersFatherDetails, "male", savePaternalPaternalGreatGrandmothersFatherChanges, closeAddPaternalPaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandmothersFather, closeAddPaternalPaternalGreatGrandmothersFatherModal, paternalPaternalGreatGrandmotherDetails, setPaternalPaternalGreatGrandmothersFatherDetails, paternalPaternalGreatGrandmothersFatherDetails, "male", savePaternalPaternalGreatGrandmothersFatherChanges, closeAddPaternalPaternalGreatGrandmothersFatherModal)}
 
-            {MakeModal(showPaternalPaternalGreatGrandmothersMother, closeAddPaternalPaternalGreatGrandmothersMotherModal, paternalPaternalGreatGrandmotherDetails.fullName, setPaternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmothersMotherDetails, "female", savePaternalPaternalGreatGrandmothersMotherChanges, closeAddPaternalPaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showPaternalPaternalGreatGrandmothersMother, closeAddPaternalPaternalGreatGrandmothersMotherModal, paternalPaternalGreatGrandmotherDetails, setPaternalPaternalGreatGrandmothersMotherDetails, paternalPaternalGreatGrandmothersMotherDetails, "female", savePaternalPaternalGreatGrandmothersMotherChanges, closeAddPaternalPaternalGreatGrandmothersMotherModal)}
 
-            {MakeModal(showPaternalMaternalGreatGrandfathersFather, closeAddPaternalMaternalGreatGrandfathersFatherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfathersFatherDetails, "male", savePaternalMaternalGreatGrandfathersFatherChanges, closeAddPaternalMaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandfathersFather, closeAddPaternalMaternalGreatGrandfathersFatherModal, paternalMaternalGreatGrandfatherDetails, setPaternalMaternalGreatGrandfathersFatherDetails, paternalMaternalGreatGrandfathersFatherDetails, "male", savePaternalMaternalGreatGrandfathersFatherChanges, closeAddPaternalMaternalGreatGrandfathersFatherModal)}
 
-            {MakeModal(showPaternalMaternalGreatGrandfathersMother, closeAddPaternalMaternalGreatGrandfathersMotherModal, paternalMaternalGreatGrandfatherDetails.fullName, setPaternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfathersMotherDetails, "female", savePaternalMaternalGreatGrandfathersMotherChanges, closeAddPaternalMaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandfathersMother, closeAddPaternalMaternalGreatGrandfathersMotherModal, paternalMaternalGreatGrandfatherDetails, setPaternalMaternalGreatGrandfathersMotherDetails, paternalMaternalGreatGrandfathersMotherDetails, "female", savePaternalMaternalGreatGrandfathersMotherChanges, closeAddPaternalMaternalGreatGrandfathersMotherModal)}
 
-            {MakeModal(showPaternalMaternalGreatGrandmothersFather, closeAddPaternalMaternalGreatGrandmothersFatherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmothersFatherDetails, "male", savePaternalMaternalGreatGrandmothersFatherChanges, closeAddPaternalMaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandmothersFather, closeAddPaternalMaternalGreatGrandmothersFatherModal, paternalMaternalGreatGrandmotherDetails, setPaternalMaternalGreatGrandmothersFatherDetails, paternalMaternalGreatGrandmothersFatherDetails, "male", savePaternalMaternalGreatGrandmothersFatherChanges, closeAddPaternalMaternalGreatGrandmothersFatherModal)}
 
-            {MakeModal(showPaternalMaternalGreatGrandmothersMother, closeAddPaternalMaternalGreatGrandmothersMotherModal, paternalMaternalGreatGrandmotherDetails.fullName, setPaternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmothersMotherDetails, "female", savePaternalMaternalGreatGrandmothersMotherChanges, closeAddPaternalMaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showPaternalMaternalGreatGrandmothersMother, closeAddPaternalMaternalGreatGrandmothersMotherModal, paternalMaternalGreatGrandmotherDetails, setPaternalMaternalGreatGrandmothersMotherDetails, paternalMaternalGreatGrandmothersMotherDetails, "female", savePaternalMaternalGreatGrandmothersMotherChanges, closeAddPaternalMaternalGreatGrandmothersMotherModal)}
 
-            {MakeModal(showMaternalPaternalGreatGrandfathersFather, closeAddMaternalPaternalGreatGrandfathersFatherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfathersFatherDetails, "male", saveMaternalPaternalGreatGrandfathersFatherChanges, closeAddMaternalPaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandfathersFather, closeAddMaternalPaternalGreatGrandfathersFatherModal, maternalPaternalGreatGrandfatherDetails, setMaternalPaternalGreatGrandfathersFatherDetails, maternalPaternalGreatGrandfathersFatherDetails, "male", saveMaternalPaternalGreatGrandfathersFatherChanges, closeAddMaternalPaternalGreatGrandfathersFatherModal)}
 
-            {MakeModal(showMaternalPaternalGreatGrandfathersMother, closeAddMaternalPaternalGreatGrandfathersMotherModal, maternalPaternalGreatGrandfatherDetails.fullName, setMaternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfathersMotherDetails, "female", saveMaternalPaternalGreatGrandfathersMotherChanges, closeAddMaternalPaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandfathersMother, closeAddMaternalPaternalGreatGrandfathersMotherModal, maternalPaternalGreatGrandfatherDetails, setMaternalPaternalGreatGrandfathersMotherDetails, maternalPaternalGreatGrandfathersMotherDetails, "female", saveMaternalPaternalGreatGrandfathersMotherChanges, closeAddMaternalPaternalGreatGrandfathersMotherModal)}
 
-            {MakeModal(showMaternalPaternalGreatGrandmothersFather, closeAddMaternalPaternalGreatGrandmothersFatherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmothersFatherDetails, "male", saveMaternalPaternalGreatGrandmothersFatherChanges, closeAddMaternalPaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandmothersFather, closeAddMaternalPaternalGreatGrandmothersFatherModal, maternalPaternalGreatGrandmotherDetails, setMaternalPaternalGreatGrandmothersFatherDetails, maternalPaternalGreatGrandmothersFatherDetails, "male", saveMaternalPaternalGreatGrandmothersFatherChanges, closeAddMaternalPaternalGreatGrandmothersFatherModal)}
 
-            {MakeModal(showMaternalPaternalGreatGrandmothersMother, closeAddMaternalPaternalGreatGrandmothersMotherModal, maternalPaternalGreatGrandmotherDetails.fullName, setMaternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmothersMotherDetails, "female", saveMaternalPaternalGreatGrandmothersMotherChanges, closeAddMaternalPaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showMaternalPaternalGreatGrandmothersMother, closeAddMaternalPaternalGreatGrandmothersMotherModal, maternalPaternalGreatGrandmotherDetails, setMaternalPaternalGreatGrandmothersMotherDetails, maternalPaternalGreatGrandmothersMotherDetails, "female", saveMaternalPaternalGreatGrandmothersMotherChanges, closeAddMaternalPaternalGreatGrandmothersMotherModal)}
 
-            {MakeModal(showMaternalMaternalGreatGrandfathersFather, closeAddMaternalMaternalGreatGrandfathersFatherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfathersFatherDetails, "male", saveMaternalMaternalGreatGrandfathersFatherChanges, closeAddMaternalMaternalGreatGrandfathersFatherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandfathersFather, closeAddMaternalMaternalGreatGrandfathersFatherModal, maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfathersFatherDetails, maternalMaternalGreatGrandfathersFatherDetails, "male", saveMaternalMaternalGreatGrandfathersFatherChanges, closeAddMaternalMaternalGreatGrandfathersFatherModal)}
 
-            {MakeModal(showMaternalMaternalGreatGrandfathersMother, closeAddMaternalMaternalGreatGrandfathersMotherModal, maternalMaternalGreatGrandfatherDetails.fullName, setMaternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfathersMotherDetails, "female", saveMaternalMaternalGreatGrandfathersMotherChanges, closeAddMaternalMaternalGreatGrandfathersMotherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandfathersMother, closeAddMaternalMaternalGreatGrandfathersMotherModal, maternalMaternalGreatGrandfatherDetails, setMaternalMaternalGreatGrandfathersMotherDetails, maternalMaternalGreatGrandfathersMotherDetails, "female", saveMaternalMaternalGreatGrandfathersMotherChanges, closeAddMaternalMaternalGreatGrandfathersMotherModal)}
 
-            {MakeModal(showMaternalMaternalGreatGrandmothersFather, closeAddMaternalMaternalGreatGrandmothersFatherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmothersFatherDetails, "male", saveMaternalMaternalGreatGrandmothersFatherChanges, closeAddMaternalMaternalGreatGrandmothersFatherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandmothersFather, closeAddMaternalMaternalGreatGrandmothersFatherModal, maternalMaternalGreatGrandmotherDetails, setMaternalMaternalGreatGrandmothersFatherDetails, maternalMaternalGreatGrandmothersFatherDetails, "male", saveMaternalMaternalGreatGrandmothersFatherChanges, closeAddMaternalMaternalGreatGrandmothersFatherModal)}
 
-            {MakeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails.fullName, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
+            {MakeModal(showMaternalMaternalGreatGrandmothersMother, closeAddMaternalMaternalGreatGrandmothersMotherModal, maternalMaternalGreatGrandmotherDetails, setMaternalMaternalGreatGrandmothersMotherDetails, maternalMaternalGreatGrandmothersMotherDetails, "female", saveMaternalMaternalGreatGrandmothersMotherChanges, closeAddMaternalMaternalGreatGrandmothersMotherModal)}
 
             {MakeEditModal(editShowBottomPerson, closeEditBottomPersonModal, setBottomPersonDetails, bottomPersonDetails, saveEdits, seteditShowBottomPerson, getNewPageNum, closeAddFatherModal, deletePerson, bottomPersonDetails.sex)}
 
