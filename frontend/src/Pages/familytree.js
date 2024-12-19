@@ -2832,7 +2832,8 @@ uncertainFirstName: data.uncertainFirstName,
                     <td className="ancestor-box-border-bottom table-label shrink" style={{backgroundColor:tableColor}}>Name:</td>
                     <td className="ancestor-box-border-bottom table-content">
                     {details.occupation && (details.occupation.includes("King") || details.occupation.includes("king"))? (<img width="20px" style={{marginRight:"5px"}} src={crown}></img>) : (<></>)}
-                        <b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
+                        <b>{capitaliseFirstLetter(details.firstName)}</b>{details.uncertainFirstName ? (uncertainText) : (<></>)} <b>{capitaliseFirstLetter(details.middleName)}</b>{details.uncertainMiddleName ? (uncertainText) : (<></>)} <b>
+                            {capitaliseFirstLetter(details.lastName)}</b>{details.uncertainLastName ? (uncertainText) : (<></>)}
                     </td>
                 </tr>
                 <tr>

@@ -174,7 +174,7 @@ app.post('/make-new-tree', async (req, res) => {
             occupation TEXT DEFAULT NULL, 
             father_id INT DEFAULT NULL, 
             mother_id INT DEFAULT NULL,
-            relation_to_user INT,
+            relation_to_user INT[] DEFAULT NULL,
             uncertain_first_name BOOLEAN DEFAULT false,
             uncertain_middle_name BOOLEAN DEFAULT false,
             uncertain_last_name BOOLEAN DEFAULT false,
@@ -1157,7 +1157,9 @@ app.post('/save-ancestor', async (req, res) => {
             WHERE ancestor_id = ${childID}
             `)
 
-        const ancestorRelation = Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1;
+        const ancestorRelation = []
+        
+        ancestorRelation.push(Number(relationToUserQuery.rows.map(row => row.relation_to_user)) + 1);
 
         const ancestorQuery = await pool.query(`
             INSERT INTO tree_${currentTree} (
