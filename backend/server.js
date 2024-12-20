@@ -189,6 +189,9 @@ app.post('/make-new-tree', async (req, res) => {
             profile_text TEXT DEFAULL NULL,
             source_name_array TEXT [] DEFAULT NULL,
             source_link_array TEXT [] DEFAULT NULL,
+            alternative_names TEXT DEFAULT NULL,
+            paternal_haplogroup TEXT DEFAULT NULL,
+            maternal_haplogroup TEXT DEFAULT NULL,
             UNIQUE (ancestor_id)
             )
         `);
@@ -975,7 +978,7 @@ app.post('/make-new-page', async (req, res) => {
 
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
-        //finds what the current highest page number is, and increments it by on
+        //finds what the current highest page number is, and increments it by one
         const newPage = await pool.query(`
             SELECT MAX(page_number) AS max_page
             FROM tree_${currentTree}
@@ -1883,9 +1886,6 @@ app.post('/save-progress', async (req, res) => {
 
         const {userId, progressNote, details} = req.body;
 
-        console.log(progressNote)
-        console.log(details.id)
-
         // Query to get the current tree
         const getCurrentTreeId = await pool.query(
             'SELECT current_tree_id FROM users WHERE id = $1',
@@ -1983,7 +1983,7 @@ app.post('/remove-progress-note', async (req, res) => {
 
 app.post('/find-page-number', async (req, res) => {
     try {
-console.log("finding")
+
         const {userId, id} = req.body;
 
         // Query to get the current tree
@@ -2000,7 +2000,6 @@ console.log("finding")
         `)
 
         const pageNum = getNum.rows[0].page_number;
-            console.log(pageNum)
         res.json(pageNum);
 
 
@@ -2236,6 +2235,62 @@ app.post('/save-repeat-ancestor', async (req, res) => {
 
     } catch (error) {
         console.log("Error saving repeat ancestor:", error)
+    }
+})
+
+app.post('/save-profile-info', async (req, res) => {
+
+    try {
+
+        const { userId, profileData} = req.body;
+
+        // Query to get the current tree
+        const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const updateProfile = await pool.query(`
+            UPDATE tree_${currentTree}
+            SET
+                first_name = $1,
+                middle_name = $2,
+                last_name = $3,
+                place_of_birth = $4,
+                date_of_birth = $5,
+                place_of_death = $6,
+                date_of_death = $7,
+                cause_of_death = $8,
+                ethnicity = $9,
+                alternative_names = $10,
+                occupation = $11,
+                paternal_haplogroup = $12,
+                maternal_haplogroup = $13
+            WHERE ancestor_id = $14
+        `, [
+            profileData.first_name,
+            profileData.middle_name,
+            profileData.last_name,
+            profileData.place_of_birth,
+            profileData.date_of_birth,
+            profileData.place_of_death,
+            profileData.date_of_death,
+            profileData.cause_of_death,
+            profileData.ethnicity,
+            profileData.alternative_names,
+            profileData.occupation,
+            profileData.paternal_haplogroup,
+            profileData.maternal_haplogroup,
+            profileData.ancestor_id
+
+        ])
+
+console.log("API finished")
+
+    } catch (error) {
+        console.log("error saving profile info:", error)
     }
 })
 

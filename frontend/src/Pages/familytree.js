@@ -2161,13 +2161,25 @@ uncertainFirstName: data.uncertainFirstName,
         };
 
         const saveRepeatAncestor = async (childDetails, repeatAncestorId) => {
-            console.log("saving repeat ancestor")
+            //if the person whose parent is a repeat ancestor, check if he is a great grandparent on the table. That way a new page can be assigned to him
+            const ggparentIDs = [paternalPaternalGreatGrandfatherDetails.id, paternalPaternalGreatGrandmotherDetails.id, paternalMaternalGreatGrandfatherDetails.id, paternalMaternalGreatGrandmotherDetails.id, maternalPaternalGreatGrandfatherDetails.id, maternalPaternalGreatGrandmotherDetails.id, maternalMaternalGreatGrandfatherDetails.id, maternalMaternalGreatGrandmotherDetails.id]
+            if(ggparentIDs.includes(childDetails.id)) {
+                const userId = localStorage.getItem('userId');
+                const personID = childDetails.id
+                const response = await fetch('http://localhost:5000/make-new-page', {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, personID, pageNumber}),
+                });
+            }
+            console.log("between")
             const userId = localStorage.getItem('userId');
             const response = await fetch('http://localhost:5000/save-repeat-ancestor', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, childDetails, repeatAncestorId}),
             });
+
            window.location.reload();
         }
 
@@ -2194,7 +2206,7 @@ uncertainFirstName: data.uncertainFirstName,
                         </div>
 
                         {/*if the person is male, then his default surname is the same as his childrens'*/}
-                        {sex === "male" ? ( 
+                        {sex === "cxqmale" ? ( 
                             <div className="inputandQuestionMark">
                                 <input type="text" placeholder="Last Name"  value={details.lastName} onChange={(e) => setDetails({ ...details, lastName: e.target.value })}></input>
                                 
