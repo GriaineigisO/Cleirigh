@@ -843,3 +843,7 @@ textarea {
 .repeat-ancestor {
     color: black;
 }
+
+.source-ul {
+    font-size: 12px;
+}

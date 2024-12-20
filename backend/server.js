@@ -188,10 +188,12 @@ app.post('/make-new-tree', async (req, res) => {
             member_of_nobility BOOLEAN DEFAULT FALSE,
             profile_text TEXT DEFAULL NULL,
             source_name_array TEXT [] DEFAULT NULL,
+            source_name_text_array TEXT [] DEFAULT NULL,
             source_link_array TEXT [] DEFAULT NULL,
             alternative_names TEXT DEFAULT NULL,
             paternal_haplogroup TEXT DEFAULT NULL,
             maternal_haplogroup TEXT DEFAULT NULL,
+            source_text_author_array TEXT DEFAULT NULL
             UNIQUE (ancestor_id)
             )
         `);
@@ -1797,9 +1799,10 @@ app.post('/save-profile-text' , async (req, res) => {
     }
 })
 
-app.post('save-source-link', async (req, res) => {
+app.post('/save-source', async (req, res) => {
+
     try {
-        const {userId, sourceNameLinkArray, sourceLinkArray} = req.body;
+        const {userId, sourceNameLink, sourceLink, sourceNameText, sourceNameTextAuthor, profileData} = req.body;
 
          // Query to get the current tree
          const getCurrentTreeId = await pool.query(
@@ -1810,15 +1813,58 @@ app.post('save-source-link', async (req, res) => {
         const currentTree = getCurrentTreeId.rows[0].current_tree_id;
 
         const addSources = await pool.query(`
-            UPDATE tree_${currentTree}
-            SET
-                source_name_link_array = ${sourceNameLinkArray}
-                source_link_Array = ${sourceLinkArray}
-        `)
-
+            INSERT INTO sources (tree_id, ancestor_id, source_link_name, source_link, source_text_name, source_text_author)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            `, [
+            currentTree,
+            profileData.ancestor_id,
+            sourceNameLink,   
+            sourceLink,       
+            sourceNameText,
+            sourceNameTextAuthor
+        ]);
 
     } catch (error) {
         console.log("Error saving source link:", error)
+    }
+})
+
+app.post('/get-sources', async (req, res) => {
+    try {
+
+        const {userId, profileData} = req.body;
+         // Query to get the current tree
+         const getCurrentTreeId = await pool.query(
+            'SELECT current_tree_id FROM users WHERE id = $1',
+            [userId]
+        );
+
+        const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+        const getSources = await pool.query(`
+            SELECT * FROM sources
+            WHERE tree_id = ${currentTree} and ancestor_id = ${profileData.ancestor_id}
+        `)
+
+        const source_link_name = getSources.rows.map(row => row.source_link_name);
+        const source_link = getSources.rows.map(row => row.source_link);
+        const source_text_name = getSources.rows.map(row => row.source_text_name);
+        const source_text_author = getSources.rows.map(row => row.source_text_author);
+
+        const source_link_name_filtered = source_link_name.filter((i) => i !== null)
+        const source_link_filtered = source_link.filter((i) => i !== null)
+        const source_text_name_filtered = source_text_name.filter((i) => i !== null)
+        const source_text_author_filtered = source_text_author.filter((i) => i !== null)
+
+        res.json({
+            source_link_name: source_link_name_filtered,
+            source_link: source_link_filtered,
+            source_text_name: source_text_name_filtered,
+            source_text_author:source_text_author_filtered
+        })
+
+    } catch (error) {
+        console.log("error getting sources:", error)
     }
 })
 
@@ -2287,7 +2333,6 @@ app.post('/save-profile-info', async (req, res) => {
 
         ])
 
-console.log("API finished")
 
     } catch (error) {
         console.log("error saving profile info:", error)

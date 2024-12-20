@@ -10,11 +10,17 @@ import { Modal, Button } from "react-bootstrap";
 
 const Profile = () => {
   const [isEditingInfo, setisEditingInfo] = useState(false);
-  const [sourceNameLinkArray, setSourceNameLinkArray] = useState([]);
-  const [sourceLinkArray, setSourceLinkArray] = useState([]);
   const [sourceNameLink, setSourceNameLink] = useState();
   const [sourceLink, setSourceLink] = useState();
+  const [sourceNameLinkArray, setSourceNameLinkArray] = useState([]);
+  const [sourceLinkArray, setSourceLinkArray] = useState([]);
   const [sourceType, setSourceType] = useState();
+  const [sourceNameText, setSourceNameText] = useState();
+  const [sourceNameTextAuthor, setSourceNameTextAuthor] = useState();
+  const [sourceNameTextArray, setSourceNameTextArray] = useState([]);
+  const [sourceNameTextAuthorArray, setSourceNameTextAuthorArray] = useState(
+    []
+  );
   const [sourceModalOpen, setSourceModalOpen] = useState(false);
   const [value, setValue] = useState("");
   const { id } = useParams();
@@ -67,6 +73,26 @@ const Profile = () => {
 
     getProfileData();
   }, [id]);
+
+  const getSources = async () => {
+    if (profileData) {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch("http://localhost:5000/get-sources", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, profileData }),
+      });
+      const data = await response.json();
+      setSourceLinkArray(data.source_link);
+      setSourceNameLinkArray(data.source_link_name);
+      setSourceNameTextArray(data.source_text_name);
+      setSourceNameTextAuthorArray(data.source_text_author);
+    }
+  };
+
+  useEffect(() => {
+    getSources();
+  }, [profileData]);
 
   useEffect(() => {
     if (profileData) {
@@ -261,17 +287,25 @@ const Profile = () => {
     setSourceModalOpen(false);
   };
 
-  const saveSource = async () => {
-    setSourceNameLinkArray((prev) => [...prev, sourceNameLink]);
-
-    setSourceLinkArray((prev) => [...prev, sourceLink]);
-
-    const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/save-source-link", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, sourceNameLinkArray, sourceLinkArray }),
-    });
+  const SaveSource = () => {
+    const save = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch("http://localhost:5000/save-source", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          sourceNameLink,
+          sourceLink,
+          sourceNameText,
+          sourceNameTextAuthor,
+          profileData,
+        }),
+      });
+    };
+    save();
+    closeAddSource();
+    getSources();
   };
 
   const handleSourceType = (event) => {
@@ -405,26 +439,45 @@ const Profile = () => {
             <div>
               <label>Source Name</label>
               {sourceType === "link" ? (
-                <input
-                  type="text"
-                  onChange={(event) => setSourceNameLink(event.target.value)}
-                ></input>
+                <>
+                  <input
+                    type="text"
+                    onChange={(event) => setSourceNameLink(event.target.value)}
+                  ></input>
+
+                  <div>
+                    <label>link</label>
+                    <input
+                      type="text"
+                      onChange={(event) => setSourceLink(event.target.value)}
+                    ></input>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+
+              {sourceType === "text" ? (
+                <>
+                  <input
+                    type="text"
+                    onChange={(event) => setSourceNameText(event.target.value)}
+                  ></input>
+
+                  <div>
+                    <label>Author</label>
+                    <input
+                      type="text"
+                      onChange={(event) =>
+                        setSourceNameTextAuthor(event.target.value)
+                      }
+                    ></input>
+                  </div>
+                </>
               ) : (
                 <></>
               )}
             </div>
-
-            {sourceType === "link" ? (
-              <div>
-                <label>link</label>
-                <input
-                  type="text"
-                  onChange={(event) => setSourceLink(event.target.value)}
-                ></input>
-              </div>
-            ) : (
-              <></>
-            )}
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -433,7 +486,7 @@ const Profile = () => {
               <Button variant="secondary" onClick={closeAddSource}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={saveSource}>
+              <Button variant="primary" onClick={SaveSource}>
                 Save Changes
               </Button>
             </div>
@@ -448,57 +501,66 @@ const Profile = () => {
 
         <div className="fact-section">
           <h1>
-          {isEditingInfo ? (
-                  <input
-                    value={profileData.first_name}
-                    onChange={(e) =>
-                      setProfileData((prev) => ({
-                        ...prev,
-                        first_name: e.target.value,
-                      }))
-                    }
-                  ></input>
+            {isEditingInfo ? (
+              <input
+                value={profileData.first_name}
+                onChange={(e) =>
+                  setProfileData((prev) => ({
+                    ...prev,
+                    first_name: e.target.value,
+                  }))
+                }
+              ></input>
+            ) : (
+              <>
+                {profileData.first_name}
+                {profileData.uncertain_first_name ? (
+                  <sup> uncertain</sup>
                 ) : (
-                  <>
-                    {profileData.first_name}
-                    {profileData.uncertain_first_name ? <sup> uncertain</sup> : <></>}
-                  </>
-                )}{" "}
-
-                {isEditingInfo ? (
-                  <input
-                    value={profileData.middle_name}
-                    onChange={(e) =>
-                      setProfileData((prev) => ({
-                        ...prev,
-                        middle_name: e.target.value,
-                      }))
-                    }
-                  ></input>
-                ) : (
-                  <>
-                    {profileData.middle_name}
-                    {profileData.uncertain_middle_name ? <sup> uncertain</sup> : <></>}
-                  </>
-                )}{" "}
-
-                {isEditingInfo ? (
-                  <input
-                    value={profileData.last_name}
-                    onChange={(e) =>
-                      setProfileData((prev) => ({
-                        ...prev,
-                        last_name: e.target.value,
-                      }))
-                    }
-                  ></input>
-                ) : (
-                  <>
-                    {profileData.last_name}
-                    {profileData.uncertain_last_name ? <sup> uncertain</sup> : <></>}
-                  </>
+                  <></>
                 )}
-
+              </>
+            )}{" "}
+            {isEditingInfo ? (
+              <input
+                value={profileData.middle_name}
+                onChange={(e) =>
+                  setProfileData((prev) => ({
+                    ...prev,
+                    middle_name: e.target.value,
+                  }))
+                }
+              ></input>
+            ) : (
+              <>
+                {profileData.middle_name}
+                {profileData.uncertain_middle_name ? (
+                  <sup> uncertain</sup>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}{" "}
+            {isEditingInfo ? (
+              <input
+                value={profileData.last_name}
+                onChange={(e) =>
+                  setProfileData((prev) => ({
+                    ...prev,
+                    last_name: e.target.value,
+                  }))
+                }
+              ></input>
+            ) : (
+              <>
+                {profileData.last_name}
+                {profileData.uncertain_last_name ? (
+                  <sup> uncertain</sup>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
           </h1>
 
           <CalculateRelation />
@@ -709,55 +771,56 @@ const Profile = () => {
 
               <tr>
                 {profileData.sex === "male" ? (
-                    <>
-                    <td className="profile-table-label">Paternal Haplogroup </td>
+                  <>
+                    <td className="profile-table-label">
+                      Paternal Haplogroup{" "}
+                    </td>
                     {isEditingInfo ? (
-                    <input
+                      <input
                         value={profileData.paternal_haplogroup}
                         onChange={(e) =>
-                        setProfileData((prev) => ({
+                          setProfileData((prev) => ({
                             ...prev,
                             paternal_haplogroup: e.target.value,
-                        }))
+                          }))
                         }
-                    ></input>
+                      ></input>
                     ) : (
-                    <>
+                      <>
                         {profileData.paternal_haplogroup ? (
-                        <td>
-                            {profileData.paternal_haplogroup}
-                        </td>
+                          <td>{profileData.paternal_haplogroup}</td>
                         ) : (
-                        <></>
+                          <></>
                         )}
-                    </>
+                      </>
                     )}
-                    </>) : (<></>)}
-                </tr>
-                
+                  </>
+                ) : (
+                  <></>
+                )}
+              </tr>
+
               <tr>
                 <td className="profile-table-label">Maternal Haplogroup </td>
                 {isEditingInfo ? (
-                    <input
-                        value={profileData.maternal_haplogroup}
-                        onChange={(e) =>
-                        setProfileData((prev) => ({
-                            ...prev,
-                            maternal_haplogroup: e.target.value,
-                        }))
-                        }
-                    ></input>
+                  <input
+                    value={profileData.maternal_haplogroup}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        maternal_haplogroup: e.target.value,
+                      }))
+                    }
+                  ></input>
+                ) : (
+                  <>
+                    {profileData.maternal_haplogroup ? (
+                      <td>{profileData.maternal_haplogroup}</td>
                     ) : (
-                    <>
-                        {profileData.maternal_haplogroup ? (
-                        <td>
-                            {profileData.maternal_haplogroup}
-                        </td>
-                        ) : (
-                        <></>
-                        )}
-                    </>
+                      <></>
                     )}
+                  </>
+                )}
               </tr>
               <tr>
                 <td className="profile-table-label">Profile Number </td>
@@ -852,19 +915,53 @@ const Profile = () => {
 
       <div className="source-section">
         <hr></hr>
-        <h3>Sources</h3>
-        <p className="span-link" onClick={openAddSource}>
-          Add Source
-        </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-end",
+          }}
+        >
+          <h3>Sources</h3>
 
-        <ul>
-          {sourceNameLinkArray.map((index) => (
-            <li key={index}>
-              <a href={sourceLinkArray[index]} target="_blank">
-                {sourceNameLinkArray[index]}
-              </a>
-            </li>
-          ))}
+          <p
+            className="span-link"
+            style={{ marginLeft: "10px", fontSize: "13px" }}
+            onClick={openAddSource}
+          >
+            Add Source
+          </p>
+        </div>
+
+        <ul className="source-ul">
+          {sourceLinkArray.length > 0 ? (
+            <>
+              {sourceLinkArray.map((source, index) => (
+                <li key={index}>
+                  <a href={sourceLinkArray[index]} target="_blank">
+                    {sourceNameLinkArray[index]}
+                  </a>
+                </li>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
+        </ul>
+
+        <ul className="source-ul">
+          {sourceNameTextArray.length > 0 ? (
+            <>
+              {sourceNameTextArray.map((source, index) => (
+                <li key={index}>
+                  {sourceNameTextAuthorArray[index]},{" "}
+                  <i>{sourceNameTextArray[index]}</i>
+                </li>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
         </ul>
       </div>
     </div>
