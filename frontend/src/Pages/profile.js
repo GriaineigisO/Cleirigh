@@ -580,7 +580,7 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="fact-section">
+        <div className="fact-section" style={{marginRight:"40px"}}>
           <h1>
             {isEditingInfo ? (
               <input
