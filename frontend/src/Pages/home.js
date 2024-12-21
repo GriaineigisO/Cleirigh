@@ -394,7 +394,7 @@ const homePageStats = useCallback(async () => {
           ) : (
             <>
 
-{
+          {
             savedProgress ? (
               <div className="homePageDiv">
                 <p className="homePageDivLabel">Where You Left Off</p>
@@ -423,6 +423,7 @@ const homePageStats = useCallback(async () => {
                 <p className="homePageDivLabel">Most Removed Ancestor By Generation</p>
                 <p className="homePageDivContent"><a style={{color:"rgb(210, 255, 126)"}} href={mostRemovedAncestorLink}>{mostRemovedAncestor}</a> - {basePersonFirstName}'s {convertNumToRelation(mostRemovedAncestorRelation, mostRemovedAncestorSex)}</p>
             </div>
+            {console.log(mostRemovedAncestorSex)}
   
           </>
           )}

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Modal, Button } from "react-bootstrap";
+import axios from "axios";
 
 const Profile = () => {
   const [isEditingInfo, setisEditingInfo] = useState(false);
@@ -43,6 +44,8 @@ const Profile = () => {
   const [ancestryPercent, setAncestryPercent] = useState();
   const [isEditing, setisEditing] = useState(false);
   const [editAlternativeNames, setEditAlternativeNames] = useState();
+  const [profilePic, setProfilePic] = useState();
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -413,6 +416,52 @@ const Profile = () => {
     });
   };
 
+  // function handleProfilePicChange(e) {
+  //   setProfilePic(URL.createObjectURL(e.target.files[0]));
+  // }
+
+  const handleProfilePicChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleSubmitProfilePic = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      //upload image to server
+      const response = await axios.post("http://localhost:5000/upload-image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const fileName = response.data.fileName;
+      
+      //save image link to database
+      const userId = localStorage.getItem("userId");
+      const saveImage = await fetch("http://localhost:5000/save-image-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, profileData, fileName }),
+      });
+
+       //set profile picture
+       const setProfilePic = await fetch("http://localhost:5000/set-profile-picture", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ userId, profileData, fileName }),
+       });
+
+       window.location.reload();
+
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("File upload failed");
+    }
+  };
+
+
   return (
     <div className="profile">
       <Modal
@@ -496,7 +545,39 @@ const Profile = () => {
 
       <div className="top-section">
         <div className="profile-photo-div">
-          {/* <img className="profile-photo" src={testPhoto}></img> */}
+          {profileData.profile_pic ? (
+            <>
+            <img className="profilePic"
+              src={profileData.profile_pic}
+              style={{
+                width: "400px",
+                maxHeight: "500px",
+                borderRadius:"10px",
+                zIndex: "800"
+              }}
+            ></img>
+
+            <div className="profilePicOverlay">
+
+            </div>
+            </>
+
+          ) : (
+            <div>
+              <form onSubmit={handleSubmitProfilePic} style={{
+                display:"flex",
+                alignContent:"center",
+                flexDirection:"column"
+              }}>
+                <input
+                  type="file"
+                  onChange={handleProfilePicChange}
+                  accept="image/*"
+                />
+                <button type="submit">Upload image</button>
+              </form>
+            </div>
+          )}
         </div>
 
         <div className="fact-section">

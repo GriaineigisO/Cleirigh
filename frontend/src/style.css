@@ -847,3 +847,25 @@ textarea {
 .source-ul {
     font-size: 12px;
 }
+
+.profile-photo-div {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    background-color: rgb(41, 39, 39);
+    margin-right: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    height: 500px;
+}
+
+.profilePicOverlay {
+    z-index: 1000;
+    height:500px;
+    width:400px;
+    position: absolute;
+}
+
+.profilePicOverlay:hover {
+    background-color: rgb(41, 39, 39, 0.5);
+}
