@@ -1,6 +1,6 @@
 export const capitaliseFirstLetter = (str) => {
     if (str) {
-        if (str[0] === "d" && str[1] === "e") {
+        if ((str[0] === "d" && str[1] === "e") || (str[0] === "o" && str[1] === "f")) {
             return str
         } else {
             return str.charAt(0).toUpperCase() + str.slice(1);
@@ -55,7 +55,6 @@ export const deathPlace = (place) => {
 }
 
 export const convertNumToRelation = (num, sex) => {
-
 
         if (num === 0) {
             return "Self";

@@ -11,6 +11,7 @@ import axios from "axios";
 
 const Profile = () => {
   const [isEditingInfo, setisEditingInfo] = useState(false);
+  const [profilePicCaption, setProfilePicCaption] = useState();
   const [sourceNameLink, setSourceNameLink] = useState();
   const [sourceLink, setSourceLink] = useState();
   const [sourceNameLinkArray, setSourceNameLinkArray] = useState([]);
@@ -416,10 +417,6 @@ const Profile = () => {
     });
   };
 
-  // function handleProfilePicChange(e) {
-  //   setProfilePic(URL.createObjectURL(e.target.files[0]));
-  // }
-
   const handleProfilePicChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -431,13 +428,17 @@ const Profile = () => {
 
     try {
       //upload image to server
-      const response = await axios.post("http://localhost:5000/upload-image", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/upload-image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       const fileName = response.data.fileName;
-      
+
       //save image link to database
       const userId = localStorage.getItem("userId");
       const saveImage = await fetch("http://localhost:5000/save-image-link", {
@@ -446,21 +447,22 @@ const Profile = () => {
         body: JSON.stringify({ userId, profileData, fileName }),
       });
 
-       //set profile picture
-       const setProfilePic = await fetch("http://localhost:5000/set-profile-picture", {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ userId, profileData, fileName }),
-       });
+      //set profile picture
+      const setProfilePic = await fetch(
+        "http://localhost:5000/set-profile-picture",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, profileData, fileName }),
+        }
+      );
 
-       window.location.reload();
-
+      window.location.reload();
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("File upload failed");
     }
   };
-
 
   return (
     <div className="profile">
@@ -547,31 +549,56 @@ const Profile = () => {
         <div className="profile-photo-div">
           {profileData.profile_pic ? (
             <>
-            <img className="profilePic"
-              src={profileData.profile_pic}
-              style={{
-                width: "400px",
-                maxHeight: "500px",
-                borderRadius:"10px",
-                zIndex: "800"
-              }}
-            ></img>
+              <img
+                className="profilePic"
+                src={profileData.profile_pic}
+                style={{
+                  width: "400px",
+                  maxHeight: "500px",
+                  borderRadius: "10px",
+                  zIndex: "800",
+                }}
+              ></img>
+              {isEditingInfo ? (
+                <input
+                  value={profileData.profile_pic_caption}
+                  style={{
+                    zIndex:"2000"
+                  }}
+                  onChange={(e) =>
+                    setProfileData((prev) => ({
+                      ...prev,
+                      profile_pic_caption: e.target.value,
+                    }))
+                  }
+                ></input>
+              ) : (
+                <>
+                  {profileData.profile_pic_caption ? (
+                    <p className="profilePicCaption">
+                      {profileData.profile_pic_caption}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
 
-            <div className="profilePicOverlay">
-
-            </div>
+              <div className="profilePicOverlay"></div>
             </>
-
           ) : (
             <div>
-              <form onSubmit={handleSubmitProfilePic} style={{
-                display:"flex",
-                alignContent:"center",
-                flexDirection:"column"
-              }}>
+              <form
+                onSubmit={handleSubmitProfilePic}
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  flexDirection: "column",
+                }}
+              >
                 <input
                   type="file"
-                  onChange={handleProfilePicChange}
+                  onChange={(e) => handleProfilePicChange(e)}
                   accept="image/*"
                 />
                 <button type="submit">Upload image</button>
@@ -580,7 +607,7 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="fact-section" style={{marginRight:"40px"}}>
+        <div className="fact-section" style={{ marginRight: "40px" }}>
           <h1>
             {isEditingInfo ? (
               <input

@@ -675,7 +675,7 @@ button:hover {
     flex-direction: row;
     padding-left: 100px;
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
 }
 
 .profile-photo {
@@ -857,6 +857,7 @@ textarea {
     border-radius: 10px;
     max-width: 400px;
     height: 500px;
+    flex-direction:column;
 }
 
 .profilePicOverlay {

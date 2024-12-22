@@ -2741,7 +2741,7 @@ const FamilyTree = () => {
           body: JSON.stringify({ userId, childDetails, repeatAncestorId }),
         }
       );
-
+console.log("test")
       window.location.reload();
     };
 
@@ -3548,8 +3548,8 @@ const FamilyTree = () => {
               >
                 <b>
                   {details.occupation &&
-                  (details.occupation.includes("King ") ||
-                    details.occupation.includes("king ")) ? (
+                  (details.occupation.includes("King") ||
+                  details.occupation.includes("king") || details.occupation.includes("emperor") || details.occupation.includes("Emperor")) ? (
                     <img
                       width="20px"
                       style={{ marginRight: "5px" }}
