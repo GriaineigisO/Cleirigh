@@ -1,17 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import testPhoto from "../Images/James Ó Donnell.jpg";
 import { convertNumToRelation } from "../library";
-import { propTypes } from "react-bootstrap/esm/Image";
-import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import {useEffectOnce} from '../Components/useEffectOnce.js'
 
 const Profile = () => {
+  const [ethnicityNameArray, setEthnicityNameArray] = useState([]);
+  const [ethnicityPercentageArray, setEthnicityPercentageArray] = useState([]);
   const [isEditingInfo, setisEditingInfo] = useState(false);
-  const [profilePicCaption, setProfilePicCaption] = useState();
   const [sourceNameLink, setSourceNameLink] = useState();
   const [sourceLink, setSourceLink] = useState();
   const [sourceNameLinkArray, setSourceNameLinkArray] = useState([]);
@@ -76,7 +75,59 @@ const Profile = () => {
     };
 
     getProfileData();
+ 
+    
   }, [id]);
+
+
+  const calculateEthnicBreakdown = async () => {
+    const userId = localStorage.getItem("userId");
+    const getEthnicity = await fetch("http://localhost:5000/calculate-ethnic-breakdown", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, id }),
+    });
+    const data = await getEthnicity.json();
+    if (ethnicityNameArray.length === 0) {
+      setEthnicityNameArray((prev) => ([...prev, data.ethnicityNameArray]));
+      setEthnicityPercentageArray((prev) => ([...prev, data.ethnicityPercentageArray])) 
+    }
+  }
+
+  useEffectOnce(() => {
+    calculateEthnicBreakdown();
+  })
+
+  const EthnicBreakdown = () => {
+    if (ethnicityNameArray[0]) {
+      return (
+        <>
+        <hr></hr>
+          <h1>Ethnic Breakdown</h1>
+          
+
+          <h4>Rounded</h4>
+          <ol>
+            {ethnicityNameArray[0].map((ethnicity, index) => (
+              <>
+              {ethnicityPercentageArray[0][index].toFixed(2) > 0.00 ? (
+                <li key={index}>{ethnicityNameArray[0][index]}: {ethnicityPercentageArray[0][index].toFixed(2)}%</li>
+              ) : (<></>)}
+              </>
+            ))}
+          </ol>
+
+          
+          <h4>No Rounding</h4>
+          <ol>
+            {ethnicityNameArray[0].map((ethnicity, index) => (
+              <li key={index}>{ethnicityNameArray[0][index]}: {ethnicityPercentageArray[0][index].toFixed(20)}%</li>
+            ))}
+          </ol>
+          </>
+      )
+    }
+    }
 
   const getSources = async () => {
     if (profileData) {
@@ -103,10 +154,6 @@ const Profile = () => {
       setValue(profileData.profile_text);
     }
   }, [profileData]);
-
-  const openLink = (id) => {
-    window.location.href = `${id}`;
-  };
 
   useEffect(() => {
     // Fetch base person name
@@ -343,6 +390,8 @@ const Profile = () => {
     }
   };
 
+  
+
   const ListChildren = () => {
     const childList = child.reduce((acc, item, index, array) => {
       if (child.length > 1) {
@@ -402,6 +451,7 @@ const Profile = () => {
       );
     }
   };
+
 
   const handleEditInfo = () => {
     setisEditingInfo(true);
@@ -463,6 +513,8 @@ const Profile = () => {
       alert("File upload failed");
     }
   };
+
+
 
   return (
     <div className="profile">
@@ -989,6 +1041,10 @@ const Profile = () => {
         )}
 
         {/*descendancy chart here*/}
+      </div>
+
+      <div className="ethnic-breakdown">
+        <EthnicBreakdown />
       </div>
 
       <div className="timeline-section">
