@@ -62,6 +62,10 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
+app.get('/', (req, res) => {
+  res.send('Hello World! Your server is running.');
+});
+
 app.post("/api/register", async (req, res) => {
   const { username, email, password } = req.body;
 
