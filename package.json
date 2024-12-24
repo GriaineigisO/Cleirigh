@@ -4,6 +4,6 @@
     "bootstrap": "^5.3.3"
   },
   "scripts": {
-  "start": "node server.js"
-}
+  "start": "npm --prefix backend start"
+  }
 }
