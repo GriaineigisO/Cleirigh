@@ -54,16 +54,19 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+// Catch-all route to serve index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 passport.serializeUser((user, done) => {
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
   done(null, user);
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello World! Your server is running.');
 });
 
 app.post("/api/register", async (req, res) => {
