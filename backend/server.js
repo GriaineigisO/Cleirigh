@@ -58,7 +58,7 @@ app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
 // Catch-all route to serve index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'app.js'));
 });
 
 passport.serializeUser((user, done) => {
