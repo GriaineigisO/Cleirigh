@@ -54,7 +54,7 @@ app.use(
   })
 );
 
-// Serve static files from the React frontend app
+// Serve static files from the React frontend app.
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // Route to serve index.html from the build directory

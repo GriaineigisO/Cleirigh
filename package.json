@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "npm --prefix backend start",                      // Starts the Node.js server
-    "postinstall": "npm run build --prefix frontend"             // Builds the React app after install
+    "start": "npm --prefix backend start",
+    "postinstall": "npm run build --prefix frontend"
   },
   "dependencies": {
     "axios": "^1.7.8",
