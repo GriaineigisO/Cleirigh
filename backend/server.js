@@ -1143,16 +1143,22 @@ app.post("/save-ancestor", async (req, res) => {
         `);
     const page_number = Number(pageNumQuery.rows.map((row) => row.page_number));
 
+    const ancestorRelation = [];
+    
     const relationToUserQuery = await pool.query(`
            SELECT * FROM tree_${currentTree}
             WHERE ancestor_id = ${childID}
             `);
 
-    const ancestorRelation = [];
+      for (let i = 0; i < relationToUserQuery.rows[0].relation_to_user.length; i++) {
+        ancestorRelation.push(relationToUserQuery.rows[0].relation_to_user[i] + 1);
+      }
 
-    ancestorRelation.push(
-      Number(relationToUserQuery.rows.map((row) => row.relation_to_user)) + 1
-    );
+    
+
+    
+
+    
 
     const ancestorQuery = await pool.query(
       `
@@ -2434,8 +2440,6 @@ app.use("/calculate-ethnic-breakdown", async (req, res) => {
 
       const fatherId = findParents.rows[0].father_id;
       const motherId = findParents.rows[0].mother_id;
-
-      console.log(fatherId)
 
       //checks if each parent is a deadend ancestor
       if (fatherId === null && motherId === null) {

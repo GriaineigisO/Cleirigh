@@ -1,6 +1,6 @@
 export const capitaliseFirstLetter = (str) => {
     if (str) {
-        if ((str[0] === "d" && str[1] === "e") || (str[0] === "d" && str[1] === "'") || (str[0] === "o" && str[1] === "f")) {
+        if ((str[0] === "d" && str[1] === "e" && str[2] === " ") || (str[0] === "d" && str[1] === "'") || (str[0] === "o" && str[1] === "f" && str[2] === " ")) {
             return str
         } else {
             return str.charAt(0).toUpperCase() + str.slice(1);

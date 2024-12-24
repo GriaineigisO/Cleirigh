@@ -104,7 +104,9 @@ const Profile = () => {
         <>
         <hr></hr>
           <h1>Ethnic Breakdown</h1>
-          
+          <p>
+            The following ethnic breakdown is purely geneaological - it is not an accurate representation of your genetic composition. Your geneaological ancestry shown below may include incredibly small results (> 0.00%) that almost definitely mean that you have zero genes from this ancestral ethnic component. This calculation also makes some necessary assumptions. It only takes into consideration the listed ethnicities of each dead-end ancestor - thus it is blind to any ethnic components that lurk behind dead-ends. When an ancestor only has one parent listed, then the missing parent is assumed to have the same ethnicity as the listed one. So while the numbers below aren't a direct representation of your DNA, it is an interesting way to see the breakdown of your ancestry, even incredibly small components that have been totally genetically diluted - according to your known ancestry, that is.
+          </p>
 
           <h4>Rounded</h4>
           <ol>
