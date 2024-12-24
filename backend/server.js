@@ -54,11 +54,12 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// Catch-all route to serve index.html
+// Route to serve index.html from the build directory
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'app.js'));
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
 passport.serializeUser((user, done) => {
