@@ -8,14 +8,6 @@
 # testing
 /coverage
 
-# production
-# Ignore node_modules
-/node_modules/
-
-# Ignore build directories
-/build/
-
-
 # misc
 .DS_Store
 .env.local
