@@ -1805,6 +1805,58 @@ app.post("/save-source", async (req, res) => {
         sourceNameTextAuthor,
       ]
     );
+
+    res.json(true);
+
+  } catch (error) {
+    console.log("Error saving source link:", error);
+  }
+});
+
+app.post("/save-edit-text-source", async (req, res) => {
+  try {
+    const {
+      userId,
+      source,
+      sourceAuthor,
+      previousSource, 
+      previousSourceAuthor,
+      profileData,
+    } = req.body;
+
+    console.log(source)
+    console.log(sourceAuthor)
+    console.log(previousSource)
+    console.log(previousSourceAuthor)
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+    const addSources = await pool.query(
+      `
+            UPDATE sources 
+            SET
+              source_text_name = $1,
+              source_text_author = $2
+            WHERE tree_id = $3 AND ancestor_id = $4 AND source_text_name = $5 AND source_text_author = $6
+            `,
+      [ 
+        source,
+        sourceAuthor,
+        currentTree,
+        profileData.ancestor_id,
+        previousSource, 
+        previousSourceAuthor,
+      ]
+    );
+
+    res.json(true);
+    
   } catch (error) {
     console.log("Error saving source link:", error);
   }
@@ -1852,6 +1904,63 @@ app.post("/get-sources", async (req, res) => {
     });
   } catch (error) {
     console.log("error getting sources:", error);
+  }
+});
+
+app.post("/delete-source", async (req, res) => {
+  try {
+    const {
+      userId,
+      source,
+      sourceName,
+      profileData,
+      type
+    } = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+    if (type === "text") {
+
+      const deleteSources = await pool.query(
+        `
+              DELETE FROM sources
+              WHERE tree_id = $1 AND ancestor_id = $2 AND source_text_name = $3 AND source_text_author = $4
+              `,
+        [
+          currentTree,
+          profileData.ancestor_id,
+          source,
+          sourceName,
+        ]
+      );
+
+    } else if (type === "link") {
+
+      const deleteSources = await pool.query(
+        `
+              DELETE FROM sources
+              WHERE tree_id = $1 AND ancestor_id = $2 AND source_link = $3 AND source_link_name = $4
+              `,
+        [
+          currentTree,
+          profileData.ancestor_id,
+          source,
+          sourceName,
+        ]
+      );
+    }
+
+    res.json(true)
+
+    
+  } catch (error) {
+    console.log("Error saving source link:", error);
   }
 });
 
@@ -2089,6 +2198,7 @@ app.post("/search-ancestors", async (req, res) => {
 });
 
 app.post("/save-repeat-ancestor", async (req, res) => {
+  console.log("API triggered")
   try {
     const { userId, childDetails, repeatAncestorId } = req.body;
 
@@ -2278,6 +2388,8 @@ app.post("/save-repeat-ancestor", async (req, res) => {
     };
 
     recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
+
+    res.json(true)
   } catch (error) {
     console.log("Error saving repeat ancestor:", error);
   }

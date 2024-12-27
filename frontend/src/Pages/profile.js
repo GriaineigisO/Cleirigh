@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { convertNumToRelation } from "../library";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
-import {useEffectOnce} from '../Components/useEffectOnce.js'
+import { useEffectOnce } from "../Components/useEffectOnce.js";
 
 const Profile = () => {
   const [ethnicityNameArray, setEthnicityNameArray] = useState([]);
@@ -22,7 +22,10 @@ const Profile = () => {
   const [sourceNameTextAuthorArray, setSourceNameTextAuthorArray] = useState(
     []
   );
+  const [editTextSourceOpen, setEditTextSourceOpen] = useState(false);
+  const [showEditTextSourceModal, setShowEditTextSourceModal] = useState(false);
   const [sourceModalOpen, setSourceModalOpen] = useState(false);
+  const [editSources, setEditSources] = useState(false);
   const [value, setValue] = useState("");
   const { id } = useParams();
   const [profileData, setProfileData] = useState(null);
@@ -75,61 +78,84 @@ const Profile = () => {
     };
 
     getProfileData();
- 
-    
   }, [id]);
-
 
   const calculateEthnicBreakdown = async () => {
     const userId = localStorage.getItem("userId");
-    const getEthnicity = await fetch("http://localhost:5000/calculate-ethnic-breakdown", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, id }),
-    });
+    const getEthnicity = await fetch(
+      "http://localhost:5000/calculate-ethnic-breakdown",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, id }),
+      }
+    );
     const data = await getEthnicity.json();
     if (ethnicityNameArray.length === 0) {
-      setEthnicityNameArray((prev) => ([...prev, data.ethnicityNameArray]));
-      setEthnicityPercentageArray((prev) => ([...prev, data.ethnicityPercentageArray])) 
+      setEthnicityNameArray((prev) => [...prev, data.ethnicityNameArray]);
+      setEthnicityPercentageArray((prev) => [
+        ...prev,
+        data.ethnicityPercentageArray,
+      ]);
     }
-  }
+  };
 
   useEffectOnce(() => {
     calculateEthnicBreakdown();
-  })
+  });
 
   const EthnicBreakdown = () => {
     if (ethnicityNameArray[0]) {
       return (
         <>
-        <hr></hr>
+          <hr></hr>
           <h1>Ethnic Breakdown</h1>
           <p>
-            The following ethnic breakdown is purely geneaological - it is not an accurate representation of your genetic composition. Your geneaological ancestry shown below may include incredibly small results (> 0.00%) that almost definitely mean that you have zero genes from this ancestral ethnic component. This calculation also makes some necessary assumptions. It only takes into consideration the listed ethnicities of each dead-end ancestor - thus it is blind to any ethnic components that lurk behind dead-ends. When an ancestor only has one parent listed, then the missing parent is assumed to have the same ethnicity as the listed one. So while the numbers below aren't a direct representation of your DNA, it is an interesting way to see the breakdown of your ancestry, even incredibly small components that have been totally genetically diluted - according to your known ancestry, that is.
+            The following ethnic breakdown is purely geneaological - it is not
+            an accurate representation of your genetic composition. Your
+            geneaological ancestry shown below may include incredibly small
+            results (> 0.00%) that almost definitely mean that you have zero
+            genes from this ancestral ethnic component. This calculation also
+            makes some necessary assumptions. It only takes into consideration
+            the listed ethnicities of each dead-end ancestor - thus it is blind
+            to any ethnic components that lurk behind dead-ends. When an
+            ancestor only has one parent listed, then the missing parent is
+            assumed to have the same ethnicity as the listed one. So while the
+            numbers below aren't a direct representation of your DNA, it is an
+            interesting way to see the breakdown of your ancestry, even
+            incredibly small components that have been totally genetically
+            diluted - according to your known ancestry, that is.
           </p>
 
           <h4>Rounded</h4>
           <ol>
             {ethnicityNameArray[0].map((ethnicity, index) => (
               <>
-              {ethnicityPercentageArray[0][index].toFixed(2) > 0.00 ? (
-                <li key={index}>{ethnicityNameArray[0][index]}: {ethnicityPercentageArray[0][index].toFixed(2)}%</li>
-              ) : (<></>)}
+                {ethnicityPercentageArray[0][index].toFixed(2) > 0.0 ? (
+                  <li key={index}>
+                    {ethnicityNameArray[0][index]}:{" "}
+                    {ethnicityPercentageArray[0][index].toFixed(2)}%
+                  </li>
+                ) : (
+                  <></>
+                )}
               </>
             ))}
           </ol>
 
-          
           <h4>No Rounding</h4>
           <ol>
             {ethnicityNameArray[0].map((ethnicity, index) => (
-              <li key={index}>{ethnicityNameArray[0][index]}: {ethnicityPercentageArray[0][index].toFixed(20)}%</li>
+              <li key={index}>
+                {ethnicityNameArray[0][index]}:{" "}
+                {ethnicityPercentageArray[0][index].toFixed(20)}%
+              </li>
             ))}
           </ol>
-          </>
-      )
+        </>
+      );
     }
-    }
+  };
 
   const getSources = async () => {
     if (profileData) {
@@ -340,7 +366,16 @@ const Profile = () => {
     setSourceModalOpen(false);
   };
 
+  const editTextSourceOpenModal = () => {
+    setEditTextSourceOpen(true);
+  };
+
+  const closeEditTextSource = () => {
+    setShowEditTextSourceModal(false);
+  };
+
   const SaveSource = () => {
+
     const save = async () => {
       const userId = localStorage.getItem("userId");
       const response = await fetch("http://localhost:5000/save-source", {
@@ -355,14 +390,57 @@ const Profile = () => {
           profileData,
         }),
       });
+      const data = response.json();
     };
     save();
     closeAddSource();
     getSources();
+    // window.location.reload();
+  };
+
+  const SaveEditTextSource = (source, sourceAuthor, previousSource, previousSourceAuthor) => {
+   
+    const save = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch("http://localhost:5000/save-edit-text-source", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          source,
+          sourceAuthor,
+          previousSource, 
+          previousSourceAuthor,
+          profileData,
+        }),
+      });
+      const data = response.json();
+    };
+    save();
+    closeAddSource();
+    getSources();
+    // window.location.reload();
   };
 
   const handleSourceType = (event) => {
     setSourceType(event.target.value);
+  };
+
+  const deleteSource = async (source, sourceName, type) => {
+    const userId = localStorage.getItem("userId");
+    const deleteSource = await fetch("http://localhost:5000/delete-source", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        profileData,
+        source,
+        sourceName,
+        type,
+      }),
+    });
+    const data = deleteSource.json();
+    //window.location.reload();
   };
 
   const handleViewInTreee = async () => {
@@ -391,8 +469,6 @@ const Profile = () => {
       window.location.href = "/familytree";
     }
   };
-
-  
 
   const ListChildren = () => {
     const childList = child.reduce((acc, item, index, array) => {
@@ -453,7 +529,6 @@ const Profile = () => {
       );
     }
   };
-
 
   const handleEditInfo = () => {
     setisEditingInfo(true);
@@ -516,7 +591,78 @@ const Profile = () => {
     }
   };
 
+  const EditTextSourceModal = (
+    sourceNameTextArray,
+    sourceNameTextAuthorArray,
+    setSourceNameTextArray,
+    setSourceNameTextAuthorArray,
+    index
+  ) => {
 
+  const previousSource = useRef(sourceNameTextArray[index]);
+  const previousSourceAuthor = useRef(sourceNameTextAuthorArray[index]);
+
+    return (
+      <>
+        {/* edit text source */}
+        <Modal
+          show={editTextSourceOpenModal}
+          onHide={closeEditTextSource}
+          dialogclassName="custom-modal-width"
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Source</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div>
+                <label>Text Name</label>
+
+                <input
+                  type="text"
+                  value={sourceNameTextArray[index]}
+                  onChange={(event) => {
+                    const updatedArray = [...sourceNameTextArray];
+                    updatedArray[index] = event.target.value;
+                    setSourceNameTextArray(updatedArray); 
+                  }}
+                
+                  style={{ marginLeft: "40px" }}
+
+                ></input>
+
+                <div>
+                  <label style={{ marginRight: "67px" }}>Author</label>
+                  <input
+                    type="text"
+                    value={sourceNameTextAuthorArray[index]}
+                    onChange={(event) => {
+                      const updatedArray = [...sourceNameTextAuthorArray];
+                      updatedArray[index] = event.target.value;
+                      setSourceNameTextAuthorArray(updatedArray); 
+                    }}
+                  ></input>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="modal-footer-buttons">
+              <div className="non-delete-buttons">
+                <Button variant="secondary" onClick={closeEditTextSource}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={() => SaveEditTextSource(sourceNameTextArray[index], sourceNameTextAuthorArray[index], previousSource, previousSourceAuthor)}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
 
   return (
     <div className="profile">
@@ -532,7 +678,7 @@ const Profile = () => {
         <Modal.Body>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ width: "300px" }}>
-              <label>Source Type</label>
+              <label style={{ marginRight: "30px" }}>Source Type</label>
               <select onChange={handleSourceType}>
                 <option>--Select Type--</option>
                 <option value="link">Link</option>
@@ -548,10 +694,11 @@ const Profile = () => {
                   <input
                     type="text"
                     onChange={(event) => setSourceNameLink(event.target.value)}
+                    style={{ marginLeft: "20px" }}
                   ></input>
 
                   <div>
-                    <label>link</label>
+                    <label style={{ marginRight: "90px" }}>link</label>
                     <input
                       type="text"
                       onChange={(event) => setSourceLink(event.target.value)}
@@ -567,10 +714,11 @@ const Profile = () => {
                   <input
                     type="text"
                     onChange={(event) => setSourceNameText(event.target.value)}
+                    style={{ marginLeft: "20px" }}
                   ></input>
 
                   <div>
-                    <label>Author</label>
+                    <label style={{ marginRight: "67px" }}>Author</label>
                     <input
                       type="text"
                       onChange={(event) =>
@@ -617,7 +765,7 @@ const Profile = () => {
                 <input
                   value={profileData.profile_pic_caption}
                   style={{
-                    zIndex:"2000"
+                    zIndex: "2000",
                   }}
                   onChange={(e) =>
                     setProfileData((prev) => ({
@@ -1090,13 +1238,33 @@ const Profile = () => {
         >
           <h3>Sources</h3>
 
-          <p
-            className="span-link"
-            style={{ marginLeft: "10px", fontSize: "13px" }}
-            onClick={openAddSource}
-          >
-            Add Source
-          </p>
+          {editSources ? (
+            <>
+              <p
+                className="span-link"
+                style={{ marginLeft: "10px", fontSize: "13px" }}
+                onClick={openAddSource}
+              >
+                Add Source
+              </p>
+
+              <p
+                className="span-link"
+                style={{ marginLeft: "10px", fontSize: "13px" }}
+                onClick={() => setEditSources(false)}
+              >
+                Save
+              </p>
+            </>
+          ) : (
+            <p
+              className="span-link"
+              style={{ marginLeft: "10px", fontSize: "13px" }}
+              onClick={() => setEditSources(true)}
+            >
+              Edit Sources
+            </p>
+          )}
         </div>
 
         <ul className="source-ul">
@@ -1104,6 +1272,32 @@ const Profile = () => {
             <>
               {sourceLinkArray.map((source, index) => (
                 <li key={index}>
+                  {editSources ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          deleteSource(
+                            sourceLinkArray[index],
+                            sourceNameLinkArray[index],
+                            "link"
+                          );
+                          const updatedSourceLinkArray = sourceLinkArray.filter(
+                            (_, i) => i !== index
+                          );
+                          setSourceLinkArray(updatedSourceLinkArray);
+
+                          const updatedSourceNameLinkArray =
+                            sourceNameLinkArray.filter((_, i) => i !== index);
+                          setSourceNameLinkArray(updatedSourceNameLinkArray);
+                        }}
+                      >
+                        Delete
+                      </button>
+                      <button style={{ marginRight: "5px" }}>Edit</button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   <a href={sourceLinkArray[index]} target="_blank">
                     {sourceNameLinkArray[index]}
                   </a>
@@ -1120,6 +1314,54 @@ const Profile = () => {
             <>
               {sourceNameTextArray.map((source, index) => (
                 <li key={index}>
+                  {editSources ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          deleteSource(
+                            sourceNameTextArray[index],
+                            sourceNameTextAuthorArray[index],
+                            "text"
+                          );
+                          const updatedsourceNameTextArray =
+                            sourceNameTextArray.filter((_, i) => i !== index);
+                          setSourceNameTextArray(updatedsourceNameTextArray);
+
+                          const updatedsourceNameTextAuthorArray =
+                            sourceNameTextAuthorArray.filter(
+                              (_, i) => i !== index
+                            );
+                          setSourceNameTextAuthorArray(
+                            updatedsourceNameTextAuthorArray
+                          );
+                        }}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        style={{ marginRight: "5px" }}
+                        onClick={() => {
+                          setShowEditTextSourceModal(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+
+                      {showEditTextSourceModal ? (
+                        EditTextSourceModal(
+                          sourceNameTextArray,
+                          sourceNameTextAuthorArray,
+                          setSourceNameTextArray,
+                          setSourceNameTextAuthorArray,
+                          index
+                        )
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   {sourceNameTextAuthorArray[index]},{" "}
                   <i>{sourceNameTextArray[index]}</i>
                 </li>

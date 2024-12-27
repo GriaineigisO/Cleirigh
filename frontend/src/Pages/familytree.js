@@ -2731,7 +2731,7 @@ const FamilyTree = () => {
           body: JSON.stringify({ userId, personID, pageNumber }),
         });
       }
-      console.log("between");
+
       const userId = localStorage.getItem("userId");
       const response = await fetch(
         "http://localhost:5000/save-repeat-ancestor",
@@ -2741,7 +2741,7 @@ const FamilyTree = () => {
           body: JSON.stringify({ userId, childDetails, repeatAncestorId }),
         }
       );
-console.log("test")
+      const data = response.json();
       window.location.reload();
     };
 
