@@ -922,6 +922,7 @@ app.post("/get-current-page-number", async (req, res) => {
             `
     );
 
+
     let firstName = "";
     let middleName = "";
     let lastName = "";
@@ -1824,11 +1825,6 @@ app.post("/save-edit-text-source", async (req, res) => {
       profileData,
     } = req.body;
 
-    console.log(source)
-    console.log(sourceAuthor)
-    console.log(previousSource)
-    console.log(previousSourceAuthor)
-
     // Query to get the current tree
     const getCurrentTreeId = await pool.query(
       "SELECT current_tree_id FROM users WHERE id = $1",
@@ -2066,9 +2062,30 @@ app.post("/get-progress", async (req, res) => {
             WHERE ancestor_id = ${getProgress.rows[0].progress_id}
         `);
 
+      let firstName = "";
+      let middleName = "";
+      let lastName = "";
+      if (getPerson.rows[0].first_name === null) {
+        firstName = "UNKNOWN";
+      } else {
+        firstName = getPerson.rows[0].first_name;
+      }
+      if (getPerson.rows[0].middle_name === null) {
+        middleName = "";
+      } else {
+        middleName = getPerson.rows[0].middle_name;
+      }
+      if (getPerson.rows[0].last_name === null) {
+        lastName = "";
+      } else {
+        lastName = getPerson.rows[0].last_name;
+      }
+
+      let fullName = `${firstName} ${middleName} ${lastName}`;
+
     if (getProgress.rows[0].progress_id) {
       res.json({
-        name: `${getPerson.rows[0].first_name} ${getPerson.rows[0].middle_name} ${getPerson.rows[0].last_name}`,
+        name: fullName,
         link: `profile/${getProgress.rows[0].progress_id}`,
         note: getProgress.rows[0].progress_note,
         bool: true,
@@ -2198,7 +2215,7 @@ app.post("/search-ancestors", async (req, res) => {
 });
 
 app.post("/save-repeat-ancestor", async (req, res) => {
-  console.log("API triggered")
+
   try {
     const { userId, childDetails, repeatAncestorId } = req.body;
 
@@ -2646,6 +2663,444 @@ app.use("/calculate-ethnic-breakdown", async (req, res) => {
     console.log("error calculating ethnic breakdown:", error);
   }
 });
+
+app.use('/get-most-repeated-ancestor', async (req, res) => {
+  try {
+    const { userId} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+
+    const getMostRepeated = await pool.query(`
+      SELECT *, array_length(relation_to_user, 1) AS array_size
+      FROM tree_${currentTree}
+      ORDER BY array_size DESC
+      LIMIT 1;
+    `)
+
+    let firstName = "";
+    let middleName = "";
+    let lastName = "";
+    if (getMostRepeated.rows[0].first_name === null) {
+      firstName = "";
+    } else {
+      firstName = getMostRepeated.rows[0].first_name;
+    }
+    if (getMostRepeated.rows[0].middle_name === null) {
+      middleName = "";
+    } else {
+      middleName = getMostRepeated.rows[0].middle_name;
+    }
+    if (getMostRepeated.rows[0].last_name === null) {
+      lastName = "";
+    } else {
+      lastName = getMostRepeated.rows[0].last_name;
+    }
+
+    res.json({
+      name: `${firstName} ${middleName} ${lastName}`,
+      link: `profile/${getMostRepeated.rows[0].ancestor_id}`,
+      repeatedTimes: getMostRepeated.rows[0].relation_to_user.length
+    })
+
+  } catch (error) {
+    console.log("Error getting most repeated ancestor:", error)
+  }
+});
+
+app.use('/save-left-note', async (req, res) => {
+  try {
+
+    const {userId, leftNote, leftNoteHeadline} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const checkIfPageHasNotes = await pool.query(`
+      SELECT * FROM notes
+      WHERE tree_id = ${currentTree} AND page_number = ${currentPage}
+      `)
+
+    if (checkIfPageHasNotes.rows.length === 0) {
+      const saveLeftNote = await pool.query(`
+        INSERT INTO notes (tree_id, page_number, left_note, left_note_headline)
+        VALUES ($1, $2, $3, $4)
+      `, [
+        currentTree,
+        currentPage,
+        leftNote,
+        leftNoteHeadline
+      ])
+  
+      res.json(true);
+    } else {
+      const saveLeftNote = await pool.query(`
+        UPDATE notes 
+        SET
+          left_note = $3,
+          left_note_headline = $4
+        WHERE tree_id = $1 AND page_number = $2
+      `, [
+        currentTree,
+        currentPage,
+        leftNote,
+        leftNoteHeadline
+      ])
+  
+      res.json(true);
+    }
+
+  } catch(error) {
+    console.log("Error saving left note:", error)
+  }
+})
+
+app.use('/edit-left-note', async (req, res) => {
+  try {
+
+    const {userId, leftNote, leftNoteHeadline} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const editLeftNote = await pool.query(`
+      UPDATE notes 
+      SET 
+        left_note = $3,
+        left_note_headline = $4
+      WHERE tree_id = $1 AND page_number = $2
+      
+    `, [
+      currentTree,
+      currentPage,
+      leftNote,
+      leftNoteHeadline
+    ])
+
+    res.json(true);
+
+  } catch(error) {
+    console.log("Error editing left note:", error)
+  }
+})
+
+app.use('/delete-left-note', async (req, res) => {
+  try {
+
+    const {userId} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const editLeftNote = await pool.query(`
+      UPDATE notes 
+      SET
+        left_note = null,
+        left_note_headline = null
+      WHERE tree_id = $1 AND page_number = $2
+      
+    `, [
+      currentTree,
+      currentPage
+    ])
+
+    res.json(true);
+
+  } catch(error) {
+    console.log("Error editing left note:", error)
+  }
+})
+
+app.use('/get-left-note', async (req, res) => {
+  try {
+
+    const {userId} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const getLeftNote = await pool.query(`
+      SELECT * FROM notes 
+      WHERE tree_id = $1 AND page_number = $2
+    `, [
+      currentTree,
+      currentPage,
+    ])
+
+    if (getLeftNote.rows.length > 0) {
+
+      const leftNote = getLeftNote.rows[0].left_note
+      const leftNoteHeadline = getLeftNote.rows[0].left_note_headline
+
+      let bool = true;
+      if (leftNote === null) {
+        bool = false;
+      }
+
+      res.json({
+        isLeftNote: bool,
+        leftNote: leftNote,
+        leftNoteHeadline:leftNoteHeadline
+      });
+
+  }
+  
+
+  } catch(error) {
+    console.log("Error saving left note:", error)
+  }
+})
+
+
+app.use('/save-right-note', async (req, res) => {
+  try {
+
+    const {userId, rightNote, rightNoteHeadline} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const checkIfPageHasNotes = await pool.query(`
+      SELECT * FROM notes
+      WHERE tree_id = ${currentTree} AND page_number = ${currentPage}
+      `)
+
+    if (checkIfPageHasNotes.rows.length === 0) {
+      const saveRightNote = await pool.query(`
+        INSERT INTO notes (tree_id, page_number, right_note, right_note_headline)
+        VALUES ($1, $2, $3, $4)
+      `, [
+        currentTree,
+        currentPage,
+        rightNote,
+        rightNoteHeadline
+      ])
+  
+      res.json(true);
+    } else {
+      const saveRightNote = await pool.query(`
+        UPDATE notes 
+        SET
+          right_note = $3,
+          right_note_headline = $4
+        WHERE tree_id = $1 AND page_number = $2
+      `, [
+        currentTree,
+        currentPage,
+        rightNote,
+        rightNoteHeadline
+      ])
+    }
+
+  } catch(error) {
+    console.log("Error saving right note:", error)
+  }
+})
+
+app.use('/edit-right-note', async (req, res) => {
+  try {
+
+    const {userId, rightNote, rightNoteHeadline} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const editLeftNote = await pool.query(`
+      UPDATE notes 
+      SET 
+        right_note = $3,
+        right_note_headline = $4
+      WHERE tree_id = $1 AND page_number = $2
+      
+    `, [
+      currentTree,
+      currentPage,
+      rightNote,
+      rightNoteHeadline
+    ])
+
+    res.json(true);
+
+  } catch(error) {
+    console.log("Error editing left note:", error)
+  }
+})
+
+app.use('/delete-right-note', async (req, res) => {
+  try {
+
+    const {userId, rightNote} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const editRightNote = await pool.query(`
+      UPDATE notes 
+      SET
+        right_note = null,
+        right_note_headline = null
+      WHERE tree_id = $1 AND page_number = $2
+      
+    `, [
+      currentTree,
+      currentPage
+    ])
+
+    res.json(true);
+
+  } catch(error) {
+    console.log("Error deleting left note:", error)
+  }
+})
+
+app.use('/get-right-note', async (req, res) => {
+  try {
+
+    const {userId} = req.body;
+
+    // Query to get the current tree
+    const getCurrentTreeId = await pool.query(
+      "SELECT current_tree_id FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    
+    // Query to get the current page
+    const getCurrentPage = await pool.query(
+      "SELECT current_page FROM users WHERE id = $1",
+      [userId]
+    );
+
+    const currentPage = getCurrentPage.rows[0].current_page;
+
+    const getRightNote = await pool.query(`
+      SELECT * FROM notes 
+      WHERE tree_id = $1 AND page_number = $2
+    `, [
+      currentTree,
+      currentPage,
+    ])
+
+    if (getRightNote.rows.length > 0) {
+
+      const rightNote = getRightNote.rows[0].right_note
+      const rightNoteHeadline = getRightNote.rows[0].right_note_headline
+
+      let bool = true;
+      if (rightNote === null) {
+        bool = false;
+      }
+
+      res.json({
+        isRightNote: bool,
+        rightNote: rightNote,
+        rightNoteHeadline:rightNoteHeadline
+      });
+
+  }
+  
+
+  } catch(error) {
+    console.log("Error saving right note:", error)
+  }
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

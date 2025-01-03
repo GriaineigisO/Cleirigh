@@ -18,6 +18,18 @@ import crown from "../Images/crown.png";
 //maternalmaternalgrandparents = maternal grandmother's parents
 
 const FamilyTree = () => {
+  const [rightNoteMargin, setRightNoteMargin] = useState();
+  const [noteTop, setNoteTop] = useState();
+  const [isEditingLeftNote, setIsEditingLeftNote] = useState(false);
+  const [isLeftNote, setIsLeftNote] = useState(false);
+  const [leftNote, setLeftNote] = useState();
+  const [leftNoteHeadline, setLeftNoteHeadline] = useState();
+  const [writeLeftNoteModalOpen, setWriteLeftNoteModalOpen] = useState(false);
+  const [isEditingRightNote, setIsEditingRightNote] = useState(false);
+  const [isRightNote, setIsRightNote] = useState(false);
+  const [rightNote, setRightNote] = useState();
+  const [rightNoteHeadline, setRightNoteHeadline] = useState();
+  const [writeRightNoteModalOpen, setWriteRightNoteModalOpen] = useState(false);
   const [addRepeatAncestorSection, setAddRepeatAncestorSection] =
     useState(false);
   const [repeatAncestorProfileNum, setRepeatAncestorProfileNum] = useState();
@@ -2711,7 +2723,7 @@ const FamilyTree = () => {
     };
 
     const saveRepeatAncestor = async (childDetails, repeatAncestorId) => {
-      //if the person whose parent is a repeat ancestor, check if he is a great grandparent on the table. That way a new page can be assigned to him
+      //the person whose parent is a repeat ancestor, check if he is a great grandparent on the table. That way a new page can be assigned to him
       const ggparentIDs = [
         paternalPaternalGreatGrandfatherDetails.id,
         paternalPaternalGreatGrandmotherDetails.id,
@@ -3494,9 +3506,12 @@ const FamilyTree = () => {
     return (
       <>
         {details.id ? (
-          <table className="ancestor-box" style={{ boxShadow: boxShadowColor }}>
+          <table
+            className="ancestor-box"
+            style={{ boxShadow: boxShadowColor, zIndex: "1001" }}
+          >
             <tr>
-              {details.relationToUser  && details.relationToUser.length > 1 ? (
+              {details.relationToUser && details.relationToUser.length > 1 ? (
                 <td
                   colSpan="4"
                   className="ancestor-box-border-bottom table-label repeat-ancestor"
@@ -3549,7 +3564,9 @@ const FamilyTree = () => {
                 <b>
                   {details.occupation &&
                   (details.occupation.includes("King") ||
-                  details.occupation.includes("king") || details.occupation.includes("emperor") || details.occupation.includes("Emperor")) ? (
+                    details.occupation.includes("king") ||
+                    details.occupation.includes("emperor") ||
+                    details.occupation.includes("Emperor")) ? (
                     <img
                       width="20px"
                       style={{ marginRight: "5px" }}
@@ -3780,7 +3797,9 @@ const FamilyTree = () => {
               <td className="ancestor-box-border-bottom table-content">
                 {details.occupation &&
                 (details.occupation.includes("King") ||
-                  details.occupation.includes("king") || details.occupation.includes("emperor") || details.occupation.includes("Emperor")) ? (
+                  details.occupation.includes("king") ||
+                  details.occupation.includes("emperor") ||
+                  details.occupation.includes("Emperor")) ? (
                   <img
                     width="20px"
                     style={{ marginRight: "5px" }}
@@ -3942,6 +3961,160 @@ const FamilyTree = () => {
     maternalMaternalGreatGrandmotherDetails.id,
     setMaternalMaternalGreatGrandmotherHasParents
   );
+
+  const saveLeftNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/save-left-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
+    });
+
+    const data = response.json();
+    setWriteLeftNoteModalOpen(false);
+    setIsLeftNote(true);
+  };
+
+  const editLeftNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/edit-left-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
+    });
+
+    const data = response.json();
+    setWriteLeftNoteModalOpen(false);
+    window.location.reload();
+  };
+
+  const deleteLeftNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/delete-left-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, leftNote }),
+    });
+
+    const data = response.json();
+    setWriteLeftNoteModalOpen(false);
+    setIsLeftNote(false);
+  };
+
+  const getLeftNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/get-left-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+
+    const data = await response.json();
+    setIsLeftNote(data.isLeftNote);
+    setLeftNote(data.leftNote);
+    setLeftNoteHeadline(data.leftNoteHeadline);
+  };
+
+  useEffect(() => {
+    getLeftNote();
+  }, []);
+
+  const saveRightNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/save-right-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
+    });
+
+    const data = response.json();
+    setWriteRightNoteModalOpen(false);
+    setIsRightNote(true);
+  };
+
+  const editRightNote = async () => {
+
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/edit-right-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
+    });
+
+    const data = response.json();
+    setWriteRightNoteModalOpen(false);
+    window.location.reload();
+  };
+
+  const deleteRightNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/delete-right-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, rightNote }),
+    });
+
+    const data = response.json();
+    setWriteRightNoteModalOpen(false);
+    setIsRightNote(false);
+  };
+
+  const getRightNote = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("http://localhost:5000/get-right-note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+
+    const data = await response.json();
+    setIsRightNote(data.isRightNote);
+    setRightNote(data.rightNote);
+    setRightNoteHeadline(data.rightNoteHeadline);
+  };
+
+  useEffect(() => {
+    getRightNote();
+  }, []);
+
+  useEffect(() => {
+    if (
+      paternalPaternalGreatGrandfatherDetails.id ||
+      paternalPaternalGreatGrandmotherDetails.id ||
+      paternalMaternalGreatGrandfatherDetails.id ||
+      paternalMaternalGreatGrandmotherDetails.id ||
+      maternalPaternalGreatGrandfatherDetails.id ||
+      maternalPaternalGreatGrandmotherDetails.id ||
+      maternalMaternalGreatGrandfatherDetails.id ||
+      maternalMaternalGreatGrandmotherDetails.id
+    ) {
+      setNoteTop("650px");
+    } else {
+      setNoteTop("620px");
+    }
+  }, [
+    paternalPaternalGreatGrandfatherDetails.id,
+    paternalPaternalGreatGrandmotherDetails.id,
+    paternalMaternalGreatGrandfatherDetails.id,
+    paternalMaternalGreatGrandmotherDetails.id,
+    maternalPaternalGreatGrandfatherDetails.id,
+    maternalPaternalGreatGrandmotherDetails.id,
+    maternalMaternalGreatGrandfatherDetails.id,
+    maternalMaternalGreatGrandmotherDetails.id,
+  ]);
+
+  useEffect(() => {
+    if (
+      isLeftNote
+    ) {
+      setRightNoteMargin("635px");
+    } else {
+      setRightNoteMargin("730px");
+    }
+  }, [
+    isLeftNote
+  ]);
+
 
   return (
     <div id="family-tree-parent-div">
@@ -5047,23 +5220,32 @@ const FamilyTree = () => {
             id="tree-notes"
             style={{
               position: "absolute",
-              top: "625px",
-              left: "100px",
+              top: noteTop,
+              left: "5px",
               width: "100%",
+              zIndex: "1000",
             }}
           >
-            {false ? (
-              <div id="left-note">
-                <div style={{ display: "flex", flexDirection: "row" }}>
+            {isLeftNote ? (
+              <div id="left-note" style={{ width:"450px"}}>
+                <div style={{ display: "flex", flexDirection: "row"}}>
                   <img
                     src={warningLogo}
                     style={{ width: "30px", height: "30px" }}
                   ></img>
-                  <h4>Note!</h4>
+                  <h4>{leftNoteHeadline}</h4>
                 </div>
 
                 <hr></hr>
-                <p>nlah blah blah blah</p>
+                <p>{leftNote}</p>
+                <img
+                  className="editLogo"
+                  src={editLogo}
+                  onClick={() => {
+                    setWriteLeftNoteModalOpen(true);
+                    setIsEditingLeftNote(true);
+                  }}
+                ></img>
               </div>
             ) : (
               <div
@@ -5074,29 +5256,111 @@ const FamilyTree = () => {
                   alignContent: "center",
                 }}
               >
-                <button style={{ height: "40px", marginTop: "40px" }}>
+                <button
+                  onClick={() => setWriteLeftNoteModalOpen(true)}
+                  style={{ height: "40px", marginTop: "40px" }}
+                >
                   Add Note
                 </button>
               </div>
             )}
 
-            {false ? (
-              <div
-                id="right-note"
-                style={{
-                  position: "absolute",
-                  left: "1000px",
-                }}
+            {writeLeftNoteModalOpen ? (
+              <Modal
+                show={writeLeftNoteModalOpen}
+                onHide={() => setWriteLeftNoteModalOpen(false)}
+                dialogclassName="custom-modal-width"
+                backdrop="static"
               >
+                <Modal.Header closeButton>
+                  {isEditingLeftNote ? (
+                    <Modal.Title>Edit Note</Modal.Title>
+                  ) : (
+                    <Modal.Title>Add Note</Modal.Title>
+                  )}
+                </Modal.Header>
+                <Modal.Body>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div>
+                      <label>Headline</label>
+
+                      <input
+                        type="text"
+                        value={leftNoteHeadline}
+                        onChange={(event) => {
+                          setLeftNoteHeadline(event.target.value);
+                        }}
+                        style={{ marginLeft: "40px", width: "400px" }}
+                      ></input>
+
+                      <div>
+                        <label style={{ marginRight: "67px" }}>Note</label>
+                        <textarea
+                          type="text"
+                          value={leftNote}
+                          onChange={(event) => {
+                            setLeftNote(event.target.value);
+                          }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <div className="modal-footer-buttons">
+                    <div className="non-delete-buttons">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setWriteLeftNoteModalOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+
+                      {isEditingLeftNote ? (
+                        <>
+                          <Button variant="primary" onClick={editLeftNote}>
+                            Save Changes
+                          </Button>
+                          <Button
+                            style={{ marginLeft: "400px" }}
+                            onClick={deleteLeftNote}
+                          >
+                            Delete Note
+                          </Button>
+                        </>
+                      ) : (
+                        <Button variant="primary" onClick={saveLeftNote}>
+                          Save Changes
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </Modal.Footer>
+              </Modal>
+            ) : (
+              <></>
+            )}
+
+            {isRightNote ? (
+              <div id="right-note" style={{marginLeft: rightNoteMargin, width:"425px"}}>
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <img
                     src={warningLogo}
                     style={{ width: "30px", height: "30px" }}
                   ></img>
-                  <h4>Note!</h4>
+                  <h4>{rightNoteHeadline}</h4>
                 </div>
+
                 <hr></hr>
-                <p>nlah blah blah blah</p>
+                <p>{rightNote}</p>
+                <img
+                  className="editLogo"
+                  src={editLogo}
+                  onClick={() => {
+                    setWriteRightNoteModalOpen(true);
+                    setIsEditingRightNote(true);
+                  }}
+                ></img>
               </div>
             ) : (
               <div
@@ -5105,14 +5369,92 @@ const FamilyTree = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignContent: "center",
-                  position: "absolute",
-                  left: "1000px",
+                  marginLeft: "700px"
                 }}
               >
-                <button style={{ height: "40px", marginTop: "40px" }}>
+                <button
+                  onClick={() => setWriteRightNoteModalOpen(true)}
+                  style={{ height: "40px", marginTop: "40px" }}
+                >
                   Add Note
                 </button>
               </div>
+            )}
+
+            {writeRightNoteModalOpen ? (
+              <Modal
+                show={writeRightNoteModalOpen}
+                onHide={() => setWriteRightNoteModalOpen(false)}
+                dialogclassName="custom-modal-width"
+                backdrop="static"
+              >
+                <Modal.Header closeButton>
+                  {isEditingRightNote ? (
+                    <Modal.Title>Edit Note</Modal.Title>
+                  ) : (
+                    <Modal.Title>Add Note</Modal.Title>
+                  )}
+                </Modal.Header>
+                <Modal.Body>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div>
+                      <label>Headline</label>
+
+                      <input
+                        type="text"
+                        value={rightNoteHeadline}
+                        onChange={(event) => {
+                          setRightNoteHeadline(event.target.value);
+                        }}
+                        style={{ marginLeft: "40px", width: "400px" }}
+                      ></input>
+
+                      <div>
+                        <label style={{ marginRight: "67px" }}>Note</label>
+                        <textarea
+                          type="text"
+                          value={rightNote}
+                          onChange={(event) => {
+                            setRightNote(event.target.value);
+                          }}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <div className="modal-footer-buttons">
+                    <div className="non-delete-buttons">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setWriteRightNoteModalOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+
+                      {isEditingRightNote ? (
+                        <>
+                          <Button variant="primary" onClick={editRightNote}>
+                            Save Changes
+                          </Button>
+                          <Button
+                            style={{ marginLeft: "400px" }}
+                            onClick={deleteRightNote}
+                          >
+                            Delete Note
+                          </Button>
+                        </>
+                      ) : (
+                        <Button variant="primary" onClick={saveRightNote}>
+                          Save Changes
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </Modal.Footer>
+              </Modal>
+            ) : (
+              <></>
             )}
           </div>
 

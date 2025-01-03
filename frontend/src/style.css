@@ -81,19 +81,17 @@
 
 .custom-modal-width .modal-dialog {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 500;
+    z-index: 10000;
     background: rgb(40, 74, 39) !important;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   }
 
 .modal-content {
     width: 800px !important;
+    margin-left: -150px;
     background: rgb(51, 69, 50) !important;
     color: rgb(210, 255, 126) !important;   
+    margin-top: 75px;
 }
 
 .input-modal {
@@ -149,7 +147,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.8);
-    z-index:500;
+    z-index:10000;
   }
   
 
@@ -454,7 +452,7 @@ table tr:first-child td:last-child {
     bottom: 0;
     left: 0;
     width: 100%; 
-    z-index: 200;
+    z-index: 2000;
 }
 
 .bottom-bar-content {

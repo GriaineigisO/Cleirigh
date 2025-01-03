@@ -1058,7 +1058,7 @@ const Profile = () => {
                 )}
               </tr>
 
-              {profileData.ethnicity ? (
+              
                 <tr>
                   <td className="profile-table-label">Ethnicity </td>
                   {isEditingInfo ? (
@@ -1075,9 +1075,7 @@ const Profile = () => {
                     <td>{profileData.ethnicity}</td>
                   )}
                 </tr>
-              ) : (
-                <></>
-              )}
+              
 
               <tr>
                 {profileData.sex === "male" ? (
