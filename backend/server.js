@@ -14,7 +14,8 @@ const path = require("path");
 
 const corsOptions = {
   origin: "http://localhost:3000", // Allow only this origin
-  methods: "GET,HEAD,POST,PUT,DELETE", // Allowed HTTP methods
+  methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
+  credentials: true
 };
 
 // Configure Multer
@@ -206,7 +207,7 @@ app.post("/make-new-tree", async (req, res) => {
             occupation TEXT DEFAULT NULL, 
             father_id INT DEFAULT NULL, 
             mother_id INT DEFAULT NULL,
-            relation_to_user INT[] DEFAULT NULL,
+            relation_to_user INT[] DEFAULT ARRAY[0],
             uncertain_first_name BOOLEAN DEFAULT false,
             uncertain_middle_name BOOLEAN DEFAULT false,
             uncertain_last_name BOOLEAN DEFAULT false,
@@ -218,7 +219,7 @@ app.post("/make-new-tree", async (req, res) => {
             marriage_date TEXT DEFAULT NULL,
             marriage_place TEXT DEFAULT NULL,
             member_of_nobility BOOLEAN DEFAULT FALSE,
-            profile_text TEXT DEFAULL NULL,
+            profile_text TEXT DEFAULT NULL,
             source_name_array TEXT [] DEFAULT NULL,
             source_name_text_array TEXT [] DEFAULT NULL,
             source_link_array TEXT [] DEFAULT NULL,
@@ -228,7 +229,6 @@ app.post("/make-new-tree", async (req, res) => {
             source_text_author_array TEXT DEFAULT NULL,
             profile_pic TEXT DEFAULT NULL,
             profile_pic_caption TEXT DEFAULT NULL
-            UNIQUE (ancestor_id)
             )
         `
     );
@@ -443,7 +443,7 @@ app.post("/add-first-person", async (req, res) => {
         deathPlace,
         deathCause,
         occupation,
-        0,
+        [0],
       ]
     );
 
@@ -789,6 +789,33 @@ app.post("/get-father", async (req, res) => {
         pageNum: fatherQuery.rows[0].base_of_page,
         memberOfNobility: fatherQuery.rows[0].member_of_nobility,
       });
+    } else {
+      res.json({
+        fatherID: null,
+        fatherFullName: null,
+        fatherFirstName: null,
+        fatherMiddleName: null,
+        fatherLastName: null,
+        fatherBirthDate: null,
+        fatherBirthPlace: null,
+        fatherDeathDate: null,
+        fatherDeathPlace: null,
+        fatherOccupation: null,
+        fatherProfileNumber: null,
+        fatherEthnicity: null,
+        fatherCauseOfDeath: null,
+        relation_to_user: null,
+        uncertainFirstName: null,
+        uncertainMiddleName: null,
+        uncertainLastName: null,
+        uncertainBirthDate: null,
+        uncertainBirthPlace: null,
+        uncertainDeathDate: null,
+        uncertainDeathPlace: null,
+        uncertainOccupation: null,
+        pageNum: null,
+        memberOfNobility: null
+      });
     }
   } catch (error) {
     console.log("Error getting father:", error);
@@ -815,6 +842,7 @@ app.post("/get-mother", async (req, res) => {
             `);
 
     const motherID = parentQuery.rows[0].mother_id;
+    
 
     const motherQuery = await pool.query(`
             SELECT * FROM tree_${currentTree}
@@ -872,6 +900,33 @@ app.post("/get-mother", async (req, res) => {
         pageNum: motherQuery.rows[0].base_of_page,
         memberOfNobility: motherQuery.rows[0].member_of_nobility,
       });
+    } else {
+      res.json({
+        motherID: null,
+        motherFullName: null,
+        motherFirstName: null,
+        motherMiddleName: null,
+        motherLastName: null,
+        motherBirthDate: null,
+        motherBirthPlace: null,
+        motherDeathDate: null,
+        motherDeathPlace: null,
+        motherOccupation: null,
+        motherProfileNumber: null,
+        motherEthnicity: null,
+        motherCauseOfDeath: null,
+        relation_to_user: null,
+        uncertainFirstName: null,
+        uncertainMiddleName: null,
+        uncertainLastName: null,
+        uncertainBirthDate: null,
+        uncertainBirthPlace: null,
+        uncertainDeathDate: null,
+        uncertainDeathPlace: null,
+        uncertainOccupation: null,
+        pageNum: null,
+        memberOfNobility: null,
+      })
     }
   } catch (error) {
     console.log("Error getting mother:", error);
@@ -1241,6 +1296,7 @@ app.post("/save-ancestor", async (req, res) => {
 
 //determines if the great grandparent of the bottom page person has parents
 app.post("/check-if-great-grandparent-has-parents", async (req, res) => {
+
   try {
     const { userId, greatgrandparentID } = req.body;
 
@@ -1258,13 +1314,14 @@ app.post("/check-if-great-grandparent-has-parents", async (req, res) => {
             `
     );
 
+
     if (
-      request.rows[0].father_id === null &&
-      request.rows[0].mother_id === null
+      request.rows[0].father_id !== null||
+      request.rows[0].mother_id !== null
     ) {
-      res.json(false);
-    } else {
       res.json(true);
+    } else {
+      res.json(false);
     }
   } catch (error) {
     console.log("Error checking greatgrandparent's parents:", error);
@@ -2062,38 +2119,38 @@ app.post("/get-progress", async (req, res) => {
             WHERE ancestor_id = ${getProgress.rows[0].progress_id}
         `);
 
-      let firstName = "";
-      let middleName = "";
-      let lastName = "";
-      if (getPerson.rows[0].first_name === null) {
-        firstName = "UNKNOWN";
-      } else {
-        firstName = getPerson.rows[0].first_name;
-      }
-      if (getPerson.rows[0].middle_name === null) {
-        middleName = "";
-      } else {
-        middleName = getPerson.rows[0].middle_name;
-      }
-      if (getPerson.rows[0].last_name === null) {
-        lastName = "";
-      } else {
-        lastName = getPerson.rows[0].last_name;
-      }
+      if (getProgress.rows[0].progress_id) {
+        let firstName = "";
+        let middleName = "";
+        let lastName = "";
+        if (getPerson.rows[0].first_name === null) {
+          firstName = "UNKNOWN";
+        } else {
+          firstName = getPerson.rows[0].first_name;
+        }
+        if (getPerson.rows[0].middle_name === null) {
+          middleName = "";
+        } else {
+          middleName = getPerson.rows[0].middle_name;
+        }
+        if (getPerson.rows[0].last_name === null) {
+          lastName = "";
+        } else {
+          lastName = getPerson.rows[0].last_name;
+        }
 
-      let fullName = `${firstName} ${middleName} ${lastName}`;
-
-    if (getProgress.rows[0].progress_id) {
-      res.json({
-        name: fullName,
-        link: `profile/${getProgress.rows[0].progress_id}`,
-        note: getProgress.rows[0].progress_note,
-        bool: true,
-      });
-    } else {
-      res.json({
-        bool: false,
-      });
+        let fullName = `${firstName} ${middleName} ${lastName}`;
+        res.json({
+          name: fullName,
+          link: `profile/${getProgress.rows[0].progress_id}`,
+          note: getProgress.rows[0].progress_note,
+          bool: true,
+        });
+      
+      } else {
+        res.json({
+          bool: false,
+        });
     }
   } catch (error) {
     console.log("Error saving progress:", error);
@@ -2900,6 +2957,12 @@ app.use('/get-left-note', async (req, res) => {
         leftNoteHeadline:leftNoteHeadline
       });
 
+  } else {
+    res.json({
+      isLeftNote: false,
+      leftNote: null,
+      leftNoteHeadline:null
+    });
   }
   
 
@@ -3094,6 +3157,12 @@ app.use('/get-right-note', async (req, res) => {
         rightNoteHeadline:rightNoteHeadline
       });
 
+  } else {
+    res.json({
+      isLeftNote: false,
+      leftNote: null,
+      leftNoteHeadline:null
+    });
   }
   
 

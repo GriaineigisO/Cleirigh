@@ -289,6 +289,8 @@ const HomePageWithTree = () => {
         setProgressNote(progressData.note);
         if (progressData.bool) {
           setSavedProgress(true);
+        } else {
+          setSavedProgress(false);
         }
       } catch (error) {
         console.log("error getting progress:", error);
@@ -501,7 +503,8 @@ const HomePageWithTree = () => {
                 </p>
               </div>
 
-              {mostRepeatedAncestor ? (
+              
+              {mostRepeatedAncestor && repeatedTimes > 1 ? (
                 <div className="homePageDiv">
                   <p className="homePageDivLabel">Most Repeated Ancestor</p>
                   <p className="homePageDivContent">

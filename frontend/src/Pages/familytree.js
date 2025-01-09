@@ -861,6 +861,7 @@ const FamilyTree = () => {
     window.location.reload();
   };
 
+  
   const countTotalPageNum = async () => {
     const userId = localStorage.getItem("userId");
     const response = await fetch("http://localhost:5000/count-all-pages", {
@@ -871,7 +872,10 @@ const FamilyTree = () => {
     const data = await response.json();
     setTotalNumOfPages(data);
   };
-  countTotalPageNum();
+  useEffect(() => {
+    countTotalPageNum();
+  }, [])
+  
 
   const handleNavigateUpwards = async (personID) => {
     const userId = localStorage.getItem("userId");
@@ -1206,6 +1210,7 @@ const FamilyTree = () => {
         body: JSON.stringify({ userId, personID }),
       });
 
+
       const data = await response.json();
       setPaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
         ...prevDetails,
@@ -1276,6 +1281,7 @@ const FamilyTree = () => {
         memberOfNobility: data.memberOfNobility,
         pageNum: data.pageNum,
       }));
+
     }
   };
   useEffect(() => {
@@ -1561,10 +1567,13 @@ const FamilyTree = () => {
 
   //updates maternalGrandmotherDetails whenever it changes
   useEffect(() => {
-    setMaternalGrandmotherDetails((prev) => ({
-      ...prev,
-      ethnicity: motherDetails.ethnicity,
-    }));
+    if (motherDetails.ethnicity) {
+      setMaternalGrandmotherDetails((prev) => ({
+        ...prev,
+        ethnicity: motherDetails.ethnicity,
+      }));
+      
+    } 
   }, [motherDetails.ethnicity]);
 
   //updates paternalPaternalGreatGrandfatherDetails whenever it changes
@@ -1592,11 +1601,16 @@ const FamilyTree = () => {
 
   //updates paternalMaternalGreatGrandfatherDetails whenever it changes
   useEffect(() => {
-    setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-      ...prev,
-      lastName: paternalGrandmotherDetails.lastName,
-    }));
-  }, [paternalGrandmotherDetails.lastName]);
+      setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+        ...prev,
+        lastName: paternalGrandmotherDetails.lastName,
+      }));
+  }, []);
+
+  useEffect(() => {
+    console.log(paternalMaternalGreatGrandfatherDetails.lastName)
+  }, [paternalMaternalGreatGrandfatherDetails.lastName])
+
 
   useEffect(() => {
     setPaternalMaternalGreatGrandfatherDetails((prev) => ({
@@ -1719,6 +1733,9 @@ const FamilyTree = () => {
       ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
     }));
   }, [paternalMaternalGreatGrandfatherDetails.ethnicity]);
+
+
+
 
   //updates paternalMaternalGreatGrandfathersMotherDetails whenever it changes
   useEffect(() => {
@@ -2757,6 +2774,7 @@ const FamilyTree = () => {
       window.location.reload();
     };
 
+
     return (
       <Modal
         show={showPerson}
@@ -2791,7 +2809,7 @@ const FamilyTree = () => {
             </div>
 
             {/*if the person is male, then his default surname is the same as his childrens'*/}
-            {sex === "cxqmale" ? (
+            {sex === "male" ? (
               <div className="inputandQuestionMark">
                 <input
                   type="text"
@@ -2901,7 +2919,7 @@ const FamilyTree = () => {
         </Modal.Body>
         <Modal.Footer>
           <div className="modal-footer-buttons">
-            <p class="onclick-text" onClick={handleAddExistingAncestor}>
+            <p className="onclick-text" onClick={handleAddExistingAncestor}>
               <u>Add Pre-Existing Person</u>
             </p>
             <div className="non-delete-buttons">
@@ -3528,7 +3546,7 @@ const FamilyTree = () => {
                     Relation to {basePersonDetails.firstName}:
                   </td>
                   <td
-                    colspan="3"
+                    colSpan="3"
                     className="ancestor-box-border-bottom table-content"
                   >
                     <Relation relation={details.relationToUser} sex={sex} />
@@ -3645,11 +3663,14 @@ const FamilyTree = () => {
             {childID ? (
               <table className="unknown-ancestor">
                 <tr>
-                  <p></p>
+                  
                 </tr>
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
-                  <button onClick={openAddModal}>Add {motherFather}</button>
+                  <td>
+                    <button onClick={openAddModal}>Add {motherFather}</button>
+                  </td>
+                  
                 </tr>
                 <tr></tr>
                 <tr></tr>
@@ -3886,11 +3907,14 @@ const FamilyTree = () => {
             {childID ? (
               <table className="unknown-ancestor">
                 <tr>
-                  <p></p>
+                  
                 </tr>
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
-                  <button onClick={openAddModal}>Add {motherFather}</button>
+                  <td>
+                    <button onClick={openAddModal}>Add {motherFather}</button>
+                  </td>
+                  
                 </tr>
                 <tr></tr>
                 <tr></tr>
@@ -3911,6 +3935,8 @@ const FamilyTree = () => {
 
   const checkIfGGHasParents = async (greatgrandparentID, setHasParents) => {
     if (greatgrandparentID) {
+      try {
+
       const userId = localStorage.getItem("userId");
       const response = await fetch(
         "http://localhost:5000/check-if-great-grandparent-has-parents",
@@ -3923,44 +3949,67 @@ const FamilyTree = () => {
 
       const data = await response.json();
       setHasParents(data);
+      } catch (error) {
+      console.log("Error checking if gg has parents:", error.message)
     }
+  }
   };
 
-  checkIfGGHasParents(
-    paternalPaternalGreatGrandfatherDetails.id,
-    setPaternalPaternalGreatGrandfatherHasParents
-  );
+  useEffect(() => {
+    checkIfGGHasParents(
+      paternalPaternalGreatGrandfatherDetails.id,
+      setPaternalPaternalGreatGrandfatherHasParents
+    );
+  }, [paternalPaternalGreatGrandfatherDetails.id]);
+
+  useEffect(() => {
   checkIfGGHasParents(
     paternalPaternalGreatGrandmotherDetails.id,
     setPaternalPaternalGreatGrandmotherHasParents
   );
+}, [paternalPaternalGreatGrandmotherDetails.id]);
 
+useEffect(() => {
   checkIfGGHasParents(
     paternalMaternalGreatGrandfatherDetails.id,
     setPaternalMaternalGreatGrandfatherHasParents
   );
+}, [paternalMaternalGreatGrandfatherDetails.id]);
+
+useEffect(() => {
   checkIfGGHasParents(
     paternalMaternalGreatGrandmotherDetails.id,
     setPaternalMaternalGreatGrandmotherHasParents
   );
+}, [paternalMaternalGreatGrandmotherDetails.id]);
 
+useEffect(() => {
   checkIfGGHasParents(
     maternalPaternalGreatGrandfatherDetails.id,
     setMaternalPaternalGreatGrandfatherHasParents
   );
+}, [maternalPaternalGreatGrandfatherDetails.id]);
+
+useEffect(() => {
   checkIfGGHasParents(
     maternalPaternalGreatGrandmotherDetails.id,
     setMaternalPaternalGreatGrandmotherHasParents
   );
+}, [maternalPaternalGreatGrandmotherDetails.id]);
 
+useEffect(() => {
   checkIfGGHasParents(
     maternalMaternalGreatGrandfatherDetails.id,
     setMaternalMaternalGreatGrandfatherHasParents
   );
+}, [maternalMaternalGreatGrandfatherDetails.id]);
+
+useEffect(() => {
   checkIfGGHasParents(
     maternalMaternalGreatGrandmotherDetails.id,
     setMaternalMaternalGreatGrandmotherHasParents
   );
+}, [maternalMaternalGreatGrandmotherDetails.id]);
 
   const saveLeftNote = async () => {
     const userId = localStorage.getItem("userId");
@@ -4033,7 +4082,6 @@ const FamilyTree = () => {
   };
 
   const editRightNote = async () => {
-
     const userId = localStorage.getItem("userId");
     const response = await fetch("http://localhost:5000/edit-right-note", {
       method: "POST",
@@ -4104,17 +4152,12 @@ const FamilyTree = () => {
   ]);
 
   useEffect(() => {
-    if (
-      isLeftNote
-    ) {
+    if (isLeftNote) {
       setRightNoteMargin("635px");
     } else {
       setRightNoteMargin("730px");
     }
-  }, [
-    isLeftNote
-  ]);
-
+  }, [isLeftNote]);
 
   return (
     <div id="family-tree-parent-div">
@@ -4216,6 +4259,7 @@ const FamilyTree = () => {
         savePaternalMaternalGreatGrandfatherChanges,
         closeAddPaternalMaternalGreatGrandfatherModal
       )}
+      
 
       {MakeModal(
         showPaternalMaternalGreatGrandmother,
@@ -5227,8 +5271,8 @@ const FamilyTree = () => {
             }}
           >
             {isLeftNote ? (
-              <div id="left-note" style={{ width:"450px"}}>
-                <div style={{ display: "flex", flexDirection: "row"}}>
+              <div id="left-note" style={{ width: "450px" }}>
+                <div style={{ display: "flex", flexDirection: "row" }}>
                   <img
                     src={warningLogo}
                     style={{ width: "30px", height: "30px" }}
@@ -5342,7 +5386,10 @@ const FamilyTree = () => {
             )}
 
             {isRightNote ? (
-              <div id="right-note" style={{marginLeft: rightNoteMargin, width:"425px"}}>
+              <div
+                id="right-note"
+                style={{ marginLeft: rightNoteMargin, width: "425px" }}
+              >
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <img
                     src={warningLogo}
@@ -5369,7 +5416,7 @@ const FamilyTree = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignContent: "center",
-                  marginLeft: "700px"
+                  marginLeft: "700px",
                 }}
               >
                 <button

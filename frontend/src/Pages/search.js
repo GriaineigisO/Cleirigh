@@ -121,6 +121,7 @@ const Search = () => {
           </div>
 
           <div style={{ marginBottom: "80px" }}>
+          <h4>{results.length} results</h4>
             {results.map((firstName, index) => (
               <table id="searchResults">
                 <tr>

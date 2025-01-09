@@ -763,6 +763,7 @@ const Profile = () => {
               ></img>
               {isEditingInfo ? (
                 <input
+                placeholder="Profile Pic Caption"
                   value={profileData.profile_pic_caption}
                   style={{
                     zIndex: "2000",
@@ -813,6 +814,7 @@ const Profile = () => {
           <h1>
             {isEditingInfo ? (
               <input
+              placeholder="First Name"
                 value={profileData.first_name}
                 onChange={(e) =>
                   setProfileData((prev) => ({
@@ -833,6 +835,7 @@ const Profile = () => {
             )}{" "}
             {isEditingInfo ? (
               <input
+              placeholder="Middle Name"
                 value={profileData.middle_name}
                 onChange={(e) =>
                   setProfileData((prev) => ({
@@ -853,6 +856,7 @@ const Profile = () => {
             )}{" "}
             {isEditingInfo ? (
               <input
+              placeholder="Last Name"
                 value={profileData.last_name}
                 onChange={(e) =>
                   setProfileData((prev) => ({
@@ -884,6 +888,7 @@ const Profile = () => {
                 {isEditingInfo ? (
                   <>
                     <input
+                    placeholder="Date of Birth"
                       value={profileData.date_of_birth}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -893,6 +898,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
+                    placeholder="Place of Birth"
                       value={profileData.place_of_birth}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -930,6 +936,7 @@ const Profile = () => {
                 {isEditingInfo ? (
                   <>
                     <input
+                    placeholder="Date of Marriage"
                       value={profileData.marriage_date}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -939,6 +946,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
+                    placeholder="Place of Marriage"
                       value={profileData.marriage_place}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -978,6 +986,7 @@ const Profile = () => {
                 {isEditingInfo ? (
                   <>
                     <input
+                    placeholder="Date of Death"
                       value={profileData.date_of_death}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -987,6 +996,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
+                    placeholder="Place of Death"
                       value={profileData.place_of_death}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -996,6 +1006,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
+                    placeholder="Cause of Death"
                       value={profileData.cause_of_death}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -1032,6 +1043,7 @@ const Profile = () => {
                 <td className="profile-table-label">Occupation </td>
                 {isEditingInfo ? (
                   <input
+                  placeholder="Occupation"
                     value={profileData.occupation}
                     onChange={(e) =>
                       setProfileData((prev) => ({
@@ -1063,6 +1075,7 @@ const Profile = () => {
                   <td className="profile-table-label">Ethnicity </td>
                   {isEditingInfo ? (
                     <input
+                    placeholder="Ethnicity"
                       value={profileData.ethnicity}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -1085,6 +1098,7 @@ const Profile = () => {
                     </td>
                     {isEditingInfo ? (
                       <input
+                      placeholder="Paternal Haplogroup"
                         value={profileData.paternal_haplogroup}
                         onChange={(e) =>
                           setProfileData((prev) => ({
@@ -1112,6 +1126,7 @@ const Profile = () => {
                 <td className="profile-table-label">Maternal Haplogroup </td>
                 {isEditingInfo ? (
                   <input
+                    placeholder="Maternal Haplogroup"
                     value={profileData.maternal_haplogroup}
                     onChange={(e) =>
                       setProfileData((prev) => ({
