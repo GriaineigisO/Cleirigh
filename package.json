@@ -1,7 +1,7 @@
 {
   "scripts": {
     "postinstall": "npm install --prefix frontend && npm run build --prefix frontend",
-  "start": "node backend/index.js",
+  "start": "react-scripts start",
   "build": "react-scripts build",
   "test": "react-scripts test",
   "eject": "react-scripts eject"
