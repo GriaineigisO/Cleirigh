@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "engines": {
-    "node": "22.11.0"
+    "node": "22.x"
   },
   "scripts": {
   "start": "CHOKIDAR_USEPOLLING=true CHOKIDAR_IGNORE=C:/DumpStack.log.tmp react-scripts start"
