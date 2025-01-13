@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { useEffectOnce } from "../Components/useEffectOnce.js";
+import ancientGroups from "../Components/AncientEthnicBreakdown.js";
 
 const Profile = () => {
   const [ethnicityNameArray, setEthnicityNameArray] = useState([]);
@@ -104,6 +105,132 @@ const Profile = () => {
     calculateEthnicBreakdown();
   });
 
+  const AncientEthnicBreakdown = () => {
+    let ancientGroup = [];
+    let ancientGroupPercent = [];
+    let ancientGroupGraphColor = [];
+    let ancientGroupPercentTotal = 0;
+    for (let i = 0; i < ethnicityNameArray[0].length; i++) {
+      const modernEthnicity = ethnicityNameArray[0][i]
+        .toLowerCase()
+        .replace(" ", "_");
+
+      //if the % of the modern ethnic group is less than 0.0% when rounded up, the entire component will be ignored
+      if (
+        modernEthnicity in ancientGroups &&
+        ethnicityPercentageArray[0][i].toFixed(2) > 0.0
+      ) {
+        const modernEthnicityBreakdown = ancientGroups[modernEthnicity];
+
+        function calculateAncientComponent(component, ancientAverage, color) {
+          const ancientComponentPercent =
+            (ancientAverage * ethnicityPercentageArray[0][i]) / 100;
+
+          if (!ancientGroup.includes(component)) {
+            ancientGroup.push(component);
+            ancientGroupPercent.push(ancientComponentPercent);
+            ancientGroupGraphColor.push(color);
+          } else {
+            const amount = ancientGroupPercent[ancientGroup.indexOf(component)];
+            ancientGroupPercent[ancientGroup.indexOf(component)] =
+              amount + ancientComponentPercent;
+          }
+        }
+
+        calculateAncientComponent(
+          "Steppe",
+          modernEthnicityBreakdown.steppe,
+          "blue"
+        );
+        calculateAncientComponent(
+          "Anatolian Neolithic Farmer",
+          modernEthnicityBreakdown.anf,
+          "orange"
+        );
+        calculateAncientComponent(
+          "Western Hunter Gatherer",
+          modernEthnicityBreakdown.whg,
+          "green"
+        );
+        calculateAncientComponent(
+          "Baltic Hunter Gatherer",
+          modernEthnicityBreakdown.baltic_hg,
+          "green"
+        );
+        calculateAncientComponent(
+          "Iran Paleolithic",
+          modernEthnicityBreakdown.iran_paleo,
+          "green"
+        );
+        calculateAncientComponent(
+          "Taforalt",
+          modernEthnicityBreakdown.taforalt,
+          "green"
+        );
+        calculateAncientComponent(
+          "Eastern Hunter Gatherer",
+          modernEthnicityBreakdown.ehg,
+          "blue"
+        );
+
+
+      }
+    }
+
+    let count = 0;
+
+    for (let l = 0; l < ancientGroupPercent.length; l++) {
+      ancientGroupPercentTotal += ancientGroupPercent[l];
+    }
+
+    while (ancientGroupPercentTotal < 100) {
+      ancientGroupPercent[0] += 0.01;
+      ancientGroupPercentTotal += 0.01
+      count++
+    }
+
+    return (
+      <ul>
+        {ancientGroup.map((ethnicity, index) => (
+          <>
+            {ancientGroupPercent[index].toFixed(2) == 0.0 ? (
+              <></>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <li
+                  key={index}
+                  style={{
+                    width: "250px",
+                    textAlign: "right",
+                    marginRight: "5px",
+                    listStyle: "none",
+                  }}
+                >
+                  {ancientGroup[index]}: {ancientGroupPercent[index].toFixed(2)}
+                  %
+                </li>
+                <div>
+                  <span
+                    style={{
+                      textAlign: "left",
+                      paddingRight: `${
+                        ancientGroupPercent[index].toFixed(2) * 10
+                      }px`,
+                      height: "16",
+                      backgroundColor: `${ancientGroupGraphColor[index]}`,
+                    }}
+                  >
+                    {" "}
+                  </span>
+                </div>
+              </div>
+            )}
+          </>
+        ))}
+      </ul>
+    );
+  };
+
   const EthnicBreakdown = () => {
     if (ethnicityNameArray[0]) {
       return (
@@ -127,31 +254,41 @@ const Profile = () => {
             diluted - according to your known ancestry, that is.
           </p>
 
-          <h4>Rounded</h4>
-          <ol>
-            {ethnicityNameArray[0].map((ethnicity, index) => (
-              <>
-                {ethnicityPercentageArray[0][index].toFixed(2) > 0.0 ? (
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <h4>Rounded</h4>
+              <ol>
+                {ethnicityNameArray[0].map((ethnicity, index) => (
+                  <>
+                    {ethnicityPercentageArray[0][index].toFixed(2) > 0.0 ? (
+                      <li key={index}>
+                        {ethnicityNameArray[0][index]}:{" "}
+                        {ethnicityPercentageArray[0][index].toFixed(2)}%
+                      </li>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                ))}
+              </ol>
+
+              <h4>No Rounding</h4>
+              <ol>
+                {ethnicityNameArray[0].map((ethnicity, index) => (
                   <li key={index}>
                     {ethnicityNameArray[0][index]}:{" "}
-                    {ethnicityPercentageArray[0][index].toFixed(2)}%
+                    {ethnicityPercentageArray[0][index].toFixed(20)}%
                   </li>
-                ) : (
-                  <></>
-                )}
-              </>
-            ))}
-          </ol>
+                ))}
+              </ol>
+            </div>
 
-          <h4>No Rounding</h4>
-          <ol>
-            {ethnicityNameArray[0].map((ethnicity, index) => (
-              <li key={index}>
-                {ethnicityNameArray[0][index]}:{" "}
-                {ethnicityPercentageArray[0][index].toFixed(20)}%
-              </li>
-            ))}
-          </ol>
+            <div style={{ marginLeft: "100px" }}>
+              <h4>Estimated Ancient Breakdown</h4>
+
+              <AncientEthnicBreakdown />
+            </div>
+          </div>
         </>
       );
     }
@@ -375,7 +512,6 @@ const Profile = () => {
   };
 
   const SaveSource = () => {
-
     const save = async () => {
       const userId = localStorage.getItem("userId");
       const response = await fetch("http://localhost:5000/save-source", {
@@ -398,22 +534,29 @@ const Profile = () => {
     // window.location.reload();
   };
 
-  const SaveEditTextSource = (source, sourceAuthor, previousSource, previousSourceAuthor) => {
-   
+  const SaveEditTextSource = (
+    source,
+    sourceAuthor,
+    previousSource,
+    previousSourceAuthor
+  ) => {
     const save = async () => {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/save-edit-text-source", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          source,
-          sourceAuthor,
-          previousSource, 
-          previousSourceAuthor,
-          profileData,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:5000/save-edit-text-source",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId,
+            source,
+            sourceAuthor,
+            previousSource,
+            previousSourceAuthor,
+            profileData,
+          }),
+        }
+      );
       const data = response.json();
     };
     save();
@@ -598,9 +741,8 @@ const Profile = () => {
     setSourceNameTextAuthorArray,
     index
   ) => {
-
-  const previousSource = useRef(sourceNameTextArray[index]);
-  const previousSourceAuthor = useRef(sourceNameTextAuthorArray[index]);
+    const previousSource = useRef(sourceNameTextArray[index]);
+    const previousSourceAuthor = useRef(sourceNameTextAuthorArray[index]);
 
     return (
       <>
@@ -625,11 +767,9 @@ const Profile = () => {
                   onChange={(event) => {
                     const updatedArray = [...sourceNameTextArray];
                     updatedArray[index] = event.target.value;
-                    setSourceNameTextArray(updatedArray); 
+                    setSourceNameTextArray(updatedArray);
                   }}
-                
                   style={{ marginLeft: "40px" }}
-
                 ></input>
 
                 <div>
@@ -640,7 +780,7 @@ const Profile = () => {
                     onChange={(event) => {
                       const updatedArray = [...sourceNameTextAuthorArray];
                       updatedArray[index] = event.target.value;
-                      setSourceNameTextAuthorArray(updatedArray); 
+                      setSourceNameTextAuthorArray(updatedArray);
                     }}
                   ></input>
                 </div>
@@ -653,7 +793,17 @@ const Profile = () => {
                 <Button variant="secondary" onClick={closeEditTextSource}>
                   Cancel
                 </Button>
-                <Button variant="primary" onClick={() => SaveEditTextSource(sourceNameTextArray[index], sourceNameTextAuthorArray[index], previousSource, previousSourceAuthor)}>
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    SaveEditTextSource(
+                      sourceNameTextArray[index],
+                      sourceNameTextAuthorArray[index],
+                      previousSource,
+                      previousSourceAuthor
+                    )
+                  }
+                >
                   Save Changes
                 </Button>
               </div>
@@ -763,7 +913,7 @@ const Profile = () => {
               ></img>
               {isEditingInfo ? (
                 <input
-                placeholder="Profile Pic Caption"
+                  placeholder="Profile Pic Caption"
                   value={profileData.profile_pic_caption}
                   style={{
                     zIndex: "2000",
@@ -814,7 +964,7 @@ const Profile = () => {
           <h1>
             {isEditingInfo ? (
               <input
-              placeholder="First Name"
+                placeholder="First Name"
                 value={profileData.first_name}
                 onChange={(e) =>
                   setProfileData((prev) => ({
@@ -835,7 +985,7 @@ const Profile = () => {
             )}{" "}
             {isEditingInfo ? (
               <input
-              placeholder="Middle Name"
+                placeholder="Middle Name"
                 value={profileData.middle_name}
                 onChange={(e) =>
                   setProfileData((prev) => ({
@@ -856,7 +1006,7 @@ const Profile = () => {
             )}{" "}
             {isEditingInfo ? (
               <input
-              placeholder="Last Name"
+                placeholder="Last Name"
                 value={profileData.last_name}
                 onChange={(e) =>
                   setProfileData((prev) => ({
@@ -888,7 +1038,7 @@ const Profile = () => {
                 {isEditingInfo ? (
                   <>
                     <input
-                    placeholder="Date of Birth"
+                      placeholder="Date of Birth"
                       value={profileData.date_of_birth}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -898,7 +1048,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
-                    placeholder="Place of Birth"
+                      placeholder="Place of Birth"
                       value={profileData.place_of_birth}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -936,7 +1086,7 @@ const Profile = () => {
                 {isEditingInfo ? (
                   <>
                     <input
-                    placeholder="Date of Marriage"
+                      placeholder="Date of Marriage"
                       value={profileData.marriage_date}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -946,7 +1096,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
-                    placeholder="Place of Marriage"
+                      placeholder="Place of Marriage"
                       value={profileData.marriage_place}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -986,7 +1136,7 @@ const Profile = () => {
                 {isEditingInfo ? (
                   <>
                     <input
-                    placeholder="Date of Death"
+                      placeholder="Date of Death"
                       value={profileData.date_of_death}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -996,7 +1146,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
-                    placeholder="Place of Death"
+                      placeholder="Place of Death"
                       value={profileData.place_of_death}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -1006,7 +1156,7 @@ const Profile = () => {
                       }
                     ></input>
                     <input
-                    placeholder="Cause of Death"
+                      placeholder="Cause of Death"
                       value={profileData.cause_of_death}
                       onChange={(e) =>
                         setProfileData((prev) => ({
@@ -1043,7 +1193,7 @@ const Profile = () => {
                 <td className="profile-table-label">Occupation </td>
                 {isEditingInfo ? (
                   <input
-                  placeholder="Occupation"
+                    placeholder="Occupation"
                     value={profileData.occupation}
                     onChange={(e) =>
                       setProfileData((prev) => ({
@@ -1070,25 +1220,23 @@ const Profile = () => {
                 )}
               </tr>
 
-              
-                <tr>
-                  <td className="profile-table-label">Ethnicity </td>
-                  {isEditingInfo ? (
-                    <input
+              <tr>
+                <td className="profile-table-label">Ethnicity </td>
+                {isEditingInfo ? (
+                  <input
                     placeholder="Ethnicity"
-                      value={profileData.ethnicity}
-                      onChange={(e) =>
-                        setProfileData((prev) => ({
-                          ...prev,
-                          ethnicity: e.target.value,
-                        }))
-                      }
-                    ></input>
-                  ) : (
-                    <td>{profileData.ethnicity}</td>
-                  )}
-                </tr>
-              
+                    value={profileData.ethnicity}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        ethnicity: e.target.value,
+                      }))
+                    }
+                  ></input>
+                ) : (
+                  <td>{profileData.ethnicity}</td>
+                )}
+              </tr>
 
               <tr>
                 {profileData.sex === "male" ? (
@@ -1098,7 +1246,7 @@ const Profile = () => {
                     </td>
                     {isEditingInfo ? (
                       <input
-                      placeholder="Paternal Haplogroup"
+                        placeholder="Paternal Haplogroup"
                         value={profileData.paternal_haplogroup}
                         onChange={(e) =>
                           setProfileData((prev) => ({
