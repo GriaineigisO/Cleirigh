@@ -11,12 +11,22 @@ const cleirighUserDB = require("./db");
 const e = require("express");
 const multer = require("multer");
 const path = require("path");
+const { createClient } = require('@supabase/supabase-js');
 
 const corsOptions = {
   origin: "http://localhost:3000", // Allow only this origin
   methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
   credentials: true
 };
+
+
+// Set up environment variables for Supabase credentials in .env
+const supabaseUrl = process.env.SUPABASE_URL; 
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Create the client
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 // Configure Multer
 const storage = multer.diskStorage({
@@ -119,30 +129,39 @@ app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    //find user by email
-    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+    // Step 1: Fetch user from Supabase
+    const { data: users, error: fetchError } = await supabase
+      .from('users') // Replace 'users' with the actual table name in your Supabase
+      .select('*')
+      .eq('email', email)
+      .limit(1); // Limit the result to one user
 
-    if (result.rows.length === 0) {
+    if (fetchError) {
+      console.error("Supabase fetch error:", fetchError);
+      return res.status(500).json({ message: "Server error during fetch." });
+    }
+
+    if (!users || users.length === 0) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const user = result.rows[0];
+    const user = users[0];
 
-    //compare password with hashed password in database
+    // Step 2: Compare password with hashed password from Supabase
     const isMatch = await bcrypt.compare(password, user.password);
+
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Generate token
+    // Step 3: Generate JWT token
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
     console.log("Token generated:", token);
 
-    //respond with token and user data
+    // Step 4: Send response
     res.json({
       token,
       user: {
@@ -151,9 +170,10 @@ app.post("/api/login", async (req, res) => {
         email: user.email,
       },
     });
+
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).json({ message: "server error" });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
