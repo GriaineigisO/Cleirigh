@@ -738,7 +738,7 @@ const FamilyTree = () => {
       // Fetch Base Person
       const userId = localStorage.getItem("userId");
       const baseResponse = await fetch(
-        "http://localhost:5000/get-base-person",
+        "`${process.env.REACT_APP_BACKEND_URL}/get-base-person",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -778,7 +778,7 @@ const FamilyTree = () => {
       // Fetch Current Page Number
       const userId = localStorage.getItem("userId");
       const pageResponse = await fetch(
-        "http://localhost:5000/get-current-page-number",
+        "`${process.env.REACT_APP_BACKEND_URL}/get-current-page-number",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -794,7 +794,7 @@ const FamilyTree = () => {
   const setNewPageNum = (num) => {
     const userId = localStorage.getItem("userId");
     const pageResponse = fetch(
-      "http://localhost:5000/set-current-page-number",
+      "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -808,7 +808,7 @@ const FamilyTree = () => {
   const getNewPageNum = async () => {
     const userId = localStorage.getItem("userId");
     const pageResponse = await fetch(
-      "http://localhost:5000/get-current-page-number",
+      "`${process.env.REACT_APP_BACKEND_URL}/get-current-page-number",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -851,7 +851,7 @@ const FamilyTree = () => {
 
   const navigateDown = async (personID) => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/get-previous-page", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-previous-page", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, personID }),
@@ -864,7 +864,7 @@ const FamilyTree = () => {
   
   const countTotalPageNum = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/count-all-pages", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/count-all-pages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
@@ -879,7 +879,7 @@ const FamilyTree = () => {
 
   const handleNavigateUpwards = async (personID) => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/get-next-page", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-next-page", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, personID }),
@@ -897,7 +897,7 @@ const FamilyTree = () => {
     if (bottomPersonDetails.id) {
       const personID = bottomPersonDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -940,7 +940,7 @@ const FamilyTree = () => {
     if (bottomPersonDetails.id) {
       const personID = bottomPersonDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -983,7 +983,7 @@ const FamilyTree = () => {
     if (fatherDetails.id) {
       const personID = fatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1026,7 +1026,7 @@ const FamilyTree = () => {
     if (fatherDetails.id) {
       const personID = fatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1077,7 +1077,7 @@ const FamilyTree = () => {
     if (motherDetails.id) {
       const personID = motherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1120,7 +1120,7 @@ const FamilyTree = () => {
     if (motherDetails.id) {
       const personID = motherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1161,7 +1161,7 @@ const FamilyTree = () => {
     if (paternalGrandfatherDetails.id) {
       const personID = paternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1204,7 +1204,7 @@ const FamilyTree = () => {
     if (paternalGrandfatherDetails.id) {
       const personID = paternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1248,7 +1248,7 @@ const FamilyTree = () => {
     if (paternalGrandmotherDetails.id) {
       const personID = paternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1292,7 +1292,7 @@ const FamilyTree = () => {
     if (paternalGrandmotherDetails.id) {
       const personID = paternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1335,7 +1335,7 @@ const FamilyTree = () => {
     if (maternalGrandfatherDetails.id) {
       const personID = maternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1378,7 +1378,7 @@ const FamilyTree = () => {
     if (maternalGrandfatherDetails.id) {
       const personID = maternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1421,7 +1421,7 @@ const FamilyTree = () => {
     if (maternalGrandmotherDetails.id) {
       const personID = maternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-father", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1464,7 +1464,7 @@ const FamilyTree = () => {
     if (maternalGrandmotherDetails.id) {
       const personID = maternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/get-mother", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1607,9 +1607,6 @@ const FamilyTree = () => {
       }));
   }, []);
 
-  useEffect(() => {
-    console.log(paternalMaternalGreatGrandfatherDetails.lastName)
-  }, [paternalMaternalGreatGrandfatherDetails.lastName])
 
 
   useEffect(() => {
@@ -1863,7 +1860,7 @@ const FamilyTree = () => {
   const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/save-ancestor", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-ancestor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, ancestorDetails, childID, sex }),
@@ -2162,7 +2159,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2190,7 +2187,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2218,7 +2215,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2247,7 +2244,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2275,7 +2272,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2302,7 +2299,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2329,7 +2326,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2356,7 +2353,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2383,7 +2380,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2410,7 +2407,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2437,7 +2434,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2464,7 +2461,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2491,7 +2488,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2518,7 +2515,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2545,7 +2542,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2572,7 +2569,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("http://localhost:5000/make-new-page", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2597,7 +2594,7 @@ const FamilyTree = () => {
     setEditShow(false);
     try {
       const userId = localStorage.getItem("userId");
-      const response = fetch("http://localhost:5000/edit-person", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/edit-person", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personDetails }),
@@ -2619,7 +2616,7 @@ const FamilyTree = () => {
     openDeletePopup();
     try {
       const userId = localStorage.getItem("userId");
-      const response = fetch("http://localhost:5000/delete-person", {
+      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-person", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, sex }),
@@ -2639,7 +2636,7 @@ const FamilyTree = () => {
   const toggleUncertain = async (details, setDetails, infoType) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("http://localhost:5000/toggle-uncertain", {
+      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/toggle-uncertain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, details, infoType }),
@@ -2754,7 +2751,7 @@ const FamilyTree = () => {
       if (ggparentIDs.includes(childDetails.id)) {
         const userId = localStorage.getItem("userId");
         const personID = childDetails.id;
-        const response = await fetch("http://localhost:5000/make-new-page", {
+        const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2763,7 +2760,7 @@ const FamilyTree = () => {
 
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "http://localhost:5000/save-repeat-ancestor",
+        "`${process.env.REACT_APP_BACKEND_URL}/save-repeat-ancestor",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -3014,7 +3011,7 @@ const FamilyTree = () => {
     closeSaveProgressHerePopup();
     closeEditPerson();
     const userId = localStorage.getItem("userId");
-    const removedResponse = await fetch("http://localhost:5000/save-progress", {
+    const removedResponse = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, progressNote, details }),
@@ -3463,7 +3460,7 @@ const FamilyTree = () => {
     const handleOpenPage = async (num) => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "http://localhost:5000/set-current-page-number",
+        "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
         {
           method: "POST",
           headers: {
@@ -3483,7 +3480,7 @@ const FamilyTree = () => {
             const userId = localStorage.getItem("userId");
             const id = details.id;
             const response = await fetch(
-              "http://localhost:5000/find-page-number",
+              "`${process.env.REACT_APP_BACKEND_URL}/find-page-number",
               {
                 method: "POST",
                 headers: {
@@ -3721,7 +3718,7 @@ const FamilyTree = () => {
     const handleOpenPage = async (num) => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "http://localhost:5000/set-current-page-number",
+        "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
         {
           method: "POST",
           headers: {
@@ -3741,7 +3738,7 @@ const FamilyTree = () => {
             const userId = localStorage.getItem("userId");
             const id = details.id;
             const response = await fetch(
-              "http://localhost:5000/find-page-number",
+              "`${process.env.REACT_APP_BACKEND_URL}/find-page-number",
               {
                 method: "POST",
                 headers: {
@@ -3939,7 +3936,7 @@ const FamilyTree = () => {
 
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "http://localhost:5000/check-if-great-grandparent-has-parents",
+        "`${process.env.REACT_APP_BACKEND_URL}/check-if-great-grandparent-has-parents",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -4013,7 +4010,7 @@ useEffect(() => {
 
   const saveLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/save-left-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
@@ -4026,7 +4023,7 @@ useEffect(() => {
 
   const editLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/edit-left-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/edit-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
@@ -4039,7 +4036,7 @@ useEffect(() => {
 
   const deleteLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/delete-left-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, leftNote }),
@@ -4052,7 +4049,7 @@ useEffect(() => {
 
   const getLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/get-left-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
@@ -4070,7 +4067,7 @@ useEffect(() => {
 
   const saveRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/save-right-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
@@ -4083,7 +4080,7 @@ useEffect(() => {
 
   const editRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/edit-right-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/edit-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
@@ -4096,7 +4093,7 @@ useEffect(() => {
 
   const deleteRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/delete-right-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, rightNote }),
@@ -4109,7 +4106,7 @@ useEffect(() => {
 
   const getRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:5000/get-right-note", {
+    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),

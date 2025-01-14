@@ -87,7 +87,7 @@ const HandleFirstPerson = async () => {
   setTreeId(generatedTreeId);
 
   try {
-    const createTreeResponse = await fetch('http://localhost:5000/make-new-tree', {
+    const createTreeResponse = await fetch('`${process.env.REACT_APP_BACKEND_URL}/make-new-tree', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const HandleFirstPerson = async () => {
       throw new Error('Failed to create a new tree');
     }
 
-    const addPersonResponse = await fetch('http://localhost:5000/add-first-person', {
+    const addPersonResponse = await fetch('`${process.env.REACT_APP_BACKEND_URL}/add-first-person', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -122,7 +122,7 @@ const HandleFirstPerson = async () => {
       throw new Error('Failed to add the first person');
     }
 
-    const setCurrentTreeResponse = await fetch('http://localhost:5000/set-current-tree', {
+    const setCurrentTreeResponse = await fetch('`${process.env.REACT_APP_BACKEND_URL}/set-current-tree', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, treeId: generatedTreeId }),

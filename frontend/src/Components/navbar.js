@@ -65,7 +65,7 @@ const Navbar = ({onLogin, onLogout}) => {
             try {
                 //gets user's id
                 const userId = localStorage.getItem('userId');
-                const response = await fetch('http://localhost:5000/get-all-trees', {
+                const response = await fetch('`${process.env.REACT_APP_BACKEND_URL}/get-all-trees', {
                     method: 'POST',
                     headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const Navbar = ({onLogin, onLogout}) => {
         try {
             //gets user's id
             const userId = localStorage.getItem('userId');
-            const response = await fetch('http://localhost:5000/switch-trees', {
+            const response = await fetch('`${process.env.REACT_APP_BACKEND_URL}/switch-trees', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const Navbar = ({onLogin, onLogout}) => {
         const userId = decodedToken.id;
 
             try {
-            const response = await fetch('http://localhost:5000/get-tree-name', {
+            const response = await fetch('`${process.env.REACT_APP_BACKEND_URL}/get-tree-name', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

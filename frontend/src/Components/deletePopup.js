@@ -10,7 +10,7 @@ function DeleteModal({ details, setDetails, sex, getPerson, closeEditPerson }) {
         const personID = details.id;
         try {
             const userId = localStorage.getItem("userId");
-            const response = await fetch("http://localhost:5000/delete-person", {
+            const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-person", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userId, personID, sex }),
