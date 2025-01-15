@@ -1,85 +1,79 @@
-import { createClient } from '@supabase/supabase-js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { createClient } from "@supabase/supabase-js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-// Supabase Setup
-const supabaseUrl = process.env.SUPABASE_URL; 
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-// CORS configuration (manually set in the handler)
+// CORS Options
 const corsOptions = {
-  origin: "https://cleirigh.vercel.app", 
+  origin: "https://cleirigh.vercel.app",  // Your frontend URL
   methods: ['GET', 'POST', 'OPTIONS'], 
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-// CORS Pre-flight response (Handle OPTIONS)
-export const options = (req, res) => {
+export default async function handler(req, res) {
+  // Enable CORS for all requests (including OPTIONS)
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
   res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.status(204).end(); // Successful preflight response
-};
 
-// Main login handler
-export default async function handler(req, res) {
-    console.log("test")
-  // Handle CORS pre-flight
+  // Handle OPTIONS method (for CORS preflight)
   if (req.method === 'OPTIONS') {
-    return options(req, res);  // Early exit for OPTIONS (pre-flight) requests
+    res.status(200).end();
+    return;
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
+  // Handle POST request (your login logic)
+  if (req.method === 'POST') {
+    const { email, password } = req.body;
+    const supabaseUrl = process.env.SUPABASE_URL; 
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  const { email, password } = req.body;
+    // Initialize supabase client
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-  try {
+    try {
+      // Fetch user data from Supabase
+      const { data: users, error: fetchError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .limit(1);
 
-    // Step 1: Fetch user from Supabase
-    const { data: users, error: fetchError } = await supabase
-      .from('users')  // Replace 'users' with your Supabase table name
-      .select('*')
-      .eq('email', email)
-      .limit(1);
+      if (fetchError) {
+        console.error("Supabase fetch error:", fetchError);
+        return res.status(500).json({ message: "Server error during fetch." });
+      }
 
-    if (fetchError || !users.length) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      if (!users || users.length === 0) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      const user = users[0];
+      
+      // Check the password
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      // Generate a JWT token
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+      // Send the response with token and user info
+      res.json({
+        token,
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        },
+      });
+
+    } catch (error) {
+      console.error("Error during login:", error);
+      res.status(500).json({ message: "Server error" });
     }
-
-    const user = users[0];
-
-    // Step 2: Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    // Step 3: Generate JWT token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    console.log("Token generated:", token);
-
-    // Step 4: Send success response
-    res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.status(200).json({
-      token,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      },
-    });
-
-  } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ message: "Server error" });
   }
 }
