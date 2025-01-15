@@ -1,8 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-
 // CORS Options
 const corsOptions = {
   origin: "https://cleirigh.vercel.app", 
@@ -11,8 +8,10 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
 export default async function handler(req, res) {
-  // Enable CORS for all requests (including OPTIONS)
+  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
@@ -26,12 +25,16 @@ export default async function handler(req, res) {
 
   const { userId } = req.body;
 
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required." });
+  }
+
   try {
     // Query to fetch all trees for the given user ID
     const { data: allTrees, error } = await supabase
-      .from('trees') // Replace 'trees' with the name of your Supabase table
-      .select('tree_name, tree_id') // Select only necessary fields
-      .eq('user_id', userId); // Filter by user_id
+      .from('trees')  // Ensure your Supabase table name matches
+      .select('tree_name, tree_id')  // Ensure column names match
+      .eq('user_id', userId);  // Ensure `user_id` is correct
 
     // Handle query errors
     if (error) {
@@ -52,5 +55,4 @@ export default async function handler(req, res) {
     console.error("Error getting list of all trees:", error);
     res.status(500).json({ message: "Server error" });
   }
-  }
-
+}
