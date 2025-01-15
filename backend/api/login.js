@@ -26,6 +26,7 @@ export const options = (req, res) => {
 
 // Main login handler
 export default async function handler(req, res) {
+    console.log("test")
   // Handle CORS pre-flight
   if (req.method === 'OPTIONS') {
     return options(req, res);  // Early exit for OPTIONS (pre-flight) requests
@@ -38,6 +39,7 @@ export default async function handler(req, res) {
   const { email, password } = req.body;
 
   try {
+
     // Step 1: Fetch user from Supabase
     const { data: users, error: fetchError } = await supabase
       .from('users')  // Replace 'users' with your Supabase table name
