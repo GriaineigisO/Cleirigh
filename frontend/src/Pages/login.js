@@ -14,7 +14,7 @@ import '../style.css'
     setError('');
 
     try {
-      const response = await axios.get('https://cleirigh-backend.vercel.app/api/login', {
+      const response = await axios.post('https://cleirigh-backend.vercel.app/api/login', {
         email,
         password
       })
