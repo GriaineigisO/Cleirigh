@@ -143,6 +143,7 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
+
   
   const { email, password } = req.body;
 
@@ -162,6 +163,11 @@ app.post("/api/login", async (req, res) => {
     if (!users || users.length === 0) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    if (req.method !== 'POST') {
+      return res.status(405).json({ message: "Method not allowed" });
+  }
+  
 
     const user = users[0];
 
