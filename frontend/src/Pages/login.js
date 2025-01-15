@@ -25,7 +25,7 @@ import '../style.css'
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('userId', response.data.user.id);
 
-      window.location.href = '/home'; /
+      window.location.href = '/home'; 
 
     } catch (error) {
         // Log the error for debugging
