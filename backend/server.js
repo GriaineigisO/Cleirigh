@@ -14,12 +14,16 @@ const path = require("path");
 const { createClient } = require('@supabase/supabase-js');
 
 const corsOptions = {
-  origin: "https://cleirigh.vercel.app", // Allow only this origin
+  origin: "https://cleirigh.vercel.app", // Allow only this origin,
   methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"] 
 };
 
+const app = express();
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(bodyParser.json());
 
 // Set up environment variables for Supabase credentials in .env
 const supabaseUrl = process.env.SUPABASE_URL; 
@@ -41,10 +45,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const app = express();
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(bodyParser.json());
 
 // Serve static files from the "uploads" directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
