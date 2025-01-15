@@ -85,42 +85,58 @@ app.post("/api/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    //Check if user already exists
-    const userExists = await pool.query(
-      "SELECT * FROM users WHERE email = $1",
-      [email]
-    );
+    // 1. Check if user already exists using Supabase
+    const { data: existingUser, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
 
-    if (userExists.rows.length > 0) {
+    if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    //hash the password
+    if (error) {
+      return res.status(500).json({ message: "Server error during user check" });
+    }
+
+    // 2. Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    //insert new user into the database
-    const newUser = await pool.query(
-      "INSERT INTO users (username, email, password, id) VALUES ($1, $2, $3, $4) RETURNING *",
-      [username, email, hashedPassword, Date.now()]
-    );
+    // 3. Insert new user into the users table in Supabase
+    const { data: newUser, error: insertError } = await supabase
+      .from('users')
+      .insert([
+        {
+          username,
+          email,
+          password: hashedPassword,
+          id: Date.now(), // or generate a proper ID using UUID if needed
+        }
+      ])
+      .single();
 
-    //generate token for user
-    const token = jwt.sign({ id: newUser.rows[0].id }, process.env.JWT_SECRET, {
+    if (insertError) {
+      return res.status(500).json({ message: "Error inserting new user" });
+    }
+
+    // 4. Generate the JWT token
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
-    //respond with token and user data
+    // 5. Respond with token and user data
     res.json({
       token,
       user: {
-        id: newUser.rows[0].id,
-        username: newUser.rows[0].username,
-        email: newUser.rows[0].email,
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
       },
     });
   } catch (err) {
-    console.error(err.message);
+    console.error('Error during registration:', err.message);
     res.status(500).send("Server error");
   }
 });
@@ -198,71 +214,45 @@ app.post("/api/login", async (req, res) => {
 // makes a new tree
 app.post("/make-new-tree", async (req, res) => {
   try {
-    const { userId, treeName, treeId } = req.body; // Expecting the logged-in user's ID in the request body
+    const { userId, treeName, treeId } = req.body;
 
-    //inserts new tree into trees
-    const result = await pool.query(
-      "INSERT INTO trees (user_id, tree_name, tree_id) VALUES ($1, $2, $3) RETURNING *",
-      [userId, treeName, treeId]
-    );
+    // 1. Insert the new tree record into the `trees` table
+    const { data: newTree, error: treeError } = await supabase
+      .from('trees')
+      .insert([
+        { user_id: userId, tree_name: treeName, tree_id: treeId }
+      ])
+      .single(); // Return the inserted row directly
 
-    //creates a new table which will contain the actual tree's data (regarding ancestors in it)
-    const makeNewTreeTable = await pool.query(
-      `CREATE TABLE tree_${treeId} (
-            first_name TEXT DEFAULT NULL,
-            middle_name TEXT DEFAULT NULL,
-            last_name TEXT DEFAULT NULL,
-            ancestor_id INT PRIMARY KEY,
-            page_number INT, 
-            base_of_page INT DEFAULT NULL,
-            previous_page INT DEFAULT NULL,
-            base_person BOOLEAN DEFAULT false,
-            sex TEXT DEFAULT NULL, 
-            ethnicity TEXT DEFAULT NULL, 
-            date_of_birth TEXT DEFAULT NULL, 
-            place_of_birth TEXT DEFAULT NULL, 
-            date_of_death TEXT DEFAULT NULL, 
-            place_of_death TEXT DEFAULT NULL, 
-            cause_of_death TEXT DEFAULT NULL, 
-            occupation TEXT DEFAULT NULL, 
-            father_id INT DEFAULT NULL, 
-            mother_id INT DEFAULT NULL,
-            relation_to_user INT[] DEFAULT ARRAY[0],
-            uncertain_first_name BOOLEAN DEFAULT false,
-            uncertain_middle_name BOOLEAN DEFAULT false,
-            uncertain_last_name BOOLEAN DEFAULT false,
-            uncertain_birth_date BOOLEAN DEFAULT false,
-            uncertain_birth_place BOOLEAN DEFAULT false,
-            uncertain_death_date BOOLEAN DEFAULT false,
-            uncertain_death_place BOOLEAN DEFAULT false,
-            uncertain_occupation BOOLEAN DEFAULT false,
-            marriage_date TEXT DEFAULT NULL,
-            marriage_place TEXT DEFAULT NULL,
-            member_of_nobility BOOLEAN DEFAULT FALSE,
-            profile_text TEXT DEFAULT NULL,
-            source_name_array TEXT [] DEFAULT NULL,
-            source_name_text_array TEXT [] DEFAULT NULL,
-            source_link_array TEXT [] DEFAULT NULL,
-            alternative_names TEXT DEFAULT NULL,
-            paternal_haplogroup TEXT DEFAULT NULL,
-            maternal_haplogroup TEXT DEFAULT NULL,
-            source_text_author_array TEXT DEFAULT NULL,
-            profile_pic TEXT DEFAULT NULL,
-            profile_pic_caption TEXT DEFAULT NULL
-            )
-        `
-    );
-    // Get the newly created tree data
-    const newTree = result.rows[0];
-    // Send a response with a 201 status and the new tree's details
+    if (treeError) {
+      console.error('Error inserting new tree:', treeError);
+      return res.status(500).json({ error: 'Database query failed for tree creation' });
+    }
+
+    // 2. Create a dynamic table for storing ancestors in the new tree
+    // NOTE: Supabase doesn't directly support `CREATE TABLE` via the client, so we have to use Supabase RPC functions if needed.
+    // You can write an SQL function in Supabase to execute the dynamic table creation.
+
+    // Sample dynamic SQL execution (this requires you to define a function in Supabase database first)
+    const { data: createTableData, error: createTableError } = await supabase
+      .rpc('create_tree_table', {
+        tree_id: treeId // Pass tree_id to your SQL function to handle dynamic table creation
+      });
+
+    if (createTableError) {
+      console.error('Error creating dynamic tree table:', createTableError);
+      return res.status(500).json({ error: 'Error creating dynamic tree table' });
+    }
+
+    // 3. Send back the response with the tree details
     res.status(201).json({
       success: true,
       message: "Tree created successfully",
-      tree: { treeId: newTree.treeId },
+      tree: { treeId: newTree.tree_id },
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database query failed" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -271,20 +261,27 @@ app.post("/check-if-no-trees", async (req, res) => {
   try {
     const { userId } = req.body;
 
-    const result = await pool.query(
-      "SELECT user_id FROM trees WHERE user_id = $1",
-      [userId]
-    );
+    // Fetch data using Supabase client
+    const { data, error } = await supabase
+      .from('trees')
+      .select('user_id')
+      .eq('user_id', userId);
 
-    if (result.rows.length > 0) {
+    if (error) {
+      console.error('Error fetching trees:', error);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+
+    // Check if the user has trees
+    if (data.length > 0) {
       res.json({ hasTrees: true });
     } else {
       // User has no trees, return false
       res.json({ hasTrees: false });
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error('Unexpected error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
