@@ -6,7 +6,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "start": "CHOKIDAR_USEPOLLING=true CHOKIDAR_IGNORE=C:/DumpStack.log.tmp react-scripts start"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
