@@ -290,31 +290,42 @@ app.post("/check-if-no-trees", async (req, res) => {
 
 //gets the name of a user's tree
 app.post("/get-tree-name", async (req, res) => {
+  const { userId } = req.body;
+
   try {
-    const { userId } = req.body;
+    // Step 1: Get the current tree ID for the user
+    const { data: userData, error: userError } = await supabase
+      .from('users') // Replace 'users' with your actual table name
+      .select('current_tree_id') // Only select the `current_tree_id`
+      .eq('id', userId) // Filter for the user ID
+      .single(); // Expect one result
 
-    //   const result = await pool.query('SELECT * FROM trees WHERE user_id = $1',
-    //         [userId]);
+    if (userError || !userData) {
+      console.error("Error fetching current_tree_id:", userError || "No user found");
+      return res.status(404).json({ error: "User or current tree not found" });
+    }
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    const currentTreeId = userData.current_tree_id;
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    // Step 2: Get the tree name for the current tree ID
+    const { data: treeData, error: treeError } = await supabase
+      .from('trees') // Replace 'trees' with your actual table name
+      .select('tree_name') // Only select `tree_name`
+      .eq('tree_id', currentTreeId) // Filter for the current tree ID
+      .single(); // Expect one result
 
-    //find tree in the trees tables
-    const getName = await pool.query(`
-            SELECT * FROM trees WHERE tree_id = ${currentTree}
-        `);
+    if (treeError || !treeData) {
+      console.error("Error fetching tree name:", treeError || "No tree found");
+      return res.status(404).json({ error: "Tree not found" });
+    }
 
-    const treeName = getName.rows[0].tree_name;
+    const treeName = treeData.tree_name;
 
     res.json({ treeName: treeName });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Error during request processing:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
