@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirigh.vercel.app",  // Your frontend URL
+  origin: "https://cleirigh.vercel.app",  
   methods: ['GET', 'POST', 'OPTIONS'], 
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -23,7 +23,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Handle POST request (your login logic)
   if (req.method === 'POST') {
     const { email, password } = req.body;
     const supabaseUrl = process.env.SUPABASE_URL; 

@@ -10,7 +10,7 @@ function DeleteModal({ details, setDetails, sex, getPerson, closeEditPerson }) {
         const personID = details.id;
         try {
             const userId = localStorage.getItem("userId");
-            const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-person", {
+            const response = await fetch("https://cleirigh-backend.vercel.app/delete-person", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userId, personID, sex }),

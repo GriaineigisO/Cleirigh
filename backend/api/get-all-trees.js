@@ -1,6 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+
 
 // CORS Options
 const corsOptions = {

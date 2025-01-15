@@ -68,7 +68,7 @@ const Navbar = ({ onLogin, onLogout }) => {
           //gets user's id
           const userId = localStorage.getItem("userId");
           const response = await fetch(
-            "`${process.env.REACT_APP_BACKEND_URL}/get-all-trees",
+            "https://cleirigh-backend.vercel.app/get-all-trees",
             {
               method: "POST",
               headers: {
@@ -95,7 +95,7 @@ const Navbar = ({ onLogin, onLogout }) => {
       //gets user's id
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/switch-trees",
+        "https://cleirigh-backend.vercel.app/switch-trees",
         {
           method: "POST",
           headers: {
@@ -131,7 +131,7 @@ const Navbar = ({ onLogin, onLogout }) => {
 
         try {
           const response = await fetch(
-            "`${process.env.REACT_APP_BACKEND_URL}/get-tree-name",
+            "https://cleirigh-backend.vercel.app/get-tree-name",
             {
               method: "POST",
               headers: {
