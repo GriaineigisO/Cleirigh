@@ -62,6 +62,7 @@ const Navbar = ({onLogin, onLogout}) => {
 
     useEffect(() => { 
         const getAllTrees = async () => {
+            if (isLoggedIn) {
             try {
                 //gets user's id
                 const userId = localStorage.getItem('userId');
@@ -79,10 +80,11 @@ const Navbar = ({onLogin, onLogout}) => {
             } catch (error) {
                 console.log('Error getting list of all trees:', error)
             }
+        }
         };
 
         getAllTrees();
-    }, []);
+    }, [isLoggedIn]);
 
     const switchTree = async (treeId) => {
         try {
@@ -116,7 +118,7 @@ const Navbar = ({onLogin, onLogout}) => {
     
         const getTreeName = async () => {
 
-            const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         if (!token) {
           console.error('No token found');
           return;
