@@ -16,7 +16,8 @@ const { createClient } = require('@supabase/supabase-js');
 const corsOptions = {
   origin: "https://cleirigh.vercel.app", // Allow only this origin
   methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
-  credentials: true
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"] 
 };
 
 
