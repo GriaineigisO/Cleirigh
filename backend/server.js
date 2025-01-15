@@ -143,6 +143,15 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', 'https://cleirigh.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return res.status(204).end();
+  }
+
+  res.setHeader('Access-Control-Allow-Origin', 'https://cleirigh.vercel.app');
+  
   const { email, password } = req.body;
 
   try {
