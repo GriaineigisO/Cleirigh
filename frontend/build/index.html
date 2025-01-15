@@ -12,9 +12,11 @@
         <link rel="apple-touch-icon" href="/logo192.png"/>
         <link rel="manifest" href="/manifest.json"/>
         <title>Cleirigh</title>
-        <script defer="defer" src="<%= webpack_assets['main.js'] %>"></script>
+        <script defer="defer" src="%PUBLIC_URL%/static/js/main.[hash].js"></script>
 
-        <link href="<%= webpack_assets['main.css'] %>" rel="stylesheet">
+
+        <script defer="defer" src="%PUBLIC_URL%/static/css/main.[hash].css"></script>
+
        
     
     </head>
