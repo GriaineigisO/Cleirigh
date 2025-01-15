@@ -14,25 +14,24 @@ import '../style.css'
     setError('');
 
     try {
-      const response = await axios.post('https://cleirigh-backend.vercel.app/api/login', {
+      const response = await axios.get('https://cleirigh-backend.vercel.app/api/login', {
         email,
         password
       })
 
-      setCurrentUser(response.data.user); // Update state with new user data
+      setCurrentUser(response.data.user); 
 
-      // Handle successful login (e.g., store token and redirect)
-      localStorage.setItem('token', response.data.token); // Save token in localStorage
+      localStorage.setItem('token', response.data.token); 
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('userId', response.data.user.id);
 
-      window.location.href = '/home'; // Redirect to the home page
+      window.location.href = '/home'; /
 
     } catch (error) {
         // Log the error for debugging
         console.error('Login error details:', error);
 
-        // Check if error is an Axios error and handle accordingly
+        
         if (error.response) {
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
