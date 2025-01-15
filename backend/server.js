@@ -336,23 +336,30 @@ app.post("/set-current-tree", async (req, res) => {
     }
 
     // Update the current_tree column for the user
-    const result = await pool.query(
-      "UPDATE users SET current_tree_id = $1 WHERE id = $2 RETURNING current_tree_id",
-      [treeId, userId]
-    );
+    const { data, error } = await supabase
+      .from('users')
+      .update({ current_tree_id: treeId })
+      .eq('id', userId)
+      .select('current_tree_id');
 
-    if (result.rowCount === 0) {
+    if (error) {
+      console.error("Error updating current tree:", error.message);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+
+    if (data.length === 0) {
       return res.status(404).json({ error: "User not found or update failed" });
     }
 
+    // Return the updated current tree ID
     res.status(200).json({
       success: true,
       message: "Current tree updated successfully",
-      currentTree: result.rows[0].current_tree,
+      currentTree: data[0].current_tree_id,
     });
   } catch (err) {
-    console.error("Error updating current tree:", err.message);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Unexpected error:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -365,23 +372,29 @@ app.post("/get-current-tree", async (req, res) => {
       return res.status(400).json({ error: "Missing userId" });
     }
 
-    // Query to get the current tree
-    const result = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Query to get the current tree using Supabase client
+    const { data, error } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single(); // Use .single() to get a single row rather than an array
 
-    if (result.rowCount === 0) {
+    if (error) {
+      console.error("Error fetching current tree:", error.message);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+
+    if (!data) {
       return res.status(404).json({ error: "User not found" });
     }
 
     res.status(200).json({
       success: true,
-      currentTree: result.rows[0].current_tree_id,
+      currentTree: data.current_tree_id,
     });
   } catch (err) {
-    console.error("Error fetching current tree:", err.message);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Unexpected error:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -396,15 +409,26 @@ app.post("/check-if-tree-empty", async (req, res) => {
 
     const treeTableName = `tree_${currentTree}`; // Dynamic table name
 
-    const result = await pool.query(`SELECT * FROM ${treeTableName}`);
-    if (result.rows.length > 0) {
+    // Get all rows from the dynamically named table
+    const { data, error } = await supabase
+      .from(treeTableName)
+      .select('*'); // Selecting all rows to check if the table is empty
+
+    if (error) {
+      console.error("Error checking if tree is empty:", error.message);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+
+    // If data is not empty, return isEmpty: false
+    if (data.length > 0) {
       res.json({ isEmpty: false });
     } else {
+      // If data is empty, return isEmpty: true
       res.json({ isEmpty: true });
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database query failed" });
+    console.error("Unexpected error:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -431,49 +455,36 @@ app.post("/add-first-person", async (req, res) => {
     const page_number = 1;
     const base_person = true;
 
-    const firstPersonQuery = await pool.query(
-      `
-            INSERT INTO tree_${currentTree} (
-                first_name,
-                middle_name,
-                last_name,
-                ancestor_id,
-                page_number,
-                base_person,
-                base_of_page,
-                sex,
-                ethnicity,
-                date_of_birth,
-                place_of_birth,
-                date_of_death,
-                place_of_death,
-                cause_of_death,
-                occupation,
-                relation_to_user
-            )  
-            VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16
-            ) 
-        `,
-      [
-        firstName,
-        middleName,
-        lastName,
-        ancestor_id,
-        page_number,
-        base_person,
-        1,
-        sex,
-        ethnicity,
-        birthDate,
-        birthPlace,
-        deathDate,
-        deathPlace,
-        deathCause,
-        occupation,
-        [0],
-      ]
-    );
+    // We want to insert the data into the corresponding "tree_{currentTree}" table
+    const treeTableName = `tree_${currentTree}`;
+
+    // Use Supabase for inserting data into the dynamic tree table
+    const { data, error } = await supabase
+      .from(treeTableName)
+      .insert([
+        {
+          first_name: firstName,
+          middle_name: middleName,
+          last_name: lastName,
+          ancestor_id: ancestor_id,
+          page_number: page_number,
+          base_person: base_person,
+          base_of_page: 1, // Assuming this is the default value (base_of_page).
+          sex: sex,
+          ethnicity: ethnicity,
+          date_of_birth: birthDate,
+          place_of_birth: birthPlace,
+          date_of_death: deathDate,
+          place_of_death: deathPlace,
+          cause_of_death: deathCause,
+          occupation: occupation,
+          relation_to_user: [0], // Assuming this is the default value (relates to user).
+        }
+      ]);
+
+    if (error) {
+      throw new Error(error.message);
+    }
 
     res.status(200).json({ message: "First person added successfully!" });
   } catch (error) {
@@ -487,13 +498,24 @@ app.post("/count-ancestors", async (req, res) => {
   try {
     const { currentTree } = req.body;
 
-    const result = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-        `);
+    const treeTableName = `tree_${currentTree}`;
 
-    res.json(result.rows.length - 1);
+    // Fetch all rows from the tree_{currentTree} table
+    const { data, error } = await supabase
+      .from(treeTableName)
+      .select('*');
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    // Exclude the first row (if needed, depending on your application logic)
+    const ancestorCount = data.length - 1;
+
+    res.json({ ancestorCount });
   } catch (error) {
     console.log("Error counting ancestors:", error);
+    res.status(500).json({ error: "Failed to count ancestors." });
   }
 });
 
@@ -506,62 +528,53 @@ app.post("/count-places", async (req, res) => {
       return res.status(400).json({ error: "Invalid tree identifier places" });
     }
 
-    const birthPlace = await pool.query(`
-            SELECT place_of_birth FROM tree_${currentTree}
-            WHERE place_of_birth IS NOT NULL
-        `);
+    const treeTableName = `tree_${currentTree}`;
 
-    // Extract an array of place_of_birth values
-    const birthPlaces = birthPlace.rows.map((row) => row.place_of_birth);
+    // Fetch birth place data (filter non-null birth places)
+    const { data: birthPlacesData, error: birthPlacesError } = await supabase
+      .from(treeTableName)
+      .select('place_of_birth')
+      .not('place_of_birth', 'is', null); // Filters where place_of_birth is not null
 
-    //if the placename includes wider areas like "Leuchars, Fife, Scotland" then only the first placename shall be extracted
-    for (let i = 0; i < birthPlaces.length; i++) {
-      for (let j = 0; j < birthPlaces[i].length; j++) {
-        if (birthPlaces[i][j] === ",") {
-          birthPlaces[i] = birthPlaces[i].slice(0, j);
-          continue;
-        }
-      }
+    if (birthPlacesError) {
+      throw new Error(birthPlacesError.message);
     }
 
-    const deathPlace = await pool.query(`
-            SELECT place_of_death FROM tree_${currentTree}
-            WHERE place_of_death IS NOT NULL
-        `);
+    // Extract array of places and trim to just the first location
+    let birthPlaces = birthPlacesData.map(row => row.place_of_birth.split(',')[0]);
 
-    // Extract an array of place_of_birth values
-    const deathPlaces = deathPlace.rows.map((row) => row.place_of_death);
+    // Fetch death place data (filter non-null death places)
+    const { data: deathPlacesData, error: deathPlacesError } = await supabase
+      .from(treeTableName)
+      .select('place_of_death')
+      .not('place_of_death', 'is', null); // Filters where place_of_death is not null
 
-    for (let i = 0; i < deathPlaces.length; i++) {
-      for (let j = 0; j < deathPlaces[i].length; j++) {
-        if (deathPlaces[i][j] === ",") {
-          deathPlaces[i] = deathPlaces[i].slice(0, j);
-          continue;
-        }
-      }
+    if (deathPlacesError) {
+      throw new Error(deathPlacesError.message);
     }
 
-    const allPlacesArray = birthPlaces.concat(deathPlaces);
+    // Extract array of places and trim to just the first location
+    let deathPlaces = deathPlacesData.map(row => row.place_of_death.split(',')[0]);
 
-    //filters empty arrays which are the result of the birth or death place being left blank
-    const filteredArray = allPlacesArray.filter((i) => i !== "");
+    // Combine birth and death places
+    const allPlacesArray = [...birthPlaces, ...deathPlaces];
 
-    //filters out duplicates
-    let filteredNoDuplicatedArray = [];
-    for (let i = 0; i < filteredArray.length; i++) {
-      if (filteredNoDuplicatedArray.includes(filteredArray[i]) === false) {
-        filteredNoDuplicatedArray.push(filteredArray[i]);
-      }
+    // Filter out empty strings (null or undefined)
+    const filteredArray = allPlacesArray.filter(place => place !== "");
+
+    // Filter out duplicate places
+    const uniquePlaces = [...new Set(filteredArray)];
+
+    let arrayLength = uniquePlaces.length;
+
+    // Truncate list to 20 places, and append "and more..." if necessary
+    if (arrayLength > 20) {
+      uniquePlaces.length = 20;
+      uniquePlaces.push("and more...");
     }
 
-    let arrayLength = filteredNoDuplicatedArray.length;
-
-    if (filteredNoDuplicatedArray.length > 20) {
-      filteredNoDuplicatedArray = filteredNoDuplicatedArray.slice(0, 20);
-      filteredNoDuplicatedArray.push("and more...");
-    }
-
-    const allPlacesJoined = filteredNoDuplicatedArray.join(", ");
+    // Combine places into a comma-separated string
+    const allPlacesJoined = uniquePlaces.join(", ");
 
     res.json({
       numOfPlaces: arrayLength,
@@ -569,6 +582,7 @@ app.post("/count-places", async (req, res) => {
     });
   } catch (error) {
     console.log("Error counting places:", error);
+    res.status(500).json({ error: "Failed to count places." });
   }
 });
 
@@ -582,28 +596,33 @@ app.post("/count-occupations", async (req, res) => {
         .json({ error: "Invalid tree identifier occupations" });
     }
 
-    const occupations = await pool.query(`
-            SELECT occupation FROM tree_${currentTree}
-            WHERE occupation IS NOT NULL
-        `);
+    const treeTableName = `tree_${currentTree}`;
 
-    const occupationList = occupations.rows.map((row) => row.occupation);
+    // Fetch occupation data (filter non-null occupation values)
+    const { data: occupationsData, error: occupationsError } = await supabase
+      .from(treeTableName)
+      .select('occupation')
+      .not('occupation', 'is', null); // Filters where occupation is not null
 
-    //filters out duplicates
-    let filteredNoDuplicatedArray = [];
-    for (let i = 0; i < occupationList.length; i++) {
-      if (filteredNoDuplicatedArray.includes(occupationList[i]) === false) {
-        filteredNoDuplicatedArray.push(occupationList[i]);
-      }
+    if (occupationsError) {
+      throw new Error(occupationsError.message);
     }
+
+    // Extract an array of occupations
+    let occupationList = occupationsData.map(row => row.occupation);
+
+    // Filter out duplicates
+    const filteredNoDuplicatedArray = [...new Set(occupationList)];
 
     let occupationArrayLength = filteredNoDuplicatedArray.length;
 
+    // Truncate list to 20 occupations, and append "and more..." if necessary
     if (occupationArrayLength > 20) {
-      filteredNoDuplicatedArray = filteredNoDuplicatedArray.slice(0, 20);
+      filteredNoDuplicatedArray.length = 20;
       filteredNoDuplicatedArray.push("and more...");
     }
 
+    // Combine occupations into a comma-separated string
     const occupationJoined = filteredNoDuplicatedArray.join(", ");
 
     res.json({
@@ -612,6 +631,7 @@ app.post("/count-occupations", async (req, res) => {
     });
   } catch (error) {
     console.log("Error counting occupations:", error);
+    res.status(500).json({ error: "Failed to count occupations." });
   }
 });
 
@@ -620,29 +640,50 @@ app.post("/get-all-ancestors", async (req, res) => {
   try {
     const { userId } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Query to get the current tree ID for the user
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    const result = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-        `);
+    const currentTree = userData?.current_tree_id;
 
-    const firstNames = result.rows.map((row) => row.first_name);
-    const middleNames = result.rows.map((row) => row.middle_name);
-    const lastNames = result.rows.map((row) => row.last_name);
-    const sexes = result.rows.map((row) => row.sex);
-    const datesOfBirth = result.rows.map((row) => row.date_of_birth);
-    const placesOfBirth = result.rows.map((row) => row.place_of_birth);
-    const datesOfDeath = result.rows.map((row) => row.date_of_death);
-    const placesOfDeath = result.rows.map((row) => row.place_of_death);
-    const ethnicities = result.rows.map((row) => row.ethnicity);
-    const basePerson = result.rows.map((row) => row.base_person);
+    // Check if currentTree exists before proceeding
+    if (!currentTree) {
+      return res.status(404).json({ error: "Current tree not found" });
+    }
 
+    const treeTableName = `tree_${currentTree}`;
+
+    // Fetch the ancestors data from the dynamically named table
+    const { data: ancestorsData, error: ancestorsError } = await supabase
+      .from(treeTableName)
+      .select(
+        'first_name, middle_name, last_name, sex, date_of_birth, place_of_birth, date_of_death, place_of_death, ethnicity, base_person'
+      );
+
+    if (ancestorsError) {
+      throw new Error(ancestorsError.message);
+    }
+
+    // Extract arrays from the response
+    const firstNames = ancestorsData.map((row) => row.first_name);
+    const middleNames = ancestorsData.map((row) => row.middle_name);
+    const lastNames = ancestorsData.map((row) => row.last_name);
+    const sexes = ancestorsData.map((row) => row.sex);
+    const datesOfBirth = ancestorsData.map((row) => row.date_of_birth);
+    const placesOfBirth = ancestorsData.map((row) => row.place_of_birth);
+    const datesOfDeath = ancestorsData.map((row) => row.date_of_death);
+    const placesOfDeath = ancestorsData.map((row) => row.place_of_death);
+    const ethnicities = ancestorsData.map((row) => row.ethnicity);
+    const basePerson = ancestorsData.map((row) => row.base_person);
+
+    // Return all extracted data in response
     res.json({
       firstNames: firstNames,
       middleNames: middleNames,
@@ -656,7 +697,8 @@ app.post("/get-all-ancestors", async (req, res) => {
       basePerson: basePerson,
     });
   } catch (error) {
-    console.log("Error creating profile list:", error);
+    console.log("Error fetching all ancestors:", error);
+    res.status(500).json({ error: "Server error occurred" });
   }
 });
 
@@ -696,15 +738,20 @@ app.post("/switch-trees", async (req, res) => {
   try {
     const { userId, treeId } = req.body;
 
-    const switchTree = await pool.query(`
-            UPDATE users
-            SET current_tree_id = ${treeId}
-            WHERE id = ${userId}
-        `);
+    // Switch the user's current tree
+    const { data, error } = await supabase
+      .from('users')
+      .update({ current_tree_id: treeId })
+      .eq('id', userId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
 
     res.json(true);
   } catch (error) {
     console.log("Error switching trees: ", error);
+    res.status(500).json({ error: "Error switching trees" });
   }
 });
 
@@ -755,49 +802,47 @@ app.post("/get-father", async (req, res) => {
     const { userId, personID } = req.body;
 
     // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    const { data: currentTreeData, error: currentTreeError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single(); // Get a single row
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (currentTreeError) {
+      throw new Error(currentTreeError.message);
+    }
 
-    //finds the IDs of the person's parents
-    const parentQuery = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${personID}
-            `);
+    const currentTree = currentTreeData.current_tree_id;
 
-    const fatherID = parentQuery.rows[0].father_id;
+    // Query to find the person's parents
+    const { data: parentQuery, error: parentError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('*')
+      .eq('ancestor_id', personID)
+      .single(); // Get a single row
 
-    //find all other data on parents using their IDs
-    const fatherQuery = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${fatherID}
-        `);
+    if (parentError) {
+      throw new Error(parentError.message);
+    }
 
-    let fatherFirstName = "";
-    let fatherMiddleName = "";
-    let fatherLastName = "";
+    const fatherID = parentQuery.father_id;
 
-    if (fatherID && fatherQuery.rows[0]) {
-      if (fatherQuery.rows[0].first_name === null) {
-        fatherFirstName = "UNKNOWN";
-      } else {
-        fatherFirstName = fatherQuery.rows[0].first_name;
-      }
+    // Query for the father’s information using father ID
+    const { data: fatherQuery, error: fatherError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('*')
+      .eq('ancestor_id', fatherID)
+      .single(); // Get a single row
 
-      if (fatherQuery.rows[0].middle_name === null) {
-        fatherMiddleName = "";
-      } else {
-        fatherMiddleName = fatherQuery.rows[0].middle_name;
-      }
+    if (fatherError) {
+      throw new Error(fatherError.message);
+    }
 
-      if (fatherQuery.rows[0].last_name === null) {
-        fatherLastName = "";
-      } else {
-        fatherLastName = fatherQuery.rows[0].last_name;
-      }
+    if (fatherID && fatherQuery) {
+      // Set default values if data is missing
+      const fatherFirstName = fatherQuery.first_name ?? "UNKNOWN";
+      const fatherMiddleName = fatherQuery.middle_name ?? "";
+      const fatherLastName = fatherQuery.last_name ?? "";
 
       const fatherFullName = `${fatherFirstName} ${fatherMiddleName} ${fatherLastName}`;
 
@@ -807,27 +852,28 @@ app.post("/get-father", async (req, res) => {
         fatherFirstName: fatherFirstName,
         fatherMiddleName: fatherMiddleName,
         fatherLastName: fatherLastName,
-        fatherBirthDate: fatherQuery.rows[0].date_of_birth,
-        fatherBirthPlace: fatherQuery.rows[0].place_of_birth,
-        fatherDeathDate: fatherQuery.rows[0].date_of_death,
-        fatherDeathPlace: fatherQuery.rows[0].place_of_death,
-        fatherOccupation: fatherQuery.rows[0].occupation,
-        fatherProfileNumber: fatherQuery.rows[0].ancestor_id,
-        fatherEthnicity: fatherQuery.rows[0].ethnicity,
-        fatherCauseOfDeath: fatherQuery.rows[0].cause_of_death,
-        relation_to_user: fatherQuery.rows[0].relation_to_user,
-        uncertainFirstName: fatherQuery.rows[0].uncertain_first_name,
-        uncertainMiddleName: fatherQuery.rows[0].uncertain_middle_name,
-        uncertainLastName: fatherQuery.rows[0].uncertain_last_name,
-        uncertainBirthDate: fatherQuery.rows[0].uncertain_birth_date,
-        uncertainBirthPlace: fatherQuery.rows[0].uncertain_birth_place,
-        uncertainDeathDate: fatherQuery.rows[0].uncertain_death_date,
-        uncertainDeathPlace: fatherQuery.rows[0].uncertain_death_place,
-        uncertainOccupation: fatherQuery.rows[0].uncertain_occupation,
-        pageNum: fatherQuery.rows[0].base_of_page,
-        memberOfNobility: fatherQuery.rows[0].member_of_nobility,
+        fatherBirthDate: fatherQuery.date_of_birth,
+        fatherBirthPlace: fatherQuery.place_of_birth,
+        fatherDeathDate: fatherQuery.date_of_death,
+        fatherDeathPlace: fatherQuery.place_of_death,
+        fatherOccupation: fatherQuery.occupation,
+        fatherProfileNumber: fatherQuery.ancestor_id,
+        fatherEthnicity: fatherQuery.ethnicity,
+        fatherCauseOfDeath: fatherQuery.cause_of_death,
+        relation_to_user: fatherQuery.relation_to_user,
+        uncertainFirstName: fatherQuery.uncertain_first_name,
+        uncertainMiddleName: fatherQuery.uncertain_middle_name,
+        uncertainLastName: fatherQuery.uncertain_last_name,
+        uncertainBirthDate: fatherQuery.uncertain_birth_date,
+        uncertainBirthPlace: fatherQuery.uncertain_birth_place,
+        uncertainDeathDate: fatherQuery.uncertain_death_date,
+        uncertainDeathPlace: fatherQuery.uncertain_death_place,
+        uncertainOccupation: fatherQuery.uncertain_occupation,
+        pageNum: fatherQuery.base_of_page,
+        memberOfNobility: fatherQuery.member_of_nobility,
       });
     } else {
+      // In case no father is found, return null values
       res.json({
         fatherID: null,
         fatherFullName: null,
@@ -852,13 +898,15 @@ app.post("/get-father", async (req, res) => {
         uncertainDeathPlace: null,
         uncertainOccupation: null,
         pageNum: null,
-        memberOfNobility: null
+        memberOfNobility: null,
       });
     }
   } catch (error) {
     console.log("Error getting father:", error);
+    res.status(500).json({ error: "Error fetching father's data" });
   }
 });
+
 
 //gets the mother of the person at the bottom of a tree chart
 app.post("/get-mother", async (req, res) => {
