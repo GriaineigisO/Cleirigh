@@ -1,8 +1,11 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirigh.vercel.app",  // Your frontend URL
+  origin: "https://cleirigh.vercel.app", 
   methods: ['GET', 'POST', 'OPTIONS'], 
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
