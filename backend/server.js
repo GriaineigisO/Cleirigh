@@ -654,23 +654,33 @@ app.post("/get-all-ancestors", async (req, res) => {
 
 //gets a list of all trees that a user has
 app.post("/get-all-trees", async (req, res) => {
+  const { userId } = req.body;
+
   try {
-    const { userId } = req.body;
+    // Query to fetch all trees for the given user ID
+    const { data: allTrees, error } = await supabase
+      .from('trees') // Replace 'trees' with the name of your Supabase table
+      .select('tree_name, tree_id') // Select only necessary fields
+      .eq('user_id', userId); // Filter by user_id
 
-    // Query to get the current tree
-    const allTrees = await pool.query("SELECT *FROM trees WHERE user_id = $1", [
-      userId,
-    ]);
+    // Handle query errors
+    if (error) {
+      console.error("Supabase query error:", error);
+      return res.status(500).json({ message: "Error fetching tree data." });
+    }
 
-    const treeName = allTrees.rows.map((row) => row.tree_name);
-    const treeID = allTrees.rows.map((row) => row.tree_id);
+    // Extract tree names and IDs
+    const treeName = allTrees.map(tree => tree.tree_name);
+    const treeID = allTrees.map(tree => tree.tree_id);
 
     res.json({
       treeName: treeName,
       treeID: treeID,
     });
+
   } catch (error) {
-    console.log("Error getting list of all trees:", error);
+    console.error("Error getting list of all trees:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
