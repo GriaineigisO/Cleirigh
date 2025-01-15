@@ -738,7 +738,7 @@ const FamilyTree = () => {
       // Fetch Base Person
       const userId = localStorage.getItem("userId");
       const baseResponse = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/get-base-person",
+        "https://cleirigh-backend.vercel.app/get-base-person",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -778,7 +778,7 @@ const FamilyTree = () => {
       // Fetch Current Page Number
       const userId = localStorage.getItem("userId");
       const pageResponse = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/get-current-page-number",
+        "https://cleirigh-backend.vercel.app/get-current-page-number",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -794,7 +794,7 @@ const FamilyTree = () => {
   const setNewPageNum = (num) => {
     const userId = localStorage.getItem("userId");
     const pageResponse = fetch(
-      "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
+      "https://cleirigh-backend.vercel.app/set-current-page-number",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -808,7 +808,7 @@ const FamilyTree = () => {
   const getNewPageNum = async () => {
     const userId = localStorage.getItem("userId");
     const pageResponse = await fetch(
-      "`${process.env.REACT_APP_BACKEND_URL}/get-current-page-number",
+      "https://cleirigh-backend.vercel.app/get-current-page-number",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -851,7 +851,7 @@ const FamilyTree = () => {
 
   const navigateDown = async (personID) => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-previous-page", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/get-previous-page", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, personID }),
@@ -864,7 +864,7 @@ const FamilyTree = () => {
   
   const countTotalPageNum = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/count-all-pages", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/count-all-pages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
@@ -879,7 +879,7 @@ const FamilyTree = () => {
 
   const handleNavigateUpwards = async (personID) => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-next-page", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/get-next-page", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, personID }),
@@ -897,7 +897,7 @@ const FamilyTree = () => {
     if (bottomPersonDetails.id) {
       const personID = bottomPersonDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -940,7 +940,7 @@ const FamilyTree = () => {
     if (bottomPersonDetails.id) {
       const personID = bottomPersonDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -983,7 +983,7 @@ const FamilyTree = () => {
     if (fatherDetails.id) {
       const personID = fatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1026,7 +1026,7 @@ const FamilyTree = () => {
     if (fatherDetails.id) {
       const personID = fatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1077,7 +1077,7 @@ const FamilyTree = () => {
     if (motherDetails.id) {
       const personID = motherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1120,7 +1120,7 @@ const FamilyTree = () => {
     if (motherDetails.id) {
       const personID = motherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1161,7 +1161,7 @@ const FamilyTree = () => {
     if (paternalGrandfatherDetails.id) {
       const personID = paternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1204,7 +1204,7 @@ const FamilyTree = () => {
     if (paternalGrandfatherDetails.id) {
       const personID = paternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1248,7 +1248,7 @@ const FamilyTree = () => {
     if (paternalGrandmotherDetails.id) {
       const personID = paternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1292,7 +1292,7 @@ const FamilyTree = () => {
     if (paternalGrandmotherDetails.id) {
       const personID = paternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1335,7 +1335,7 @@ const FamilyTree = () => {
     if (maternalGrandfatherDetails.id) {
       const personID = maternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1378,7 +1378,7 @@ const FamilyTree = () => {
     if (maternalGrandfatherDetails.id) {
       const personID = maternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1421,7 +1421,7 @@ const FamilyTree = () => {
     if (maternalGrandmotherDetails.id) {
       const personID = maternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-father", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-father", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1464,7 +1464,7 @@ const FamilyTree = () => {
     if (maternalGrandmotherDetails.id) {
       const personID = maternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-mother", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-mother", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID }),
@@ -1860,7 +1860,7 @@ const FamilyTree = () => {
   const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-ancestor", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/save-ancestor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, ancestorDetails, childID, sex }),
@@ -2159,7 +2159,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2187,7 +2187,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2215,7 +2215,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2244,7 +2244,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2272,7 +2272,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2299,7 +2299,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2326,7 +2326,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2353,7 +2353,7 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2380,7 +2380,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2407,7 +2407,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2434,7 +2434,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2461,7 +2461,7 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2488,7 +2488,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2515,7 +2515,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2542,7 +2542,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2569,7 +2569,7 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+      const response = fetch("https://cleirigh-backend.vercel.app/make-new-page", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2594,7 +2594,7 @@ const FamilyTree = () => {
     setEditShow(false);
     try {
       const userId = localStorage.getItem("userId");
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/edit-person", {
+      const response = fetch("https://cleirigh-backend.vercel.app/edit-person", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personDetails }),
@@ -2616,7 +2616,7 @@ const FamilyTree = () => {
     openDeletePopup();
     try {
       const userId = localStorage.getItem("userId");
-      const response = fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-person", {
+      const response = fetch("https://cleirigh-backend.vercel.app/delete-person", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, personID, sex }),
@@ -2636,7 +2636,7 @@ const FamilyTree = () => {
   const toggleUncertain = async (details, setDetails, infoType) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/toggle-uncertain", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/toggle-uncertain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, details, infoType }),
@@ -2751,7 +2751,7 @@ const FamilyTree = () => {
       if (ggparentIDs.includes(childDetails.id)) {
         const userId = localStorage.getItem("userId");
         const personID = childDetails.id;
-        const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-page", {
+        const response = await fetch("https://cleirigh-backend.vercel.app/make-new-page", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId, personID, pageNumber }),
@@ -2760,7 +2760,7 @@ const FamilyTree = () => {
 
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/save-repeat-ancestor",
+        "https://cleirigh-backend.vercel.app/save-repeat-ancestor",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -3011,7 +3011,7 @@ const FamilyTree = () => {
     closeSaveProgressHerePopup();
     closeEditPerson();
     const userId = localStorage.getItem("userId");
-    const removedResponse = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-progress", {
+    const removedResponse = await fetch("https://cleirigh-backend.vercel.app/save-progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, progressNote, details }),
@@ -3460,7 +3460,7 @@ const FamilyTree = () => {
     const handleOpenPage = async (num) => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
+        "https://cleirigh-backend.vercel.app/set-current-page-number",
         {
           method: "POST",
           headers: {
@@ -3480,7 +3480,7 @@ const FamilyTree = () => {
             const userId = localStorage.getItem("userId");
             const id = details.id;
             const response = await fetch(
-              "`${process.env.REACT_APP_BACKEND_URL}/find-page-number",
+              "https://cleirigh-backend.vercel.app/find-page-number",
               {
                 method: "POST",
                 headers: {
@@ -3718,7 +3718,7 @@ const FamilyTree = () => {
     const handleOpenPage = async (num) => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
+        "https://cleirigh-backend.vercel.app/set-current-page-number",
         {
           method: "POST",
           headers: {
@@ -3738,7 +3738,7 @@ const FamilyTree = () => {
             const userId = localStorage.getItem("userId");
             const id = details.id;
             const response = await fetch(
-              "`${process.env.REACT_APP_BACKEND_URL}/find-page-number",
+              "https://cleirigh-backend.vercel.app/find-page-number",
               {
                 method: "POST",
                 headers: {
@@ -3936,7 +3936,7 @@ const FamilyTree = () => {
 
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/check-if-great-grandparent-has-parents",
+        "https://cleirigh-backend.vercel.app/check-if-great-grandparent-has-parents",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -4010,7 +4010,7 @@ useEffect(() => {
 
   const saveLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-left-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/save-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
@@ -4023,7 +4023,7 @@ useEffect(() => {
 
   const editLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/edit-left-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/edit-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
@@ -4036,7 +4036,7 @@ useEffect(() => {
 
   const deleteLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-left-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/delete-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, leftNote }),
@@ -4049,7 +4049,7 @@ useEffect(() => {
 
   const getLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-left-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/get-left-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
@@ -4067,7 +4067,7 @@ useEffect(() => {
 
   const saveRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/save-right-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/save-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
@@ -4080,7 +4080,7 @@ useEffect(() => {
 
   const editRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/edit-right-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/edit-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
@@ -4093,7 +4093,7 @@ useEffect(() => {
 
   const deleteRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/delete-right-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/delete-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, rightNote }),
@@ -4106,7 +4106,7 @@ useEffect(() => {
 
   const getRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-right-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/get-right-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),

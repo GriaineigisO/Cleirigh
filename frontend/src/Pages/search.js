@@ -24,7 +24,7 @@ const Search = () => {
     setClickCount(clickCount + 1);
     console.log(clickCount)
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/search-ancestors", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/search-ancestors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const Search = () => {
   const changePageNum = async (num) => {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
-      "`${process.env.REACT_APP_BACKEND_URL}/set-current-page-number",
+      "https://cleirigh-backend.vercel.app/set-current-page-number",
       {
         method: "POST",
         headers: {

@@ -75,7 +75,7 @@ const HomePageWithTree = () => {
     const userId = decodedToken.id;
 
     try {
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-tree-name", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-tree-name", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ const HomePageWithTree = () => {
 
     //gets the current_tree_id in the users table
     try {
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/get-current-tree", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/get-current-tree", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
@@ -133,7 +133,7 @@ const HomePageWithTree = () => {
     const checkTreeEmpty = async () => {
       if (!currentTree !== null && currentTree !== undefined) {
         const response = await fetch(
-          "`${process.env.REACT_APP_BACKEND_URL}/check-if-tree-empty",
+          "https://cleirigh-backend.vercel.app/check-if-tree-empty",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -203,7 +203,7 @@ const HomePageWithTree = () => {
 
   const homePageStats = useCallback(async () => {
     try {
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/count-ancestors", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/count-ancestors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentTree }),
@@ -212,7 +212,7 @@ const HomePageWithTree = () => {
       const data = await response.json();
       setNumOfAncestors(data);
 
-      const placeResponse = await fetch("`${process.env.REACT_APP_BACKEND_URL}/count-places", {
+      const placeResponse = await fetch("https://cleirigh-backend.vercel.app/count-places", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentTree }),
@@ -223,7 +223,7 @@ const HomePageWithTree = () => {
       setListOfPlaces(`including: ${placeData.listOfPlaces}`);
 
       const occupationResponse = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/count-occupations",
+        "https://cleirigh-backend.vercel.app/count-occupations",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -237,7 +237,7 @@ const HomePageWithTree = () => {
 
       const userId = localStorage.getItem("userId");
       const removedResponse = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/get-most-removed-ancestor",
+        "https://cleirigh-backend.vercel.app/get-most-removed-ancestor",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -251,7 +251,7 @@ const HomePageWithTree = () => {
       setMostRemovedAncestorSex(removedData.sex);
 
       const repeatedResponse = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/get-most-repeated-ancestor",
+        "https://cleirigh-backend.vercel.app/get-most-repeated-ancestor",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -264,7 +264,7 @@ const HomePageWithTree = () => {
       setRepeatedTimes(repeatedData.repeatedTimes);
 
       const baseUserResponse = await fetch(
-        "`${process.env.REACT_APP_BACKEND_URL}/get-base-person",
+        "https://cleirigh-backend.vercel.app/get-base-person",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -276,7 +276,7 @@ const HomePageWithTree = () => {
 
       try {
         const progressResponse = await fetch(
-          "`${process.env.REACT_APP_BACKEND_URL}/get-progress",
+          "https://cleirigh-backend.vercel.app/get-progress",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -318,7 +318,7 @@ const HomePageWithTree = () => {
   }, [currentTree, homePageStats]); // Include homePageStats in dependencies
 
   const handleFirstPerson = async () => {
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/add-first-person", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/add-first-person", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -343,7 +343,7 @@ const HomePageWithTree = () => {
   const handleRemoveNote = async () => {
     setSavedProgress(false);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/remove-progress-note", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/remove-progress-note", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId }),
@@ -547,7 +547,7 @@ const Home = () => {
     const checkUserHasTrees = async () => {
       try {
         const response = await fetch(
-          "`${process.env.REACT_APP_BACKEND_URL}/check-if-no-trees",
+          "https://cleirigh-backend.vercel.app/check-if-no-trees",
           {
             method: "POST",
             headers: {
@@ -578,7 +578,7 @@ const Home = () => {
     const treeId = Date.now();
 
     try {
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/make-new-tree", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/make-new-tree", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -595,7 +595,7 @@ const Home = () => {
 
     //updates the current_tree_id column in the users table
     try {
-      const response = await fetch("`${process.env.REACT_APP_BACKEND_URL}/set-current-tree", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/set-current-tree", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, treeId }),

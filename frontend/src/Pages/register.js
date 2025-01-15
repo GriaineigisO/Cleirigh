@@ -20,7 +20,7 @@ const Register = () => {
 ;
     try {
 
-      const response = await axios.post('`${process.env.REACT_APP_BACKEND_URL}/api/register', {
+      const response = await axios.post('https://cleirigh-backend.vercel.app/api/register', {
         username,
         email,
         password,
