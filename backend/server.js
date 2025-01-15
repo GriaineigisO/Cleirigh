@@ -914,49 +914,47 @@ app.post("/get-mother", async (req, res) => {
     const { userId, personID } = req.body;
 
     // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    const { data: currentTreeData, error: currentTreeError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single(); // Get a single row
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (currentTreeError) {
+      throw new Error(currentTreeError.message);
+    }
 
-    //finds the IDs of the person's parents
-    const parentQuery = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${personID}
-            `);
+    const currentTree = currentTreeData.current_tree_id;
 
-    const motherID = parentQuery.rows[0].mother_id;
-    
+    // Query to find the person's parents
+    const { data: parentQuery, error: parentError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('*')
+      .eq('ancestor_id', personID)
+      .single(); // Get a single row
 
-    const motherQuery = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${motherID}
-        `);
+    if (parentError) {
+      throw new Error(parentError.message);
+    }
 
-    let motherFirstName = "";
-    let motherMiddleName = "";
-    let motherLastName = "";
+    const motherID = parentQuery.mother_id;
 
-    if (motherID && motherQuery.rows[0]) {
-      if (motherQuery.rows[0].first_name === null) {
-        motherFirstName = "UNKNOWN";
-      } else {
-        motherFirstName = motherQuery.rows[0].first_name;
-      }
+    // Query for the mother’s information using mother ID
+    const { data: motherQuery, error: motherError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('*')
+      .eq('ancestor_id', motherID)
+      .single(); // Get a single row
 
-      if (motherQuery.rows[0].middle_name === null) {
-        motherMiddleName = "";
-      } else {
-        motherMiddleName = motherQuery.rows[0].middle_name;
-      }
+    if (motherError) {
+      throw new Error(motherError.message);
+    }
 
-      if (motherQuery.rows[0].last_name === null) {
-        motherLastName = "";
-      } else {
-        motherLastName = motherQuery.rows[0].last_name;
-      }
+    if (motherID && motherQuery) {
+      // Set default values if data is missing
+      const motherFirstName = motherQuery.first_name ?? "UNKNOWN";
+      const motherMiddleName = motherQuery.middle_name ?? "";
+      const motherLastName = motherQuery.last_name ?? "";
 
       const motherFullName = `${motherFirstName} ${motherMiddleName} ${motherLastName}`;
 
@@ -966,27 +964,28 @@ app.post("/get-mother", async (req, res) => {
         motherFirstName: motherFirstName,
         motherMiddleName: motherMiddleName,
         motherLastName: motherLastName,
-        motherBirthDate: motherQuery.rows[0].date_of_birth,
-        motherBirthPlace: motherQuery.rows[0].place_of_birth,
-        motherDeathDate: motherQuery.rows[0].date_of_death,
-        motherDeathPlace: motherQuery.rows[0].place_of_death,
-        motherOccupation: motherQuery.rows[0].occupation,
-        motherProfileNumber: motherQuery.rows[0].ancestor_id,
-        motherEthnicity: motherQuery.rows[0].ethnicity,
-        motherCauseOfDeath: motherQuery.rows[0].cause_of_death,
-        relation_to_user: motherQuery.rows[0].relation_to_user,
-        uncertainFirstName: motherQuery.rows[0].uncertain_first_name,
-        uncertainMiddleName: motherQuery.rows[0].uncertain_middle_name,
-        uncertainLastName: motherQuery.rows[0].uncertain_last_name,
-        uncertainBirthDate: motherQuery.rows[0].uncertain_birth_date,
-        uncertainBirthPlace: motherQuery.rows[0].uncertain_birth_place,
-        uncertainDeathDate: motherQuery.rows[0].uncertain_death_date,
-        uncertainDeathPlace: motherQuery.rows[0].uncertain_death_place,
-        uncertainOccupation: motherQuery.rows[0].uncertain_occupation,
-        pageNum: motherQuery.rows[0].base_of_page,
-        memberOfNobility: motherQuery.rows[0].member_of_nobility,
+        motherBirthDate: motherQuery.date_of_birth,
+        motherBirthPlace: motherQuery.place_of_birth,
+        motherDeathDate: motherQuery.date_of_death,
+        motherDeathPlace: motherQuery.place_of_death,
+        motherOccupation: motherQuery.occupation,
+        motherProfileNumber: motherQuery.ancestor_id,
+        motherEthnicity: motherQuery.ethnicity,
+        motherCauseOfDeath: motherQuery.cause_of_death,
+        relation_to_user: motherQuery.relation_to_user,
+        uncertainFirstName: motherQuery.uncertain_first_name,
+        uncertainMiddleName: motherQuery.uncertain_middle_name,
+        uncertainLastName: motherQuery.uncertain_last_name,
+        uncertainBirthDate: motherQuery.uncertain_birth_date,
+        uncertainBirthPlace: motherQuery.uncertain_birth_place,
+        uncertainDeathDate: motherQuery.uncertain_death_date,
+        uncertainDeathPlace: motherQuery.uncertain_death_place,
+        uncertainOccupation: motherQuery.uncertain_occupation,
+        pageNum: motherQuery.base_of_page,
+        memberOfNobility: motherQuery.member_of_nobility,
       });
     } else {
+      // In case no mother is found, return null values
       res.json({
         motherID: null,
         motherFullName: null,
@@ -1012,884 +1011,886 @@ app.post("/get-mother", async (req, res) => {
         uncertainOccupation: null,
         pageNum: null,
         memberOfNobility: null,
-      })
+      });
     }
   } catch (error) {
     console.log("Error getting mother:", error);
+    res.status(500).json({ error: "Error fetching mother's data" });
   }
 });
+
 
 app.post("/set-current-page-number", async (req, res) => {
   try {
     const { userId, num } = req.body;
 
-    const setNum = await pool.query(`
-            UPDATE users    
-            SET current_page = ${num}
-            WHERE id = ${userId}
-        `);
+    // Query to update the current page number in the user's data
+    const { data, error } = await supabase
+      .from('users')
+      .update({ current_page: num })
+      .eq('id', userId);
 
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    // Respond with success message
     res.json(true);
   } catch (error) {
     console.log("Error setting page number:", error);
+    res.status(500).json({ error: "Error setting page number" });
   }
 });
+
 
 app.post("/get-current-page-number", async (req, res) => {
   try {
     const { userId } = req.body;
 
-    //finds the latest current page number saved to the user db
-    const pageNum = await pool.query(`
-            SELECT * FROM users
-            WHERE id = ${userId}
-        `);
+    // Get the current page number from the user's record
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_page, current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentPageNum = Number(pageNum.rows[0].current_page);
-
-    //finds the current tree that the user is on
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
-
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
-    //finds which person if the "base" (ancestor listed at the bottom of the page) of the current page number
-    const baseOfPage = await pool.query(
-      `
-            SELECT * FROM tree_${currentTree}
-            WHERE base_of_page = ${currentPageNum}
-            `
-    );
-
-
-    let firstName = "";
-    let middleName = "";
-    let lastName = "";
-
-    if (baseOfPage.rows[0].first_name === null) {
-      firstName = "UNKNOWN";
-    } else {
-      firstName = baseOfPage.rows[0].first_name;
+    if (userError) {
+      throw new Error(userError.message);
     }
 
-    if (baseOfPage.rows[0].middle_name === null) {
-      middleName = "";
-    } else {
-      middleName = baseOfPage.rows[0].middle_name;
+    const currentPageNum = Number(user.current_page);
+    const currentTree = user.current_tree_id;
+
+    // Get the ancestor's details from the current tree using the page number
+    const { data: baseOfPage, error: pageError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('*')
+      .eq('base_of_page', currentPageNum)
+      .single();
+
+    if (pageError) {
+      throw new Error(pageError.message);
     }
 
-    if (baseOfPage.rows[0].last_name === null) {
-      lastName = "";
-    } else {
-      lastName = baseOfPage.rows[0].last_name;
-    }
-
+    // Prepare name values, replace null values with defaults
+    const firstName = baseOfPage.first_name || "UNKNOWN";
+    const middleName = baseOfPage.middle_name || "";
+    const lastName = baseOfPage.last_name || "";
+    
     const fullName = `${firstName} ${middleName} ${lastName}`;
 
+    // Respond with the required details
     res.json({
       pageNum: currentPageNum,
-      firstName: baseOfPage.rows[0].first_name,
-      middleName: baseOfPage.rows[0].middle_name,
-      lastName: baseOfPage.rows[0].last_name,
-      fullName: fullName,
-      id: baseOfPage.rows[0].ancestor_id,
-      birthDate: baseOfPage.rows[0].date_of_birth,
-      birthPlace: baseOfPage.rows[0].place_of_birth,
-      deathDate: baseOfPage.rows[0].date_of_death,
-      deathPlace: baseOfPage.rows[0].place_of_death,
-      occupation: baseOfPage.rows[0].occupation,
-      ethnicity: baseOfPage.rows[0].ethnicity,
-      relationToUser: baseOfPage.rows[0].relation_to_user,
-      sex: baseOfPage.rows[0].sex,
-      uncertainFirstName: baseOfPage.rows[0].uncertain_first_name,
-      uncertainMiddleName: baseOfPage.rows[0].uncertain_middle_name,
-      uncertainLastName: baseOfPage.rows[0].uncertain_last_name,
-      uncertainBirthDate: baseOfPage.rows[0].uncertain_birth_date,
-      uncertainBirthPlace: baseOfPage.rows[0].uncertain_birth_place,
-      uncertainDeathDate: baseOfPage.rows[0].uncertain_death_date,
-      uncertainDeathPlace: baseOfPage.rows[0].uncertain_death_place,
-      uncertainOccupation: baseOfPage.rows[0].uncertain_occupation,
-      memberOfNobility: baseOfPage.rows[0].member_of_nobility,
+      firstName,
+      middleName,
+      lastName,
+      fullName,
+      id: baseOfPage.ancestor_id,
+      birthDate: baseOfPage.date_of_birth,
+      birthPlace: baseOfPage.place_of_birth,
+      deathDate: baseOfPage.date_of_death,
+      deathPlace: baseOfPage.place_of_death,
+      occupation: baseOfPage.occupation,
+      ethnicity: baseOfPage.ethnicity,
+      relationToUser: baseOfPage.relation_to_user,
+      sex: baseOfPage.sex,
+      uncertainFirstName: baseOfPage.uncertain_first_name,
+      uncertainMiddleName: baseOfPage.uncertain_middle_name,
+      uncertainLastName: baseOfPage.uncertain_last_name,
+      uncertainBirthDate: baseOfPage.uncertain_birth_date,
+      uncertainBirthPlace: baseOfPage.uncertain_birth_place,
+      uncertainDeathDate: baseOfPage.uncertain_death_date,
+      uncertainDeathPlace: baseOfPage.uncertain_death_place,
+      uncertainOccupation: baseOfPage.uncertain_occupation,
+      memberOfNobility: baseOfPage.member_of_nobility,
     });
   } catch (error) {
     console.log("Error getting page number:", error);
+    res.status(500).json({ error: "Error fetching page data" });
   }
 });
+
 
 app.post("/make-new-page", async (req, res) => {
   try {
     const { userId, personID, pageNumber } = req.body;
 
-    //finds the current tree that the user is on
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get the current tree ID from the user's record
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    //finds what the current highest page number is, and increments it by one
-    const newPage = await pool.query(`
-            SELECT MAX(page_number) AS max_page
-            FROM tree_${currentTree}
-        `);
+    const currentTree = user.current_tree_id;
 
-    const newPageNum = Number(newPage.rows[0].max_page) + 1;
+    // Get the maximum page number and increment it by 1
+    const { data: maxPageData, error: pageError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('page_number')
+      .order('page_number', { ascending: false })
+      .limit(1)
+      .single();
 
-    //changes page number of the person who shall be the bottom page person of the new page
-    const person = await pool.query(`
-            UPDATE tree_${currentTree}
-            SET 
-                page_number = ${newPageNum},
-                base_of_page = ${newPageNum}
-            WHERE ancestor_id = ${personID}
-        `);
+    if (pageError) {
+      throw new Error(pageError.message);
+    }
 
-    //the previous page that the person is mentioned on is saved in previous_page
-    const previous = await pool.query(`
-            UPDATE tree_${currentTree}
-            SET previous_page = ${pageNumber}
-            WHERE ancestor_id = ${personID}
-            `);
+    const newPageNum = maxPageData ? Number(maxPageData.page_number) + 1 : 1;
+
+    // Update the page number and set it as the base for the new page
+    const { error: updateError1 } = await supabase
+      .from(`tree_${currentTree}`)
+      .update({ page_number: newPageNum, base_of_page: newPageNum })
+      .eq('ancestor_id', personID);
+
+    if (updateError1) {
+      throw new Error(updateError1.message);
+    }
+
+    // Update the previous_page reference for the person
+    const { error: updateError2 } = await supabase
+      .from(`tree_${currentTree}`)
+      .update({ previous_page: pageNumber })
+      .eq('ancestor_id', personID);
+
+    if (updateError2) {
+      throw new Error(updateError2.message);
+    }
+
+    res.json({ success: true, newPageNum });
   } catch (error) {
     console.log("Error making new page: ", error);
+    res.status(500).json({ error: "Error making new page" });
   }
 });
+
 
 app.post("/count-all-pages", async (req, res) => {
   try {
     const { userId } = req.body;
 
-    //finds the current tree that the user is on
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get the current tree ID from the user's record
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    //finds what the current highest page number is, and increments it by on
-    const newPage = await pool.query(`
-            SELECT MAX(page_number) AS max_page
-            FROM tree_${currentTree}
-        `);
+    const currentTree = user.current_tree_id;
 
-    const newPageNum = Number(newPage.rows[0].max_page);
+    // Get the maximum page number from the current tree
+    const { data: maxPageData, error: pageError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('page_number')
+      .order('page_number', { ascending: false })
+      .limit(1)
+      .single();
 
-    res.json(newPageNum);
+    if (pageError) {
+      throw new Error(pageError.message);
+    }
+
+    const maxPageNumber = maxPageData ? Number(maxPageData.page_number) : 0; // Handle case if no pages exist.
+
+    res.json(maxPageNumber);
   } catch (error) {
-    console.log("Error making new page: ", error);
+    console.log("Error counting pages: ", error);
+    res.status(500).json({ error: "Error counting pages" });
   }
 });
+
 
 app.post("/get-previous-page", async (req, res) => {
   try {
     const { userId, personID } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get the current tree ID from the user's record
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    const previous = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE ancestor_id = ${personID}
-            `);
+    const currentTree = user.current_tree_id;
 
-    const previousPage = Number(previous.rows[0].previous_page);
+    // Fetch the previous page using the personID
+    const { data: previousData, error: pageError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('previous_page')
+      .eq('ancestor_id', personID)
+      .single();
 
-    //updates the current page number in the database
-    const update = await pool.query(`
-            UPDATE users
-            SET current_page = ${previousPage}
-            WHERE id = ${userId}
-            `);
+    if (pageError) {
+      throw new Error(pageError.message);
+    }
+
+    const previousPage = Number(previousData ? previousData.previous_page : 0); // Default to 0 if not found
+
+    // Update the current page number in the user's record
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ current_page: previousPage })
+      .eq('id', userId);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
 
     res.json({ pageNum: previousPage });
   } catch (error) {
     console.log("Error getting previous page: ", error);
+    res.status(500).json({ error: "Error getting previous page" });
   }
 });
+
 
 app.post("/get-next-page", async (req, res) => {
   try {
     const { userId, personID } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get the current tree ID from the user's record
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    //finds what page the person is at the base of
-    const goUp = await pool.query(
-      `
-            SELECT base_of_page FROM tree_${currentTree}
-            WHERE ancestor_id = ${personID}
-            `
-    );
+    const currentTree = user.current_tree_id;
 
-    //updates the current page number in the database
-    const update = await pool.query(`
-            UPDATE users
-            SET current_page = ${Number(goUp.rows[0].base_of_page)}
-            WHERE id = ${userId}
-            `);
+    // Fetch the base_of_page for the provided personID
+    const { data: pageData, error: pageError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('base_of_page')
+      .eq('ancestor_id', personID)
+      .single();
 
-    res.json({ pageNum: Number(goUp.rows[0].base_of_page) });
+    if (pageError) {
+      throw new Error(pageError.message);
+    }
+
+    const nextPage = Number(pageData ? pageData.base_of_page : 0); // Default to 0 if not found
+
+    // Update the current page number in the user's record
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ current_page: nextPage })
+      .eq('id', userId);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+
+    res.json({ pageNum: nextPage });
   } catch (error) {
-    console.log("Error getting previous page: ", error);
+    console.log("Error getting next page: ", error);
+    res.status(500).json({ error: "Error getting next page" });
   }
 });
+
 
 app.post("/save-ancestor", async (req, res) => {
   try {
     const { userId, ancestorDetails, childID, sex } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Query to get the current tree id
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    const ancestoridQuery = await pool.query(`
-            SELECT ancestor_id FROM tree_${currentTree}
-        `);
+    const currentTree = user.current_tree_id;
 
-    const allAncestorIds = ancestoridQuery.rows.map((row) => row.ancestor_id);
+    // Query to get all ancestor ids
+    const { data: ancestors, error: ancestorError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('ancestor_id');
 
+    if (ancestorError) {
+      throw new Error(ancestorError.message);
+    }
+
+    const allAncestorIds = ancestors.map(row => row.ancestor_id);
+
+    // Generate a random ancestor_id, ensuring no duplication
     let ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
     while (allAncestorIds.includes(ancestor_id)) {
       ancestor_id = Math.floor(Math.random() * (999999 - 100000) + 100000);
     }
 
+    // Update father_id or mother_id depending on sex
     if (sex === "male") {
-      const childQuery = await pool.query(`
-                UPDATE tree_${currentTree}
-                SET father_id = ${ancestor_id}
-                WHERE ancestor_id = ${childID}
-                `);
+      const { error: childError } = await supabase
+        .from(`tree_${currentTree}`)
+        .update({ father_id: ancestor_id })
+        .eq('ancestor_id', childID);
+
+      if (childError) {
+        throw new Error(childError.message);
+      }
     } else if (sex === "female") {
-      const childQuery = await pool.query(`
-                UPDATE tree_${currentTree}
-                SET mother_id = ${ancestor_id}
-                WHERE ancestor_id = ${childID}
-                `);
+      const { error: childError } = await supabase
+        .from(`tree_${currentTree}`)
+        .update({ mother_id: ancestor_id })
+        .eq('ancestor_id', childID);
+
+      if (childError) {
+        throw new Error(childError.message);
+      }
     }
 
-    //father of bottom page person has same page number
-    const pageNumQuery = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${childID}
-        `);
-    const page_number = Number(pageNumQuery.rows.map((row) => row.page_number));
+    // Fetch the page number of the child
+    const { data: pageData, error: pageError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('page_number')
+      .eq('ancestor_id', childID)
+      .single();
 
-    const ancestorRelation = [];
-    
-    const relationToUserQuery = await pool.query(`
-           SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${childID}
-            `);
+    if (pageError) {
+      throw new Error(pageError.message);
+    }
 
-      for (let i = 0; i < relationToUserQuery.rows[0].relation_to_user.length; i++) {
-        ancestorRelation.push(relationToUserQuery.rows[0].relation_to_user[i] + 1);
-      }
+    const page_number = Number(pageData ? pageData.page_number : 0); // Default to 0 if not found
 
-    
+    // Retrieve relation_to_user for the ancestor
+    const { data: relationData, error: relationError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('relation_to_user')
+      .eq('ancestor_id', childID)
+      .single();
 
-    
+    if (relationError) {
+      throw new Error(relationError.message);
+    }
 
-    
+    const ancestorRelation = relationData.relation_to_user.map(rel => rel + 1);
 
-    const ancestorQuery = await pool.query(
-      `
-            INSERT INTO tree_${currentTree} (
-                first_name,
-                middle_name,
-                last_name,
-                ancestor_id,
-                page_number,
-                base_person,
-                sex,
-                ethnicity,
-                date_of_birth,
-                place_of_birth,
-                date_of_death,
-                place_of_death,
-                cause_of_death,
-                occupation,
-                relation_to_user,
-                uncertain_first_name,
-                uncertain_middle_name,
-                uncertain_last_name,
-                uncertain_birth_date,
-                uncertain_birth_place,
-                uncertain_death_date,
-                uncertain_death_place,
-                uncertain_occupation,
-                marriage_date,
-                marriage_place,
-                member_of_nobility
-            )  
-            VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26
-            ) 
-        `,
-      [
-        ancestorDetails.firstName,
-        ancestorDetails.middleName,
-        ancestorDetails.lastName,
-        ancestor_id,
-        page_number,
-        "false",
-        sex,
-        ancestorDetails.ethnicity,
-        ancestorDetails.birthDate,
-        ancestorDetails.birthPlace,
-        ancestorDetails.deathDate,
-        ancestorDetails.deathPlace,
-        ancestorDetails.causeOfDeath,
-        ancestorDetails.occupation,
-        ancestorRelation,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        ancestorDetails.marriagePlace,
-        ancestorDetails.marriageDeath,
-        ancestorDetails.memberOfNobility,
-      ]
-    );
+    // Insert the new ancestor into the tree
+    const { error: insertError } = await supabase
+      .from(`tree_${currentTree}`)
+      .insert([
+        {
+          first_name: ancestorDetails.firstName,
+          middle_name: ancestorDetails.middleName,
+          last_name: ancestorDetails.lastName,
+          ancestor_id: ancestor_id,
+          page_number: page_number,
+          base_person: false,
+          sex: sex,
+          ethnicity: ancestorDetails.ethnicity,
+          date_of_birth: ancestorDetails.birthDate,
+          place_of_birth: ancestorDetails.birthPlace,
+          date_of_death: ancestorDetails.deathDate,
+          place_of_death: ancestorDetails.deathPlace,
+          cause_of_death: ancestorDetails.causeOfDeath,
+          occupation: ancestorDetails.occupation,
+          relation_to_user: ancestorRelation,
+          uncertain_first_name: false,
+          uncertain_middle_name: false,
+          uncertain_last_name: false,
+          uncertain_birth_date: false,
+          uncertain_birth_place: false,
+          uncertain_death_date: false,
+          uncertain_death_place: false,
+          uncertain_occupation: false,
+          marriage_date: ancestorDetails.marriageDate,
+          marriage_place: ancestorDetails.marriagePlace,
+          member_of_nobility: ancestorDetails.memberOfNobility
+        }
+      ]);
 
-    res.json(ancestor_id);
+    if (insertError) {
+      throw new Error(insertError.message);
+    }
+
+    // Return the new ancestor_id
+    res.json({ ancestor_id });
   } catch (error) {
     console.log("Error saving ancestor:", error);
+    res.status(500).json({ error: "Error saving ancestor" });
   }
 });
 
+
 //determines if the great grandparent of the bottom page person has parents
 app.post("/check-if-great-grandparent-has-parents", async (req, res) => {
-
   try {
     const { userId, greatgrandparentID } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Query to get the current tree id
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-    const request = await pool.query(
-      `
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${greatgrandparentID}
-            `
-    );
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
+    const currentTree = user.current_tree_id;
 
-    if (
-      request.rows[0].father_id !== null||
-      request.rows[0].mother_id !== null
-    ) {
+    // Query to get the great-grandparent's details
+    const { data: greatGrandparent, error: greatGrandparentError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('father_id, mother_id')
+      .eq('ancestor_id', greatgrandparentID)
+      .single();
+
+    if (greatGrandparentError) {
+      throw new Error(greatGrandparentError.message);
+    }
+
+    // Check if the great-grandparent has parents (father or mother)
+    if (greatGrandparent.father_id !== null || greatGrandparent.mother_id !== null) {
       res.json(true);
     } else {
       res.json(false);
     }
+
   } catch (error) {
     console.log("Error checking greatgrandparent's parents:", error);
+    res.status(500).json({ error: "Error checking greatgrandparent's parents" });
   }
 });
+
 
 app.post("/edit-person", async (req, res) => {
   try {
     const { userId, personDetails } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get current tree id from users table
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    const ancestorQuery = await pool.query(
-      `UPDATE tree_${currentTree} 
-             SET
-                first_name = $1,
-                middle_name = $2,
-                last_name = $3,
-                ethnicity = $4,
-                date_of_birth = $5,
-                place_of_birth = $6,
-                date_of_death = $7,
-                place_of_death = $8,
-                cause_of_death = $9,
-                occupation = $10,
-                member_of_nobility = $11
-             WHERE ancestor_id = $12`,
-      [
-        personDetails.firstName,
-        personDetails.middleName,
-        personDetails.lastName,
-        personDetails.ethnicity,
-        personDetails.birthDate,
-        personDetails.birthPlace,
-        personDetails.deathDate,
-        personDetails.deathPlace,
-        personDetails.causeOfDeath,
-        personDetails.occupation,
-        personDetails.memberOfNobility,
-        personDetails.id,
-      ]
-    );
+    const currentTree = user.current_tree_id;
+
+    // Update the person's details in the relevant tree table
+    const { data: updatedPerson, error: updateError } = await supabase
+      .from(`tree_${currentTree}`)
+      .update({
+        first_name: personDetails.firstName,
+        middle_name: personDetails.middleName,
+        last_name: personDetails.lastName,
+        ethnicity: personDetails.ethnicity,
+        date_of_birth: personDetails.birthDate,
+        place_of_birth: personDetails.birthPlace,
+        date_of_death: personDetails.deathDate,
+        place_of_death: personDetails.deathPlace,
+        cause_of_death: personDetails.causeOfDeath,
+        occupation: personDetails.occupation,
+        member_of_nobility: personDetails.memberOfNobility,
+      })
+      .eq('ancestor_id', personDetails.id);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+
+    res.json({ success: true, message: 'Person details updated successfully!' });
+
   } catch (error) {
-    console.log("Error saving ancestor:", error);
+    console.log("Error editing person:", error);
+    res.status(500).json({ error: "Error updating person details" });
   }
 });
+
 
 app.post("/toggle-uncertain", async (req, res) => {
   try {
     const { userId, details, infoType } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get current tree id from users table
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
-    const checkBoolean = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${details.id}
-            `);
-
-    let bool = "";
-    switch (infoType) {
-      case "first_name":
-        bool = checkBoolean.rows[0].uncertain_first_name;
-        break;
-      case "middle_name":
-        bool = checkBoolean.rows[0].uncertain_middle_name;
-        break;
-      case "last_name":
-        bool = checkBoolean.rows[0].uncertain_last_name;
-        break;
-      case "birth_date":
-        bool = checkBoolean.rows[0].uncertain_birth_date;
-        break;
-      case "birth_place":
-        bool = checkBoolean.rows[0].uncertain_birth_place;
-        break;
-      case "death_date":
-        bool = checkBoolean.rows[0].uncertain_death_date;
-        break;
-      case "death_place":
-        bool = checkBoolean.rows[0].uncertain_death_place;
-        break;
-      case "occupation":
-        bool = checkBoolean.rows[0].uncertain_occupation;
-        break;
+    if (userError) {
+      throw new Error(userError.message);
     }
 
-    //toggles the boolean
-    if (bool) {
-      bool = false;
-    } else {
-      bool = true;
+    const currentTree = user.current_tree_id;
+
+    // Query to check the current uncertain value
+    const { data: ancestorData, error: ancestorError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select(`${infoType}, uncertain_${infoType}`)
+      .eq('ancestor_id', details.id)
+      .single();
+
+    if (ancestorError) {
+      throw new Error(ancestorError.message);
     }
 
-    const ancestorQuery = await pool.query(
-      `UPDATE tree_${currentTree} 
-             SET
-                uncertain_${infoType} = ${bool}
-             WHERE ancestor_id = ${details.id}`
-    );
+    // Get the current uncertain value for the provided infoType
+    const currentBool = ancestorData[`uncertain_${infoType}`];
 
-    res.json(bool);
+    // Toggle the boolean value
+    const newBool = !currentBool;
+
+    // Update the uncertain flag in the database
+    const { data: updatedData, error: updateError } = await supabase
+      .from(`tree_${currentTree}`)
+      .update({ [`uncertain_${infoType}`]: newBool })
+      .eq('ancestor_id', details.id);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+
+    // Return the updated uncertain value in the response
+    res.json(newBool);
+
   } catch (error) {
-    console.log("Error saving ancestor:", error);
+    console.log("Error toggling uncertain status:", error);
+    res.status(500).json({ error: "Error toggling uncertain status" });
   }
 });
+
 
 app.post("/delete-person", async (req, res) => {
   try {
     const { userId, personID, sex } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Get the current tree ID for the user
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
-    //removes any mention of the person's ID in anyone else's father_id or mother_id
-    if (sex === "male") {
-      const removeMentionAsParent = await pool.query(`
-                UPDATE tree_${currentTree}
-                SET father_id = NULL
-                WHERE father_id = ${personID}
-            `);
-    } else {
-      const removeMentionAsParent = await pool.query(`
-                UPDATE tree_${currentTree}
-                SET mother_id = NULL
-                WHERE mother_id = ${personID}
-            `);
+    if (userError) {
+      throw new Error(userError.message);
     }
 
-    //now that the person is no longer associated with any children, he, and all his own ancestors, may be deleted. If one of his own ancestors is a repeat ancestor, then thsi repeat ancestor will be safe from deletion thanks to only people with no listed children wil be deleted - the existence of the other descent path disqualifies repeat ancestors from this condition
+    const currentTree = user.current_tree_id;
 
+    // Remove any mention of the person's ID in anyone else's father_id or mother_id
+    if (sex === "male") {
+      const { error: maleUpdateError } = await supabase
+        .from(`tree_${currentTree}`)
+        .update({ father_id: null })
+        .eq('father_id', personID);
+
+      if (maleUpdateError) {
+        throw new Error(maleUpdateError.message);
+      }
+    } else {
+      const { error: femaleUpdateError } = await supabase
+        .from(`tree_${currentTree}`)
+        .update({ mother_id: null })
+        .eq('mother_id', personID);
+
+      if (femaleUpdateError) {
+        throw new Error(femaleUpdateError.message);
+      }
+    }
+
+    // Delete recursively if the person has no children linked as father_id or mother_id
     const deleteRecursively = async (ID, personSex) => {
-      //find parents, store their IDs
-      const findParents = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE ancestor_id = ${ID}
-            `);
+      // Find the parents of the given person
+      const { data: person, error: personError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select('father_id, mother_id')
+        .eq('ancestor_id', ID)
+        .single();
 
-      let fatherID = findParents.rows[0].father_id;
-      let motherID = findParents.rows[0].mother_id;
+      if (personError) {
+        throw new Error(personError.message);
+      }
 
-      //delete person if his ID does not appear as in anyone's father_id or mother_id
+      const { father_id: fatherID, mother_id: motherID } = person;
+
+      let hasChildren = false;
+
+      // Determine if the person is listed as the parent for any children
       if (personSex === "male") {
-        const determineIfParent = await pool.query(`
-                    SELECT * FROM tree_${currentTree}
-                    WHERE father_id = ${ID}
-                `);
+        const { data: children, error: childrenError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select('ancestor_id')
+          .eq('father_id', ID);
 
-        if (determineIfParent.rows.length === 0) {
-          const deletePerson = pool.query(`
-                        DELETE FROM tree_${currentTree}
-                        WHERE ancestor_id = ${ID}
-                    `);
+        if (childrenError) {
+          throw new Error(childrenError.message);
+        }
 
-          //now that the person is deleted, his parents will get the same treatment. The recursion will stop if the person has no parents
-          if (fatherID) {
-            deleteRecursively(fatherID, "male");
-          }
-          if (motherID) {
-            deleteRecursively(motherID, "female");
-          }
+        if (children.length > 0) {
+          hasChildren = true;
         }
       } else {
-        const determineIfParent = await pool.query(`
-                        SELECT * FROM tree_${currentTree}
-                        WHERE mother_id = ${ID}
-                    `);
+        const { data: children, error: childrenError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select('ancestor_id')
+          .eq('mother_id', ID);
 
-        if (determineIfParent.rows.length === 0) {
-          const deletePerson = pool.query(`
-                            DELETE FROM tree_${currentTree}
-                            WHERE ancestor_id = ${ID}
-                        `);
+        if (childrenError) {
+          throw new Error(childrenError.message);
+        }
 
-          //now that the person is deleted, his parents will get the same treatment. The recursion will stop if the person has no parents
-          if (fatherID) {
-            deleteRecursively(fatherID, "male");
-          }
-          if (motherID) {
-            deleteRecursively(motherID, "female");
-          }
+        if (children.length > 0) {
+          hasChildren = true;
+        }
+      }
+
+      // Only delete if no children are associated
+      if (!hasChildren) {
+        // Perform the deletion of the ancestor
+        const { error: deleteError } = await supabase
+          .from(`tree_${currentTree}`)
+          .delete()
+          .eq('ancestor_id', ID);
+
+        if (deleteError) {
+          throw new Error(deleteError.message);
+        }
+
+        // Recursively delete parents if no children exist and the person is deleted
+        if (fatherID) {
+          await deleteRecursively(fatherID, "male");
+        }
+        if (motherID) {
+          await deleteRecursively(motherID, "female");
         }
       }
     };
 
-    deleteRecursively(personID, sex);
+    // Start the recursive deletion process for the person
+    await deleteRecursively(personID, sex);
+
+    res.json({ message: "Person and ancestors deleted successfully" });
+
   } catch (error) {
-    console.log("Error saving ancestor:", error);
+    console.log("Error deleting person:", error);
+    res.status(500).json({ error: "Error deleting person" });
   }
 });
+
 
 app.post("/ancestor-profiles", async (req, res) => {
   try {
     const { userId, id } = req.body;
 
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    // Query to get the current tree ID for the user
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+    if (userError) {
+      throw new Error(userError.message);
+    }
 
-    const getPerson = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${id}
-        `);
+    const currentTree = user.current_tree_id;
 
-    res.json(getPerson.rows[0]);
+    // Query to get ancestor's details from the current tree
+    const { data: ancestor, error: ancestorError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select('*')
+      .eq('ancestor_id', id)
+      .single();
+
+    if (ancestorError) {
+      throw new Error(ancestorError.message);
+    }
+
+    res.json(ancestor);
   } catch (error) {
     console.log("Error getting ancestor's profile: ", error);
+    res.status(500).json({ error: "Error getting ancestor's profile" });
   }
 });
+
 
 app.post("/get-parents", async (req, res) => {
   try {
     const { userId, father, mother } = req.body;
 
     // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
-    const getFather = await pool.query(`
-            SELECT * FROM tree_${currentTree}
-            WHERE ancestor_id = ${father}
-        `);
-
-    let motherFirstName = "";
-    let motherMiddleName = "";
-    let motherLastName = "";
-    let motherId = "";
-    if (mother) {
-      const getMother = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE ancestor_id = ${mother}
-            `);
-      motherId = getMother.rows[0].ancestor_id;
-
-      if (getMother.rows[0].first_name === null) {
-        motherFirstName = "UNKNOWN";
-      } else {
-        motherFirstName = getMother.rows[0].first_name;
-      }
-
-      if (getMother.rows[0].middle_name === null) {
-        motherMiddleName = "";
-      } else {
-        motherMiddleName = getMother.rows[0].middle_name;
-      }
-
-      if (getMother.rows[0].last_name === null) {
-        motherLastName = "";
-      } else {
-        motherLastName = getMother.rows[0].last_name;
-      }
+    if (userError) {
+      throw new Error(userError.message);
     }
 
-    let fatherFirstName = "";
-    let fatherMiddleName = "";
-    let fatherLastName = "";
-    let fatherId = "";
-    if (father) {
-      const getFather = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE ancestor_id = ${father}
-            `);
-      fatherId = getFather.rows[0].ancestor_id;
+    const currentTree = user.current_tree_id;
 
-      if (getFather.rows[0].first_name === null) {
-        fatherFirstName = "UNKNOWN";
-      } else {
-        fatherFirstName = getFather.rows[0].first_name;
+    // Function to fetch parent details and handle missing values
+    const getParentDetails = async (parentId) => {
+      if (!parentId) return null;
+      
+      const { data: parent, error: parentError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select('*')
+        .eq('ancestor_id', parentId)
+        .single();
+
+      if (parentError) {
+        throw new Error(parentError.message);
       }
 
-      if (getFather.rows[0].middle_name === null) {
-        fatherMiddleName = "";
-      } else {
-        fatherMiddleName = getFather.rows[0].middle_name;
-      }
+      // Handle missing values
+      const firstName = parent.first_name || "UNKNOWN";
+      const middleName = parent.middle_name || "";
+      const lastName = parent.last_name || "";
+      
+      return { name: `${firstName} ${middleName} ${lastName}`, id: parent.ancestor_id };
+    };
 
-      if (getFather.rows[0].last_name === null) {
-        fatherLastName = "";
-      } else {
-        fatherLastName = getFather.rows[0].last_name;
-      }
-    }
+    // Fetch father details
+    const fatherDetails = await getParentDetails(father);
 
-    const fatherName = `${fatherFirstName} ${fatherMiddleName} ${fatherLastName}`;
-
-    const motherName = `${motherFirstName} ${motherMiddleName} ${motherLastName}`;
+    // Fetch mother details
+    const motherDetails = await getParentDetails(mother);
 
     res.json({
-      father: fatherName,
-      mother: motherName,
-      fatherId: fatherId,
-      motherId: motherId,
+      father: fatherDetails ? fatherDetails.name : "",
+      mother: motherDetails ? motherDetails.name : "",
+      fatherId: fatherDetails ? fatherDetails.id : "",
+      motherId: motherDetails ? motherDetails.id : ""
     });
   } catch (error) {
     console.log("Error getting ancestor's profile: ", error);
+    res.status(500).json({ error: "Error getting parent's details" });
   }
 });
+
 
 app.post("/get-child", async (req, res) => {
   try {
     const { userId, id, sex } = req.body;
 
     // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('current_tree_id')
+      .eq('id', userId)
+      .single();
 
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
-    let childFirstName = "";
-    let childMiddleName = "";
-    let childLastName = "";
-    let childName = [];
-    let childId = [];
-
-    let spouseFirstName = "";
-    let spouseMiddleName = "";
-    let spouseLastName = "";
-    let spouseName = "";
-    let spouseId = "";
-
-    if (sex === "male") {
-      const getChild = await pool.query(`
-                SELECT * FROM tree_${currentTree}
-                WHERE father_id = ${id}
-            `);
-
-      for (let i = 0; i < getChild.rows.length; i++) {
-        childId.push(getChild.rows[i].ancestor_id);
-
-        if (getChild.rows[i].first_name === null) {
-          childFirstName = "UNKNOWN";
-        } else {
-          childFirstName = getChild.rows[i].first_name;
-        }
-
-        if (getChild.rows[i].middle_name === null) {
-          childMiddleName = "";
-        } else {
-          childMiddleName = getChild.rows[i].middle_name;
-        }
-
-        if (getChild.rows[i].last_name === null) {
-          childLastName = "";
-        } else {
-          childLastName = getChild.rows[i].last_name;
-        }
-
-        childName.push(`${childFirstName} ${childMiddleName} ${childLastName}`);
-      }
-
-      const getSpouseId = await pool.query(`
-                SELECT mother_id FROM tree_${currentTree}
-                WHERE ancestor_id = ${childId[0]}
-            `);
-
-      spouseId = getSpouseId.rows[0].mother_id;
-
-      if (spouseId) {
-        const getSpouse = await pool.query(`
-                    SELECT * FROM tree_${currentTree}
-                    WHERE ancestor_id = ${spouseId}
-                `);
-
-        if (getSpouse.rows[0].first_name === null) {
-          spouseFirstName = "UNKNOWN";
-        } else {
-          spouseFirstName = getSpouse.rows[0].first_name;
-        }
-
-        if (getSpouse.rows[0].middle_name === null) {
-          spouseMiddleName = "";
-        } else {
-          spouseMiddleName = getSpouse.rows[0].middle_name;
-        }
-
-        if (getSpouse.rows[0].last_name === null) {
-          spouseLastName = "";
-        } else {
-          spouseLastName = getSpouse.rows[0].last_name;
-        }
-
-        spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
-      }
-    } else {
-      const getChild = await pool.query(`
-                    SELECT * FROM tree_${currentTree}
-                    WHERE mother_id = ${id}
-                `);
-
-      for (let i = 0; i < getChild.rows.length; i++) {
-        childId.push(getChild.rows[i].ancestor_id);
-
-        if (getChild.rows[i].first_name === null) {
-          childFirstName = "UNKNOWN";
-        } else {
-          childFirstName = getChild.rows[i].first_name;
-        }
-
-        if (getChild.rows[i].middle_name === null) {
-          childMiddleName = "";
-        } else {
-          childMiddleName = getChild.rows[i].middle_name;
-        }
-
-        if (getChild.rows[i].last_name === null) {
-          childLastName = "";
-        } else {
-          childLastName = getChild.rows[i].last_name;
-        }
-
-        childName.push(`${childFirstName} ${childMiddleName} ${childLastName}`);
-      }
-
-      const getSpouseId = await pool.query(`
-                    SELECT father_id FROM tree_${currentTree}
-                    WHERE ancestor_id = ${childId[0]}
-                `);
-
-      spouseId = getSpouseId.rows[0].father_id;
-
-      const getSpouse = await pool.query(`
-                    SELECT * FROM tree_${currentTree}
-                    WHERE ancestor_id = ${spouseId}
-                `);
-
-      if (getSpouse.rows[0].first_name === null) {
-        spouseFirstName = "UNKNOWN";
-      } else {
-        spouseFirstName = getSpouse.rows[0].first_name;
-      }
-
-      if (getSpouse.rows[0].middle_name === null) {
-        spouseMiddleName = "";
-      } else {
-        spouseMiddleName = getSpouse.rows[0].middle_name;
-      }
-
-      if (getSpouse.rows[0].last_name === null) {
-        spouseLastName = "";
-      } else {
-        spouseLastName = getSpouse.rows[0].last_name;
-      }
-
-      spouseName = `${spouseFirstName} ${spouseMiddleName} ${spouseLastName}`;
+    if (userError) {
+      throw new Error(userError.message);
     }
 
-    res.json({
-      childName: childName,
-      spouseName: spouseName,
-      childId: childId,
-      spouseId: spouseId,
-    });
+    const currentTree = user.current_tree_id;
+
+    // Function to handle retrieving a name
+    const getName = (person) => {
+      const firstName = person.first_name || "UNKNOWN";
+      const middleName = person.middle_name || "";
+      const lastName = person.last_name || "";
+      return `${firstName} ${middleName} ${lastName}`;
+    };
+
+    // Function to fetch child details and return name and ID
+    const getChildDetails = async (id, sex) => {
+      const { data: children, error: childError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select('*')
+        .eq(sex === "male" ? 'father_id' : 'mother_id', id);
+        
+      if (childError) {
+        throw new Error(childError.message);
+      }
+      
+      return children.map(child => ({
+        name: getName(child),
+        id: child.ancestor_id,
+      }));
+    };
+
+    // Function to get spouse info from the first child's mother/father id
+    const getSpouseDetails = async (childId, sex) => {
+      const field = sex === "male" ? "mother_id" : "father_id";
+      
+      const { data: spouseData, error: spouseError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select('*')
+        .eq('ancestor_id', childId);
+
+      if (spouseError) {
+        throw new Error(spouseError.message);
+      }
+
+      const spouseId = spouseData[0][field];
+
+      if (!spouseId) return null;
+
+      const { data: spouse, error: spouseDetailsError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select('*')
+        .eq('ancestor_id', spouseId)
+        .single();
+
+      if (spouseDetailsError) {
+        throw new Error(spouseDetailsError.message);
+      }
+
+      return getName(spouse);
+    };
+
+    // Get child details
+    const childDetails = await getChildDetails(id, sex);
+
+    if (childDetails.length > 0) {
+      // Get the spouse for the first child (if exists)
+      const spouseName = await getSpouseDetails(childDetails[0].id, sex);
+      
+      res.json({
+        childName: childDetails.map(child => child.name),
+        spouseName: spouseName || "",
+        childId: childDetails.map(child => child.id),
+        spouseId: spouseName ? childDetails[0].id : "",
+      });
+    } else {
+      res.json({
+        childName: [],
+        spouseName: "",
+        childId: [],
+        spouseId: "",
+      });
+    }
+    
   } catch (error) {
-    console.log("Error getting ancestor's profile: ", error);
+    console.log("Error getting child's profile: ", error);
+    res.status(500).json({ error: "Error getting child's details" });
   }
 });
+
 
 app.post("/save-profile-text", async (req, res) => {
   try {
