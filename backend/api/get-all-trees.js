@@ -9,7 +9,7 @@ const corsOptions = {
 };
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-/*delete this comment*/
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
@@ -30,12 +30,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Query to fetch all trees for the given user ID
-    const { data: allTrees, error } = await supabase
-      .from('trees')  // Ensure your Supabase table name matches
-      .select('tree_name, tree_id')  // Ensure column names match
-      .eq('user_id', userId);  // Ensure `user_id` is correct
 
+    const { data: allTrees, error } = await supabase
+      .from('trees')  
+      .select('tree_name, tree_id')  
+      .eq('user_id', userId);  
     // Handle query errors
     if (error) {
       console.error("Supabase query error:", error);
