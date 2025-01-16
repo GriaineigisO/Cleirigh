@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", // Replace with your frontend domain
+  origin: "https://cleirighgenealogy.com",  // Replace with your frontend domain
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -25,13 +25,14 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Expecting the body to contain a userId
     const { userId } = req.body;
 
     if (!userId) {
       return res.status(400).json({ error: "Missing userId" });
     }
 
-    // Get the current tree id for the user using Supabase query
+    // Fetch current tree ID for the user (retrieved from users table)
     const { data: currentTreeData, error: currentTreeError } = await supabase
       .from('users')
       .select('current_tree_id')
@@ -39,42 +40,31 @@ export default async function handler(req, res) {
       .single();
 
     if (currentTreeError || !currentTreeData) {
-      console.error("Error fetching current tree:", currentTreeError.message || "No user data found");
-      return res.status(500).json({ error: "Failed to fetch current tree data" });
+      console.error("Error fetching current tree:", currentTreeError ? currentTreeError.message : "No data found");
+      return res.status(500).json({ error: "Failed to fetch current tree" });
     }
 
     const currentTree = currentTreeData.current_tree_id;
 
-    // Get the most repeated ancestor by finding the ancestor with the largest relation_to_user array
-    const { data: mostRepeatedAncestorData, error: mostRepeatedAncestorError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select('ancestor_id, relation_to_user, first_name, middle_name, last_name')
-      .order('relation_to_user', { ascending: false })
-      .limit(1) // Limiting to 1 row (most repeated)
-      .single();
+    // Call the database function get_most_repeated_ancestor
+    const { data, error } = await supabase.rpc('get_most_repeated_ancestor', {
+      current_tree: currentTree
+    });
 
-    if (mostRepeatedAncestorError || !mostRepeatedAncestorData) {
-      console.error("Error fetching most repeated ancestor:", mostRepeatedAncestorError.message || "No ancestor data found");
+    if (error) {
+      console.error("Error fetching most repeated ancestor:", error.message);
       return res.status(500).json({ error: "Failed to fetch most repeated ancestor" });
     }
 
-    // Calculate the number of repetitions (length of the array)
-    const repeatedTimes = mostRepeatedAncestorData.relation_to_user.length;
-
-    // Extract names and handle undefined/null values
-    const firstName = mostRepeatedAncestorData.first_name || "";
-    const middleName = mostRepeatedAncestorData.middle_name || "";
-    const lastName = mostRepeatedAncestorData.last_name || "";
-
-    // Respond with ancestor details
+    // Returning the result if no errors
     res.json({
-      name: `${firstName} ${middleName} ${lastName}`,
-      link: `profile/${mostRepeatedAncestorData.ancestor_id}`,
-      repeatedTimes: repeatedTimes,
+      ancestorId: data[0].ancestor_id,
+      fullName: `${data[0].first_name} ${data[0].middle_name || ''} ${data[0].last_name}`,
+      relationToUser: data[0].relation_to_user.length
     });
-
+    
   } catch (error) {
-    console.log("Unexpected error:", error);
-    res.status(500).json({ error: "Server error" });
+    console.error("Unexpected error:", error);
+    return res.status(500).json({ error: "Unexpected server error" });
   }
 }
