@@ -210,7 +210,6 @@ const HomePageWithTree = () => {
       });
 
       const data = await response.json();
-      console.log(data)
       setNumOfAncestors(data);
 
       const placeResponse = await fetch("https://cleirigh-backend.vercel.app/api/count-places", {
@@ -362,8 +361,10 @@ const HomePageWithTree = () => {
       }
 
       setMostRemovedAncestorRelationLargestInt(largest);
+      console.log(mostRemovedAncestorRelationLargestInt)
     }
   }, [mostRemovedAncestorRelation]);
+  
 
   return (
     <div className="oghamleaves">
@@ -485,6 +486,7 @@ const HomePageWithTree = () => {
                 </p>
               </div>
 
+              
               <div className="homePageDiv">
                 <p className="homePageDivLabel">
                   Most Removed Ancestor By Generation
