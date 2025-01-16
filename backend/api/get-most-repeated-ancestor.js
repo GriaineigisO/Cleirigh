@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     res.json({
       repeatedTimes: data[0].relation_to_user.length,
       name: `${data[0].first_name} ${data[0].middle_name || ''} ${data[0].last_name}`,
-      link: `profile/${data.rows[0].ancestor_id}`
+      link: `profile/${data[0].ancestor_id}`
     });
     
   } catch (error) {
