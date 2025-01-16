@@ -12,6 +12,17 @@ const corsOptions = {
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 export default async function handler(req, res) {
+      // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
+  res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
+
+  // Handle OPTIONS method (for CORS preflight)
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
     try {
       const { userId } = req.body;
   

@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   
       const currentPage = getCurrentPage.rows[0].current_page;
   
-      const getRightNote = await pool.query(`
+      const getLeftNote = await pool.query(`
         SELECT * FROM notes 
         WHERE tree_id = $1 AND page_number = $2
       `, [
@@ -51,20 +51,20 @@ export default async function handler(req, res) {
         currentPage,
       ])
   
-      if (getRightNote.rows.length > 0) {
+      if (getLeftNote.rows.length > 0) {
   
-        const rightNote = getRightNote.rows[0].right_note
-        const rightNoteHeadline = getRightNote.rows[0].right_note_headline
+        const leftNote = getLeftNote.rows[0].left_note
+        const leftNoteHeadline = getLeftNote.rows[0].left_note_headline
   
         let bool = true;
-        if (rightNote === null) {
+        if (leftNote === null) {
           bool = false;
         }
   
         res.json({
-          isRightNote: bool,
-          rightNote: rightNote,
-          rightNoteHeadline:rightNoteHeadline
+          isLeftNote: bool,
+          leftNote: leftNote,
+          leftNoteHeadline:leftNoteHeadline
         });
   
     } else {
@@ -77,6 +77,6 @@ export default async function handler(req, res) {
     
   
     } catch(error) {
-      console.log("Error saving right note:", error)
+      console.log("Error saving left note:", error)
     }
   }
