@@ -262,6 +262,7 @@ const HomePageWithTree = () => {
       setMostRepeatedAncestor(repeatedData.name);
       setMostRepeatedAncestorLink(repeatedData.link);
       setRepeatedTimes(repeatedData.repeatedTimes);
+      console.log(mostRemovedAncestor)
 
       const baseUserResponse = await fetch(
         "https://cleirigh-backend.vercel.app/api/get-base-person",
@@ -361,7 +362,6 @@ const HomePageWithTree = () => {
       }
 
       setMostRemovedAncestorRelationLargestInt(largest);
-      console.log(mostRemovedAncestorRelationLargestInt)
     }
   }, [mostRemovedAncestorRelation]);
   
