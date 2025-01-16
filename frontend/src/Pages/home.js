@@ -83,14 +83,13 @@ const HomePageWithTree = () => {
         body: JSON.stringify({ userId }),
       });
 
-      // Check if the response is valid and is JSON
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
       const data = await response.json();
 
-      setTreeName(data.treeName); // Update state based on response
+      setTreeName(data.treeName); 
     } catch (error) {
       console.error("Error checking trees:", error);
     }
@@ -98,7 +97,10 @@ const HomePageWithTree = () => {
     return treeName;
   };
 
-  getTreeName();
+  useEffect(() => {
+    getTreeName();
+  }, [])
+  
 
   const getCurrentTree = async () => {
     const token = localStorage.getItem("token");
