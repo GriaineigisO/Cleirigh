@@ -8,8 +8,6 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
@@ -28,6 +26,8 @@ export default async function handler(req, res) {
   if (!userId) {
     return res.status(400).json({ message: "User ID is required." });
   }
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
   try {
     // Query to fetch all trees for the given user ID
