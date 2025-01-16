@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirigh.vercel.app",  
+  origin: "https://cleirighgenealogy.com",  
   methods: ['GET', 'POST', 'OPTIONS'], 
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   // Handle OPTIONS method (for CORS preflight)
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.status(200).end();S
     return;
   }
 
