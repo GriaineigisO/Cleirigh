@@ -8,8 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/api/login",
-      "dest": "/api/login.js"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     }
   ]
 }
