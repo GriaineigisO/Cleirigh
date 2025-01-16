@@ -88,7 +88,6 @@ const Navbar = ({ onLogin, onLogout }) => {
     };
 
     getAllTrees();
-    console.log(currentTreeID)
   }, [isLoggedIn]);
 
   const switchTree = async (treeId) => {
@@ -197,14 +196,16 @@ const Navbar = ({ onLogin, onLogout }) => {
                     </Link>
                   </li>
 
-                  {currentTreeName.map((trees, index) => (
-                    <li
-                      key={index}
-                      onClick={() => switchTree(currentTreeID[index])}
-                    >
-                      <Link>{currentTreeName[index]} Tree</Link>
-                    </li>
-                  ))}
+                  {currentTreeID ? (
+                    currentTreeName.map((trees, index) => (
+                      <li
+                        key={index}
+                        onClick={() => switchTree(currentTreeID[index])}
+                      >
+                        <Link>{currentTreeName[index]} Tree</Link>
+                      </li>
+                    ))
+                  ) : (<></>)}
                 </ul>
               )}
             </div>
