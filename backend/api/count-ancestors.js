@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     // Fetch all rows from the tree_{currentTree} table
     const { data, error } = await supabase
       .from(treeTableName)
-      .select('*'); // Assuming all rows represent ancestors
+      .select('*'); 
 
     if (error) {
       throw new Error(error.message);
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     const ancestorCount = data.length - 1;
 
     // Return the ancestor count in the response
-    res.json({ ancestorCount });
+    res.json( ancestorCount );
 
   } catch (error) {
     console.log("Error counting ancestors:", error);
