@@ -66,7 +66,7 @@ export default async function handler(req, res) {
     }
 
     // Respond with tree data
-    return res.status(200).json(response);
+
   } catch (error) {
     console.error("Error getting list of all trees:", error);
     return res.status(500).json({ message: "Server error" });
