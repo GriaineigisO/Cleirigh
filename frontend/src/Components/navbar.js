@@ -80,15 +80,12 @@ const Navbar = ({ onLogin, onLogout }) => {
           const data = await response.json();
   
           // Check what the data structure looks like before setting it
-          console.log(data); // Add debug log to check the response structure
+          console.log(data.treeName); // Add debug log to check the response structure
+          console.log(data.treeID)
   
-          if (data) {
-  
-            setCurrentTreeName(data.treeName);
-            setCurrentTreeID(data.treeID);
-          } else {
-            console.log("No trees data found in response");
-          }
+          setCurrentTreeName(data.treeName);
+          setCurrentTreeID(data.treeID);
+          
         } catch (error) {
           console.error("Error getting trees:", error);
         }
