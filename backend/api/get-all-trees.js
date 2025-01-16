@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       // If there are multiple trees for this user
       res.json({
           treeName: treeName,
-          treeId: treeID
+          treeID: treeID
       });
     } else {
         console.log("fail")
