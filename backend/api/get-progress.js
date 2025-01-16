@@ -57,6 +57,11 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Failed to fetch progress data" });
     }
 
+    // Make sure progress_id is valid (not null or undefined) before querying for the person
+    if (!progressData.progress_id) {
+      return res.status(400).json({ error: "Invalid progress_id, it is null or undefined" });
+    }
+
     // Fetch the person based on the progress_id
     const { data: personData, error: personError } = await supabase
       .from(`tree_${currentTree}`)
