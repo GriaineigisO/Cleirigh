@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     res.status(200).end();
     return;
   }
-/*delete this comment*/
+
   const { userId } = req.body;
 
   if (!userId) {
