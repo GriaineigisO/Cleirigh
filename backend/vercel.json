@@ -1,9 +1,6 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/api/login", "destination": "/api/login.js" },
-    { "source": "/api/check-if-no-trees", "destination": "/api/check-if-no-trees.js" },
-    { "source": "/api/get-all-trees", "destination": "/api/get-all-trees.js" },
-    { "source": "/api/get-tree-name", "destination": "/api/get-tree-name.js" }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/backend/api/$1" }
   ]
 }

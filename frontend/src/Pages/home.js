@@ -547,7 +547,7 @@ const Home = () => {
     const checkUserHasTrees = async () => {
       try {
         const response = await fetch(
-          "https://cleirigh-backend.vercel.app/check-if-no-trees",
+          "https://cleirigh-backend.vercel.app/api/check-if-no-trees",
           {
             method: "POST",
             headers: {
