@@ -82,7 +82,7 @@ const Navbar = ({ onLogin, onLogout }) => {
           // Check what the data structure looks like before setting it
           console.log(data); // Add debug log to check the response structure
   
-          if (data && data.trees) {
+          if (data) {
   
             setCurrentTreeName(data.treeName);
             setCurrentTreeID(data.treeID);
