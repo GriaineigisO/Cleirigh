@@ -196,7 +196,7 @@ const Navbar = ({ onLogin, onLogout }) => {
                     </Link>
                   </li>
 
-                  {currentTreeID ? (
+                  {currentTreeName.length > 0 && currentTreeID.length > 0 ? (
                     currentTreeName.map((trees, index) => (
                       <li
                         key={index}
@@ -205,7 +205,9 @@ const Navbar = ({ onLogin, onLogout }) => {
                         <Link>{currentTreeName[index]} Tree</Link>
                       </li>
                     ))
-                  ) : (<></>)}
+                  ) : (
+                    <p>Loading trees...</p> 
+                  )}
                 </ul>
               )}
             </div>
