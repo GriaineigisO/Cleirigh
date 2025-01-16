@@ -83,11 +83,9 @@ const Navbar = ({ onLogin, onLogout }) => {
           console.log(data); // Add debug log to check the response structure
   
           if (data && data.trees) {
-            const treeName = data.trees.map((tree) => tree.treeName);  // Ensure this matches your API response
-            const treeID = data.trees.map((tree) => tree.treeId);      // Ensure this matches your API response
   
-            setCurrentTreeName(treeName);
-            setCurrentTreeID(treeID);
+            setCurrentTreeName(data.treeName);
+            setCurrentTreeID(data.treeID);
           } else {
             console.log("No trees data found in response");
           }
