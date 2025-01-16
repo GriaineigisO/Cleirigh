@@ -10,8 +10,8 @@ const Navbar = ({ onLogin, onLogout }) => {
     localStorage.getItem("username")
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentTreeName, setCurrentTreeName] = useState("");
-  const [currentTreeID, setCurrentTreeID] = useState("");
+  const [currentTreeName, setCurrentTreeName] = useState([]);
+  const [currentTreeID, setCurrentTreeID] = useState([]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -91,6 +91,10 @@ const Navbar = ({ onLogin, onLogout }) => {
   }, [isLoggedIn]);
 
   const switchTree = async (treeId) => {
+    if (!treeId) {
+      console.error("Invalid tree ID");
+      return;
+    }
     try {
       //gets user's id
       const userId = localStorage.getItem("userId");
@@ -196,7 +200,10 @@ const Navbar = ({ onLogin, onLogout }) => {
                     </Link>
                   </li>
 
-                  {currentTreeName.length > 0 && currentTreeID.length > 0 ? (
+                  {currentTreeName &&
+                  currentTreeName.length > 0 &&
+                  currentTreeID &&
+                  currentTreeID.length > 0 ? (
                     currentTreeName.map((trees, index) => (
                       <li
                         key={index}
@@ -206,7 +213,7 @@ const Navbar = ({ onLogin, onLogout }) => {
                       </li>
                     ))
                   ) : (
-                    <p>Loading trees...</p> 
+                    <p>Loading trees...</p> // Show a message or spinner if loading
                   )}
                 </ul>
               )}
