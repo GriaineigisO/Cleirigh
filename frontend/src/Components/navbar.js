@@ -81,6 +81,7 @@ const Navbar = ({ onLogin, onLogout }) => {
           const data = await response.json();
           setCurrentTreeName(data.treeName);
           setCurrentTreeID(data.treeID);
+          console.log(currentTreeName)
         } catch (error) {
           console.log("Error getting list of all trees:", error);
         }
