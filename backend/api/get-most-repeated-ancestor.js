@@ -56,10 +56,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Failed to fetch most repeated ancestor" });
     }
 
-    console.log(`times: ${data[0].relation_to_user.length}`)
-    console.log(`name: ${data[0].first_name} ${data[0].middle_name || ''} ${data[0].last_name}`)
-    console.log(`profile/${data[0].ancestor_id}`)
-
     // Returning the result if no errors
     res.json({
       repeatedTimes: data[0].relation_to_user.length,

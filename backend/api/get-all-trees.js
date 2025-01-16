@@ -42,11 +42,10 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: "Error fetching tree data." });
     }
 
-    // Build the response
-    const response = allTrees.map(tree => ({
-      treeName: tree.tree_name,
-      treeID: tree.tree_id,
-    }));
+    res.json({
+        treeName: allTrees.tree_name,
+        treeId: allTrees.tree_id
+    })
 
     // Respond with tree data
     return res.status(200).json(response);
