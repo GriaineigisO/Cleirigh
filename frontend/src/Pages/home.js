@@ -63,8 +63,10 @@ const HomePageWithTree = () => {
   const [savedProgress, setSavedProgress] = useState(false);
 
   // returns name of user's tree
-
+  useEffect(() => {
+    
   const getTreeName = async () => {
+    if (!treeName) {
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found");
@@ -95,9 +97,10 @@ const HomePageWithTree = () => {
     }
 
     return treeName;
+  }
   };
+  
 
-  useEffect(() => {
     getTreeName();
   }, [])
   
