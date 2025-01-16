@@ -58,7 +58,7 @@ export default async function handler(req, res) {
 
     console.log(`times: ${data[0].relation_to_user.length}`)
     console.log(`name: ${data[0].first_name} ${data[0].middle_name || ''} ${data[0].last_name}`)
-    console.log(`profile/${data.rows[0].ancestor_id}`)
+    console.log(`profile/${data[0].ancestor_id}`)
 
     // Returning the result if no errors
     res.json({
