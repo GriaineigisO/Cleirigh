@@ -78,11 +78,6 @@ const Navbar = ({ onLogin, onLogout }) => {
           );
   
           const data = await response.json();
-  
-          // Check what the data structure looks like before setting it
-          console.log(data.treeName); // Add debug log to check the response structure
-          console.log(data.treeID)
-  
           setCurrentTreeName(data.treeName);
           setCurrentTreeID(data.treeID);
           

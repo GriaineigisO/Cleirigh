@@ -70,7 +70,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: "Failed to fetch ancestor details" });
       }
 
-      const fullName = `${ancestorDetails.first_name} ${ancestorDetails.middle_name || ''} ${ancestorDetails.last_name}`;
+      const fullName = `${ancestorDetails.first_name} ${ancestorDetails.middle_name || ''} ${ancestorDetails.last_name || ''}`;
 
       res.status(200).json({
         name: fullName,
