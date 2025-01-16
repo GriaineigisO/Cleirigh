@@ -210,6 +210,7 @@ const HomePageWithTree = () => {
       });
 
       const data = await response.json();
+      console.log(data)
       setNumOfAncestors(data);
 
       const placeResponse = await fetch("https://cleirigh-backend.vercel.app/api/count-places", {
