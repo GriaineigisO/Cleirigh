@@ -236,46 +236,7 @@ app.post("/check-if-no-trees", async (req, res) => {
   }
 });
 
-//gets the name of a user's tree
-app.post("/get-tree-name", async (req, res) => {
-  const { userId } = req.body;
 
-  try {
-    // Step 1: Get the current tree ID for the user
-    const { data: userData, error: userError } = await supabase
-      .from('users') // Replace 'users' with your actual table name
-      .select('current_tree_id') // Only select the `current_tree_id`
-      .eq('id', userId) // Filter for the user ID
-      .single(); // Expect one result
-
-    if (userError || !userData) {
-      console.error("Error fetching current_tree_id:", userError || "No user found");
-      return res.status(404).json({ error: "User or current tree not found" });
-    }
-
-    const currentTreeId = userData.current_tree_id;
-
-    // Step 2: Get the tree name for the current tree ID
-    const { data: treeData, error: treeError } = await supabase
-      .from('trees') // Replace 'trees' with your actual table name
-      .select('tree_name') // Only select `tree_name`
-      .eq('tree_id', currentTreeId) // Filter for the current tree ID
-      .single(); // Expect one result
-
-    if (treeError || !treeData) {
-      console.error("Error fetching tree name:", treeError || "No tree found");
-      return res.status(404).json({ error: "Tree not found" });
-    }
-
-    const treeName = treeData.tree_name;
-
-    res.json({ treeName: treeName });
-
-  } catch (err) {
-    console.error("Error during request processing:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
 
 // Updates the current tree for the user
 app.post("/set-current-tree", async (req, res) => {
@@ -314,40 +275,7 @@ app.post("/set-current-tree", async (req, res) => {
   }
 });
 
-// Fetch the current tree for the user
-app.post("/get-current-tree", async (req, res) => {
-  try {
-    const { userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ error: "Missing userId" });
-    }
-
-    // Query to get the current tree using Supabase client
-    const { data, error } = await supabase
-      .from('users')
-      .select('current_tree_id')
-      .eq('id', userId)
-      .single(); // Use .single() to get a single row rather than an array
-
-    if (error) {
-      console.error("Error fetching current tree:", error.message);
-      return res.status(500).json({ error: "Database query failed" });
-    }
-
-    if (!data) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    res.status(200).json({
-      success: true,
-      currentTree: data.current_tree_id,
-    });
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
 
 //check if the currently selected tree is empty
 app.post("/check-if-tree-empty", async (req, res) => {
