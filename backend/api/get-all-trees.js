@@ -51,21 +51,24 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: "Error fetching tree data." });
     }
 
-    console.log(allTrees)
+    // Extract tree names and IDs
+    const treeName = allTrees.map(tree => tree.tree_name);
+    const treeID = allTrees.map(tree => tree.tree_id);
+
     // Check if trees exist and return accordingly
     if (allTrees && allTrees.length > 0) {
       // If there are multiple trees for this user
       res.json({
         trees: allTrees.map((tree) => ({
-          treeName: tree.tree_name,
-          treeId: tree.tree_id,
+          treeName: treeName,
+          treeId: treeID,
         })),
       });
     } else {
+        console.log("fail")
       res.status(404).json({ message: "No trees found for this user." });
     }
 
-    // Respond with tree data
 
   } catch (error) {
     console.error("Error getting list of all trees:", error);
