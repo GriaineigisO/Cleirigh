@@ -59,11 +59,11 @@ export default async function handler(req, res) {
 
     // Check if progress_id is NULL
     if (!progressData.progress_id) {
-      console.log("No progress_id set for tree:", currentTree);
       return res.status(200).json({
         bool: false
       });
-    }
+    } else {
+
 
     // Fetch the person based on the progress_id only if it's not NULL
     const { data: personData, error: personError } = await supabase
@@ -90,6 +90,8 @@ export default async function handler(req, res) {
       note: progressData.progress_note,
       bool: true,
     });
+
+}
 
   } catch (error) {
     console.log("Unexpected error:", error);
