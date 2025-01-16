@@ -1,4 +1,4 @@
-import { supabase } from '../../utils/supabase'; // Adjust the path based on your file structure
+import { createClient } from '@supabase/supabase-js';
 
 // CORS Options
 const corsOptions = {
