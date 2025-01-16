@@ -26,12 +26,18 @@ export default async function handler(req, res) {
 
   try {
     const { userId } = req.body;
+    
+    // Step 1: Log when the API is called
+    console.log('API called with userId:', userId);
 
     if (!userId) {
+      console.error("Missing userId in request body.");
       return res.status(400).json({ error: "Missing userId" });
     }
 
-    // Get the current tree for the user
+    // Step 2: Log database query for current tree
+    console.log("Fetching current tree id for user:", userId);
+    
     const { data: currentTreeData, error: currentTreeError } = await supabase
       .from('users')
       .select('current_tree_id')
@@ -39,13 +45,16 @@ export default async function handler(req, res) {
       .single();
 
     if (currentTreeError || !currentTreeData) {
-      console.error("Error fetching current tree:", currentTreeError.message || "No user data found");
+      console.error("Error fetching current tree:", currentTreeError ? currentTreeError.message : 'No user data found');
       return res.status(500).json({ error: "Failed to fetch current tree data" });
     }
 
     const currentTree = currentTreeData.current_tree_id;
+    console.log("Current tree id fetched:", currentTree);
 
-    // Get the progress from the tree
+    // Step 3: Log database query for progress data
+    console.log("Fetching progress data for tree:", currentTree);
+    
     const { data: progressData, error: progressError } = await supabase
       .from('trees')
       .select('*')
@@ -53,16 +62,21 @@ export default async function handler(req, res) {
       .single();
 
     if (progressError || !progressData) {
-      console.error("Error fetching progress data:", progressError.message || "No progress data found");
+      console.error("Error fetching progress data:", progressError ? progressError.message : 'No progress data found');
       return res.status(500).json({ error: "Failed to fetch progress data" });
     }
 
-    // Make sure progress_id is valid (not null or undefined) before querying for the person
+    // Step 4: Log for invalid progress_id
     if (!progressData.progress_id) {
+      console.error("Invalid progress_id (NULL or missing) for tree:", currentTree);
       return res.status(400).json({ error: "Invalid progress_id, it is null or undefined" });
     }
 
-    // Fetch the person based on the progress_id
+    console.log("Progress data fetched with progress_id:", progressData.progress_id);
+
+    // Step 5: Fetch person data based on progress_id
+    console.log("Fetching person data from tree", currentTree, "for progress_id:", progressData.progress_id);
+
     const { data: personData, error: personError } = await supabase
       .from(`tree_${currentTree}`)
       .select('*')
@@ -70,12 +84,14 @@ export default async function handler(req, res) {
       .single();
 
     if (personError || !personData) {
-      console.error("Error fetching person data:", personError.message || "No person data found");
+      console.error("Error fetching person data:", personError ? personError.message : 'No person data found');
       return res.status(500).json({ error: "Failed to fetch person data" });
     }
 
-    // Check if the progress_id exists
+    // Step 6: Check progress_id existence and construct the full name
     if (progressData.progress_id) {
+      console.log("Progress ID exists, constructing full name.");
+      
       let firstName = personData.first_name || "UNKNOWN";
       let middleName = personData.middle_name || "";
       let lastName = personData.last_name || "";
@@ -89,12 +105,12 @@ export default async function handler(req, res) {
         bool: true,
       });
     } else {
-      res.json({
-        bool: false,
-      });
+      console.error("No progress_id in progress data.");
+      res.json({ bool: false });
     }
+
   } catch (error) {
-    console.log("Unexpected error:", error);
+    console.error("Unexpected error:", error.message || error);
     res.status(500).json({ error: "Server error" });
   }
 }
