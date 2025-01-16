@@ -55,6 +55,9 @@ export default async function handler(req, res) {
     const treeName = allTrees.map(tree => tree.tree_name);
     const treeID = allTrees.map(tree => tree.tree_id);
 
+    console.log(treeName)
+    console.log(treeID)
+
     // Check if trees exist and return accordingly
     if (allTrees && allTrees.length > 0) {
       // If there are multiple trees for this user
