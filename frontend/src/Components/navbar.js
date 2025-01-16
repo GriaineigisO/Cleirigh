@@ -65,7 +65,6 @@ const Navbar = ({ onLogin, onLogout }) => {
     const getAllTrees = async () => {
       if (isLoggedIn) {
         try {
-          //gets user's id
           const userId = localStorage.getItem("userId");
           const response = await fetch(
             "https://cleirigh-backend.vercel.app/api/get-all-trees",
@@ -77,18 +76,30 @@ const Navbar = ({ onLogin, onLogout }) => {
               body: JSON.stringify({ userId }),
             }
           );
-
+  
           const data = await response.json();
-          setCurrentTreeName(data.treeName);
-          setCurrentTreeID(data.treeID);
+  
+          // Check what the data structure looks like before setting it
+          console.log(data); // Add debug log to check the response structure
+  
+          if (data && data.trees) {
+            const treeName = data.trees.map((tree) => tree.treeName);  // Ensure this matches your API response
+            const treeID = data.trees.map((tree) => tree.treeId);      // Ensure this matches your API response
+  
+            setCurrentTreeName(treeName);
+            setCurrentTreeID(treeID);
+          } else {
+            console.log("No trees data found in response");
+          }
         } catch (error) {
-          console.log("Error getting list of all trees:", error);
+          console.error("Error getting trees:", error);
         }
       }
     };
-
+  
     getAllTrees();
   }, [isLoggedIn]);
+  
 
   const switchTree = async (treeId) => {
     if (!treeId) {
