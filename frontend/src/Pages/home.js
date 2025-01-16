@@ -351,6 +351,7 @@ const HomePageWithTree = () => {
   };
 
   useEffect(() => {
+    console.log(mostRemovedAncestorRelation)
     if (mostRemovedAncestorRelation.length > 0 ) {
       //finds the largest value in the mostRemovedAncestorRelation array
       let largest = 0;
