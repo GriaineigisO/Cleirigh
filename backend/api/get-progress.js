@@ -65,13 +65,14 @@ export default async function handler(req, res) {
       });
     }
 
-    // Fetch the person based on the progress_id
+    // Fetch the person based on the progress_id only if it's not NULL
     const { data: personData, error: personError } = await supabase
       .from(`tree_${currentTree}`)
       .select('*')
       .eq('ancestor_id', progressData.progress_id)
       .single();
 
+    // Check if there was an error fetching the person data or no person found
     if (personError || !personData) {
       console.error("Error fetching person data:", personError.message || "No person data found");
       return res.status(500).json({ error: "Failed to fetch person data" });
