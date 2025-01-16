@@ -48,9 +48,9 @@ export default async function handler(req, res) {
     // Get the most repeated ancestor by finding the ancestor with the largest relation_to_user array
     const { data: mostRepeatedAncestorData, error: mostRepeatedAncestorError } = await supabase
       .from(`tree_${currentTree}`)
-      .select('*')
-      .order('array_length(relation_to_user, 1)', { ascending: false })
-      .limit(1)
+      .select('ancestor_id, relation_to_user, first_name, middle_name, last_name')
+      .order('relation_to_user', { ascending: false })
+      .limit(1) // Limiting to 1 row (most repeated)
       .single();
 
     if (mostRepeatedAncestorError || !mostRepeatedAncestorData) {
@@ -58,7 +58,10 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Failed to fetch most repeated ancestor" });
     }
 
-    // Extract names
+    // Calculate the number of repetitions (length of the array)
+    const repeatedTimes = mostRepeatedAncestorData.relation_to_user.length;
+
+    // Extract names and handle undefined/null values
     const firstName = mostRepeatedAncestorData.first_name || "";
     const middleName = mostRepeatedAncestorData.middle_name || "";
     const lastName = mostRepeatedAncestorData.last_name || "";
@@ -67,7 +70,7 @@ export default async function handler(req, res) {
     res.json({
       name: `${firstName} ${middleName} ${lastName}`,
       link: `profile/${mostRepeatedAncestorData.ancestor_id}`,
-      repeatedTimes: mostRepeatedAncestorData.relation_to_user.length,
+      repeatedTimes: repeatedTimes,
     });
 
   } catch (error) {
