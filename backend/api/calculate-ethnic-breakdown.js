@@ -12,7 +12,7 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
-  
+  try {
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -28,7 +28,6 @@ export default async function handler(req, res) {
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method not allowed" });
     }
-
     try {
       const { userId, id } = req.body;
   
@@ -65,7 +64,7 @@ export default async function handler(req, res) {
         //checks if each parent is a deadend ancestor
         if (fatherId === null && motherId === null) {
           //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array
-          ethnicityNameArray.push(findParents.ethnicity);
+          ethnicityNameArray.push(findParents[0].ethnicity);
           ethnicityPercentageArray.push(100);
   
           return [ethnicityNameArray, ethnicityPercentageArray];
