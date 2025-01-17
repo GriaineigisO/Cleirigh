@@ -28,28 +28,30 @@ export default async function handler(req, res) {
       const {userId} = req.body;
   
       // Query to get the current tree
-      const getCurrentTreeId = await pool.query(
-        "SELECT current_tree_id FROM users WHERE id = $1",
-        [userId]
-      );
+      const { data: currentTreeData, error: currentTreeError } = await supabase
+        .from('users')
+        .select('current_tree_id')
+        .eq('id', userId)
+        .single(); // Get a single row
   
-      const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-      
-      // Query to get the current page
-      const getCurrentPage = await pool.query(
-        "SELECT current_page FROM users WHERE id = $1",
-        [userId]
-      );
+      if (currentTreeError) {
+        throw new Error(currentTreeError.message);
+      }
+  
+      const currentTree = currentTreeData.current_tree_id;
+
+      const {data: getCurrentPage, error: currentPageError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select('*')
+        .eq('id', userId)
   
       const currentPage = getCurrentPage.rows[0].current_page;
   
-      const getLeftNote = await pool.query(`
-        SELECT * FROM notes 
-        WHERE tree_id = $1 AND page_number = $2
-      `, [
-        currentTree,
-        currentPage,
-      ])
+      const {data: getLeftNote, error: leftNoteError} = await supabase    
+        .from(`tree_${currentTree}`)
+        .select('*')
+        .eq('tree_id', currentTree)
+        .eq('page_number', currentPage)
   
       if (getLeftNote.rows.length > 0) {
   
