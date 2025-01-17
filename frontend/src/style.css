@@ -868,3 +868,15 @@ textarea {
 .profilePicOverlay:hover {
     background-color: rgb(41, 39, 39, 0.5);
 }
+
+/*media queries*/
+/*tablet*/
+@media only screen and (max-width: 2752) {
+
+    #subtitle {
+        display: none;
+    }
+
+
+}
+
