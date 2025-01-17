@@ -10,10 +10,5 @@
       "src": "/(.*)",
       "dest": "/build/$1"
     }
-  ],
-  "functions": {
-      "backend/api/calculate-ethnic-breakdown.js": {
-        "maxDuration": 30
-      }
-    }
+  ]
 }
