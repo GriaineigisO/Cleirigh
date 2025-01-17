@@ -17,13 +17,17 @@ const Navbar = ({ onLogin, onLogout }) => {
   const currentLocation = useLocation();
   let linkLabel = "";
   let linkPath = "";
-  if (currentLocation.pathname === "/familytree")  {
+  if (currentLocation.pathname === "/home") {
+    linkLabel = "View Tree";
+    linkPath = "/familytree";
+  } else if (currentLocation.pathname === "/familytree") {
     linkLabel = "Home";
     linkPath = "/home";
   } else {
-    linkLabel = "View Tree";
-    linkPath = "/familytree";
-  }  
+    // Default case, for any other routes
+    linkLabel = "Home";
+    linkPath = "/home";
+  }
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
