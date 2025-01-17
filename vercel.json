@@ -5,10 +5,13 @@
       "use": "@vercel/static"
     }
   ],
+  "version": 2,
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/build/$1"
+    { "src": "/api/(.*)", "dest": "/api/$1" }
+  ],
+  "functions": {
+    "api/calculate-ethnic-breakdown.js": {
+      "maxDuration": 30
     }
-  ]
+  }
 }
