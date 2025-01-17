@@ -15,7 +15,7 @@ const Navbar = ({ onLogin, onLogout }) => {
 
   // Dynamically set the label based on the current pathname
   const currentLocation = useLocation();
-  const linkLabel = currentLocation.pathname === "/familytree" ? "Home" : "View Tree";
+  const linkLabel = currentLocation.pathname === "/familytree" ? "home" : "View Tree";
   const linkPath = currentLocation.pathname === "/familytree" ? "/" : "/familytree";
 
   const toggleDropdown = () => {
