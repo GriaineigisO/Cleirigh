@@ -1,10 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 // CORS options
 const corsOptions = {
@@ -15,181 +12,127 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    corsOptions.allowedHeaders.join(", ")
-  );
+  
+    // CORS headers
+    res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
+    res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
 
-  // Handle OPTIONS request for CORS preflight
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  // Only allow POST requests
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  try {
-    const { userId, id } = req.body;
-
-    // Get the current tree ID from the user's record
-    const { data: user, error: userError } = await supabase
-      .from("users")
-      .select("current_tree_id")
-      .eq("id", userId)
-      .single();
-
-    if (userError) {
-      throw new Error(userError.message);
+    // Handle OPTIONS request for CORS preflight
+    if (req.method === "OPTIONS") {
+      return res.status(200).end();
     }
 
-    const currentTree = user.current_tree_id;
-
-    // Enhanced getParents function with logging and null checks
-const getParents = async (parentType, childId) => {
-  const { data: findParents, error: fetchError } = await supabase
-    .from(`tree_${currentTree}`)
-    .select("*")
-    .eq("ancestor_id", childId);
-
-  if (fetchError) {
-    console.error(`Error fetching parents for ancestor ${childId}:`, fetchError);
-    return null;
-  }
-
-  if (!findParents || findParents.length === 0) {
-    console.log(`No parents found for childId: ${childId}`);
-    return null; // No parents available
-  }
-
-  // Return the correct parent id based on "father" or "mother"
-  if (parentType === "f") {
-    return findParents[0].father_id || null;
-  } else {
-    return findParents[0].mother_id || null;
-  }
-};
-
-// Recursive function to calculate ethnic breakdown
-const calculateEthnicBreakdown = async (childId, processedAncestors = new Set()) => {
-  // Avoid processing the same ancestor multiple times
-  if (processedAncestors.has(childId)) {
-    console.log(`Cycle detected, ancestor ${childId} already processed.`);
-    return [[], []]; // Return empty arrays to break the cycle
-  }
-
-  console.log(`Processing ancestor ${childId}...`); // Logging for debugging
-  processedAncestors.add(childId); // Mark the ancestor as processed
-
-  let ethnicityNameArray = [];
-  let ethnicityPercentageArray = [];
-
-  // Get father and mother IDs
-  const fatherId = await getParents("f", childId);
-  const motherId = await getParents("m", childId);
-
-  // Base case: No parents
-  if (fatherId === null && motherId === null) {
-    const { data: findParents } = await supabase
-      .from(`tree_${currentTree}`)
-      .select("*")
-      .eq("ancestor_id", childId);
-
-    if (findParents && findParents[0]) {
-      ethnicityNameArray.push(findParents[0]?.ethnicity || 'Unknown');
-      ethnicityPercentageArray.push(100);
-    } else {
-      console.log(`No data found for ancestor ${childId}.`);
+    // Only allow POST requests
+    if (req.method !== "POST") {
+      return res.status(405).json({ error: "Method not allowed" });
     }
 
-  } else {
-    // Process father and/or mother ethnicity recursively
-    if (fatherId !== null) {
-      const fatherEthnicity = await calculateEthnicBreakdown(fatherId, processedAncestors);
-      fatherEthnicity[0].forEach((name, index) => {
-        ethnicityNameArray.push(name);
-        ethnicityPercentageArray.push(fatherEthnicity[1][index] / 2);
-      });
-    }
-
-    if (motherId !== null) {
-      const motherEthnicity = await calculateEthnicBreakdown(motherId, processedAncestors);
-      motherEthnicity[0].forEach((name, index) => {
-        if (ethnicityNameArray.includes(name)) {
-          // If the ethnicity already exists, merge the percentages
-          const idx = ethnicityNameArray.indexOf(name);
-          ethnicityPercentageArray[idx] += motherEthnicity[1][index] / 2;
-        } else {
-          // Otherwise, add the ethnicity and its halved percentage
-          ethnicityNameArray.push(name);
-          ethnicityPercentageArray.push(motherEthnicity[1][index] / 2);
+    try {
+      const { userId, id } = req.body;
+  
+      // Get the current tree ID from the user's record
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('current_tree_id')
+        .eq('id', userId)
+        .single();
+  
+      if (userError) {
+        throw new Error(userError.message);
+      }
+  
+      const currentTree = user.current_tree_id;
+  
+      const getParents = async (parentType, childId) => {
+        const { data: findParents, error: fetchError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("ancestor_id", childId);
+      
+        if (fetchError) {
+          console.error(`Error fetching parents for ancestor ${childId}:`, fetchError);
+          return null;
         }
+      
+        if (!findParents || findParents.length === 0) {
+          console.log(`No parents found for childId: ${childId}`);
+          return null; // No parents available
+        }
+      
+        // Return the correct parent id based on "father" or "mother"
+        if (parentType === "f") {
+          return findParents[0].father_id || null;
+        } else {
+          return findParents[0].mother_id || null;
+        }
+      };
+      
+      // Adjust the main recursive function to call both parents concurrently
+      const calculateEthnicBreakdown = async (childId, processedAncestors = new Set()) => {
+        if (processedAncestors.has(childId)) {
+          console.log(`Cycle detected for ancestor ${childId}.`);
+          return [[], []];
+        }
+      
+        processedAncestors.add(childId);
+      
+        let ethnicityNameArray = [];
+        let ethnicityPercentageArray = [];
+      
+        // Fetch both parents concurrently using Promise.all
+        const [fatherId, motherId] = await Promise.all([
+          getParents("f", childId),
+          getParents("m", childId)
+        ]);
+      
+        // Base case: No parents
+        if (fatherId === null && motherId === null) {
+          const { data: findParents } = await supabase
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("ancestor_id", childId);
+      
+          if (findParents && findParents[0]) {
+            ethnicityNameArray.push(findParents[0]?.ethnicity || 'Unknown');
+            ethnicityPercentageArray.push(100);
+          }
+        } else {
+          if (fatherId !== null) {
+            const fatherEthnicity = await calculateEthnicBreakdown(fatherId, processedAncestors);
+            fatherEthnicity[0].forEach((name, index) => {
+              ethnicityNameArray.push(name);
+              ethnicityPercentageArray.push(fatherEthnicity[1][index] / 2);
+            });
+          }
+      
+          if (motherId !== null) {
+            const motherEthnicity = await calculateEthnicBreakdown(motherId, processedAncestors);
+            motherEthnicity[0].forEach((name, index) => {
+              if (ethnicityNameArray.includes(name)) {
+                const idx = ethnicityNameArray.indexOf(name);
+                ethnicityPercentageArray[idx] += motherEthnicity[1][index] / 2;
+              } else {
+                ethnicityNameArray.push(name);
+                ethnicityPercentageArray.push(motherEthnicity[1][index] / 2);
+              }
+            });
+          }
+        }
+      
+        return [ethnicityNameArray, ethnicityPercentageArray];
+      };
+      
+  
+      //initial call, with the target ancestor's ID in the argument
+      const ethnicity = await calculateEthnicBreakdown(id);
+  
+      res.json({
+        ethnicityNameArray: ethnicity[0],
+        ethnicityPercentageArray: ethnicity[1],
       });
+    } catch (error) {
+      console.log("error calculating ethnic breakdown:", error);
     }
-  }
-
-  return [ethnicityNameArray, ethnicityPercentageArray];
-};
-
-// Main handler for ethnic breakdown calculations
-export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
-  res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  try {
-    const { userId, id } = req.body;
-
-    const { data: user, error: userError } = await supabase
-      .from("users")
-      .select("current_tree_id")
-      .eq("id", userId)
-      .single();
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const currentTree = user.current_tree_id;
-
-    // Call the calculateEthnicBreakdown function with initial ID
-    const ethnicity = await calculateEthnicBreakdown(id);
-
-    res.json({
-      ethnicityNameArray: ethnicity[0],
-      ethnicityPercentageArray: ethnicity[1],
-    });
-  } catch (error) {
-    console.error("Error calculating ethnic breakdown:", error);
-    res.status(500).json({ error: error.message });
-  }
-}
-
-    
-    
-
-    //initial call, with the target ancestor's ID in the argument
-    const ethnicity = await calculateEthnicBreakdown(id);
-
-    res.json({
-      ethnicityNameArray: ethnicity[0],
-      ethnicityPercentageArray: ethnicity[1],
-    });
-  } catch (error) {
-    console.log("error calculating ethnic breakdown:", error);
-  }
-}
+  };
