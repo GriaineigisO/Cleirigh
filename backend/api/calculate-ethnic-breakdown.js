@@ -12,7 +12,7 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
-  try {
+ 
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
