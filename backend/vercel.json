@@ -1,7 +1,7 @@
 {
     "version": 2,
     "functions": {
-      "api/calculate-ethnic-breakdown.js": {
+      "./api/calculate-ethnic-breakdown.js": {
         "maxDuration": 30
       }
     },
