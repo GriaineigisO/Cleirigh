@@ -42,6 +42,7 @@ export default async function handler(req, res) {
 
       const {data: getSources} = await supabase 
         .from(`sources`)
+        .select('*')
         .eq('tree_id', currentTree)
         .eq('ancestor_id', profileData.ancestor_id)
   
