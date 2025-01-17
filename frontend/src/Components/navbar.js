@@ -11,23 +11,7 @@ const Navbar = ({ onLogin, onLogout }) => {
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentTreeName, setCurrentTreeName] = useState([]);
-  const [currentTreeID, setCurrentTreeID] = useState([]);
-
-  // Dynamically set the label based on the current pathname
-  const currentLocation = useLocation();
-  let linkLabel = "";
-  let linkPath = "";
-  if (currentLocation.pathname === "/home") {
-    linkLabel = "View Tree";
-    linkPath = "/familytree";
-  } else if (currentLocation.pathname === "/familytree") {
-    linkLabel = "Home";
-    linkPath = "/home";
-  } else {
-    // Default case, for any other routes
-    linkLabel = "Home";
-    linkPath = "/home";
-  }
+  const [currentTreeID, setCurrentTreeID] = useState([]); 
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -192,14 +176,14 @@ const Navbar = ({ onLogin, onLogout }) => {
             <p className="subtitle">Geneological Archive</p>
           </div>
           <ul className="nav-ul">
-            <Link to={{linkPath}} className="navlink">
-              {linkLabel}
+          <Link to={"/home"} className="navlink">
+              Home
+            </Link>
+            <Link to={"/familytree"} className="navlink">
+              View tree
             </Link>
             <Link to={"/search"} className="navlink">
               Search
-            </Link>
-            <Link to={"/queries"} className="navlink">
-              Queries
             </Link>
             {/* Tree Link with Dropdown */}
             <div className="dropdown">
