@@ -871,12 +871,14 @@ textarea {
 
 /*media queries*/
 /*tablet*/
-@media only screen and (max-width: 2752) {
-
-    #subtitle {
-        display: none;
+@media (max-width: 1206px) {
+    .subtitle {
+      display: none; 
     }
-
-
 }
 
+@media (max-width: 960px) {
+    .title-logo {
+      display: none; 
+    }
+}
