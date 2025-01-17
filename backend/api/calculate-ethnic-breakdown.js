@@ -50,107 +50,82 @@ export default async function handler(req, res) {
 
     const currentTree = user.current_tree_id;
 
-    const getParents = async (parent) => {
-      if (parent === "m") {
-        const { data: findParents } = await supabase
-          .from(`tree_${currentTree}`)
-          .select("*")
-          .eq("ancestor_id", childId);
-
-        return findParents[0].mother_id;
+    const getParents = async (parentType, childId) => {
+      const { data: findParents, error: fetchError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select("*")
+        .eq("ancestor_id", childId);
+    
+      if (fetchError) {
+        console.error(`Error fetching parents for ancestor ${childId}:`, fetchError);
+        return null;
+      }
+    
+      // Return the correct parent id based on "father" or "mother"
+      if (parentType === "f") {
+        return findParents.length > 0 ? findParents[0].father_id : null;
       } else {
-        const { data: findParents } = await supabase
-          .from(`tree_${currentTree}`)
-          .select("*")
-          .eq("ancestor_id", childId);
-
-        return findParents[0].father_id;
+        return findParents.length > 0 ? findParents[0].mother_id : null;
       }
     };
-
-    //recursive function which determines the parent's ethnic breakdown. It first must gain the values of each deadend ancestor (hence continiously checking if a person has parents, going up one generation if he does)
-    const calculateEthnicBreakdown = async (childId) => {
-      let fatherEthnicityNameArray = [];
-      let fatherEthnicityPercentageArray = [];
-      let motherEthnicityNameArray = [];
-      let motherEthnicityPercentageArray = [];
+    
+    // recursive function to calculate ethnic breakdown
+    const calculateEthnicBreakdown = async (childId, processedAncestors = new Set()) => {
+      // Check if the current childId has already been processed to prevent infinite recursion
+      if (processedAncestors.has(childId)) {
+        console.log(`Ancestor ${childId} has already been processed.`);
+        return [[], []]; // Return empty arrays to break the cycle
+      }
+    
+      // Mark the current ancestor as processed
+      processedAncestors.add(childId);
+    
       let ethnicityNameArray = [];
       let ethnicityPercentageArray = [];
-
-      const fatherId = getParents("f");
-      const motherId = getParents("m");
-
-      //checks if each parent is a deadend ancestor
+    
+      // Get the father and mother ID asynchronously
+      const fatherId = await getParents("f", childId);
+      const motherId = await getParents("m", childId);
+    
       if (fatherId === null && motherId === null) {
-        //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array
-        ethnicityNameArray.push(findParents[0].ethnicity);
+        // Base case: Deadend ancestor, return their ethnicity (assuming their percentage is 100)
+        const { data: findParents } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("ancestor_id", childId);
+    
+        ethnicityNameArray.push(findParents[0]?.ethnicity || 'Unknown');
         ethnicityPercentageArray.push(100);
-
-        return [ethnicityNameArray, ethnicityPercentageArray];
-      } else if (fatherId !== null && motherId === null) {
-        //ancestor has a father recorded, but not a mother. Mother is assumed to have the same ethnicity as the father - thus the father's values are passed down unchanged
-        const fatherEthnicity = await calculateEthnicBreakdown(fatherId);
-        for (let i = 0; i < fatherEthnicity[0].length; i++) {
-          fatherEthnicityNameArray.push(fatherEthnicity[0][i]);
-          fatherEthnicityPercentageArray.push(fatherEthnicity[1][i]);
+      } else {
+        // Recursive case: process father and/or mother ethnic breakdowns
+        if (fatherId !== null) {
+          const fatherEthnicity = await calculateEthnicBreakdown(fatherId, processedAncestors);
+          fatherEthnicity[0].forEach((name, index) => {
+            ethnicityNameArray.push(name);
+            ethnicityPercentageArray.push(fatherEthnicity[1][index] / 2);
+          });
         }
-
-        return [fatherEthnicityNameArray, fatherEthnicityPercentageArray];
-      } else if (fatherId === null && motherId !== null) {
-        //ancestor has a mother recorded, but not a father. Father is assumed to have the same ethnicity as the mother - thus the mother's values are passed down unchanged
-        const motherEthnicity = await calculateEthnicBreakdown(motherId);
-        for (let i = 0; i < motherEthnicity[0].length; i++) {
-          motherEthnicityNameArray.push(motherEthnicity[0][i]);
-          motherEthnicityPercentageArray.push(motherEthnicity[1][i]);
+    
+        if (motherId !== null) {
+          const motherEthnicity = await calculateEthnicBreakdown(motherId, processedAncestors);
+          motherEthnicity[0].forEach((name, index) => {
+            if (ethnicityNameArray.includes(name)) {
+              // If the ethnicity already exists, merge the percentages
+              const idx = ethnicityNameArray.indexOf(name);
+              ethnicityPercentageArray[idx] += motherEthnicity[1][index] / 2;
+            } else {
+              // Otherwise, add the ethnicity and its halved percentage
+              ethnicityNameArray.push(name);
+              ethnicityPercentageArray.push(motherEthnicity[1][index] / 2);
+            }
+          });
         }
-
-        return [motherEthnicityNameArray, motherEthnicityPercentageArray];
-      } else if (fatherId !== null && motherId !== null) {
-        //both parents are recorded. The values of each parent are halved and then added together to form the child's ethnic breakdown
-
-        const fatherEthnicity = await calculateEthnicBreakdown(fatherId);
-        for (let i = 0; i < fatherEthnicity[0].length; i++) {
-          fatherEthnicityNameArray.push(fatherEthnicity[0][i]);
-          fatherEthnicityPercentageArray.push(fatherEthnicity[1][i]);
-        }
-
-        const motherEthnicity = await calculateEthnicBreakdown(motherId);
-        for (let i = 0; i < motherEthnicity[0].length; i++) {
-          motherEthnicityNameArray.push(motherEthnicity[0][i]);
-          motherEthnicityPercentageArray.push(motherEthnicity[1][i]);
-        }
-
-        let childEthnicityNameArray = [];
-        let childEthnicityPercentageArray = [];
-
-        //adds father's ethnic values - dividing the percentage of each one in half
-        for (let i = 0; i < fatherEthnicityNameArray.length; i++) {
-          childEthnicityNameArray.push(fatherEthnicity[0][i]);
-          childEthnicityPercentageArray.push(fatherEthnicity[1][i] / 2);
-        }
-
-        //adds mother's ethnic values. First must check if any of the mother's ethnicities is shared with the father
-        for (let i = 0; i < motherEthnicityNameArray.length; i++) {
-          if (childEthnicityNameArray.includes(motherEthnicityNameArray[i])) {
-            //ethnicity is already present in child. Don't add the name again. Simply take the percentage value, half it, and add it to the percentage value already present
-            const index = childEthnicityNameArray.indexOf(
-              motherEthnicityNameArray[i]
-            );
-
-            childEthnicityPercentageArray[index] =
-              childEthnicityPercentageArray[index] +
-              motherEthnicityPercentageArray[i] / 2;
-          } else {
-            childEthnicityNameArray.push(motherEthnicityNameArray[i]);
-            childEthnicityPercentageArray.push(
-              motherEthnicityPercentageArray[i] / 2
-            );
-          }
-        }
-
-        return [childEthnicityNameArray, childEthnicityPercentageArray];
       }
+    
+      return [ethnicityNameArray, ethnicityPercentageArray];
     };
+    
+    
 
     //initial call, with the target ancestor's ID in the argument
     const ethnicity = await calculateEthnicBreakdown(id);
