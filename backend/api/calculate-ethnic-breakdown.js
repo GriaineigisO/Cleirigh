@@ -12,7 +12,7 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
-  try {
+  
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -28,6 +28,7 @@ export default async function handler(req, res) {
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method not allowed" });
     }
+
     try {
       const { userId, id } = req.body;
   
