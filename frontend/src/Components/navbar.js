@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation  } from "react-router-dom";
 import logo from "../Images/crest.png";
 import { jwtDecode } from "jwt-decode";
 import { capitaliseFirstLetter } from "../library.js";
@@ -12,6 +12,11 @@ const Navbar = ({ onLogin, onLogout }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentTreeName, setCurrentTreeName] = useState([]);
   const [currentTreeID, setCurrentTreeID] = useState([]);
+
+  // Dynamically set the label based on the current pathname
+  const currentLocation = useLocation();
+  const linkLabel = currentLocation.pathname === "/familytree" ? "Home" : "View Tree";
+  const linkPath = currentLocation.pathname === "/familytree" ? "/" : "/familytree";
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -176,8 +181,8 @@ const Navbar = ({ onLogin, onLogout }) => {
             <p className="subtitle">Geneological Archive</p>
           </div>
           <ul className="nav-ul">
-            <Link to={"/familytree"} className="navlink">
-              View Tree
+            <Link to={{linkPath}} className="navlink">
+              {linkLabel}
             </Link>
             <Link to={"/search"} className="navlink">
               Search
