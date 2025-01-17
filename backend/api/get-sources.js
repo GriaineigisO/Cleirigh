@@ -46,10 +46,10 @@ export default async function handler(req, res) {
         .eq('tree_id', currentTree)
         .eq('ancestor_id', profileData.ancestor_id)
   
-      const source_link_name = getSources.rows.map((row) => row.source_link_name);
-      const source_link = getSources.rows.map((row) => row.source_link);
-      const source_text_name = getSources.rows.map((row) => row.source_text_name);
-      const source_text_author = getSources.rows.map(
+      const source_link_name = getSources.map((row) => row.source_link_name);
+      const source_link = getSources.map((row) => row.source_link);
+      const source_text_name = getSources.map((row) => row.source_text_name);
+      const source_text_author = getSources.map(
         (row) => row.source_text_author
       );
   
