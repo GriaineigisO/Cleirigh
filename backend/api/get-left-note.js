@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         .select('*')
         .eq('id', userId)
   
-      const currentPage = getCurrentPage.rows[0].current_page;
+      const currentPage = getCurrentPage[0].current_page;
   
       const {data: getLeftNote, error: leftNoteError} = await supabase    
         .from(`tree_${currentTree}`)
@@ -53,10 +53,10 @@ export default async function handler(req, res) {
         .eq('tree_id', currentTree)
         .eq('page_number', currentPage)
   
-      if (getLeftNote.rows.length > 0) {
+      if (getLeftNote.length > 0) {
   
-        const leftNote = getLeftNote.rows[0].left_note
-        const leftNoteHeadline = getLeftNote.rows[0].left_note_headline
+        const leftNote = getLeftNote[0].left_note
+        const leftNoteHeadline = getLeftNote[0].left_note_headline
   
         let bool = true;
         if (leftNote === null) {

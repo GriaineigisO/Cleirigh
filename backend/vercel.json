@@ -2,5 +2,10 @@
   "version": 2,
   "routes": [
     { "src": "/api/(.*)", "dest": "/backend/api/$1" }
-  ]
+  ],
+  "functions": {
+    "api/calculate-ethnic-breakdown": {
+      "maxDuration": 30
+    }
+  }
 }
