@@ -441,8 +441,6 @@ app.post("/get-all-trees", async (req, res) => {
 });
 
 
-
-
 app.post("/set-current-page-number", async (req, res) => {
   try {
     const { userId, num } = req.body;
@@ -528,100 +526,6 @@ app.post("/make-new-page", async (req, res) => {
 
 
 
-app.post("/get-previous-page", async (req, res) => {
-  try {
-    const { userId, personID } = req.body;
-
-    // Get the current tree ID from the user's record
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('current_tree_id')
-      .eq('id', userId)
-      .single();
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const currentTree = user.current_tree_id;
-
-    // Fetch the previous page using the personID
-    const { data: previousData, error: pageError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select('previous_page')
-      .eq('ancestor_id', personID)
-      .single();
-
-    if (pageError) {
-      throw new Error(pageError.message);
-    }
-
-    const previousPage = Number(previousData ? previousData.previous_page : 0); // Default to 0 if not found
-
-    // Update the current page number in the user's record
-    const { error: updateError } = await supabase
-      .from('users')
-      .update({ current_page: previousPage })
-      .eq('id', userId);
-
-    if (updateError) {
-      throw new Error(updateError.message);
-    }
-
-    res.json({ pageNum: previousPage });
-  } catch (error) {
-    console.log("Error getting previous page: ", error);
-    res.status(500).json({ error: "Error getting previous page" });
-  }
-});
-
-
-app.post("/get-next-page", async (req, res) => {
-  try {
-    const { userId, personID } = req.body;
-
-    // Get the current tree ID from the user's record
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('current_tree_id')
-      .eq('id', userId)
-      .single();
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const currentTree = user.current_tree_id;
-
-    // Fetch the base_of_page for the provided personID
-    const { data: pageData, error: pageError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select('base_of_page')
-      .eq('ancestor_id', personID)
-      .single();
-
-    if (pageError) {
-      throw new Error(pageError.message);
-    }
-
-    const nextPage = Number(pageData ? pageData.base_of_page : 0); // Default to 0 if not found
-
-    // Update the current page number in the user's record
-    const { error: updateError } = await supabase
-      .from('users')
-      .update({ current_page: nextPage })
-      .eq('id', userId);
-
-    if (updateError) {
-      throw new Error(updateError.message);
-    }
-
-    res.json({ pageNum: nextPage });
-  } catch (error) {
-    console.log("Error getting next page: ", error);
-    res.status(500).json({ error: "Error getting next page" });
-  }
-});
 
 
 app.post("/save-ancestor", async (req, res) => {
@@ -752,47 +656,6 @@ app.post("/save-ancestor", async (req, res) => {
 });
 
 
-//determines if the great grandparent of the bottom page person has parents
-app.post("/check-if-great-grandparent-has-parents", async (req, res) => {
-  try {
-    const { userId, greatgrandparentID } = req.body;
-
-    // Query to get the current tree id
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('current_tree_id')
-      .eq('id', userId)
-      .single();
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const currentTree = user.current_tree_id;
-
-    // Query to get the great-grandparent's details
-    const { data: greatGrandparent, error: greatGrandparentError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select('father_id, mother_id')
-      .eq('ancestor_id', greatgrandparentID)
-      .single();
-
-    if (greatGrandparentError) {
-      throw new Error(greatGrandparentError.message);
-    }
-
-    // Check if the great-grandparent has parents (father or mother)
-    if (greatGrandparent.father_id !== null || greatGrandparent.mother_id !== null) {
-      res.json(true);
-    } else {
-      res.json(false);
-    }
-
-  } catch (error) {
-    console.log("Error checking greatgrandparent's parents:", error);
-    res.status(500).json({ error: "Error checking greatgrandparent's parents" });
-  }
-});
 
 
 app.post("/edit-person", async (req, res) => {
@@ -1014,41 +877,6 @@ app.post("/delete-person", async (req, res) => {
   }
 });
 
-
-app.post("/ancestor-profiles", async (req, res) => {
-  try {
-    const { userId, id } = req.body;
-
-    // Query to get the current tree ID for the user
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('current_tree_id')
-      .eq('id', userId)
-      .single();
-
-    if (userError) {
-      throw new Error(userError.message);
-    }
-
-    const currentTree = user.current_tree_id;
-
-    // Query to get ancestor's details from the current tree
-    const { data: ancestor, error: ancestorError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select('*')
-      .eq('ancestor_id', id)
-      .single();
-
-    if (ancestorError) {
-      throw new Error(ancestorError.message);
-    }
-
-    res.json(ancestor);
-  } catch (error) {
-    console.log("Error getting ancestor's profile: ", error);
-    res.status(500).json({ error: "Error getting ancestor's profile" });
-  }
-});
 
 
 app.post("/get-parents", async (req, res) => {
@@ -1899,120 +1727,6 @@ app.post("/set-profile-picture", async (req, res) => {
   }
 });
 
-app.use("/calculate-ethnic-breakdown", async (req, res) => {
-  try {
-    const { userId, id } = req.body;
-
-    // Query to get the current tree
-    const getCurrentTreeId = await pool.query(
-      "SELECT current_tree_id FROM users WHERE id = $1",
-      [userId]
-    );
-
-    const currentTree = getCurrentTreeId.rows[0].current_tree_id;
-
-    //recursive function which determines the parent's ethnic breakdown. It first must gain the values of each deadend ancestor (hence continiously checking if a person has parents, going up one generation if he does)
-    const calculateEthnicBreakdown = async (childId) => {
-      let fatherEthnicityNameArray = [];
-      let fatherEthnicityPercentageArray = [];
-      let motherEthnicityNameArray = [];
-      let motherEthnicityPercentageArray = [];
-      let ethnicityNameArray = [];
-      let ethnicityPercentageArray = [];
-
-      const findParents = await pool.query(`
-				SELECT * FROM tree_${currentTree}
-				WHERE ancestor_id = ${childId}
-			`);
-
-      const fatherId = findParents.rows[0].father_id;
-      const motherId = findParents.rows[0].mother_id;
-
-      //checks if each parent is a deadend ancestor
-      if (fatherId === null && motherId === null) {
-        //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array
-        ethnicityNameArray.push(findParents.rows[0].ethnicity);
-        ethnicityPercentageArray.push(100);
-
-        return [ethnicityNameArray, ethnicityPercentageArray];
-      } else if (fatherId !== null && motherId === null) {
-        //ancestor has a father recorded, but not a mother. Mother is assumed to have the same ethnicity as the father - thus the father's values are passed down unchanged
-        const fatherEthnicity = await calculateEthnicBreakdown(fatherId);
-        for (let i = 0; i < fatherEthnicity[0].length; i++) {
-          fatherEthnicityNameArray.push(fatherEthnicity[0][i]);
-          fatherEthnicityPercentageArray.push(fatherEthnicity[1][i]);
-        }
-
-        return [fatherEthnicityNameArray, fatherEthnicityPercentageArray];
-      } else if (fatherId === null && motherId !== null) {
-        //ancestor has a mother recorded, but not a father. Father is assumed to have the same ethnicity as the mother - thus the mother's values are passed down unchanged
-        const motherEthnicity = await calculateEthnicBreakdown(motherId);
-        for (let i = 0; i < motherEthnicity[0].length; i++) {
-          motherEthnicityNameArray.push(motherEthnicity[0][i]);
-          motherEthnicityPercentageArray.push(motherEthnicity[1][i]);
-        }
-
-        return [motherEthnicityNameArray, motherEthnicityPercentageArray];
-      } else if (fatherId !== null && motherId !== null) {
-
-        //both parents are recorded. The values of each parent are halved and then added together to form the child's ethnic breakdown
-
-        const fatherEthnicity = await calculateEthnicBreakdown(fatherId);
-        for (let i = 0; i < fatherEthnicity[0].length; i++) {
-          fatherEthnicityNameArray.push(fatherEthnicity[0][i]);
-          fatherEthnicityPercentageArray.push(fatherEthnicity[1][i]);
-        }
-
-        const motherEthnicity = await calculateEthnicBreakdown(motherId);
-        for (let i = 0; i < motherEthnicity[0].length; i++) {
-          motherEthnicityNameArray.push(motherEthnicity[0][i]);
-          motherEthnicityPercentageArray.push(motherEthnicity[1][i]);
-        }
-
-        let childEthnicityNameArray = [];
-        let childEthnicityPercentageArray = [];
-
-        //adds father's ethnic values - dividing the percentage of each one in half
-        for (let i = 0; i < fatherEthnicityNameArray.length; i++) {
-          childEthnicityNameArray.push(fatherEthnicity[0][i]);
-          childEthnicityPercentageArray.push(fatherEthnicity[1][i] / 2);
-        }
-
-        //adds mother's ethnic values. First must check if any of the mother's ethnicities is shared with the father
-        for (let i = 0; i < motherEthnicityNameArray.length; i++) {
-          if (childEthnicityNameArray.includes(motherEthnicityNameArray[i])) {
-            //ethnicity is already present in child. Don't add the name again. Simply take the percentage value, half it, and add it to the percentage value already present
-            const index = childEthnicityNameArray.indexOf(
-              motherEthnicityNameArray[i]
-            );
-
-            childEthnicityPercentageArray[index] =
-              childEthnicityPercentageArray[index] +
-              motherEthnicityPercentageArray[i] / 2;
-
-          } else {
-            childEthnicityNameArray.push(motherEthnicityNameArray[i]);
-            childEthnicityPercentageArray.push(
-              motherEthnicityPercentageArray[i] / 2
-            );
-          }
-        }
-
-        return [childEthnicityNameArray, childEthnicityPercentageArray];
-      }
-    };
-
-    //initial call, with the target ancestor's ID in the argument
-    const ethnicity = await calculateEthnicBreakdown(id);
-
-    res.json({
-      ethnicityNameArray: ethnicity[0],
-      ethnicityPercentageArray: ethnicity[1],
-    });
-  } catch (error) {
-    console.log("error calculating ethnic breakdown:", error);
-  }
-});
 
 
 app.use('/save-left-note', async (req, res) => {

@@ -56,7 +56,7 @@ const Profile = () => {
       try {
         const userId = localStorage.getItem("userId");
         const response = await fetch(
-          "https://cleirigh-backend.vercel.app/ancestor-profiles",
+          "https://cleirigh-backend.vercel.app/api/ancestor-profiles",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -84,7 +84,7 @@ const Profile = () => {
   const calculateEthnicBreakdown = async () => {
     const userId = localStorage.getItem("userId");
     const getEthnicity = await fetch(
-      "https://cleirigh-backend.vercel.app/calculate-ethnic-breakdown",
+      "https://cleirigh-backend.vercel.app/api/calculate-ethnic-breakdown",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -297,7 +297,7 @@ const Profile = () => {
   const getSources = async () => {
     if (profileData) {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/get-sources", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-sources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, profileData }),
@@ -325,7 +325,7 @@ const Profile = () => {
     const getBasePersonName = async () => {
       try {
         const userId = localStorage.getItem("userId");
-        const response = await fetch("https://cleirigh-backend.vercel.app/get-base-person", {
+        const response = await fetch("https://cleirigh-backend.vercel.app/api/get-base-person", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userId }),
@@ -348,7 +348,7 @@ const Profile = () => {
       const userId = localStorage.getItem("userId");
       const father = profileData.father_id;
       const mother = profileData.mother_id;
-      const response = await fetch("https://cleirigh-backend.vercel.app/get-parents", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-parents", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, father, mother }),
@@ -393,7 +393,7 @@ const Profile = () => {
     const getChild = async () => {
       const userId = localStorage.getItem("userId");
       const sex = profileData.sex;
-      const response = await fetch("https://cleirigh-backend.vercel.app/get-child", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-child", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, id, sex }),
@@ -483,7 +483,7 @@ const Profile = () => {
   const handleSaveText = async () => {
     setisEditing(false);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/save-profile-text", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/api/save-profile-text", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, id, value }),
@@ -514,7 +514,7 @@ const Profile = () => {
   const SaveSource = () => {
     const save = async () => {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/save-source", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/api/save-source", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -543,7 +543,7 @@ const Profile = () => {
     const save = async () => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
-        "https://cleirigh-backend.vercel.app/save-edit-text-source",
+        "https://cleirigh-backend.vercel.app/api/save-edit-text-source",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -571,7 +571,7 @@ const Profile = () => {
 
   const deleteSource = async (source, sourceName, type) => {
     const userId = localStorage.getItem("userId");
-    const deleteSource = await fetch("https://cleirigh-backend.vercel.app/delete-source", {
+    const deleteSource = await fetch("https://cleirigh-backend.vercel.app/api/delete-source", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -589,7 +589,7 @@ const Profile = () => {
   const handleViewInTreee = async () => {
     //finds what page the ancestor is on
     const userId = localStorage.getItem("userId");
-    const getPageNum = await fetch("https://cleirigh-backend.vercel.app/find-page-number", {
+    const getPageNum = await fetch("https://cleirigh-backend.vercel.app/api/find-page-number", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, id }),
@@ -598,7 +598,7 @@ const Profile = () => {
 
     //sets current page to ancestor's page
     const setPageNum = await fetch(
-      "https://cleirigh-backend.vercel.app/set-current-page-number",
+      "https://cleirigh-backend.vercel.app/api/set-current-page-number",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -680,7 +680,7 @@ const Profile = () => {
   const handlSaveInfo = async () => {
     setisEditingInfo(false);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/save-profile-info", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/api/save-profile-info", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, profileData }),
@@ -699,7 +699,7 @@ const Profile = () => {
     try {
       //upload image to server
       const response = await axios.post(
-        "https://cleirigh-backend.vercel.app/upload-image",
+        "https://cleirigh-backend.vercel.app/api/upload-image",
         formData,
         {
           headers: {
@@ -711,7 +711,7 @@ const Profile = () => {
 
       //save image link to database
       const userId = localStorage.getItem("userId");
-      const saveImage = await fetch("https://cleirigh-backend.vercel.app/save-image-link", {
+      const saveImage = await fetch("https://cleirigh-backend.vercel.app/api/save-image-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, profileData, fileName }),
@@ -719,7 +719,7 @@ const Profile = () => {
 
       //set profile picture
       const setProfilePic = await fetch(
-        "https://cleirigh-backend.vercel.app/set-profile-picture",
+        "https://cleirigh-backend.vercel.app/api/set-profile-picture",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
