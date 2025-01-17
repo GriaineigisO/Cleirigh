@@ -59,9 +59,6 @@ export default async function handler(req, res) {
             .select('*')
             .eq('ancestor_id', childId)
   
-        console.log(childId)
-        console.log(findParents)
-        console.log(findParents[0].father_id)
         const fatherId = findParents[0].father_id;
         const motherId = findParents[0].mother_id;
   
