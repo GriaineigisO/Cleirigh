@@ -83,6 +83,7 @@ const Profile = () => {
 
   const calculateEthnicBreakdown = async () => {
     const userId = localStorage.getItem("userId");
+    console.log('Sending request to Supabase...');
     const getEthnicity = await fetch(
       "https://xkwbiwiieqlsjmptcagp.supabase.co/functions/v1/calculate-ethnic-breakdown",
       {
