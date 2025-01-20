@@ -84,7 +84,7 @@ const Profile = () => {
   const calculateEthnicBreakdown = async () => {
     const userId = localStorage.getItem("userId");
     const getEthnicity = await fetch(
-      "https://cleirigh-backend.vercel.app/api/calculate-ethnic-breakdown",
+      "https://your-project-name.supabase.co/functions/v1/calculate-ethnic-breakdown",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
