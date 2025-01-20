@@ -1,0 +1,3 @@
+[function]
+runtime = "node16"
+entrypoint = "index.js"
