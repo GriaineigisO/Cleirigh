@@ -1,4 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+// @ts-nocheck
+
+import { createClient } from "https://cdn.skypack.dev/@supabase/supabase-js";
+
+
 
 export default async function handler(req, res) {
   // Initialize the Supabase client
@@ -18,6 +22,7 @@ export default async function handler(req, res) {
 
   // Handle OPTIONS request
   if (req.method === "OPTIONS") {
+    console.log('Received OPTIONS request');
     return res.status(200).end();
   }
 
