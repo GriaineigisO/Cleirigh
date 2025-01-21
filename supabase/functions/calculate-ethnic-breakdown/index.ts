@@ -8,28 +8,43 @@ export default async function handler(req, res) {
   // Initialize the Supabase client
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
-  const corsOptions = {
-    origin: "https://cleirighgenealogy.com",
-    methods: ["GET", "POST", "OPTIONS"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  };
+  // CORS Configuration
+const corsOptions = {
+  origin: "https://cleirighgenealogy.com", 
+  methods: ["GET", "POST", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-  res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
-  res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
+// Set CORS headers for every request
+res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
+res.setHeader("Access-Control-Allow-Credentials", "true");
+res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
+res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
 
-  // Handle OPTIONS request
-  if (req.method === "OPTIONS") {
-    console.log('Received OPTIONS request');
-    return res.status(200).end();
-  }
+// Preflight (OPTIONS) Request Handling
+if (req.method === "OPTIONS") {
+  console.log("Received OPTIONS request");
+  return res.status(204).end(); 
+}
 
-  // Only allow POST requests
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+// Allow POST method only
+if (req.method !== "POST") {
+  return res.status(405).json({ error: "Method not allowed" });
+}
+
+// Continue handling the POST request logic...
+try {
+  // Your main logic here (parse the body, process data, etc.)
+  const data = JSON.parse(req.body);
+
+  // Dummy success response for illustration
+  return res.status(200).json({ message: "Request processed", data });
+} catch (error) {
+  console.error("Error processing request:", error);
+  return res.status(500).json({ error: "Internal Server Error" });
+}
+
 
   try {
     const { userId, id } = req.body;
