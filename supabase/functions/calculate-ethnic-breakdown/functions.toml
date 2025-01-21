@@ -1,3 +1,5 @@
 [function]
 runtime = "node16"
 entrypoint = "index.js"
+timeout = 15 # Set timeout to 10 seconds
+memory = 128 # Default memory allocation
