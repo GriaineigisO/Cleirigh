@@ -84,13 +84,13 @@ const Profile = () => {
   }, [id]);
 
   const calculateEthnicBreakdown = async () => {
-    console.log(process.env.SUPABASE_SERVICE_ROLE_KEY)
+    console.log(process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY)
     const userId = localStorage.getItem("userId");
     const getEthnicity = await fetch(
       "https://xkwbiwiieqlsjmptcagp.supabase.co/functions/v1/calculate-ethnic-breakdown",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}` },
         body: JSON.stringify({ userId, id }),
       }
     );
