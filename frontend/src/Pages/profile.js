@@ -87,7 +87,7 @@ const Profile = () => {
       "https://xkwbiwiieqlsjmptcagp.supabase.co/functions/v1/calculate-ethnic-breakdown",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `${Bearer SUPABASE_SERVICE_ROLE_KEY}` },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}` },
         body: JSON.stringify({ userId, id }),
       }
     );
