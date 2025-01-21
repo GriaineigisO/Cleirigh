@@ -7,7 +7,7 @@ import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { useEffectOnce } from "../Components/useEffectOnce.js";
 import ancientGroups from "../Components/AncientEthnicBreakdown.js";
-require("dotenv").config();
+
 
 
 const Profile = () => {
