@@ -11,7 +11,6 @@ const corsOptions = {
 
 export default async function handler(req, res) {
   try {
-    console.log("API is triggered")
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -33,7 +32,7 @@ export default async function handler(req, res) {
       // Query to update the current page number in the user's data
       const { data, error } = await supabase
         .from('users')
-        .update({ current_page: num })
+        .update({ "current_page": num })
         .eq('id', userId);
   
       if (error) {
