@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", // Replace with your frontend domain
+  origin: "https://cleirighgenealogy.com", 
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         .from('users')
         .select('current_tree_id')
         .eq('id', userId)
-        .single(); // Get a single row
+        .single(); 
   
       if (currentTreeError) {
         throw new Error(currentTreeError.message);
@@ -46,17 +46,23 @@ export default async function handler(req, res) {
         .eq('id', userId)
   
       const currentPage = getCurrentPage[0].current_page;
+
+      console.log(currentPage)
   
       const {data: getLeftNote, error: leftNoteError} = await supabase    
         .from(`tree_${currentTree}`)
         .select('*')
         .eq('tree_id', currentTree)
         .eq('page_number', currentPage)
+
+        console.log(getLeftNote)
   
       if (getLeftNote.length > 0) {
   
         const leftNote = getLeftNote[0].left_note
         const leftNoteHeadline = getLeftNote[0].left_note_headline
+
+        console.log(leftNote)
   
         let bool = true;
         if (leftNote === null) {

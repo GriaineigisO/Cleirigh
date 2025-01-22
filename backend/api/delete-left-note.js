@@ -60,7 +60,6 @@ export default async function handler(req, res) {
         .eq("tree_id", currentTree) 
         .eq("page_number", currentPage)
 
-    const {data: }
 
     res.json(true);
   } catch (error) {
