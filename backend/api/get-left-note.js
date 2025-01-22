@@ -41,15 +41,12 @@ export default async function handler(req, res) {
         .select('*')
         .eq('id', userId)
 
-  console.log(getCurrentPage)
-
-
       const currentPage = getCurrentPage[0].current_page;
 
-      
+      console.log(currentPage)
   
       const {data: getLeftNote, error: leftNoteError} = await supabase    
-        .from(`tree_${currentTree}`)
+        .from(`notes`)
         .select('*')
         .eq('tree_id', currentTree)
         .eq('page_number', currentPage)
