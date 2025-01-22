@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", // Replace with your frontend domain
+  origin: "https://cleirighgenealogy.com", 
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -32,31 +32,33 @@ export default async function handler(req, res) {
         .from('users')
         .select('current_tree_id')
         .eq('id', userId)
-        .single(); // Get a single row
-  
-      if (currentTreeError) {
-        throw new Error(currentTreeError.message);
-      }
+        .single(); 
   
       const currentTree = currentTreeData.current_tree_id;
 
       const {data: getCurrentPage, error: currentPageError } = await supabase
-        .from(`tree_${currentTree}`)
+        .from(`users`)
         .select('*')
         .eq('id', userId)
-  
+
       const currentPage = getCurrentPage[0].current_page;
+
+      console.log(currentPage)
   
       const {data: getRightNote, error: rightNoteError} = await supabase    
-        .from(`tree_${currentTree}`)
+        .from(`notes`)
         .select('*')
         .eq('tree_id', currentTree)
         .eq('page_number', currentPage)
 
+        console.log(getRightNote)
+  
       if (getRightNote.length > 0) {
   
         const rightNote = getRightNote[0].right_note
         const rightNoteHeadline = getRightNote[0].right_note_headline
+
+        console.log(rightNote)
   
         let bool = true;
         if (rightNote === null) {
@@ -71,9 +73,9 @@ export default async function handler(req, res) {
   
     } else {
       res.json({
-        isLeftNote: false,
-        leftNote: null,
-        leftNoteHeadline:null
+        isRightNote: false,
+        rightNote: null,
+        rightNoteHeadline:null
       });
     }
     
