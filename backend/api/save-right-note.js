@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     const { data: getCurrentPage, getCurrentPageError } = await supabase
       .from("users")
       .select("current_page")
-      [userId].eq("id");
+      .eq("id", userId);
 
     const currentPage = getCurrentPage[0].current_page;
 
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
         .from("notes")
         .select("*")
         .eq("tree_id", currentTree)
-        .update("page_number", currentPage);
+        .eq("page_number", currentPage);
 
     if (checkIfPageHasNotes.length === 0) {
       const { data, error } = await supabase
