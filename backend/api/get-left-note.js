@@ -44,10 +44,11 @@ export default async function handler(req, res) {
         .from(`tree_${currentTree}`)
         .select('*')
         .eq('id', userId)
-  
+
+  console.log(currentPage)
       const currentPage = getCurrentPage[0].current_page;
 
-      console.log(currentPage)
+      
   
       const {data: getLeftNote, error: leftNoteError} = await supabase    
         .from(`tree_${currentTree}`)
