@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         .select('*')
         .eq('id', userId)
 
-  console.log(currentPage)
+  console.log(getCurrentPage)
       const currentPage = getCurrentPage[0].current_page;
 
       
