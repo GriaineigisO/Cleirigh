@@ -34,17 +34,16 @@ export default async function handler(req, res) {
         .eq('id', userId)
         .single(); 
   
-        console.log(currentTreeData.current_tree_id)
       const currentTree = currentTreeData.current_tree_id;
 
       const {data: getCurrentPage, error: currentPageError } = await supabase
-        .from(`tree_${currentTree}`)
+        .from(`users`)
         .select('*')
         .eq('id', userId)
 
   console.log(getCurrentPage)
-  console.log(currentTree)
-  
+
+
       const currentPage = getCurrentPage[0].current_page;
 
       
