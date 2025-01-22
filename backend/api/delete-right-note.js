@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     const { data: getCurrentPage, getCurrentPageError } = await supabase
       .from("users")
       .select("current_page")
-      [userId].eq("id");
+      .eq("id", userId);
 
     const currentPage = getCurrentPage[0].current_page;
 

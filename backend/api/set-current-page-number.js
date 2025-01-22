@@ -11,6 +11,7 @@ const corsOptions = {
 
 export default async function handler(req, res) {
   try {
+    console.log("API is triggered")
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
