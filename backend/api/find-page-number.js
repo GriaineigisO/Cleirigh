@@ -40,11 +40,16 @@ export default async function handler(req, res) {
       const currentTree = userData?.current_tree_id;
 
       const {data: getNum, error} = await supabase
-        .from("users")
+        .from(`tree_${currentTree}`)
         .select("*")
         .eq("ancestor_id", id)
+
+        console.log(getNum)
   
       const pageNum = getNum[0].page_number;
+
+      console.log(pageNum)
+
       res.json(pageNum);
     } catch (error) {
       console.log("error getting page number:", error);
