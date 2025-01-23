@@ -31,6 +31,7 @@ export default async function handler(req, res) {
   }
   try {
     const { userId, topic } = req.body;
+    console.log(topic)
 
     // Get current tree id from users table
     const { data: user, error: userError } = await supabase
@@ -51,6 +52,7 @@ export default async function handler(req, res) {
       .eq("tree_id", currentTree)
       .eq("topic_name", topic)
 
+      console.log(data)
     res.json(data);
   } catch (error) {
     console.log("Error editing right note:", error);
