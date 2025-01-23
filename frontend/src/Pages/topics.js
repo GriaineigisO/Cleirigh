@@ -29,7 +29,7 @@ const Topics = () => {
   }, []);
 
   const handleOpenTopic = async (topicName) => {
-
+    window.location.href = `topic/${topicName}`;
   }
 
   return (
