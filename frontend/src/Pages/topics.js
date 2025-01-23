@@ -7,7 +7,7 @@ import LeftSidebar from "../Components/leftSidebar.js";
 const Topics = () => {
   const [topicNames, setTopicNames] = useState([]);
   const [topicLinks, setTopicLinks] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
@@ -30,7 +30,10 @@ const Topics = () => {
     getAllTopics();
   }, []);
 
-  const handleCreateNewTopic = async () => {};
+  const handleCreateNewTopic = async () => {
+
+    setIsOpen(false);
+  };
 
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
@@ -62,7 +65,6 @@ const Topics = () => {
             <div>
                 <label>Topic Name</label>
                 <input></input>
-                <button>Submit</button>
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -71,8 +73,8 @@ const Topics = () => {
                 <Button variant="secondary" onClick={closeCreateTopic}>
                   Cancel
                 </Button>
-                <Button variant="primary" onClick={SaveSource}>
-                  Save Changes
+                <Button variant="primary" onClick={handleCreateNewTopic}>
+                  Create New Topic
                 </Button>
               </div>
             </div>
