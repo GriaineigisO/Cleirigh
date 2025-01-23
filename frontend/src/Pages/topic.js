@@ -11,7 +11,7 @@ const Topic = () => {
 
     useEffect(() => {
         const getTopicData = async () => {
-            console.log("hello")
+            console.log(topic)
           try {
             const userId = localStorage.getItem("userId");
             const response = await fetch(
