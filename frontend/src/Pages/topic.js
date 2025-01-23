@@ -23,18 +23,24 @@ const Topic = () => {
             );
     
             if (!response.ok) {
-              throw new Error("Failed to fetch profile data");
+              throw new Error("Failed to fetch topic data");
             }
     
             const data = await response.json();
             setTopicData(data);
           } catch (err) {
-            console.error("Error fetching profile data:", err);
+            console.error("Error fetching topic data:", err);
           } 
         };
     
         getTopicData();
       }, [topic]);
+
+      useEffect(() => {
+        if (topicData) {
+            console.log(topicData)
+        }
+      }, [topicData])
 
   return (
     <h1>{topicData.topic_name}</h1>
