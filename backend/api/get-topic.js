@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       .eq("tree_id", currentTree)
       .eq("topic_link", topic)
 
-      console.log(data)
+      console.log(data.tree_name)
     res.json(data);
   } catch (error) {
     console.log("Error editing right note:", error);
