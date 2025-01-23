@@ -20,9 +20,8 @@ const Topics = () => {
       }
     );
     const data = await response.json();
-    setTopics((prev) => ([...prev, data.topic_name]));
-    console.log(data)
-    console.log(data.topic_name)
+    setTopics(data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const Topics = () => {
         <div>
           {topics.map((topic, index) => (
             <div>
-              <p>topics[index]</p>
+              <p>{topics[index]}</p>
               <button>Open</button>
               <button>Delete</button>
             </div>

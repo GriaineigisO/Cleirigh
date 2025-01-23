@@ -45,15 +45,14 @@ export default async function handler(req, res) {
 
     const currentTree = user?.current_tree_id;
 
-    const {data, error} = await supabase 
-        .from("topics")
-        .select("*")
-        .eq("tree_id", currentTree)
+    const { data, error } = await supabase
+      .from("topics")
+      .select("*")
+      .eq("tree_id", currentTree);
 
-    res.json(data);
+    const topicNames = data.map((topicName) => data.topic_name);
 
-    
-
+    res.json(topicNames);
   } catch (error) {
     console.log("Error editing right note:", error);
   }
