@@ -639,16 +639,13 @@ const Home = () => {
             <Link to={"/newTree"}>Make a New Tree</Link>
           </div>
           <div className="row">
-            <a href="">Add New Ancestor</a>
+            <Link to={"/topics"}>Topics</Link>
           </div>
           <div className="row">
             <a href="">Random Ancestor's Profile</a>
           </div>
           <div className="row">
             <a href="">On This Day</a>
-          </div>
-          <div className="row">
-            <a href="">Battles</a>
           </div>
         </div>
       </div>
