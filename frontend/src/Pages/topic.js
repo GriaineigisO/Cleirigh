@@ -30,10 +30,7 @@ const Topic = () => {
             setTopicData(data);
           } catch (err) {
             console.error("Error fetching profile data:", err);
-            setError("Unable to fetch profile data. Please try again later.");
-          } finally {
-            setLoading(false);
-          }
+          } 
         };
     
         getTopicData();
