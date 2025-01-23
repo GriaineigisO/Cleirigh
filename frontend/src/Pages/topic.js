@@ -37,14 +37,8 @@ const Topic = () => {
         getTopicData();
       }, []);
 
-      useEffect(() => {
-        if (topicData) {
-            console.log(topicData)
-        }
-      }, [topicData])
-
   return (
-    <h1>{topicData.topic_name}</h1>
+    <h1>{topicData}</h1>
   );
 };
 
