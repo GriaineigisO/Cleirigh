@@ -38,7 +38,11 @@ const Topic = () => {
 
 
   return (
-    <h1>{topicData[0].topic_name}</h1>
+    <div>
+    {topicData ? (
+        <h1>{topicData[0].topic_name}</h1>
+    ) : (<></>)}
+    </div>
   );
 };
 
