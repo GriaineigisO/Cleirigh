@@ -28,6 +28,10 @@ const Topics = () => {
     getAllTopics();
   }, []);
 
+  const handleOpenTopic = async (topicName) => {
+
+  }
+
   return (
     <div className="row">
       <LeftSidebar />
@@ -39,9 +43,9 @@ const Topics = () => {
 
         <div>
           {topics.map((topic, index) => (
-            <div>
-              <p>{topics[index]}</p>
-              <button>Open</button>
+            <div style={{display:"flex", flexDirection:"row"}}>
+              <h5>{topics[index]}</h5>
+              <button onClick={() => handleOpenTopic(topics[index])}>Open</button>
               <button>Delete</button>
             </div>
           ))}
