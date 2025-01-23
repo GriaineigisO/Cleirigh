@@ -29,11 +29,6 @@ const Topics = () => {
     getAllTopics();
   }, []);
 
-//   useEffect(() => {
-//     console.log(topicNames)
-//     console.log(topicLinks)
-//   }, [topicNames]);
-
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
   }
