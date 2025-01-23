@@ -36,6 +36,9 @@ const Topic = () => {
         getTopicData();
       }, []);
 
+      useEffect(() => {
+        console.log(topicData[0].topic_name)
+      }, [topicData])
 
 
   return (
