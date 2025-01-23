@@ -22,6 +22,7 @@ const Topics = () => {
     const data = await response.json();
     setTopics((prev) => ([...prev, data.topic_name]));
     console.log(data)
+    console.log(data.topic_name)
   };
 
   useEffect(() => {
