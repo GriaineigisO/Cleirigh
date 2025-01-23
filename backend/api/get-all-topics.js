@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       throw new Error(userError.message);
     }
 
-    const currentTree = user.current_tree_id;
+    const currentTree = user?.current_tree_id;
 
     const {data, error} = await supabase 
         .from("topics")
