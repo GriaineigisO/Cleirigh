@@ -3,11 +3,12 @@ import { capitaliseFirstLetter, convertNumToRelation } from "../library.js";
 import "../style.css";
 import { Link } from "react-router-dom";
 import LeftSidebar from "../Components/leftSidebar.js";
+import { Modal, Button } from "react-bootstrap";
 
 const Topics = () => {
   const [topicNames, setTopicNames] = useState([]);
   const [topicLinks, setTopicLinks] = useState([]);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
