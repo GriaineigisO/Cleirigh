@@ -11,7 +11,6 @@ const Topic = () => {
 
     useEffect(() => {
         const getTopicData = async () => {
-            console.log(topic)
           try {
             const userId = localStorage.getItem("userId");
             const response = await fetch(
@@ -38,7 +37,7 @@ const Topic = () => {
       }, []);
 
   return (
-    <h1>{topicData}</h1>
+    <h1>{topicData.topic_name}</h1>
   );
 };
 
