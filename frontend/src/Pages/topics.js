@@ -9,6 +9,7 @@ const Topics = () => {
   const [topicNames, setTopicNames] = useState([]);
   const [topicLinks, setTopicLinks] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [newTopicName, setNewTopicName] = useState();
 
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
@@ -32,7 +33,18 @@ const Topics = () => {
   }, []);
 
   const handleCreateNewTopic = async () => {
-
+    const userId = localStorage.getItem("userId");
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/create-new-topic",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, newTopicName }),
+      }
+    );
+    const data = await response.json();
     setIsOpen(false);
   };
 
@@ -64,8 +76,8 @@ const Topics = () => {
           </Modal.Header>
           <Modal.Body>
             <div>
-                <label>Topic Name</label>
-                <input></input>
+                <label style={{marginRight:"5px"}}>Topic Name</label>
+                <input onChange={(e) => setNewTopicName(e.target.value)}></input>
             </div>
           </Modal.Body>
           <Modal.Footer>
