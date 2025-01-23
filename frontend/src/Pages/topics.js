@@ -21,7 +21,7 @@ const Topics = () => {
     );
     const data = await response.json();
     setTopics(data);
-    console.log(topics)
+    console.log(data)
   };
 
   useEffect(() => {
