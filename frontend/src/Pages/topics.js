@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import LeftSidebar from "../Components/leftSidebar.js";
 
 const Topics = () => {
-  const [topics, setTopics] = useState([]);
+  const [topicNames, setTopicNames] = useState([]);
+  const [topicLinks, setTopicLinks] = useState([]);
 
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
@@ -20,8 +21,8 @@ const Topics = () => {
       }
     );
     const data = await response.json();
-    setTopics(data);
-    console.log(data);
+    setTopicNames(data.topicNames);
+    setTopicLinks(data.topicLinks);
   };
 
   useEffect(() => {
@@ -42,10 +43,10 @@ const Topics = () => {
         <button>Create New Topic</button>
 
         <div>
-          {topics.map((topic, index) => (
+          {topicNames.map((topic, index) => (
             <div style={{display:"flex", flexDirection:"row"}}>
-              <h5>{topics[index]}</h5>
-              <button onClick={() => handleOpenTopic(topics[index])}>Open</button>
+              <h5>{topicNames[index]}</h5>
+              <button onClick={() => handleOpenTopic(topicLinks[index])}>Open</button>
               <button>Delete</button>
             </div>
           ))}

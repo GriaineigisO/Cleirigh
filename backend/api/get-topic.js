@@ -50,7 +50,7 @@ export default async function handler(req, res) {
       .from("topics")
       .select("*")
       .eq("tree_id", currentTree)
-      .eq("topic_name", topic)
+      .eq("topic_link", topic)
 
       console.log(data)
     res.json(data);

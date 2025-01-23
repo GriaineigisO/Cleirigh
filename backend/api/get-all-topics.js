@@ -50,10 +50,10 @@ export default async function handler(req, res) {
       .select("*")
       .eq("tree_id", currentTree);
 
-    const topicNames = data.map(topic => topic.topic_name);
+    const topicNames = data.map((topic) => topic.topic_name);
+    const topicLinks = data.map((topic) => topic.topic_link);
 
-
-    res.json(topicNames);
+    res.json({ topicNames: topicNames, topicLinks: topicLinks });
   } catch (error) {
     console.log("Error editing right note:", error);
   }
