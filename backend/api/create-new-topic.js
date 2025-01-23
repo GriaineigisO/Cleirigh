@@ -15,7 +15,6 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
-    console.log("test")
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -49,6 +48,8 @@ export default async function handler(req, res) {
     //turn topic name into topic link - replace whitespace with "_" and make everything lowercase
     const temp = newTopicName.toLowerCase();
     const topicLink = temp.replace(" ", "_");
+
+    console.log(topicLink)
 
     const { data, error } = await supabase
       .from("topics")
