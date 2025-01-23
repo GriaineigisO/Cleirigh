@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { capitaliseFirstLetter, convertNumToRelation } from "../library.js";
 import "../style.css";
 import { Link } from "react-router-dom";
-const { topic } = useParams();
 
 
 const Topic = () => {
+    const { topic } = useParams();
     const [topicData, setTopicData] = useState();
 
     useEffect(() => {
