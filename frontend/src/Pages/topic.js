@@ -35,7 +35,7 @@ const Topic = () => {
         };
     
         getTopicData();
-      }, [topic]);
+      }, []);
 
       useEffect(() => {
         if (topicData) {
