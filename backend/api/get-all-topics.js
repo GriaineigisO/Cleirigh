@@ -50,7 +50,8 @@ export default async function handler(req, res) {
       .select("*")
       .eq("tree_id", currentTree);
 
-    const topicNames = data.map((topicName) => data.topic_name);
+    const topicNames = data.map(topic => topic.topic_name);
+
 
     res.json(topicNames);
   } catch (error) {
