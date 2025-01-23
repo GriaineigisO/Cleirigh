@@ -50,7 +50,7 @@ const Topics = () => {
 
       <div className="col-lg centre-col">
         <Modal
-          show={createTopicOpen}
+          show={isOpen}
           onHide={closeCreateTopic}
           dialogclassName="custom-modal-width"
           backdrop="static"
@@ -81,7 +81,7 @@ const Topics = () => {
 
         <h1>Topics</h1>
 
-        <button onClick={handleCreateNewTopic}>Create New Topic</button>
+        <button onClick={createTopicOpen}>Create New Topic</button>
 
         <div>
           {topicNames.map((topic, index) => (
