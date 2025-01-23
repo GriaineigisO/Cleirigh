@@ -47,7 +47,14 @@ export default async function handler(req, res) {
 
     //turn topic name into topic link - replace whitespace with "_" and make everything lowercase
     const temp = newTopicName.toLowerCase();
-    const topicLink = temp.replace(" ", "_");
+    const array = Array.from(temp)
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === " ") {
+            array[i] = "_"
+        }
+    }
+
+    const topicLink = array.join("");
 
     console.log(topicLink)
 
@@ -60,7 +67,6 @@ export default async function handler(req, res) {
           topic_link: topicLink,
         },
       ])
-      .single();
 
     res.json(true);
   } catch (error) {
