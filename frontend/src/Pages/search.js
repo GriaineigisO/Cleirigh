@@ -22,9 +22,8 @@ const Search = () => {
 
   const searchAncestors = async () => {
     setClickCount(clickCount + 1);
-    console.log(clickCount)
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/search-ancestors", {
+    const response = await fetch("https://cleirigh-backend.vercel.app/api/search-ancestors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +53,7 @@ const Search = () => {
   const changePageNum = async (num) => {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
-      "https://cleirigh-backend.vercel.app/set-current-page-number",
+      "https://cleirigh-backend.vercel.app/api/set-current-page-number",
       {
         method: "POST",
         headers: {

@@ -10,7 +10,7 @@ const Topics = () => {
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
-      "https://cleirigh-backend.vercel.app/get-all-topics",
+      "https://cleirigh-backend.vercel.app/api/get-all-topics",
       {
         method: "POST",
         headers: {
