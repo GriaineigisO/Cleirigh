@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // CORS Options
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", // Replace with your frontend domain
+  origin: "https://cleirighgenealogy.com",
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -15,6 +15,7 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
+    console.log("test")
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -49,11 +50,14 @@ export default async function handler(req, res) {
     const temp = newTopicName.toLowerCase();
     const topicLink = temp.replace(" ", "_");
 
-
     const { data, error } = await supabase
       .from("topics")
       .insert([
-        { tree_id: currentTree, topic_name: newTopicName, topic_link: topicLink }
+        {
+          tree_id: currentTree,
+          topic_name: newTopicName,
+          topic_link: topicLink,
+        },
       ])
       .single();
 
