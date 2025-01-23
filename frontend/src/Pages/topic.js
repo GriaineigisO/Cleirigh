@@ -40,7 +40,7 @@ const Topic = () => {
       }, [topic]);
 
   return (
-    <h1>Topic</h1>
+    <h1>{topicData.topic_name}</h1>
   );
 };
 
