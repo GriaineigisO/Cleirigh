@@ -7,6 +7,7 @@ import LeftSidebar from "../Components/leftSidebar.js";
 const Topics = () => {
   const [topicNames, setTopicNames] = useState([]);
   const [topicLinks, setTopicLinks] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
@@ -29,8 +30,18 @@ const Topics = () => {
     getAllTopics();
   }, []);
 
+  const handleCreateNewTopic = async () => {};
+
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
+  };
+
+  const createTopicOpen = async () => {
+    setIsOpen(true);
+  }
+
+  const closeCreateTopic = async () => {
+    setIsOpen(false);
   }
 
   return (
@@ -38,15 +49,47 @@ const Topics = () => {
       <LeftSidebar />
 
       <div className="col-lg centre-col">
+        <Modal
+          show={createTopicOpen}
+          onHide={closeCreateTopic}
+          dialogclassName="custom-modal-width"
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Add Topic</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div>
+                <label>Topic Name</label>
+                <input></input>
+                <button>Submit</button>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="modal-footer-buttons">
+              <div className="non-delete-buttons">
+                <Button variant="secondary" onClick={closeCreateTopic}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={SaveSource}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </Modal.Footer>
+        </Modal>
+
         <h1>Topics</h1>
 
-        <button>Create New Topic</button>
+        <button onClick={handleCreateNewTopic}>Create New Topic</button>
 
         <div>
           {topicNames.map((topic, index) => (
-            <div style={{display:"flex", flexDirection:"row"}}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <h5>{topicNames[index]}</h5>
-              <button onClick={() => handleOpenTopic(topicLinks[index])}>Open</button>
+              <button onClick={() => handleOpenTopic(topicLinks[index])}>
+                Open
+              </button>
               <button>Delete</button>
             </div>
           ))}
