@@ -58,7 +58,7 @@ function App() {
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/newTree" element={<NewTree />}></Route>
           <Route path="/topics" element={<Topics />}></Route>
-          <Route path="topic/:topicName" element={<Topic />} />
+          <Route path="topic/:topic" element={<Topic />} />
           <Route path="profile/:id" element={<Profile />} />
         </Routes>
       </div>
