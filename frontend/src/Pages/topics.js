@@ -46,6 +46,7 @@ const Topics = () => {
     );
     const data = await response.json();
     setIsOpen(false);
+    window.location.reload();
   };
 
   const handleOpenTopic = async (topicLink) => {
