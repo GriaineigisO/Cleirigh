@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 const Topic = () => {
     const { topic } = useParams();
     const [topicData, setTopicData] = useState();
+    const [isEditing, setisEditing] = useState(false);
+    const [value, setValue] = useState("");
 
     useEffect(() => {
         const getTopicData = async () => {
@@ -36,11 +38,63 @@ const Topic = () => {
         getTopicData();
       }, []);
 
+      useEffect(() => {
+        if (profileData) {
+          setValue(profileData.profile_text);
+        }
+      }, [profileData]);
+
+      const handleEdit = () => {
+        setisEditing(true);
+      };
+
+      const handleCancelText = async () => {
+        setisEditing(false);
+        setValue(value);
+      };
+
+      const handleSaveText = async () => {
+        setisEditing(false);
+        const userId = localStorage.getItem("userId");
+        const response = await fetch("https://cleirigh-backend.vercel.app/api/save-topic-text", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, topic, value }),
+        });
+      };
+
 
   return (
     <div>
     {topicData ? (
+      <div>
         <h1>{topicData[0].topic_name}</h1>
+
+        <div className="article-section">
+                <hr></hr>
+                <p className="span-link" onClick={handleEdit}>
+                  Edit
+                </p>
+                {isEditing ? (
+                  <div>
+                    <ReactQuill
+                      theme="snow"
+                      value={value}
+                      style={{ height: "300px" }}
+                      onChange={setValue}
+                    />
+                    <button style={{ marginTop: "60px" }} onClick={handleCancelText}>
+                      Cancel
+                    </button>
+                    <button style={{ marginTop: "60px" }} onClick={handleSaveText}>
+                      Save Text
+                    </button>
+                  </div>
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: value }} />
+                )}
+              </div>
+          </div>
     ) : (<></>)}
     </div>
   );
