@@ -102,11 +102,7 @@ const Topics = () => {
         <div>
           {topicNames.map((topic, index) => (
             <div style={{ display: "flex", flexDirection: "row" }}>
-              <h5><Link to={`topic${topicLinks[index]}`}>{topicNames[index]}</Link></h5>
-              {/* <button onClick={() => handleOpenTopic(topicLinks[index])}>
-                Open
-              </button> */}
-              <button>Delete</button>
+              <h5 className="span-link" onClick={() => handleOpenTopic(topicLinks[index])}>{topicNames[index]}</h5>
             </div>
           ))}
         </div>
