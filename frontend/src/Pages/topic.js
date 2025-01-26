@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { capitaliseFirstLetter, convertNumToRelation } from "../library.js";
 import "../style.css";
 import { Link } from "react-router-dom";
+import ReactQuill from "react-quill";
 
 
 const Topic = () => {
