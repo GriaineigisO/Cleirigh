@@ -40,10 +40,10 @@ const Topic = () => {
       }, []);
 
       useEffect(() => {
-        if (profileData) {
-          setValue(profileData.profile_text);
+        if (topicData) {
+          setValue(topicData[0].topic_text);
         }
-      }, [profileData]);
+      }, [topicData]);
 
       const handleEdit = () => {
         setisEditing(true);
