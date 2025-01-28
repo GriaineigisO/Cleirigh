@@ -10,7 +10,6 @@ const Topic = () => {
   const [topicData, setTopicData] = useState();
   const [isEditing, setisEditing] = useState(false);
   const [value, setValue] = useState("");
-  const [topicName, setTopicName] = useState();
 
   useEffect(() => {
     const getTopicData = async () => {
@@ -30,7 +29,7 @@ const Topic = () => {
         }
 
         const data = await response.json();
-        setTopicData(data);
+        setTopicData(data[0]);
       } catch (err) {
         console.error("Error fetching topic data:", err);
       }
@@ -74,12 +73,13 @@ const Topic = () => {
 
   const handeSaveTopicName = async () => {
     const userId = localStorage.getItem("userId");
+    const topicData = topicData.topic_name;
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/save-topic-name",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, topic, topicName}),
+        body: JSON.stringify({ userId, topic, topicData}),
       }
     );
   };
@@ -90,9 +90,12 @@ const Topic = () => {
         <div style={{ marginLeft: "50px", marginRight: "50px" }}>
           <div style={{textAlign:"center"}}>
             {isEditing ? (
-              <input value={topicData[0].topic_name}
+              <input value={topicData.topic_name}
               onChange={(e) =>
-                setTopicName(e.target.value)
+                setTopicData((prev) => ({
+                  ...prev,
+                  topic_name: e.target.value,
+                }))
               }>
               </input>
             ) : (
