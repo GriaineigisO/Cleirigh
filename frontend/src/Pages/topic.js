@@ -40,7 +40,7 @@ const Topic = () => {
 
   useEffect(() => {
     if (topicData) {
-      setValue(topicData[0].topic_text);
+      setValue(topicData.topic_text);
     }
   }, [topicData]);
 
