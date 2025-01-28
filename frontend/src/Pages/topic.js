@@ -53,8 +53,13 @@ const Topic = () => {
     setValue(value);
   };
 
-  const handleSaveText = async () => {
+  const handlSaveInfo = async () => {
     setisEditing(false);
+    handleSaveText();
+    handeSaveTopicName();
+  };
+
+  const handleSaveText = async () => {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/save-topic-text",
@@ -66,12 +71,37 @@ const Topic = () => {
     );
   };
 
+  const handeSaveTopicName = async () => {
+    const userId = localStorage.getItem("userId");
+    const topicName = topicData[0].topic_name;
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/save-topic-name",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, topic, topicName}),
+      }
+    );
+  };
+
   return (
     <div>
       {topicData ? (
         <div style={{ marginLeft: "50px", marginRight: "50px" }}>
           <div style={{textAlign:"center"}}>
-          <h1 >{topicData[0].topic_name}</h1>
+            {isEditing ? (
+              <input value={topicData[0].topic_name}
+              onChange={(e) =>
+                setTopicData((prev) => ({
+                  ...prev,
+                  topic_name: e.target.value,
+                }))
+              }>
+              </input>
+            ) : (
+              <h1 >{topicData[0].topic_name}</h1>
+              )}
+          
           </div>
 
           <div className="article-section">
@@ -84,7 +114,7 @@ const Topic = () => {
                 <ReactQuill
                   theme="snow"
                   value={value}
-                  style={{ height: "300px" }}
+                  style={{ height: "500px" }}
                   onChange={setValue}
                 />
                 <button
@@ -93,7 +123,7 @@ const Topic = () => {
                 >
                   Cancel
                 </button>
-                <button style={{ marginTop: "60px" }} onClick={handleSaveText}>
+                <button style={{ marginTop: "60px" }} onClick={handlSaveInfo}>
                   Save Text
                 </button>
               </div>
