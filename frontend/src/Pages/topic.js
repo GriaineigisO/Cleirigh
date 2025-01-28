@@ -10,6 +10,7 @@ const Topic = () => {
   const [topicData, setTopicData] = useState();
   const [isEditing, setisEditing] = useState(false);
   const [value, setValue] = useState("");
+  const [topicName, setTopicName] = useState();
 
   useEffect(() => {
     const getTopicData = async () => {
@@ -73,7 +74,6 @@ const Topic = () => {
 
   const handeSaveTopicName = async () => {
     const userId = localStorage.getItem("userId");
-    const topicName = topicData[0].topic_name;
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/save-topic-name",
       {
@@ -92,7 +92,7 @@ const Topic = () => {
             {isEditing ? (
               <input value={topicData[0].topic_name}
               onChange={(e) =>
-                topicData[0].topic_name = e.target.value
+                setTopicName(e.target.value)
               }>
               </input>
             ) : (
