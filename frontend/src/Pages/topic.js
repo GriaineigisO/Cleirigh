@@ -74,6 +74,7 @@ const Topic = () => {
   const handeSaveTopicName = async () => {
     const userId = localStorage.getItem("userId");
     const topicData = topicData.topic_name;
+    console.log(topicData)
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/save-topic-name",
       {
