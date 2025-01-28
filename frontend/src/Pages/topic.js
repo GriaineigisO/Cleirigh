@@ -99,7 +99,7 @@ const Topic = () => {
               }>
               </input>
             ) : (
-              <h1 >{topicData[0].topic_name}</h1>
+              <h1 >{topicData.topic_name}</h1>
               )}
           
           </div>
