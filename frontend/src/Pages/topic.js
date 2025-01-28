@@ -70,7 +70,7 @@ const Topic = () => {
     <div>
       {topicData ? (
         <div style={{ marginLeft: "50px", marginRight: "50px" }}>
-          <h1>{topicData[0].topic_name}</h1>
+          <h1 style={{textAlign:"center"}}>{topicData[0].topic_name}</h1>
 
           <div className="article-section">
             <hr></hr>
