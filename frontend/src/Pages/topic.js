@@ -92,10 +92,7 @@ const Topic = () => {
             {isEditing ? (
               <input value={topicData[0].topic_name}
               onChange={(e) =>
-                setTopicData((prev) => ({
-                  ...prev,
-                  topic_name: e.target.value,
-                }))
+                topicData[0].topic_name = e.target.value
               }>
               </input>
             ) : (
