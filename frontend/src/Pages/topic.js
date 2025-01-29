@@ -30,7 +30,7 @@ const Topic = () => {
         }
 
         const data = await response.json();
-        setTopicData(data[0]);
+        setTopicData(data);
       } catch (err) {
         console.error("Error fetching topic data:", err);
       }
@@ -41,7 +41,7 @@ const Topic = () => {
 
   useEffect(() => {
     if (topicData) {
-      setValue(topicData.topic_text);
+      setValue(topicData[0].topic_text);
     }
   }, [topicData]);
 
@@ -74,7 +74,7 @@ const Topic = () => {
 
   const handeSaveTopicName = async () => {
     const userId = localStorage.getItem("userId");
-    setTopicName(topicData.topic_name)
+    setTopicName(topicData[0].topic_name)
     console.log(topicName)
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/save-topic-name",
@@ -92,7 +92,7 @@ const Topic = () => {
         <div style={{ marginLeft: "50px", marginRight: "50px" }}>
           <div style={{textAlign:"center"}}>
             {isEditing ? (
-              <input value={topicData.topic_name}
+              <input value={topicData[0].topic_name}
               onChange={(e) =>
                 setTopicData((prev) => ({
                   ...prev,
@@ -101,7 +101,7 @@ const Topic = () => {
               }>
               </input>
             ) : (
-              <h1 >{topicData.topic_name}</h1>
+              <h1 >{topicData[0].topic_name}</h1>
               )}
           
           </div>
