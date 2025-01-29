@@ -10,7 +10,7 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
-  console.log("API triggered")
+
   try {
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
@@ -28,9 +28,8 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-      const { userId, topic, topicName } = req.body;
+      const { userId, topic, topic_name } = req.body;
 
-      console.log(topicName);
   
       // Get current tree id from users table
     const { data: user, error: userError } = await supabase
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
     .from(`topics`)
-    .update({ topic_name: topicName }) 
+    .update({ topic_name: topic_name }) 
     .eq("topic_link", topic)
     .eq('tree_id', currentTree);
   
