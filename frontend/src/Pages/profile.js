@@ -867,9 +867,7 @@ const Profile = () => {
 
 
   useEffect(() => {
-    if (profileData) {
       GetAllTopics();
-    }
   }, [profileData]);
 
   const handleOpenTopic = async (topicLink) => {
