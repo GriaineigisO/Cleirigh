@@ -132,6 +132,7 @@ const Topic = () => {
   };
 
   useEffect(() => {
+    if (!topicData.id) return;
     if (topicData.id) {
       getTaggedAncestors();
     }
