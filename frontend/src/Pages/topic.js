@@ -110,16 +110,18 @@ const Topic = () => {
 
           <div className="article-section">
             <hr></hr>
-            <p className="span-link" onClick={handleEdit}>
-              Edit
-            </p>
-            {isEditing ? (
+              <div style={{display:"flex", flexDirection:"row"}}> 
               <p className="span-link" onClick={handleEdit}>
-                Delete
+                Edit
               </p>
-            ) : (
-              <></>
-            )}
+              {isEditing ? (
+                <p className="span-link" onClick={handleDelete}>
+                  Delete Topic
+                </p>
+              ) : (
+                <></>
+              )}
+            </div>
 
             {isEditing ? (
               <div>
