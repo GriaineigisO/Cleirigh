@@ -32,6 +32,8 @@ export default async function handler(req, res) {
   try {
     const { userId, topicId } = req.body;
 
+    console.log(topicId)
+
 
     // Get current tree id from users table
     const { data: user, error: userError } = await supabase
