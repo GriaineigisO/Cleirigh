@@ -865,16 +865,12 @@ const Profile = () => {
     setTopicIds(data.topicIds);
   };
 
-  console.log("Rendering component");
 
-  useEffect(() => {
-    console.log("Running useEffect", { profileData });
-    if (!profileData) return;
-    GetAllTopics();
-  }, [profileData]);
-  
-  console.log("Before return statement");
-  
+  // useEffect(() => {
+  //   if (!profileData) return;
+  //   GetAllTopics();
+  // }, [profileData]);
+    
 
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
