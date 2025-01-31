@@ -14,6 +14,8 @@ const Topic = () => {
   const [value, setValue] = useState("");
   const [topicName, setTopicName] = useState("");
   const [showDeletePop, setShowDeletePop] = useState(false);
+  const [taggedAncestorsArray, setTaggedAncestorsArray] = useState([]);
+  const [taggedAncestorsNamesArray, setTaggedAncestorsNamesArray] = useState([]);
 
   useEffect(() => {
     const getTopicData = async () => {
@@ -74,13 +76,13 @@ const Topic = () => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, topicId}),
+        body: JSON.stringify({ userId, topicId }),
       }
     );
     const data = response.json();
     closeDeletePopup();
     window.location.href = "/topics";
-  }
+  };
 
   const handleSaveText = async () => {
     const userId = localStorage.getItem("userId");
@@ -110,104 +112,143 @@ const Topic = () => {
     );
   };
 
+  const getTaggedAncestors = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-tagged-ancestors",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          topic_id: topicData.id,
+        }),
+      }
+    );
+    const data = response.json();
+    setTaggedAncestorsArray(data.taggedAncestors);
+    setTaggedAncestorsNamesArray(data.taggedAncestorsNames);
+  };
+
+  useEffect(() => {
+    getTaggedAncestors();
+  }, []);
+
   return (
     <div>
       {topicData ? (
-
         <>
-
-        <Modal
+          <Modal
             show={showDeletePop}
             onHide={closeDeletePopup}
             dialogclassName="custom-modal-width"
             backdrop="static"
-            >
+          >
             <Modal.Header closeButton>
               <Modal.Title>Delete {topicData.topic_name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+              <div>
                 <div>
-                  <div>
-                    <div className="warning-message" style={{marginBottom:"20px"}}>
-                      <div className="warning-logo-header">
-                        <img className="warning-logo" src={warningLogo}></img>
-                        <h5>Warning</h5>
-                      </div>
-
-                      <p>
-                        Deleting {topicData.topic_name} is not a reversible action. Do you
-                        wish to continue?
-                      </p>
+                  <div
+                    className="warning-message"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    <div className="warning-logo-header">
+                      <img className="warning-logo" src={warningLogo}></img>
+                      <h5>Warning</h5>
                     </div>
+
+                    <p>
+                      Deleting {topicData.topic_name} is not a reversible
+                      action. Do you wish to continue?
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                <button onClick={closeDeletePopup}>Cancel</button>
+              <button onClick={closeDeletePopup}>Cancel</button>
 
-                <button onClick={handleDelete}>Delete</button>
-
+              <button onClick={handleDelete}>Delete</button>
             </Modal.Body>
+          </Modal>
 
-        </Modal>
-
-        <div style={{ marginLeft: "50px", marginRight: "50px" }}>
-          <div style={{ textAlign: "center" }}>
-            {isEditing ? (
-              <input
-                value={topicData.topic_name}
-                onChange={(e) =>
-                  setTopicData((prev) => ({
-                    ...prev,
-                    topic_name: e.target.value,
-                  }))
-                }
-              ></input>
-            ) : (
-              <h1>{topicData.topic_name}</h1>
-            )}
-          </div>
-
-          <div className="article-section">
-            <hr></hr>
-              <div style={{display:"flex", flexDirection:"row"}}> 
-              <p className="span-link" onClick={handleEdit}>
-                Edit
-              </p>
+          <div style={{ marginLeft: "50px", marginRight: "50px" }}>
+            <div style={{ textAlign: "center" }}>
               {isEditing ? (
-                <p style={{marginLeft:"10px"}} className="span-link" onClick={openDeletePopup}>
-                  Delete Topic
-                </p>
+                <input
+                  value={topicData.topic_name}
+                  onChange={(e) =>
+                    setTopicData((prev) => ({
+                      ...prev,
+                      topic_name: e.target.value,
+                    }))
+                  }
+                ></input>
               ) : (
-                <></>
+                <h1>{topicData.topic_name}</h1>
               )}
             </div>
 
-            {isEditing ? (
-              <div>
-                <ReactQuill
-                  theme="snow"
-                  value={value}
-                  style={{ height: "500px" }}
-                  onChange={setValue}
-                />
-                <button
-                  style={{ marginTop: "60px" }}
-                  onClick={handleCancelText}
-                >
-                  Cancel
-                </button>
-                <button style={{ marginTop: "60px" }} onClick={handlSaveInfo}>
-                  Save Text
-                </button>
+            <div className="article-section">
+              <hr></hr>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <p className="span-link" onClick={handleEdit}>
+                  Edit
+                </p>
+                {isEditing ? (
+                  <p
+                    style={{ marginLeft: "10px" }}
+                    className="span-link"
+                    onClick={openDeletePopup}
+                  >
+                    Delete Topic
+                  </p>
+                ) : (
+                  <></>
+                )}
               </div>
-            ) : (
-              <div dangerouslySetInnerHTML={{ __html: value }} />
-            )}
+
+              {isEditing ? (
+                <div>
+                  <ReactQuill
+                    theme="snow"
+                    value={value}
+                    style={{ height: "500px" }}
+                    onChange={setValue}
+                  />
+                  <button
+                    style={{ marginTop: "60px" }}
+                    onClick={handleCancelText}
+                  >
+                    Cancel
+                  </button>
+                  <button style={{ marginTop: "60px" }} onClick={handlSaveInfo}>
+                    Save Text
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <p>Ancestors associated with this topic: </p>
+                    <ul>
+                      {taggedAncestorsArray.map((Array, index) => (
+                        <li>
+                          <a href={`https://cleirighgenealogy.com/profile/${taggedAncestorsArray[index]}`} target="_blank">{taggedAncestorsNamesArray[index]}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div dangerouslySetInnerHTML={{ __html: value }} />
+                </>
+              )}
+            </div>
           </div>
-        </div>
-        <></>
+          <></>
         </>
-      ) : (<></>)}
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
