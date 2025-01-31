@@ -60,6 +60,24 @@ const Topic = () => {
     handeSaveTopicName();
   };
 
+  const closeDeletePopup = () => setShowDeletePop(false);
+  const openDeletePopup = () => setShowDeletePop(true);
+
+  const handleDelete = () => {
+    const userId = localStorage.getItem("userId");
+    const topicId = topicData.id;
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/delete-topic",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, topicId}),
+      }
+    );
+    closeDeletePopup();
+    window.location.href = "/topics";
+  }
+
   const handleSaveText = async () => {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
@@ -91,6 +109,43 @@ const Topic = () => {
   return (
     <div>
       {topicData ? (
+
+        <>
+
+        <Modal
+            show={showDeletePop}
+            onHide={closeDeletePopup}
+            dialogclassName="custom-modal-width"
+            backdrop="static"
+            >
+            <Modal.Header closeButton>
+              <Modal.Title>Delete {topicData.topic_name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div>
+                  <div>
+                    <div className="warning-message">
+                      <div className="warning-logo-header">
+                        <img className="warning-logo" src={warningLogo}></img>
+                        <h5>Warning</h5>
+                      </div>
+
+                      <p>
+                        Deleting {topicData.topic_name} is not a reversible action. Do you
+                        wish to continue?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <button onClick={closeDeletePopup}>Cancel</button>
+
+                <button onClick={handleDelete}>Delete</button>
+
+            </Modal.Body>
+
+        </Modal>
+
         <div style={{ marginLeft: "50px", marginRight: "50px" }}>
           <div style={{ textAlign: "center" }}>
             {isEditing ? (
@@ -115,7 +170,7 @@ const Topic = () => {
                 Edit
               </p>
               {isEditing ? (
-                <p className="span-link" onClick={handleDelete}>
+                <p className="span-link" onClick={openDeletePopup}>
                   Delete Topic
                 </p>
               ) : (
@@ -146,9 +201,9 @@ const Topic = () => {
             )}
           </div>
         </div>
-      ) : (
         <></>
-      )}
+        </>
+      ) : (<></>)}
     </div>
   );
 };
