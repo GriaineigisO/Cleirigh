@@ -52,10 +52,10 @@ export default async function handler(req, res) {
       .eq("id", topicId);
 
     const taggedAncestors = data.length > 0 ? data.tagged_ancestors : [];
+    console.log(taggedAncestors)
     let taggedAncestorsNames = [];
 
     for (let i = 0; i < taggedAncestors.length; i++) {
-        console.log(`taggedAncestors[i]: ${taggedAncestors[i]}`)
       const { data: findNames, error: findNamesError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
       taggedAncestorsNames.push(fullName);
     }
 
-    console.log(taggedAncestors)
+
     res.json({
       taggedAncestors: taggedAncestors,
       taggedAncestorsNames: taggedAncestorsNames
