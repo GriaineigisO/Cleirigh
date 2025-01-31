@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", // Replace with your domain
+  origin: "https://cleirighgenealogy.com", 
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -45,6 +45,8 @@ export default async function handler(req, res) {
       })
     .eq("id", selectedTag)
     .eq('tree_id', currentTree);
+
+    res.json(true);
   
 
     } catch (error) {
