@@ -27,10 +27,10 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { userId, selectedTag, ancestorId } = req.body;
+    const { userId, tag, ancestorId } = req.body;
 
     console.log(`userId: ${userId}`)
-    console.log(`selectedTag: ${selectedTag}`)
+    console.log(`selectedTag: ${tag}`)
     console.log(`ancestorId: ${ancestorId}`)
   
     // Get current tree id from users table
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     const { data: getPreviousTaggedAncestorArray, error: tagError } = await supabase
       .from("topics")
       .select("tagged_ancestors")
-      .eq("id", selectedTag)
+      .eq("id", tag)
       .eq("tree_id", currentTree)
       .single(); // Only expecting one row
 

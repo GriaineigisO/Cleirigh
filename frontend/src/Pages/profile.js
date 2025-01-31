@@ -877,7 +877,8 @@ const Profile = () => {
     setShowAddTagModal(false);
   };
 
-  const addTag = async (selectedTag) => {
+  const addTag = async (tag) => {
+    console.log(tag)
     const userId = localStorage.getItem("userId");
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/add-tag",
@@ -886,7 +887,7 @@ const Profile = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
-          selectedTag,
+          tag,
           ancestorId: profileData.ancestor_id,
         }),
       }
