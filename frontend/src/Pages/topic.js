@@ -234,8 +234,9 @@ const Topic = () => {
                 <>
                   <div>
                     <p>Ancestors associated with this topic: </p>
+                    {console.error(taggedAncestorsArray)}
                     <ul>
-                      {taggedAncestorsArray.map((Array, index) => (
+                      {taggedAncestorsArray.map((array, index) => (
                         <li>
                           <a href={`https://cleirighgenealogy.com/profile/${taggedAncestorsArray[index]}`} target="_blank">{taggedAncestorsNamesArray[index]}</a>
                         </li>

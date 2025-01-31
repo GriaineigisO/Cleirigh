@@ -76,9 +76,7 @@ export default async function handler(req, res) {
 
       taggedAncestorsNames.push(fullName);
     }
-
-    console.log(taggedAncestorsNames)
-
+    
     res.json({
       taggedAncestors: taggedAncestors,
       taggedAncestorsNames: taggedAncestorsNames
