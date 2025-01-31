@@ -27,44 +27,56 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-      const { userId, selectedTag, ancestorId} = req.body;
+    const { userId, selectedTag, ancestorId } = req.body;
   
-      // Get current tree id from users table
+    // Get current tree id from users table
     const { data: user, error: userError } = await supabase
       .from("users")
       .select("current_tree_id")
       .eq("id", userId)
       .single();
 
+    if (userError) {
+      return res.status(500).json({ error: userError.message });
+    }
+
     const currentTree = user.current_tree_id;
 
-    //adds new value to array
-    let taggedAncestorsArray = [];
-    const {data: getPreviousTaggedAncestorArray, error: tagError} = await supabase
-        .from("topics")
-        .match("id", selectedTag)
-        .match("tree_id", currentTree);
+    // Get existing tagged ancestors array
+    const { data: getPreviousTaggedAncestorArray, error: tagError } = await supabase
+      .from("topics")
+      .select("tagged_ancestors")
+      .eq("id", selectedTag)
+      .eq("tree_id", currentTree)
+      .single(); // Only expecting one row
 
-    let previousTaggedAncestorsArray = getPreviousTaggedAncestorArray.tagged_ancestors;
-    for (let i = 0; i < previousTaggedAncestorsArray.length; i++) {
-        taggedAncestorsArray.push(previousTaggedAncestorsArray[i]);
+    if (tagError) {
+      return res.status(500).json({ error: tagError.message });
     }
 
+    let taggedAncestorsArray = getPreviousTaggedAncestorArray?.tagged_ancestors || [];
+
+    // Check if ancestorId is already in the array before pushing
     if (!taggedAncestorsArray.includes(ancestorId)) {
-        taggedAncestorsArray.push(ancestorId);
+      taggedAncestorsArray.push(ancestorId);
     }
-    
+
+    // Update the tagged_ancestors array in the database
     const { data, error } = await supabase
-    .from("topics")
-    .update(
-        {tagged_ancestors: taggedAncestorsArray})
-    .eq("id", selectedTag)
-    .eq("tree_id", currentTree);
+      .from("topics")
+      .update({ tagged_ancestors: taggedAncestorsArray })
+      .eq("id", selectedTag)
+      .eq("tree_id", currentTree);
 
-    res.json(true);
-  
-
-    } catch (error) {
-      console.log("Error saving tags: ", error);
+    if (error) {
+      return res.status(500).json({ error: error.message });
     }
-  };
+
+    // Respond with success
+    res.json(true);
+
+  } catch (error) {
+    console.log("Error saving tags: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
