@@ -460,14 +460,6 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (!profileData) {
-       console.error('Profile data is missing')
-       return
-      } else if (!profileData.ancestor_id) {
-        console.error(' ancestor_id is missing');
-        return;  // Exit early or handle the error gracefully
-      }
-
     const GetAllAssociatedTopics = async () => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
@@ -475,7 +467,7 @@ const Profile = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, ancestorId: profileData.ancestor_id })
+          body: JSON.stringify({ userId, id })
         }
       );
       const data = await response.json();
@@ -484,7 +476,7 @@ const Profile = () => {
       setAssociatedTopicIds(data.topicIds);
     };
     GetAllAssociatedTopics();
-  }, [profileData]);
+  }, []);
 
   const AncestryAmount = () => {
     let ancestryAmount = 0;
