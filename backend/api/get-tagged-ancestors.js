@@ -51,8 +51,19 @@ export default async function handler(req, res) {
       .eq("tree_id", currentTree)
       .eq("id", topicId);
 
-    const taggedAncestors = data.length > 0 ? data.tagged_ancestors : [];
-    console.log(taggedAncestors)
+    if (error) {
+      console.error("Error fetching topics:", error);
+      return;
+    }
+
+    console.log("Raw data from Supabase:", data); // Log the full response
+
+    if (!data || data.length === 0) {
+      console.log("No matching topic found.");
+    } else {
+      const taggedAncestors = data[0].tagged_ancestors;
+      console.log("taggedAncestors:", taggedAncestors);
+    }
     let taggedAncestorsNames = [];
 
     for (let i = 0; i < taggedAncestors.length; i++) {
@@ -77,10 +88,9 @@ export default async function handler(req, res) {
       taggedAncestorsNames.push(fullName);
     }
 
-
     res.json({
       taggedAncestors: taggedAncestors,
-      taggedAncestorsNames: taggedAncestorsNames
+      taggedAncestorsNames: taggedAncestorsNames,
     });
   } catch (error) {
     console.log("Error editing right note:", error);
