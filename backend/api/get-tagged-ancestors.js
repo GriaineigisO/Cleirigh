@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       .eq("tree_id", currentTree)
       .eq("id", topicId);
 
-    const taggedAncestors = data.map((topic) => topic.tagged_ancestors);
+    const taggedAncestors = data.length > 0 ? data[0].tagged_ancestors : [];
     let taggedAncestorsNames = [];
 
     console.log(`taggedAncestors: ${taggedAncestors}`)
