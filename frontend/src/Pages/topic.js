@@ -239,7 +239,7 @@ const Topic = () => {
                     <ul>
                       {taggedAncestorsArray.map((array, index) => (
                         <li>
-                          <a href={`https://cleirighgenealogy.com/profile/${taggedAncestorsArray[index]}`} target="_blank">{taggedAncestorsNamesArray[index]}</a>
+                          <a href={`https://cleirighgenealogy.com/profile/${taggedAncestorsArray[index]}`} target="_blank">{taggedAncestorsNamesArray[index]} ({taggedAncestorsArray[index]})</a>
                         </li>
                       ))}
                     </ul>
