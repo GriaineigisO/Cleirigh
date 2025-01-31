@@ -32,9 +32,6 @@ export default async function handler(req, res) {
   try {
     const { userId, topicId } = req.body;
 
-    console.log(topicId)
-
-
     // Get current tree id from users table
     const { data: user, error: userError } = await supabase
       .from("users")
@@ -66,10 +63,10 @@ export default async function handler(req, res) {
       let fullName = "";
       let middleName = "";
       let lastName = "";
-      if (findNames.middle_name) {
+      if (findNames.middle_name !== null) {
         middleName = findNames.middle_name;
       }
-      if (findNames.last_name) {
+      if (findNames.last_name !== null) {
         lastName = findNames.last_name;
       }
 
