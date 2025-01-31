@@ -8,8 +8,6 @@ import axios from "axios";
 import { useEffectOnce } from "../Components/useEffectOnce.js";
 import ancientGroups from "../Components/AncientEthnicBreakdown.js";
 
-
-
 const Profile = () => {
   const [ethnicityNameArray, setEthnicityNameArray] = useState([]);
   const [ethnicityPercentageArray, setEthnicityPercentageArray] = useState([]);
@@ -92,7 +90,10 @@ const Profile = () => {
       "https://xkwbiwiieqlsjmptcagp.supabase.co/functions/v1/calculate-ethnic-breakdown",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}`,
+        },
         body: JSON.stringify({ userId, id }),
       }
     );
@@ -177,8 +178,6 @@ const Profile = () => {
           modernEthnicityBreakdown.ehg,
           "blue"
         );
-
-
       }
     }
 
@@ -190,8 +189,8 @@ const Profile = () => {
 
     while (ancientGroupPercentTotal < 100) {
       ancientGroupPercent[0] += 0.01;
-      ancientGroupPercentTotal += 0.01
-      count++
+      ancientGroupPercentTotal += 0.01;
+      count++;
     }
 
     return (
@@ -302,11 +301,14 @@ const Profile = () => {
   const getSources = async () => {
     if (profileData) {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-sources", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, profileData }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-sources",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, profileData }),
+        }
+      );
       const data = await response.json();
       setSourceLinkArray(data.source_link);
       setSourceNameLinkArray(data.source_link_name);
@@ -330,11 +332,14 @@ const Profile = () => {
     const getBasePersonName = async () => {
       try {
         const userId = localStorage.getItem("userId");
-        const response = await fetch("https://cleirigh-backend.vercel.app/api/get-base-person", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
-        });
+        const response = await fetch(
+          "https://cleirigh-backend.vercel.app/api/get-base-person",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          }
+        );
         const data = await response.json();
         setBasePersonFirstName(data.firstName);
       } catch (err) {
@@ -353,11 +358,14 @@ const Profile = () => {
       const userId = localStorage.getItem("userId");
       const father = profileData.father_id;
       const mother = profileData.mother_id;
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-parents", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, father, mother }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-parents",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, father, mother }),
+        }
+      );
       const data = await response.json();
       setFatherName(data.father);
       setMotherName(data.mother);
@@ -398,11 +406,14 @@ const Profile = () => {
     const getChild = async () => {
       const userId = localStorage.getItem("userId");
       const sex = profileData.sex;
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-child", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, id, sex }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-child",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, id, sex }),
+        }
+      );
       const data = await response.json();
       setChildName(data.childName);
       setChildId(data.childId);
@@ -488,11 +499,14 @@ const Profile = () => {
   const handleSaveText = async () => {
     setisEditing(false);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/save-profile-text", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, id, value }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/save-profile-text",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, id, value }),
+      }
+    );
   };
 
   const handleCancelText = async () => {
@@ -519,18 +533,21 @@ const Profile = () => {
   const SaveSource = () => {
     const save = async () => {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/save-source", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          sourceNameLink,
-          sourceLink,
-          sourceNameText,
-          sourceNameTextAuthor,
-          profileData,
-        }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/save-source",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId,
+            sourceNameLink,
+            sourceLink,
+            sourceNameText,
+            sourceNameTextAuthor,
+            profileData,
+          }),
+        }
+      );
       const data = response.json();
     };
     save();
@@ -576,28 +593,34 @@ const Profile = () => {
 
   const deleteSource = async (source, sourceName, type) => {
     const userId = localStorage.getItem("userId");
-    const deleteSource = await fetch("https://cleirigh-backend.vercel.app/api/delete-source", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId,
-        profileData,
-        source,
-        sourceName,
-        type,
-      }),
-    });
+    const deleteSource = await fetch(
+      "https://cleirigh-backend.vercel.app/api/delete-source",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          profileData,
+          source,
+          sourceName,
+          type,
+        }),
+      }
+    );
     const data = deleteSource.json();
   };
 
   const handleViewInTreee = async () => {
     //finds what page the ancestor is on
     const userId = localStorage.getItem("userId");
-    const getPageNum = await fetch("https://cleirigh-backend.vercel.app/api/find-page-number", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, id }),
-    });
+    const getPageNum = await fetch(
+      "https://cleirigh-backend.vercel.app/api/find-page-number",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, id }),
+      }
+    );
     const num = await getPageNum.json();
 
     //sets current page to ancestor's page
@@ -684,11 +707,14 @@ const Profile = () => {
   const handlSaveInfo = async () => {
     setisEditingInfo(false);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/save-profile-info", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, profileData }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/save-profile-info",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, profileData }),
+      }
+    );
   };
 
   const handleProfilePicChange = (event) => {
@@ -715,11 +741,14 @@ const Profile = () => {
 
       //save image link to database
       const userId = localStorage.getItem("userId");
-      const saveImage = await fetch("https://cleirigh-backend.vercel.app/api/save-image-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, profileData, fileName }),
-      });
+      const saveImage = await fetch(
+        "https://cleirigh-backend.vercel.app/api/save-image-link",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, profileData, fileName }),
+        }
+      );
 
       //set profile picture
       const setProfilePic = await fetch(
@@ -820,18 +849,43 @@ const Profile = () => {
 
   const GetAllTopics = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/get-all-topics", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId}),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-all-topics",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }
+    );
     const data = response.json();
     setTopicNames(data.topicNames);
     setTopicLinks(data.topicLinks);
-  }
+  };
+
   useEffect(() => {
     GetAllTopics();
-  }, [])
+  }, []);
+
+  const handleOpenTopic = async (topicLink) => {
+    window.location.href = `topic/${topicLink}`;
+  };
+
+  const closeAddTagModal = () => {
+    setShowAddTagModal(false);
+  };
+
+  const addTag = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/add-tag",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, ancestorId: profileData.ancestor_id }),
+      }
+    );
+    const data = response.json();
+  };
 
   return (
     <div className="profile">
@@ -917,36 +971,36 @@ const Profile = () => {
       </Modal>
 
       <Modal
-          show={editTextSourceOpenModal}
-          onHide={closeEditTextSource}
-          dialogclassName="custom-modal-width"
-          backdrop="static"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Add Topic</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-
-            <select>
-
-            </select>
-            
-          </Modal.Body>
-          <Modal.Footer>
-            <div className="modal-footer-buttons">
-              <div className="non-delete-buttons">
-                <Button variant="secondary" onClick={closeEditTextSource}>
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => SaveAddNewSource()}>
-                  Save Changes
-                </Button>
-              </div>
+        show={showAddTagModal}
+        onHide={closeAddTagModal}
+        dialogclassName="custom-modal-width"
+        backdrop="static"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Add Topic</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <select>
+              {topicNames.map((topic, index) => (
+                <option>
+                  {topicNames[index]}
+                </option>
+              ))}
+          </select>
+        </Modal.Body>
+        <Modal.Footer>
+          <div className="modal-footer-buttons">
+            <div className="non-delete-buttons">
+              <Button variant="secondary" onClick={closeAddTagModal}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => addTag()}>
+                Save Changes
+              </Button>
             </div>
-          </Modal.Footer>
-        </Modal>
+          </div>
+        </Modal.Footer>
+      </Modal>
 
       <div className="top-section">
         <div className="profile-photo-div">
@@ -1419,11 +1473,14 @@ const Profile = () => {
         <p>{profileData.first_name} is associated with the following topics:</p>
         <ol>
           {topicNames.map((topic, index) => (
-              <li className="span-link" onClick={() => handleOpenTopic(topicLinks[index])}>{topicNames[index]}</li>
+            <li
+              className="span-link"
+              onClick={() => handleOpenTopic(topicLinks[index])}
+            >
+              {topicNames[index]}
+            </li>
           ))}
         </ol>
-        
-
       </div>
 
       <div className="timeline-section">
