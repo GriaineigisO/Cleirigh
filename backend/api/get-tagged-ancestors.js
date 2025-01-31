@@ -72,12 +72,12 @@ export default async function handler(req, res) {
         lastName = findNames.last_name;
       }
 
-      fullName = findNames.first_name + middleName + lastName;
-
-      console.log(fullName)
+      fullName = `${findNames.first_name} ${middleName} ${lastName}`;
 
       taggedAncestorsNames.push(fullName);
     }
+
+    console.log(taggedAncestorsNames)
 
     res.json({
       taggedAncestors: taggedAncestors,
