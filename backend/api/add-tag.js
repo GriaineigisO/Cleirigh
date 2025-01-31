@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       .single(); // Only expecting one row
 
     if (tagError) {
-      return res.status(500).json({ error: tagError.message });
+      console.log(error: tagError.message);
     }
 
     let taggedAncestorsArray = getPreviousTaggedAncestorArray?.tagged_ancestors || [];
