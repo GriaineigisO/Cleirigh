@@ -38,12 +38,26 @@ export default async function handler(req, res) {
 
     const currentTree = user.current_tree_id;
 
+    //adds new value to array
+    let taggedAncestorsArray = [];
+    const {data: getPreviousTaggedAncestorArray, error: tagError} = await supabase
+        .from('topics')
+        .eq("id", selectedTag)
+        .eq('tree_id', currentTree);
+
+    let previousTaggedAncestorsArray = getPreviousTaggedAncestorArray.tagged_ancestors;
+    for (let i = 0; i < previousTaggedAncestorsArray.length; i++) {
+        taggedAncestorsArray.push(previousTaggedAncestorsArray[i]);
+    }
+
+    if (!taggedAncestorsArray.includes(ancestorId)) {
+        taggedAncestorsArray.push(ancestorId);
+    }
+    
     const { data, error } = await supabase
     .from(`topics`)
-    .update({
-        tagged_ancestors: supabase
-          .rpc('array_append', { table: 'topics', column: 'tagged_ancestors', value: ancestorId, user_id: userId }) 
-      })
+    .update(
+        {tagged_ancestors: taggedAncestorsArray})
     .eq("id", selectedTag)
     .eq('tree_id', currentTree);
 
