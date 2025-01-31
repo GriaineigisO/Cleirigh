@@ -859,7 +859,7 @@ const Profile = () => {
         body: JSON.stringify({ userId }),
       }
     );
-    const data = response.json();
+    const data = await response.json();
     setTopicNames(data.topicNames);
     setTopicLinks(data.topicLinks);
     setTopicIds(data.topicIds);
@@ -888,10 +888,9 @@ const Profile = () => {
         body: JSON.stringify({ userId, selectedTag, ancestorId: profileData.ancestor_id }),
       }
     );
-    const data = response.json();
+    const data = await response.json();
   };
 
-  const handleAddTag = async()
 
   return (
     <div className="profile">
