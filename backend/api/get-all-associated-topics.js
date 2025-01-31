@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     return;
   }
   try {
-    const { userId, ancestorId } = req.body;
+    const { userId, id } = req.body;
 
     // Get current tree id from users table
     const { data: user, error: userError } = await supabase
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       .from("topics")
       .select("*")
       .eq("tree_id", currentTree)
-      .filter('tagged_ancestors', 'contains', [ancestorId]);
+      .filter('tagged_ancestors', 'contains', [id]);
 
     const topicNames = data.map((topic) => topic.topic_name);
     const topicLinks = data.map((topic) => topic.topic_link);
