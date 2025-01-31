@@ -58,6 +58,11 @@ export default async function handler(req, res) {
       
       if (!data || data.length === 0) {
         console.log('No topics found.');
+        res.json({ 
+          topicNames: [], 
+          topicLinks: [],
+          topicIds: []
+       });
         return res.status(404).json({ message: 'No associated topics found' });
       }
 
