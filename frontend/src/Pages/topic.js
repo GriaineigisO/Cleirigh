@@ -127,6 +127,7 @@ const Topic = () => {
       }
     );
     const data = response.json();
+    console.error(`data.taggedAncestors: ${data.taggedAncestors}`)
     setTaggedAncestorsArray(data.taggedAncestors);
     setTaggedAncestorsNamesArray(data.taggedAncestorsNames);
   };
