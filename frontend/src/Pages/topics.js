@@ -10,6 +10,7 @@ const Topics = () => {
   const [topicLinks, setTopicLinks] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [newTopicName, setNewTopicName] = useState();
+  const [showDeletePop, setShowDeletePop] = useState(false);
 
   const getAllTopics = async () => {
     const userId = localStorage.getItem("userId");
@@ -97,11 +98,11 @@ const Topics = () => {
 
         <h1>Topics</h1>
 
-        <button onClick={createTopicOpen}>Create New Topic</button>
+        <button onClick={createTopicOpen} style={{marginBottom:"30px"}}>Create New Topic</button>
 
         <div>
           {topicNames.map((topic, index) => (
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "row"}}>
               <h5 className="span-link" onClick={() => handleOpenTopic(topicLinks[index])}>{topicNames[index]}</h5>
             </div>
           ))}
