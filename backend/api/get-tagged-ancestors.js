@@ -54,8 +54,11 @@ export default async function handler(req, res) {
     const taggedAncestors = data.map((topic) => topic.tagged_ancestors);
     let taggedAncestorsNames = [];
 
+    console.log(`taggedAncestors: ${taggedAncestors}`)
+    console.log(`taggedAncestors.length: ${taggedAncestors.length}`)
+
     for (let i = 0; i < taggedAncestors.length; i++) {
-        console.log(taggedAncestors[i])
+        console.log(`taggedAncestors[i]: ${taggedAncestors[i]}`)
       const { data: findNames, error: findNamesError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
