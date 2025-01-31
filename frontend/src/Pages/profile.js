@@ -892,6 +892,7 @@ const Profile = () => {
       }
     );
     const data = await response.json();
+    closeAddTagModal();
   };
 
   return (

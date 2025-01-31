@@ -41,7 +41,8 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
     .from(`topics`)
     .update({
-        tagged_ancestors: supabase.raw('COALESCE(tagged_ancestors, array[]::int[]) || ?', [ancestorId])
+        tagged_ancestors: supabase
+          .rpc('array_append', { table: 'topics', column: 'tagged_ancestors', value: ancestorId, user_id: userId }) 
       })
     .eq("id", selectedTag)
     .eq('tree_id', currentTree);
@@ -50,6 +51,6 @@ export default async function handler(req, res) {
   
 
     } catch (error) {
-      console.log("Error saving profile text: ", error);
+      console.log("Error saving tags: ", error);
     }
   };
