@@ -53,6 +53,8 @@ const Profile = () => {
   const [showAddTagModal, setShowAddTagModal] = useState(false);
   const [topicNames, setTopicNames] = useState([]);
   const [topicLinks, setTopicLinks] = useState([]);
+  const [topicIds, setTopicIds] = useState([]);
+  const [selectedTag, setSelectedTag] = useState();
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -860,6 +862,7 @@ const Profile = () => {
     const data = response.json();
     setTopicNames(data.topicNames);
     setTopicLinks(data.topicLinks);
+    setTopicIds(data.topicIds);
   };
 
   useEffect(() => {
@@ -875,18 +878,20 @@ const Profile = () => {
     setShowAddTagModal(false);
   };
 
-  const addTag = async () => {
+  const addTag = async (selectedTag) => {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/add-tag",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, ancestorId: profileData.ancestor_id }),
+        body: JSON.stringify({ userId, selectedTag, ancestorId: profileData.ancestor_id }),
       }
     );
     const data = response.json();
   };
+
+  const handleAddTag = async()
 
   return (
     <div className="profile">
@@ -981,9 +986,9 @@ const Profile = () => {
           <Modal.Title>Add Topic</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <select onChange={(e) => handleAddTag(e.target.value)}>
+          <select onChange={(e) => setSelectedTag(e.target.value)}>
               {topicNames.map((topic, index) => (
-                <option>
+                <option value={topicIds[index]}>
                   {topicNames[index]}
                 </option>
               ))}
@@ -995,7 +1000,7 @@ const Profile = () => {
               <Button variant="secondary" onClick={closeAddTagModal}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={() => addTag()}>
+              <Button variant="primary" onClick={() => addTag(selectedTag)}>
                 Save Changes
               </Button>
             </div>

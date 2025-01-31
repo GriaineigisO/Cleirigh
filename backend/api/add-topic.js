@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-      const { userId, ancestorId} = req.body;
+      const { userId, selectedTag, ancestorId} = req.body;
 
   
       // Get current tree id from users table
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
     .from(`topics`)
-    .update({ topic_name: topic_name }) 
+    .update({ id: ??? }) 
     .eq("topic_link", topic)
     .eq('tree_id', currentTree);
   
