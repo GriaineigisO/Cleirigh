@@ -461,6 +461,10 @@ const Profile = () => {
 
   useEffect(() => {
     const GetAllAssociatedTopics = async () => {
+      if (!id) {
+        console.error("ID not found")
+      }
+      if (id) {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
         "https://cleirigh-backend.vercel.app/api/get-all-associated-topics",
@@ -474,9 +478,10 @@ const Profile = () => {
       setAssociatedTopicNames(data.topicNames);
       setAssociatedTopicLinks(data.topicLinks);
       setAssociatedTopicIds(data.topicIds);
+    }
     };
     GetAllAssociatedTopics();
-  }, []);
+  }, [id]);
 
   const AncestryAmount = () => {
     let ancestryAmount = 0;
