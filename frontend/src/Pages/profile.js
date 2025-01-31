@@ -769,6 +769,25 @@ const Profile = () => {
     }
   };
 
+  useEffect(() => {
+    const GetAllTopics = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-all-topics",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      const data = await response.json();
+      setTopicNames(data.topicNames);
+      setTopicLinks(data.topicLinks);
+      setTopicIds(data.topicIds);
+    };
+    GetAllTopics();
+  }, []);
+
   const EditTextSourceModal = (
     sourceNameTextArray,
     sourceNameTextAuthorArray,
@@ -849,27 +868,6 @@ const Profile = () => {
     );
   };
 
-
-
-  useEffect(() => {
-    const GetAllTopics = async () => {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/get-all-topics",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      const data = await response.json();
-      setTopicNames(data.topicNames);
-      setTopicLinks(data.topicLinks);
-      setTopicIds(data.topicIds);
-    };
-      GetAllTopics();
-  }, []);
-
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
   };
@@ -885,12 +883,15 @@ const Profile = () => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, selectedTag, ancestorId: profileData.ancestor_id }),
+        body: JSON.stringify({
+          userId,
+          selectedTag,
+          ancestorId: profileData.ancestor_id,
+        }),
       }
     );
     const data = await response.json();
   };
-
 
   return (
     <div className="profile">
@@ -986,11 +987,9 @@ const Profile = () => {
         </Modal.Header>
         <Modal.Body>
           <select onChange={(e) => setSelectedTag(e.target.value)}>
-              {topicNames.map((topic, index) => (
-                <option value={topicIds[index]}>
-                  {topicNames[index]}
-                </option>
-              ))}
+            {topicNames.map((topic, index) => (
+              <option value={topicIds[index]}>{topicNames[index]}</option>
+            ))}
           </select>
         </Modal.Body>
         <Modal.Footer>
