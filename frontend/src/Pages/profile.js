@@ -459,30 +459,30 @@ const Profile = () => {
     GetAllTopics();
   }, []);
 
-  useEffect(() => {
-    const GetAllAssociatedTopics = async () => {
-      if (!id) {
-        console.error("ID not found")
-      }
-      if (id) {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/get-all-associated-topics",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, id })
-        }
-      );
-      const data = await response.json();
-      setAssociatedTopicNames(data.topicNames);
-      setAssociatedTopicLinks(data.topicLinks);
-      setAssociatedTopicIds(data.topicIds);
-    }
-    window.location.reload();
-    };
-    GetAllAssociatedTopics();
-  }, [id]);
+  // useEffect(() => {
+  //   const GetAllAssociatedTopics = async () => {
+  //     if (!id) {
+  //       console.error("ID not found")
+  //     }
+  //     if (id) {
+  //     const userId = localStorage.getItem("userId");
+  //     const response = await fetch(
+  //       "https://cleirigh-backend.vercel.app/api/get-all-associated-topics",
+  //       {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ userId, id })
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     setAssociatedTopicNames(data.topicNames);
+  //     setAssociatedTopicLinks(data.topicLinks);
+  //     setAssociatedTopicIds(data.topicIds);
+  //   }
+  //   window.location.reload();
+  //   };
+  //   GetAllAssociatedTopics();
+  // }, [id]);
 
   const AncestryAmount = () => {
     let ancestryAmount = 0;
