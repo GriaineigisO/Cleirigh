@@ -56,14 +56,12 @@ export default async function handler(req, res) {
       return;
     }
 
-    console.log("Raw data from Supabase:", data); // Log the full response
     let taggedAncestors = [];
 
     if (!data || data.length === 0) {
       console.log("No matching topic found.");
     } else {
       taggedAncestors = data[0].tagged_ancestors;
-      console.log("taggedAncestors:", taggedAncestors);
     }
     let taggedAncestorsNames = [];
 
