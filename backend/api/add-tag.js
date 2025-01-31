@@ -41,9 +41,9 @@ export default async function handler(req, res) {
     //adds new value to array
     let taggedAncestorsArray = [];
     const {data: getPreviousTaggedAncestorArray, error: tagError} = await supabase
-        .from('topics')
-        .eq("id", selectedTag)
-        .eq('tree_id', currentTree);
+        .from("topics")
+        .match("id", selectedTag)
+        .match("tree_id", currentTree);
 
     let previousTaggedAncestorsArray = getPreviousTaggedAncestorArray.tagged_ancestors;
     for (let i = 0; i < previousTaggedAncestorsArray.length; i++) {
@@ -55,11 +55,11 @@ export default async function handler(req, res) {
     }
     
     const { data, error } = await supabase
-    .from(`topics`)
+    .from("topics")
     .update(
         {tagged_ancestors: taggedAncestorsArray})
     .eq("id", selectedTag)
-    .eq('tree_id', currentTree);
+    .eq("tree_id", currentTree);
 
     res.json(true);
   
