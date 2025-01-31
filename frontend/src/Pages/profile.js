@@ -863,8 +863,9 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    if (!profileData) return;
     GetAllTopics();
-  }, []);
+  }, [profileData]);
 
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
@@ -980,7 +981,7 @@ const Profile = () => {
           <Modal.Title>Add Topic</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <select>
+          <select onChange={(e) => handleAddTag(e.target.value)}>
               {topicNames.map((topic, index) => (
                 <option>
                   {topicNames[index]}
