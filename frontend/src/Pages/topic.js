@@ -114,6 +114,7 @@ const Topic = () => {
 
   const getTaggedAncestors = async () => {
     const userId = localStorage.getItem("userId");
+    const topicId = topicData.id;
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/get-tagged-ancestors",
       {
@@ -121,7 +122,7 @@ const Topic = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
-          topic_id: topicData.id,
+          topicId,
         }),
       }
     );

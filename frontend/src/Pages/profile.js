@@ -479,6 +479,7 @@ const Profile = () => {
       setAssociatedTopicLinks(data.topicLinks);
       setAssociatedTopicIds(data.topicIds);
     }
+    window.location.reload();
     };
     GetAllAssociatedTopics();
   }, [id]);
