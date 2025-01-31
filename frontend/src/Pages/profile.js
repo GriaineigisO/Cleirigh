@@ -849,26 +849,26 @@ const Profile = () => {
     );
   };
 
-  const GetAllTopics = async () => {
-    const userId = localStorage.getItem("userId");
-    const response = await fetch(
-      "https://cleirigh-backend.vercel.app/api/get-all-topics",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
-      }
-    );
-    const data = await response.json();
-    setTopicNames(data.topicNames);
-    setTopicLinks(data.topicLinks);
-    setTopicIds(data.topicIds);
-  };
 
 
   useEffect(() => {
+    const GetAllTopics = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-all-topics",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      const data = await response.json();
+      setTopicNames(data.topicNames);
+      setTopicLinks(data.topicLinks);
+      setTopicIds(data.topicIds);
+    };
       GetAllTopics();
-  }, [profileData]);
+  }, []);
 
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
