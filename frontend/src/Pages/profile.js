@@ -437,6 +437,25 @@ const Profile = () => {
     getChild();
   }, [profileData]);
 
+  useEffect(() => {
+    const GetAllTopics = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-all-topics",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      const data = await response.json();
+      setTopicNames(data.topicNames);
+      setTopicLinks(data.topicLinks);
+      setTopicIds(data.topicIds);
+    };
+    GetAllTopics();
+  }, []);
+
   const AncestryAmount = () => {
     let ancestryAmount = 0;
     for (let i = 0; i < profileData.relation_to_user.length; i++) {
@@ -769,24 +788,6 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    const GetAllTopics = async () => {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/get-all-topics",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      const data = await response.json();
-      setTopicNames(data.topicNames);
-      setTopicLinks(data.topicLinks);
-      setTopicIds(data.topicIds);
-    };
-    GetAllTopics();
-  }, []);
 
   const EditTextSourceModal = (
     sourceNameTextArray,
