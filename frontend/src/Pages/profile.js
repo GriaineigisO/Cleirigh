@@ -990,6 +990,7 @@ const Profile = () => {
         </Modal.Header>
         <Modal.Body>
           <select onChange={(e) => setSelectedTag(e.target.value)}>
+            <option>--Select--</option>
             {topicNames.map((topic, index) => (
               <option value={topicIds[index]}>{topicNames[index]}</option>
             ))}
