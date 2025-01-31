@@ -897,7 +897,7 @@ const Profile = () => {
   };
 
   const handleOpenTopic = async (topicLink) => {
-    window.location.href = `topic/${topicLink}`;
+    window.location.href = `https://cleirighgenealogy.com/topic/${topicLink}`;
   };
 
   const closeAddTagModal = () => {
