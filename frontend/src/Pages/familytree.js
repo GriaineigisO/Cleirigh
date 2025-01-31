@@ -12,6 +12,7 @@ import "../style.css";
 import treeLines from "../cleirighTreeLines.png";
 import crown from "../Images/crown.png";
 
+//note for self:
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
 //paternalmaternalgreatgrandparents = paternal grandmother's parents
 //maternalpaternalgrandparents = maternal grandfather's parents
@@ -5525,6 +5526,7 @@ useEffect(() => {
                 >
                   Go
                 </button>
+                
                 <button
                   style={{ marginRight: "3px" }}
                   className="bottom-bar-button"
@@ -5534,6 +5536,7 @@ useEffect(() => {
                 >
                   Return To Base Person
                 </button>
+
                 <button
                   style={{ marginRight: "3px" }}
                   className="bottom-bar-button"

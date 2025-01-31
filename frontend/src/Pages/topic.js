@@ -4,6 +4,8 @@ import { capitaliseFirstLetter, convertNumToRelation } from "../library.js";
 import "../style.css";
 import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
+import { Modal, Button } from "react-bootstrap";
+import warningLogo from "../Images/warning.png";
 
 const Topic = () => {
   const { topic } = useParams();
@@ -11,6 +13,7 @@ const Topic = () => {
   const [isEditing, setisEditing] = useState(false);
   const [value, setValue] = useState("");
   const [topicName, setTopicName] = useState("");
+  const [showDeletePop, setShowDeletePop] = useState(false);
 
   useEffect(() => {
     const getTopicData = async () => {
@@ -74,6 +77,7 @@ const Topic = () => {
         body: JSON.stringify({ userId, topicId}),
       }
     );
+    const data = response.json();
     closeDeletePopup();
     window.location.href = "/topics";
   }

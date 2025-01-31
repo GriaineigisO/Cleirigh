@@ -585,7 +585,6 @@ const Profile = () => {
       }),
     });
     const data = deleteSource.json();
-    //window.location.reload();
   };
 
   const handleViewInTreee = async () => {
