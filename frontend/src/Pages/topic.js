@@ -79,7 +79,11 @@ const Topic = () => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, topic, topic_name: topicData.topic_name}),
+        body: JSON.stringify({
+          userId,
+          topic,
+          topic_name: topicData.topic_name,
+        }),
       }
     );
   };
@@ -88,20 +92,20 @@ const Topic = () => {
     <div>
       {topicData ? (
         <div style={{ marginLeft: "50px", marginRight: "50px" }}>
-          <div style={{textAlign:"center"}}>
+          <div style={{ textAlign: "center" }}>
             {isEditing ? (
-              <input value={topicData.topic_name}
-              onChange={(e) =>
-                setTopicData((prev) => ({
-                  ...prev,
-                  topic_name: e.target.value,
-                }))
-              }>
-              </input>
+              <input
+                value={topicData.topic_name}
+                onChange={(e) =>
+                  setTopicData((prev) => ({
+                    ...prev,
+                    topic_name: e.target.value,
+                  }))
+                }
+              ></input>
             ) : (
-              <h1 >{topicData.topic_name}</h1>
-              )}
-          
+              <h1>{topicData.topic_name}</h1>
+            )}
           </div>
 
           <div className="article-section">
@@ -109,6 +113,14 @@ const Topic = () => {
             <p className="span-link" onClick={handleEdit}>
               Edit
             </p>
+            {isEditing ? (
+              <p className="span-link" onClick={handleEdit}>
+                Delete
+              </p>
+            ) : (
+              <></>
+            )}
+
             {isEditing ? (
               <div>
                 <ReactQuill
