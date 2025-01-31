@@ -49,7 +49,17 @@ export default async function handler(req, res) {
       .from("topics")
       .select("*")
       .eq("tree_id", currentTree)
-      .filter('tagged_ancestors', 'contains', [id]);
+      .contains('tagged_ancestors', [id]);
+
+      if (error) {
+        console.error('Error fetching topics:', error);
+        return res.status(500).json({ error: 'Error fetching topics' });
+      }
+      
+      if (!data || data.length === 0) {
+        console.log('No topics found.');
+        return res.status(404).json({ message: 'No associated topics found' });
+      }
 
     const topicNames = data.map((topic) => topic.topic_name);
     const topicLinks = data.map((topic) => topic.topic_link);
