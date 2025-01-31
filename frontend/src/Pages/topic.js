@@ -122,7 +122,7 @@ const Topic = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
-          topicId,
+          topicId
         }),
       }
     );
@@ -132,11 +132,12 @@ const Topic = () => {
   };
 
   useEffect(() => {
+    console.error(topicData)
     if (!topicData.id) return;
     if (topicData.id) {
       getTaggedAncestors();
     }
-  }, [topicData.id]);
+  }, [topicData]);
 
   return (
     <div>
