@@ -63,7 +63,6 @@ export default async function handler(req, res) {
           topicLinks: [],
           topicIds: []
        });
-        return res.status(404).json({ message: 'No associated topics found' });
       }
 
     const topicNames = data.map((topic) => topic.topic_name);
