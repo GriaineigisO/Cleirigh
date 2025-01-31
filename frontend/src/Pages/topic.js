@@ -132,8 +132,10 @@ const Topic = () => {
   };
 
   useEffect(() => {
-    getTaggedAncestors();
-  }, []);
+    if (topicData.id) {
+      getTaggedAncestors();
+    }
+  }, [topicData.id]);
 
   return (
     <div>
