@@ -55,6 +55,9 @@ const Profile = () => {
   const [topicLinks, setTopicLinks] = useState([]);
   const [topicIds, setTopicIds] = useState([]);
   const [selectedTag, setSelectedTag] = useState();
+  const [associatedTopicNames, setAssociatedTopicNames] = useState([]);
+  const [associatedTopicLinks, setAssociatedTopicLinks] = useState([]);
+  const [associatedTopicIds, setAssociatedTopicIds] = useState([]);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -454,6 +457,25 @@ const Profile = () => {
       setTopicIds(data.topicIds);
     };
     GetAllTopics();
+  }, []);
+
+  useEffect(() => {
+    const GetAllAssociatedTopics = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-all-associated-topics",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, ancestorId: profileData.ancestor_id }),
+        }
+      );
+      const data = await response.json();
+      setAssociatedTopicNames(data.topicNames);
+      setAssociatedTopicLinks(data.topicLinks);
+      setAssociatedTopicIds(data.topicIds);
+    };
+    GetAllAssociatedTopics();
   }, []);
 
   const AncestryAmount = () => {
@@ -878,7 +900,6 @@ const Profile = () => {
   };
 
   const addTag = async (tag) => {
-    console.log(tag)
     const userId = localStorage.getItem("userId");
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/add-tag",
@@ -1480,12 +1501,12 @@ const Profile = () => {
 
         <p>{profileData.first_name} is associated with the following topics:</p>
         <ol>
-          {topicNames.map((topic, index) => (
+          {associatedTopicNames.map((topic, index) => (
             <li
               className="span-link"
-              onClick={() => handleOpenTopic(topicLinks[index])}
+              onClick={() => handleOpenTopic(associatedTopicLinks[index])}
             >
-              {topicNames[index]}
+              {associatedTopicNames[index]}
             </li>
           ))}
         </ol>
