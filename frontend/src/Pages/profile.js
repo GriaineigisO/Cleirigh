@@ -52,6 +52,7 @@ const Profile = () => {
   const [editAlternativeNames, setEditAlternativeNames] = useState();
   const [profilePic, setProfilePic] = useState();
   const [file, setFile] = useState(null);
+  const [showAddTagModal, setShowAddTagModal] = useState(false);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -1357,6 +1358,18 @@ const Profile = () => {
 
       <div className="ethnic-breakdown">
         <EthnicBreakdown />
+      </div>
+
+      <div className="tag-section">
+        <hr></hr>
+        <h1>Tags</h1>
+        <p className="span-link" onClick={() => setShowAddTagModal(true)}>
+          Add a tag
+        </p>
+
+        <p>{profileData.first_name} is associated with the following topics:</p>
+        
+
       </div>
 
       <div className="timeline-section">

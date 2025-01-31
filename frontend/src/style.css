@@ -691,7 +691,7 @@ button:hover {
     margin-right: 20px;
 }
 
-.family-section, .article-section, .timeline-section, .source-section, .ethnic-breakdown {
+.family-section, .article-section, .timeline-section, .source-section, .ethnic-breakdown, .tag-section {
     padding-left: 100px;
     padding-right: 100px;
 }
