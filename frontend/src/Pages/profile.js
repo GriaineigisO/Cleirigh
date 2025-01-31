@@ -460,7 +460,6 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (!profileData) return;
     if (!profileData) {
        console.error('Profile data is missing')
        return
