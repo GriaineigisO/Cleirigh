@@ -53,6 +53,8 @@ const Profile = () => {
   const [profilePic, setProfilePic] = useState();
   const [file, setFile] = useState(null);
   const [showAddTagModal, setShowAddTagModal] = useState(false);
+  const [topicNames, setTopicNames] = useState([]);
+  const [topicLinks, setTopicLinks] = useState([]);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -816,6 +818,21 @@ const Profile = () => {
     );
   };
 
+  const GetAllTopics = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch("https://cleirigh-backend.vercel.app/api/get-all-topics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId}),
+    });
+    const data = response.json();
+    setTopicNames(data.topicNames);
+    setTopicLinks(data.topicLinks);
+  }
+  useEffect(() => {
+    GetAllTopics();
+  }, [])
+
   return (
     <div className="profile">
       <Modal
@@ -898,6 +915,38 @@ const Profile = () => {
           </div>
         </Modal.Footer>
       </Modal>
+
+      <Modal
+          show={editTextSourceOpenModal}
+          onHide={closeEditTextSource}
+          dialogclassName="custom-modal-width"
+          backdrop="static"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Add Topic</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+
+            <select>
+
+            </select>
+            
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="modal-footer-buttons">
+              <div className="non-delete-buttons">
+                <Button variant="secondary" onClick={closeEditTextSource}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => SaveAddNewSource()}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </Modal.Footer>
+        </Modal>
 
       <div className="top-section">
         <div className="profile-photo-div">
@@ -1368,6 +1417,11 @@ const Profile = () => {
         </p>
 
         <p>{profileData.first_name} is associated with the following topics:</p>
+        <ol>
+          {topicNames.map((topic, index) => (
+              <li className="span-link" onClick={() => handleOpenTopic(topicLinks[index])}>{topicNames[index]}</li>
+          ))}
+        </ol>
         
 
       </div>
