@@ -460,11 +460,15 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    //if (!profileData) return;
-    if (!profileData || !profileData.ancestor_id) {
-      console.error('Profile data or ancestor_id is missing');
-      return;  // Exit early or handle the error gracefully
-    }
+    if (!profileData) return;
+    if (!profileData) {
+       console.error('Profile data is missing')
+       return
+      } else if (!profileData.ancestor_id) {
+        console.error(' ancestor_id is missing');
+        return;  // Exit early or handle the error gracefully
+      }
+
     const GetAllAssociatedTopics = async () => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
