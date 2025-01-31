@@ -52,10 +52,12 @@ export default async function handler(req, res) {
 
     const topicNames = data.map((topic) => topic.topic_name);
     const topicLinks = data.map((topic) => topic.topic_link);
+    const topicIds = data.map((topic) => topic.id);
 
     res.json({ 
         topicNames: topicNames, 
-        topicLinks: topicLinks
+        topicLinks: topicLinks,
+        topicIds: topicIds
      });
   } catch (error) {
     console.log("Error editing right note:", error);
