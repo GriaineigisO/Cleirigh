@@ -460,6 +460,7 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    if (!profileData) return;
     const GetAllAssociatedTopics = async () => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
@@ -467,7 +468,7 @@ const Profile = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, ancestorId: profileData.ancestor_id }),
+          body: JSON.stringify({ userId, ancestorId: profileData.ancestor_id })
         }
       );
       const data = await response.json();
@@ -476,7 +477,7 @@ const Profile = () => {
       setAssociatedTopicIds(data.topicIds);
     };
     GetAllAssociatedTopics();
-  }, []);
+  }, [profileData]);
 
   const AncestryAmount = () => {
     let ancestryAmount = 0;
