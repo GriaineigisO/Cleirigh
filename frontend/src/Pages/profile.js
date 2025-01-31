@@ -866,11 +866,11 @@ const Profile = () => {
   };
 
 
-  // useEffect(() => {
-  //   if (!profileData) return;
-  //   GetAllTopics();
-  // }, [profileData]);
-    
+  useEffect(() => {
+    if (profileData) {
+      GetAllTopics();
+    }
+  }, [profileData]);
 
   const handleOpenTopic = async (topicLink) => {
     window.location.href = `topic/${topicLink}`;
