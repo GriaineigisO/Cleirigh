@@ -1504,17 +1504,21 @@ const Profile = () => {
           Add a tag
         </p>
 
-        <p>{profileData.first_name} is associated with the following topics:</p>
-        <ol>
-          {associatedTopicNames.map((topic, index) => (
-            <li
-              className="span-link"
-              onClick={() => handleOpenTopic(associatedTopicLinks[index])}
-            >
-              {associatedTopicNames[index]}
-            </li>
-          ))}
-        </ol>
+        {associatedTopicNames.length > 0 ? (
+          <>
+          <p>{profileData.first_name} is associated with the following topics:</p>
+          <ol>
+            {associatedTopicNames.map((topic, index) => (
+              <li
+                className="span-link"
+                onClick={() => handleOpenTopic(associatedTopicLinks[index])}
+              >
+                {associatedTopicNames[index]}
+              </li>
+            ))}
+          </ol>
+          </>
+        ) : (<></>)} 
       </div>
 
       <div className="timeline-section">
