@@ -55,12 +55,17 @@ export default async function handler(req, res) {
     let taggedAncestorsNames = [];
 
     for (let i = 0; i < taggedAncestors.length; i++) {
+        console.log(taggedAncestors[i])
       const { data: findNames, error: findNamesError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
-        .eq("ancestor_id", taggedAncestors[i]);
+        .eq("ancestor_id", taggedAncestors[i])
+        .single();
 
-        console.log(findNames)
+      
+     if (!findNames) {
+        console.log(findNamesError)
+     }
 
       let fullName = "";
       let middleName = "";
