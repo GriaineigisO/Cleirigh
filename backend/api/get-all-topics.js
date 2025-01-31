@@ -50,15 +50,25 @@ export default async function handler(req, res) {
       .select("*")
       .eq("tree_id", currentTree);
 
-    const topicNames = data.map((topic) => topic.topic_name);
-    const topicLinks = data.map((topic) => topic.topic_link);
-    const topicIds = data.map((topic) => topic.id);
+    // Combine into an array of objects
+    let topics = data.map((topic) => ({
+      name: topic.topic_name,
+      link: topic.topic_link,
+      id: topic.id,
+    }));
 
-    res.json({ 
-        topicNames: topicNames, 
-        topicLinks: topicLinks,
-        topicIds: topicIds
-     });
+    // Sort by topic name alphabetically
+    topics.sort((a, b) => a.name.localeCompare(b.name));
+
+    const topicNames = topics.map((topic) => topic.name);
+    const topicLinks = topics.map((topic) => topic.link);
+    const topicIds = topics.map((topic) => topic.id);
+
+    res.json({
+      topicNames: topicNames,
+      topicLinks: topicLinks,
+      topicIds: topicIds,
+    });
   } catch (error) {
     console.log("Error editing right note:", error);
   }
