@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const { userId, tag, ancestorId } = req.body;
 
     console.log(`userId: ${userId}`)
-    console.log(`selectedTag: ${tag}`)
+    console.log(`tag: ${tag}`)
     console.log(`ancestorId: ${ancestorId}`)
   
     // Get current tree id from users table
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from("topics")
       .update({ tagged_ancestors: taggedAncestorsArray })
-      .eq("id", selectedTag)
+      .eq("id", tag)
       .eq("tree_id", currentTree);
 
     if (error) {
