@@ -60,6 +60,8 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", taggedAncestors[i]);
 
+        console.log(findNames)
+
       let fullName = "";
       let middleName = "";
       let lastName = "";
