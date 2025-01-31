@@ -128,7 +128,7 @@ const Topic = () => {
             <Modal.Body>
                 <div>
                   <div>
-                    <div className="warning-message">
+                    <div className="warning-message" style={{marginBottom:"20px"}}>
                       <div className="warning-logo-header">
                         <img className="warning-logo" src={warningLogo}></img>
                         <h5>Warning</h5>
@@ -174,7 +174,7 @@ const Topic = () => {
                 Edit
               </p>
               {isEditing ? (
-                <p className="span-link" onClick={openDeletePopup}>
+                <p style={{marginLeft:"10px"}} className="span-link" onClick={openDeletePopup}>
                   Delete Topic
                 </p>
               ) : (
