@@ -54,9 +54,6 @@ export default async function handler(req, res) {
     const taggedAncestors = data.length > 0 ? data[0].tagged_ancestors : [];
     let taggedAncestorsNames = [];
 
-    console.log(`taggedAncestors: ${taggedAncestors}`)
-    console.log(`taggedAncestors.length: ${taggedAncestors.length}`)
-
     for (let i = 0; i < taggedAncestors.length; i++) {
         console.log(`taggedAncestors[i]: ${taggedAncestors[i]}`)
       const { data: findNames, error: findNamesError } = await supabase
@@ -64,11 +61,6 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", taggedAncestors[i])
         .single();
-
-      
-     if (!findNames) {
-        console.log(findNamesError)
-     }
 
       let fullName = "";
       let middleName = "";
@@ -81,6 +73,8 @@ export default async function handler(req, res) {
       }
 
       fullName = findNames.first_name + middleName + lastName;
+
+      console.log(fullName)
 
       taggedAncestorsNames.push(fullName);
     }
