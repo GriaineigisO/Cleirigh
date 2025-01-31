@@ -63,7 +63,7 @@ const Topic = () => {
   const closeDeletePopup = () => setShowDeletePop(false);
   const openDeletePopup = () => setShowDeletePop(true);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const userId = localStorage.getItem("userId");
     const topicId = topicData.id;
     const response = await fetch(
