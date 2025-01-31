@@ -28,6 +28,10 @@ export default async function handler(req, res) {
     }
 
     const { userId, selectedTag, ancestorId } = req.body;
+
+    console.log(`userId: ${userId}`)
+    console.log(`selectedTag: ${selectedTag}`)
+    console.log(`ancestorId: ${ancestorId}`)
   
     // Get current tree id from users table
     const { data: user, error: userError } = await supabase
