@@ -26,6 +26,7 @@ export default async function handler(req, res) {
     return;
   }
     try {
+      console.log("API tried")
       const { userId, personID, sex } = req.body;
   
       // Get the current tree ID for the user
@@ -49,7 +50,7 @@ export default async function handler(req, res) {
           .eq('father_id', personID);
   
         if (maleUpdateError) {
-          throw new Error(maleUpdateError.message);
+          console.log(maleUpdateError.message);
         }
       } else {
         const { error: femaleUpdateError } = await supabase
@@ -58,12 +59,13 @@ export default async function handler(req, res) {
           .eq('mother_id', personID);
   
         if (femaleUpdateError) {
-          throw new Error(femaleUpdateError.message);
+          console.log(femaleUpdateError.message);
         }
       }
   
       // Delete recursively if the person has no children linked as father_id or mother_id
       const deleteRecursively = async (ID, personSex) => {
+        console.log("deleting recursively")
         // Find the parents of the given person
         const { data: person, error: personError } = await supabase
           .from(`tree_${currentTree}`)
