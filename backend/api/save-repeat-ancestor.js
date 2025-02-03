@@ -10,6 +10,7 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
+  console.log("APPI triggerred")
 
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
@@ -63,6 +64,7 @@ export default async function handler(req, res) {
       }
   
       const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
+        console.log("recursive function")
         let childId = "";
         if (child.id) {
           childId = child.id;
@@ -129,6 +131,7 @@ export default async function handler(req, res) {
           //increments the items child's ID relation_to_user by one
           for (let i = 0; i < person.relation_to_user.length; i++) {
             newRelationNum.push(person.relation_to_user[i] + 1);
+            console.log("pushed num!")
           }
   
           //finds the current value of the repeat ancestor's relation_to_user
