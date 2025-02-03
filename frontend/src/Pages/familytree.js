@@ -2628,7 +2628,7 @@ const FamilyTree = () => {
       }));
       closeDeletePopup();
       closeEditPerson();
-      window.location.reload();
+      //window.location.reload();
     } catch (error) {
       console.log(`Error deleting ${personID}: `, error);
     }
