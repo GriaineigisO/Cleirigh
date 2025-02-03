@@ -2613,6 +2613,7 @@ const FamilyTree = () => {
     getPerson,
     closeEditPerson
   ) => {
+    console.log("HERE")
     const personID = details.id;
     openDeletePopup();
     try {
