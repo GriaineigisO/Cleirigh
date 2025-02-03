@@ -60,7 +60,33 @@ export default async function handler(req, res) {
         .single(); // Get a single row
   
       if (motherError) {
-        res.status(500).json({ error: "Error fetching mother's data" });
+        // In case no mother is found, return null values
+        res.json({
+          motherID: null,
+          motherFullName: null,
+          motherFirstName: null,
+          motherMiddleName: null,
+          motherLastName: null,
+          motherBirthDate: null,
+          motherBirthPlace: null,
+          motherDeathDate: null,
+          motherDeathPlace: null,
+          motherOccupation: null,
+          motherProfileNumber: null,
+          motherEthnicity: null,
+          motherCauseOfDeath: null,
+          relation_to_user: null,
+          uncertainFirstName: null,
+          uncertainMiddleName: null,
+          uncertainLastName: null,
+          uncertainBirthDate: null,
+          uncertainBirthPlace: null,
+          uncertainDeathDate: null,
+          uncertainDeathPlace: null,
+          uncertainOccupation: null,
+          pageNum: null,
+          memberOfNobility: null,
+        });
         throw new Error(motherError.message);
       }
   
