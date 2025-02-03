@@ -90,10 +90,9 @@ export default async function handler(req, res) {
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", person.mother_id)
-        console.log(getMother)
-        console.log(getMother.length)
+
         let mother = "";
-        if (getMother[0] !== null) {
+        if (getMother !== null) {
           mother = getMother[0];
         }
         
@@ -135,6 +134,7 @@ export default async function handler(req, res) {
           //increments the items child's ID relation_to_user by one
           for (let i = 0; i < person.relation_to_user.length; i++) {
             newRelationNum.push(person.relation_to_user[i] + 1);
+            console.log("item pushed!")
           }
   
           //finds the current value of the repeat ancestor's relation_to_user
