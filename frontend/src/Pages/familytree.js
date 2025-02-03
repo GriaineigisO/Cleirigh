@@ -2802,7 +2802,10 @@ const FamilyTree = () => {
         }
       );
       const data = response.json();
-      window.location.reload();
+      if (data) {
+        window.location.reload();
+      }
+      
     };
 
 
