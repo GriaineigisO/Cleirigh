@@ -2628,7 +2628,10 @@ const FamilyTree = () => {
       }));
       closeDeletePopup();
       closeEditPerson();
-      //window.location.reload();
+      const data = response.json();
+      if (data) {
+        window.location.reload();
+      }
     } catch (error) {
       console.log(`Error deleting ${personID}: `, error);
     }
