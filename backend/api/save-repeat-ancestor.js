@@ -90,11 +90,12 @@ export default async function handler(req, res) {
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", person.mother_id)
+        
         let mother = "";
-        if (getMother[0]) {
-          let mother = getMother[0];
+        if (getMother[0] !== null) {
+          mother = getMother[0];
         }
-
+        
         //finds grandparents
         let pgrandfather = "";
         let pgrandmother = "";
