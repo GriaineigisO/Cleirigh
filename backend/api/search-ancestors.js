@@ -15,6 +15,7 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
+  console.log("API TRIGGERED")
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -68,6 +69,7 @@ export default async function handler(req, res) {
     const { data, error } = await query;
 
     const resultsArray = results.rows;
+    console.log(resultsArray)
 
     res.json(resultsArray);
   } catch (error) {
