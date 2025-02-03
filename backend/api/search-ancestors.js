@@ -68,7 +68,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await query;
 
-    const resultsArray = results.rows;
+    const resultsArray = data.rows;
     console.log(resultsArray)
 
     res.json(resultsArray);
