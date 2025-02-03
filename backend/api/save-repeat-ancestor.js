@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", repeatAncestorId)
   
-      const sex = findSex[0].sex;
+      const sex = findSex.sex;
   
       if (sex === "male") {
 
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", childId)
 
-        const person = getPerson[0];
+        const person = getPerson;
         //finds parents
 
         const {data: getFather, getFatherError} = await supabase
@@ -84,13 +84,13 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", person.father_id)
 
-        const father = getFather[0];
+        const father = getFather;
 
         const {data: getMother, getMotherError} = await supabase
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", person.mother_id)
-        const mother = getMother[0];
+        const mother = getMother;
         //finds grandparents
         let pgrandfather = "";
         let pgrandmother = "";
@@ -101,26 +101,26 @@ export default async function handler(req, res) {
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", father.father_id)
-          pgrandfather = getpgrandfather[0];
+          pgrandfather = getpgrandfather;
 
           const {data: getpgrandmother, getpgrandmotherError} = await supabase 
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", father.mother_id)
-          pgrandmother = getpgrandmother[0];
+          pgrandmother = getpgrandmother;
         }
         if (mother) {
             const {data: getmgrandfather, getmgrandfatherError} = await supabase 
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", mother.father_id)
-          mgrandfather = getmgrandfather[0];
+          mgrandfather = getmgrandfather;
 
           const {data: getmgrandmother, getmgrandmotherError} = await supabase 
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", mother.mother_id)
-          mgrandmother = getmgrandmother[0];
+          mgrandmother = getmgrandmother;
         }
   
         let newRelationNum = [];
@@ -137,7 +137,9 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", repeatParentId)
   
-          const currentRelationToUser = currentValue[0].relation_to_user;
+          console.log(currentValue.relation_to_user)
+          const currentRelationToUser = currentValue.relation_to_user;
+          console.log(currentRelationToUser)
   
           //appends the new relation_to_user to the old ones
           for (let i = 0; i < currentRelationToUser.length; i++) {
