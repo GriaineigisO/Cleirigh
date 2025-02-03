@@ -1868,7 +1868,6 @@ const FamilyTree = () => {
       });
 
       const data = await response.json();
-      window.location.reload();
       return data;
     } catch (error) {
       console.log("Error saving ancestor changes:", error);
@@ -1889,6 +1888,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getFather();
+      window.location.reload();
     } catch (error) {
       console.log("Error saving father changes:", error);
     }
@@ -1907,6 +1907,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMother();
+      window.location.reload();
     } catch (error) {
       console.log("Error saving mother changes:", error);
     }
@@ -1925,6 +1926,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getPaternalGrandFather();
+      window.location.reload();
     } catch (error) {
       console.log("Error saving paternal grandfather changes:", error);
     }
@@ -1943,6 +1945,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getPaternalGrandMother();
+      window.location.reload();
     } catch (error) {
       console.log("Error saving paternal grandmother changes:", error);
     }
@@ -1961,6 +1964,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMaternalGrandFather();
+      window.location.reload();
     } catch (error) {
       console.log("Error saving maternal grandfather changes:", error);
     }
@@ -1979,6 +1983,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMaternalGrandMother();
+      window.location.reload();
     } catch (error) {
       console.log("Error saving maternal grandfather changes:", error);
     }
@@ -1998,6 +2003,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getPaternalPaternalGreatGrandFather();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2020,6 +2026,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getPaternalPaternalGreatGrandMother();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandmother changes:",
@@ -2041,6 +2048,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getPaternalMaternalGreatGrandFather();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal maternal great grandfather changes:",
@@ -2062,6 +2070,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getPaternalMaternalGreatGrandMother();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal maternal great grandmother changes:",
@@ -2083,6 +2092,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMaternalPaternalGreatGrandFather();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving maternal paternal great grandfather changes:",
@@ -2104,6 +2114,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMaternalPaternalGreatGrandmother();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving maternal paternal great grandmother changes:",
@@ -2125,6 +2136,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMaternalMaternalGreatGrandFather();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving maternal maternal great grandfather changes:",
@@ -2146,6 +2158,7 @@ const FamilyTree = () => {
         id: data,
       }));
       getMaternalMaternalGreatGrandMother();
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving maternal maternal great grandmother changes:",
@@ -2202,6 +2215,7 @@ const FamilyTree = () => {
         paternalPaternalGreatGrandfatherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2231,6 +2245,7 @@ const FamilyTree = () => {
         paternalPaternalGreatGrandmotherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2259,6 +2274,7 @@ const FamilyTree = () => {
         paternalPaternalGreatGrandmotherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2287,6 +2303,7 @@ const FamilyTree = () => {
         paternalMaternalGreatGrandfatherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2314,6 +2331,7 @@ const FamilyTree = () => {
         paternalMaternalGreatGrandfatherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2341,6 +2359,7 @@ const FamilyTree = () => {
         paternalMaternalGreatGrandmotherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2368,6 +2387,7 @@ const FamilyTree = () => {
         paternalMaternalGreatGrandmotherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2395,6 +2415,7 @@ const FamilyTree = () => {
         maternalPaternalGreatGrandfatherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2422,6 +2443,7 @@ const FamilyTree = () => {
         maternalPaternalGreatGrandfatherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2449,6 +2471,7 @@ const FamilyTree = () => {
         maternalPaternalGreatGrandmotherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2476,6 +2499,7 @@ const FamilyTree = () => {
         maternalPaternalGreatGrandmotherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2503,6 +2527,7 @@ const FamilyTree = () => {
         maternalMaternalGreatGrandfatherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2530,6 +2555,7 @@ const FamilyTree = () => {
         maternalMaternalGreatGrandfatherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2557,6 +2583,7 @@ const FamilyTree = () => {
         maternalMaternalGreatGrandmotherDetails.id,
         "male"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
@@ -2584,6 +2611,7 @@ const FamilyTree = () => {
         maternalMaternalGreatGrandmotherDetails.id,
         "female"
       );
+      window.location.reload();
     } catch (error) {
       console.log(
         "Error saving paternal paternal great grandfather changes:",
