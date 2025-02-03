@@ -1868,6 +1868,7 @@ const FamilyTree = () => {
       });
 
       const data = await response.json();
+      window.location.reload();
       return data;
     } catch (error) {
       console.log("Error saving ancestor changes:", error);

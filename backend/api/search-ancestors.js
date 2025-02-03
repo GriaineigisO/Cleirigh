@@ -68,10 +68,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await query;
 
-    const resultsArray = data;
-    console.log(resultsArray)
-
-    res.json(resultsArray);
+    res.json(data);
   } catch (error) {
     console.log("error searching ancestors:", error);
   }
