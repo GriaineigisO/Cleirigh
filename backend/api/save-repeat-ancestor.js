@@ -126,12 +126,10 @@ export default async function handler(req, res) {
         }
   
         let newRelationNum = [];
-        console.log(person.relation_to_user)
-        console.log(person[0].relation_to_user)
         //if the function is being called for the first time, and not in any subsequent recursive call
         if (childId === childDetails.id) {
           //increments the items child's ID relation_to_user by one
-          for (let i = 0; i < person.relation_to_user.length; i++) {
+          for (let i = 0; i < person[0].relation_to_user.length; i++) {
             newRelationNum.push(person.relation_to_user[i] + 1);
             console.log("pushed num!")
           }
