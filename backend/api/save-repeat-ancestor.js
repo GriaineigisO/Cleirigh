@@ -10,7 +10,6 @@ const corsOptions = {
 };
 
 export default async function handler(req, res) {
-  console.log("APPI triggerred")
 
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
@@ -47,7 +46,7 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", repeatAncestorId)
   
-      const sex = findSex.sex;
+      const sex = findSex[0].sex;
   
       if (sex === "male") {
 
@@ -64,7 +63,6 @@ export default async function handler(req, res) {
       }
   
       const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-        console.log("recursive function")
         let childId = "";
         if (child.id) {
           childId = child.id;
@@ -78,7 +76,7 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", childId)
 
-        const person = getPerson;
+        const person = getPerson[0];
         //finds parents
 
         const {data: getFather, getFatherError} = await supabase
@@ -86,13 +84,13 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", person.father_id)
 
-        const father = getFather;
+        const father = getFather[0];
 
         const {data: getMother, getMotherError} = await supabase
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", person.mother_id)
-        const mother = getMother;
+        const mother = getMother[0];
         //finds grandparents
         let pgrandfather = "";
         let pgrandmother = "";
@@ -103,35 +101,34 @@ export default async function handler(req, res) {
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", father.father_id)
-          pgrandfather = getpgrandfather;
+          pgrandfather = getpgrandfather[0];
 
           const {data: getpgrandmother, getpgrandmotherError} = await supabase 
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", father.mother_id)
-          pgrandmother = getpgrandmother;
+          pgrandmother = getpgrandmother[0];
         }
         if (mother) {
             const {data: getmgrandfather, getmgrandfatherError} = await supabase 
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", mother.father_id)
-          mgrandfather = getmgrandfather;
+          mgrandfather = getmgrandfather[0];
 
           const {data: getmgrandmother, getmgrandmotherError} = await supabase 
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", mother.mother_id)
-          mgrandmother = getmgrandmother;
+          mgrandmother = getmgrandmother[0];
         }
   
         let newRelationNum = [];
         //if the function is being called for the first time, and not in any subsequent recursive call
         if (childId === childDetails.id) {
           //increments the items child's ID relation_to_user by one
-          for (let i = 0; i < person[0].relation_to_user.length; i++) {
+          for (let i = 0; i < person.relation_to_user.length; i++) {
             newRelationNum.push(person.relation_to_user[i] + 1);
-            console.log("pushed num!")
           }
   
           //finds the current value of the repeat ancestor's relation_to_user
@@ -140,13 +137,14 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", repeatParentId)
   
-          console.log(currentValue.relation_to_user)
-          const currentRelationToUser = currentValue.relation_to_user;
+          console.log(currentValue[0].relation_to_user)
+          const currentRelationToUser = currentValue[0].relation_to_user;
           console.log(currentRelationToUser)
   
           //appends the new relation_to_user to the old ones
           for (let i = 0; i < currentRelationToUser.length; i++) {
             newRelationNum.push(currentRelationToUser[i]);
+            console.log("item pushed!")
           }
   
           //this new array is then added to the repeat ancestor's relation_to_user column
