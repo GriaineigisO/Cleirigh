@@ -13,6 +13,7 @@ const corsOptions = {
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
 export default async function handler(req, res) {
+  console.log("API triggerred")
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
