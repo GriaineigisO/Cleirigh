@@ -60,6 +60,7 @@ export default async function handler(req, res) {
         .single(); // Get a single row
   
       if (motherError) {
+        res.status(500).json({ error: "Error fetching mother's data" });
         throw new Error(motherError.message);
       }
   
