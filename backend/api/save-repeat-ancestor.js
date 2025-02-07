@@ -66,7 +66,8 @@ export default async function handler(req, res) {
     }
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-      console.log(`recursion! ${childDetails}`)
+      console.log(`recursion!`)
+        console.log(childDetails)
       let childId = "";
       if (child.id) {
         childId = child.id;
@@ -92,6 +93,8 @@ export default async function handler(req, res) {
       if (getFather !== null) {
         father = getFather[0];
       }
+
+      console.log(father)
 
       const { data: getMother, getMotherError } = await supabase
         .from(`tree_${currentTree}`)
