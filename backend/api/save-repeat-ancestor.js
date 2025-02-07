@@ -241,6 +241,8 @@ export default async function handler(req, res) {
       }
 
       if (pgrandfather) {
+        console.log("now updating paternal grandfather")
+        console.log(pgrandfather.ancestor_id)
         recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
       }
       if (pgrandmother) {
