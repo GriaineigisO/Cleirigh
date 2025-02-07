@@ -90,7 +90,6 @@ export default async function handler(req, res) {
       }
 
       console.log(father)
-      console.log(father.father_id)
 
       const { data: getMother, getMotherError } = await supabase
         .from(`tree_${currentTree}`)
@@ -115,7 +114,11 @@ export default async function handler(req, res) {
         let pgrandfather = "";
         if (getpgrandfather !== null) {
           pgrandfather = getpgrandfather[0];
+          console.log("not null!")
+        } else {
+          console.log("null")
         }
+        console.log(pgrandfather)
 
         const { data: getpgrandmother, getpgrandmotherError } = await supabase
           .from(`tree_${currentTree}`)
