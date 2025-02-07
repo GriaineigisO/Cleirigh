@@ -76,8 +76,6 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", child.id);
 
-      console.log(error)
-
       const person = getPerson[0];
       //finds parents
 
@@ -150,7 +148,7 @@ export default async function handler(req, res) {
 
       let newRelationNum = [];
       //if the function is being called for the first time, and not in any subsequent recursive call
-      if (childId === childDetails.id) {
+      if (child.id === childDetails.id) {
         //increments the items child's ID relation_to_user by one
         for (let i = 0; i < person.relation_to_user.length; i++) {
           newRelationNum.push(person.relation_to_user[i] + 1);
