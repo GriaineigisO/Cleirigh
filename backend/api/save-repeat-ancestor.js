@@ -68,13 +68,19 @@ export default async function handler(req, res) {
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
       console.log(`recursion!`)
         console.log(childDetails)
-      console.log(child.id)
+        let childId = "";
+        if (child.id) {
+          childId = child.id;
+        } else {
+          childId = child.ancestor_id;
+        }
+      console.log(childId)
 
       //finds child
       const { data: getPerson, error } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
-        .eq("ancestor_id", child.id);
+        .eq("ancestor_id", childId);
 
       const person = getPerson[0];
       //finds parents
@@ -164,7 +170,6 @@ export default async function handler(req, res) {
           .select("*")
           .eq("ancestor_id", repeatParentId);
 
-        console.log(currentValue[0].relation_to_user);
         const currentRelationToUser = currentValue[0].relation_to_user;
         console.log(currentRelationToUser);
 
