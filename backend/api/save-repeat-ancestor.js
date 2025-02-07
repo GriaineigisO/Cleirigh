@@ -95,6 +95,7 @@ export default async function handler(req, res) {
       }
 
       console.log(father)
+      console.log(father.father_id)
 
       const { data: getMother, getMotherError } = await supabase
         .from(`tree_${currentTree}`)
@@ -240,6 +241,7 @@ export default async function handler(req, res) {
         }
       }
 
+      console.log(pgrandfather)
       if (pgrandfather) {
         console.log("now updating paternal grandfather")
         console.log(pgrandfather.ancestor_id)
