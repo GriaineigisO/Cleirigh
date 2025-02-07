@@ -69,6 +69,7 @@ export default async function handler(req, res) {
       console.log(`recursion!`)
         console.log(childDetails)
       let childId = child.ancestor_id;
+      console.log(childId)
 
       //finds child
       const { data: getPerson, error } = await supabase
@@ -76,6 +77,7 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
+      console.log(error)
 
       const person = getPerson[0];
       //finds parents
