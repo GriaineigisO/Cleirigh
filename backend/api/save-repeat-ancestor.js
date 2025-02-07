@@ -66,6 +66,7 @@ export default async function handler(req, res) {
     }
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
+      console.log(`recursion! ${childDetails.first_name}`)
       let childId = "";
       if (child.id) {
         childId = child.id;
