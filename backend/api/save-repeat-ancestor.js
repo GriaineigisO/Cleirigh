@@ -452,5 +452,7 @@ res.json(true)
   //   // res.json(true);
   // } catch (error) {
     console.log("Error saving repeat ancestor:", error);
+  } catch (error) {
+    console.error(error)
   }
 }
