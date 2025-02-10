@@ -114,21 +114,22 @@ export default async function handler(req, res) {
       console.log(`father is next`);
       console.log(father);
 
-      const { data: getMother, error: getMotherError } = await supabase
-        .from(`tree_${currentTree}`)
-        .select("*")
-        .eq("ancestor_id", person.mother_id);
-
-      if (getMotherError) {
-        console.error(getMotherError);
-      }
-
       let mother = "";
-      if (getMother[0]) {
-        mother = getMother[0];
-      }
+      if (person.mother_id) {
+        const { data: getMother, error: getMotherError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("ancestor_id", person.mother_id);
 
-      console.log(`mother ${mother}`);
+        if (getMotherError) {
+          console.error(getMotherError);
+        }
+
+        if (getMother[0]) {
+          mother = getMother[0];
+        }
+
+      }
 
       //finds grandparents
       let pgrandfather = "";
