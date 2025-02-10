@@ -78,6 +78,7 @@ export default async function handler(req, res) {
       }
 
       console.log(childId)
+      console.log("testing if this line is being read")
 
       //finds child
       const { data: getPerson, error: getPersonError } = await supabase
