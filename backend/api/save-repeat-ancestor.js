@@ -71,6 +71,7 @@ export default async function handler(req, res) {
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
       console.log("Recursively updating relation for child:", child);
+      console.log(`repeat parent ID ${repeatParentId}`)
 
       let childId = "";
       if (child.id) {
@@ -268,6 +269,7 @@ export default async function handler(req, res) {
 
       console.log("now for recursion!");
       if (pgrandfather) {
+        console.log(`pgrandfather ID: ${pgrandfather.ancestor_id}`)
         recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
       }
       if (pgrandmother) {
