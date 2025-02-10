@@ -287,14 +287,14 @@ export default async function handler(req, res) {
       }
       if (pgrandmother) {
         await recursivelyUpdateRelation(
-          father,
+          mother,
           pgrandmother.ancestor_id,
           "female"
         );
       }
       if (mgrandfather) {
         await recursivelyUpdateRelation(
-          mother,
+          father,
           mgrandfather.ancestor_id,
           "male"
         );
