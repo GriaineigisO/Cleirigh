@@ -103,6 +103,7 @@ export default async function handler(req, res) {
       console.log(person);
 
       //finds parents
+      let father = "";
       if (person.father_id) {
       const { data: getFather, error: getFatherError } = await supabase
         .from(`tree_${currentTree}`)
@@ -113,7 +114,7 @@ export default async function handler(req, res) {
         console.error(getFatherError);
       }
 
-      const father = getFather[0];
+      father = getFather[0];
 
       console.log(`father is next`);
       console.log(father);
