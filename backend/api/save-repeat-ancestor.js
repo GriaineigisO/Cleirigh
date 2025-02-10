@@ -85,6 +85,9 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
+        console.log(getPerson)
+        console.log(getPerson[0])
+
       const person = getPerson[0];
 
       console.log(`person ${person}`)
