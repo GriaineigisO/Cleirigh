@@ -33,6 +33,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log("trying")
     const { userId, childDetails, repeatAncestorId } = req.body;
 
     // Get current tree id from users table
@@ -52,6 +53,8 @@ export default async function handler(req, res) {
 
     const sex = findSex[0].sex;
 
+    console.log(sex)
+
     if (sex === "male") {
       const { data: addParent, error: addParentError } = await supabase
         .from(`tree_${currentTree}`)
@@ -64,6 +67,8 @@ export default async function handler(req, res) {
         .eq("ancestor_id", childDetails.id);
     }
 
+    console.log("recursively updating relation")
+
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
       let childId = "";
       if (child.id) {
@@ -71,6 +76,8 @@ export default async function handler(req, res) {
       } else {
         childId = child.ancestor_id;
       }
+
+      console.log(childId)
 
       //finds child
       const { data: getPerson, error: getPersonError } = await supabase
@@ -131,6 +138,7 @@ export default async function handler(req, res) {
         mgrandmother = getmgrandmother[0];
       }
 
+      console.log("now to update parent's relation")
       let newRelationNum = [];
       //if the function is being called for the first time, and not in any subsequent recursive call
       if (childId === childDetails.id) {
@@ -146,6 +154,8 @@ export default async function handler(req, res) {
           .eq("ancestor_id", repeatParentId);
 
         const currentRelationToUser = currentValue[0].relation_to_user;
+
+        console.log(`parent ID: ${currentRelationToUser}`)
 
         //appends the new relation_to_user to the old ones
         for (let i = 0; i < currentRelationToUser.length; i++) {
