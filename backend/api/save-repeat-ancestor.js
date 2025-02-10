@@ -70,8 +70,8 @@ export default async function handler(req, res) {
     console.log("recursively updating relation");
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-      console.log(`Recursively updating relation for child with sex ${sex}:`, child);
-      console.log(`repeat parent ID ${repeatParentId}`);
+      console.log(`Recursively updating relation for child:`, child);
+      console.log(`repeat parent ID ${sex} ${repeatParentId}`);
 
       let childId = "";
       if (child.id) {
@@ -89,8 +89,6 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
-      console.log(getPerson);
-
       if (getPersonError) {
         console.error(`Error fetching ${childId}:`, getPersonError);
         return res
@@ -100,25 +98,23 @@ export default async function handler(req, res) {
 
       const person = getPerson[0];
 
-      console.log(person);
-
       //finds parents
       let father = "";
       if (person.father_id) {
-      const { data: getFather, error: getFatherError } = await supabase
-        .from(`tree_${currentTree}`)
-        .select("*")
-        .eq("ancestor_id", person.father_id);
+        const { data: getFather, error: getFatherError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("ancestor_id", person.father_id);
 
-      if (getFatherError) {
-        console.error(getFatherError);
+        if (getFatherError) {
+          console.error(getFatherError);
+        }
+
+        father = getFather[0];
+
+        console.log(`father is next`);
+        console.log(father);
       }
-
-      father = getFather[0];
-
-      console.log(`father is next`);
-      console.log(father);
-    }
 
       let mother = "";
       if (person.mother_id) {
@@ -161,7 +157,8 @@ export default async function handler(req, res) {
               .select("*")
               .eq("ancestor_id", father.mother_id);
           pgrandmother = getpgrandmother[0];
-          console.log(`pgrandmother ${pgrandmother}`);
+          console.log(`pgrandmother is next`)
+          console.log(pgrandmother);
         }
       }
       if (mother) {
@@ -220,7 +217,7 @@ export default async function handler(req, res) {
             .update({ relation_to_user: newRelationNum })
             .eq("ancestor_id", repeatParentId);
       } else {
-        console.log("function not being declared for the first time")
+        console.log("function not being declared for the first time");
         //determine if user descends from more than one of repeat ancestor's children
         if (sex === "male") {
           const { data: findOtherChildren, error: findOtherChildrenError } =
@@ -250,7 +247,6 @@ export default async function handler(req, res) {
               .from(`tree_${currentTree}`)
               .update({ relation_to_user: repeatAncestorRelationArray })
               .eq("ancestor_id", repeatParentId);
-
         } else {
           const { data: findOtherChildren, error: findOtherChildrenError } =
             await supabase
