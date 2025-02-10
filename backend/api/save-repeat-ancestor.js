@@ -87,6 +87,8 @@ export default async function handler(req, res) {
 
       const person = getPerson[0];
 
+      console.log(`person ${person}`)
+
       //finds parents
       const { data: getFather, error: getFatherError } = await supabase
         .from(`tree_${currentTree} `)
@@ -95,12 +97,16 @@ export default async function handler(req, res) {
 
       const father = getFather[0];
 
+      console.log(`father ${father}`)
+
       const { data: getMother, error: getMotherError } = await supabase
         .from(`tree_${currentTree} `)
         .select("*")
         .eq("ancestor_id", person.mother_id);
 
       const mother = getMother[0];
+
+      console.log(`mother ${mother}`)
 
       //finds grandparents
       let pgrandfather = "";
@@ -116,26 +122,33 @@ export default async function handler(req, res) {
 
         pgrandfather = getpgrandfather[0];
 
+        console.log(`pgrandfather ${pgrandfather}`)
+
         const { data: getpgrandmother, error: getpgrandmotherError } =
           await supabase
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", father.mother_id);
         pgrandmother = getpgrandmother[0];
+        console.log(`pgrandmother ${pgrandmother}`)
       }
       if (mother) {
-        const { data: mgrandfather, error: mgrandfatherError } = await supabase
+        const { data: getmgrandfather, error: mgrandfatherError } = await supabase
           .from(`tree_${currentTree}`)
           .select("*")
           .eq("ancestor_id", mother.father_id);
 
         mgrandfather = getmgrandfather[0];
+
+        console.log(`mgrandfather ${mgrandfather}`)
+
         const { data: getmgrandmother, error: getmgrandmotherError } =
           await supabase
             .from(`tree_${currentTree}`)
             .select("*")
             .eq("ancestor_id", mother.mother_id);
         mgrandmother = getmgrandmother[0];
+        console.log(`mgrandmother ${mgrandmother}`)
       }
 
       console.log("now to update parent's relation")
