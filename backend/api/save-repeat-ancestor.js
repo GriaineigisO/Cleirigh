@@ -103,6 +103,7 @@ export default async function handler(req, res) {
       console.log(person);
 
       //finds parents
+      if (person.father_id) {
       const { data: getFather, error: getFatherError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
@@ -116,6 +117,7 @@ export default async function handler(req, res) {
 
       console.log(`father is next`);
       console.log(father);
+    }
 
       let mother = "";
       if (person.mother_id) {
@@ -277,7 +279,7 @@ export default async function handler(req, res) {
       }
 
       console.log("now for recursion!");
-      if (pgrandfather) {
+      if (pgrandfather && father) {
         console.log(`pgrandfather ID: ${pgrandfather.ancestor_id}`);
         await recursivelyUpdateRelation(
           father,
@@ -285,21 +287,21 @@ export default async function handler(req, res) {
           "male"
         );
       }
-      if (pgrandmother) {
+      if (pgrandmother && father) {
         await recursivelyUpdateRelation(
           mother,
           pgrandmother.ancestor_id,
           "female"
         );
       }
-      if (mgrandfather) {
+      if (mgrandfather && mother) {
         await recursivelyUpdateRelation(
           father,
           mgrandfather.ancestor_id,
           "male"
         );
       }
-      if (mgrandmother) {
+      if (mgrandmother && mother) {
         await recursivelyUpdateRelation(
           mother,
           mgrandmother.ancestor_id,
