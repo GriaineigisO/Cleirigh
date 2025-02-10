@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     console.log("recursively updating relation");
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-      console.log("Recursively updating relation for child:", child);
+      console.log(`Recursively updating relation for child with sex ${Sex}:`, child);
       console.log(`repeat parent ID ${repeatParentId}`);
 
       let childId = "";
@@ -220,6 +220,7 @@ export default async function handler(req, res) {
             .update({ relation_to_user: newRelationNum })
             .eq("ancestor_id", repeatParentId);
       } else {
+        console.log("function not being declared for the first time")
         //determine if user descends from more than one of repeat ancestor's children
         if (sex === "male") {
           const { data: findOtherChildren, error: findOtherChildrenError } =
@@ -249,6 +250,7 @@ export default async function handler(req, res) {
               .from(`tree_${currentTree}`)
               .update({ relation_to_user: repeatAncestorRelationArray })
               .eq("ancestor_id", repeatParentId);
+
         } else {
           const { data: findOtherChildren, error: findOtherChildrenError } =
             await supabase
