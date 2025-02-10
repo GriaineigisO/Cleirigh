@@ -71,7 +71,7 @@ export default async function handler(req, res) {
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
       console.log("Recursively updating relation for child:", child);
-      console.log(`repeat parent ID ${repeatParentId}`)
+      console.log(`repeat parent ID ${repeatParentId}`);
 
       let childId = "";
       if (child.id) {
@@ -89,7 +89,7 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
-        console.log(getPerson)
+      console.log(getPerson);
 
       if (getPersonError) {
         console.error("Error fetching user:", userError);
@@ -131,7 +131,6 @@ export default async function handler(req, res) {
         if (getMother[0]) {
           mother = getMother[0];
         }
-
       }
 
       //finds grandparents
@@ -140,42 +139,50 @@ export default async function handler(req, res) {
       let mgrandfather = "";
       let mgrandmother = "";
       if (father) {
-        const { data: getpgrandfather, error: getpgrandfatherError } =
-          await supabase
-            .from(`tree_${currentTree}`)
-            .select("*")
-            .eq("ancestor_id", father.father_id);
+        if (father.father_id) {
+          const { data: getpgrandfather, error: getpgrandfatherError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .select("*")
+              .eq("ancestor_id", father.father_id);
 
-        pgrandfather = getpgrandfather[0];
+          pgrandfather = getpgrandfather[0];
 
-        console.log(`pgrandfather ${pgrandfather}`);
+          console.log(`pgrandfather ${pgrandfather}`);
+        }
 
-        const { data: getpgrandmother, error: getpgrandmotherError } =
-          await supabase
-            .from(`tree_${currentTree}`)
-            .select("*")
-            .eq("ancestor_id", father.mother_id);
-        pgrandmother = getpgrandmother[0];
-        console.log(`pgrandmother ${pgrandmother}`);
+        if (father.mother_id) {
+          const { data: getpgrandmother, error: getpgrandmotherError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .select("*")
+              .eq("ancestor_id", father.mother_id);
+          pgrandmother = getpgrandmother[0];
+          console.log(`pgrandmother ${pgrandmother}`);
+        }
       }
       if (mother) {
-        const { data: getmgrandfather, error: mgrandfatherError } =
-          await supabase
-            .from(`tree_${currentTree}`)
-            .select("*")
-            .eq("ancestor_id", mother.father_id);
+        if (mother.father_id) {
+          const { data: getmgrandfather, error: mgrandfatherError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .select("*")
+              .eq("ancestor_id", mother.father_id);
 
-        mgrandfather = getmgrandfather[0];
+          mgrandfather = getmgrandfather[0];
+        }
 
         console.log(`mgrandfather ${mgrandfather}`);
 
-        const { data: getmgrandmother, error: getmgrandmotherError } =
-          await supabase
-            .from(`tree_${currentTree}`)
-            .select("*")
-            .eq("ancestor_id", mother.mother_id);
-        mgrandmother = getmgrandmother[0];
-        console.log(`mgrandmother ${mgrandmother}`);
+        if (mother.mother_id) {
+          const { data: getmgrandmother, error: getmgrandmotherError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .select("*")
+              .eq("ancestor_id", mother.mother_id);
+          mgrandmother = getmgrandmother[0];
+          console.log(`mgrandmother ${mgrandmother}`);
+        }
       }
 
       console.log("now to update parent's relation");
@@ -271,24 +278,39 @@ export default async function handler(req, res) {
 
       console.log("now for recursion!");
       if (pgrandfather) {
-        console.log(`pgrandfather ID: ${pgrandfather.ancestor_id}`)
-        await recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
+        console.log(`pgrandfather ID: ${pgrandfather.ancestor_id}`);
+        await recursivelyUpdateRelation(
+          father,
+          pgrandfather.ancestor_id,
+          "male"
+        );
       }
       if (pgrandmother) {
-        await recursivelyUpdateRelation(father, pgrandmother.ancestor_id, "female");
+        await recursivelyUpdateRelation(
+          father,
+          pgrandmother.ancestor_id,
+          "female"
+        );
       }
       if (mgrandfather) {
-        await recursivelyUpdateRelation(mother, mgrandfather.ancestor_id, "male");
+        await recursivelyUpdateRelation(
+          mother,
+          mgrandfather.ancestor_id,
+          "male"
+        );
       }
       if (mgrandmother) {
-        await recursivelyUpdateRelation(mother, mgrandmother.ancestor_id, "female");
+        await recursivelyUpdateRelation(
+          mother,
+          mgrandmother.ancestor_id,
+          "female"
+        );
       }
     };
 
     await recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
 
     res.json(true);
-
   } catch (error) {
     console.log("Error saving repeat ancestor:", error);
   }
