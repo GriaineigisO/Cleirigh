@@ -92,10 +92,10 @@ export default async function handler(req, res) {
       console.log(getPerson);
 
       if (getPersonError) {
-        console.error("Error fetching user:", userError);
+        console.error("Error fetching user:", getPersonError);
         return res
           .status(500)
-          .json({ error: "Database error", details: userError });
+          .json({ error: "Database error", details: getPersonError });
       }
 
       const person = getPerson[0];
