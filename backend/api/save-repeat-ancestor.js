@@ -227,14 +227,14 @@ export default async function handler(req, res) {
 
           //find relation of all children, increment all by one and add to repeat ancestor's relation
           let repeatAncestorRelationArray = [];
-          for (let i = 0; i < findOtherChildren.rows.length; i++) {
+          for (let i = 0; i < findOtherChildren.length; i++) {
             for (
               let j = 0;
-              j < findOtherChildren.rows[i].relation_to_user.length;
+              j < findOtherChildren[i].relation_to_user.length;
               j++
             ) {
               repeatAncestorRelationArray.push(
-                findOtherChildren.rows[i].relation_to_user[j] + 1
+                findOtherChildren[i].relation_to_user[j] + 1
               );
             }
           }
@@ -255,14 +255,14 @@ export default async function handler(req, res) {
 
           //find relation of all children, increment all by one and add to repeat ancestor's relation
           let repeatAncestorRelationArray = [];
-          for (let i = 0; i < findOtherChildren.rows.length; i++) {
+          for (let i = 0; i < findOtherChildren.length; i++) {
             for (
               let j = 0;
-              j < findOtherChildren.rows[i].relation_to_user.length;
+              j < findOtherChildren[i].relation_to_user.length;
               j++
             ) {
               repeatAncestorRelationArray.push(
-                findOtherChildren.rows[i].relation_to_user[j] + 1
+                findOtherChildren[i].relation_to_user[j] + 1
               );
             }
           }
