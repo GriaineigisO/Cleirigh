@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     console.log("recursively updating relation");
 
     const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-      console.log(`Recursively updating relation for child with sex ${Sex}:`, child);
+      console.log(`Recursively updating relation for child with sex ${sex}:`, child);
       console.log(`repeat parent ID ${repeatParentId}`);
 
       let childId = "";
