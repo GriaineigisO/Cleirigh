@@ -47,6 +47,7 @@ export default async function handler(req, res) {
     //adds repeat ancestor's id to his/her child's father/mother_id
     const {data: findSex, error: findSexError} = await supabase
       .from(`tree_${currentTree}`)
+      .select("*")
       .eq("ancestor_id", repeatAncestorId)
 
     const sex = findSex.rows[0].sex;
