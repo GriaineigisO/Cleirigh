@@ -89,6 +89,8 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
+        console.log(getPerson)
+
       if (getPersonError) {
         console.error("Error fetching user:", userError);
         return res
@@ -193,7 +195,7 @@ export default async function handler(req, res) {
 
         const currentRelationToUser = currentValue[0].relation_to_user;
 
-        console.log(`parent ID: ${currentRelationToUser}`);
+        console.log(`parent relation to user: ${currentRelationToUser}`);
 
         //appends the new relation_to_user to the old ones
         for (let i = 0; i < currentRelationToUser.length; i++) {
