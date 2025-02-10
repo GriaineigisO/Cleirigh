@@ -95,12 +95,9 @@ export default async function handler(req, res) {
           .json({ error: "Database error", details: userError });
       }
 
-      console.log(getPerson);
-      console.log(getPerson[0]);
-
       const person = getPerson[0];
 
-      console.log(`person ${person}`);
+      console.log(person)
 
       //finds parents
       const { data: getFather, error: getFatherError } = await supabase
@@ -108,14 +105,23 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", person.father_id);
 
+        if (getFatherError) {
+          console.error(getFatherError)
+        }
+
       const father = getFather[0];
 
-      console.log(`father ${father}`);
+      console.log(`father is next`)
+      console.log(father);
 
       const { data: getMother, error: getMotherError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
         .eq("ancestor_id", person.mother_id);
+
+      if (getMotherError) {
+        console.error(getMotherError)
+      }
 
       const mother = getMother[0];
 
