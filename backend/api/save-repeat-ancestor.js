@@ -45,415 +45,422 @@ export default async function handler(req, res) {
     const currentTree = user.current_tree_id;
 
     //adds repeat ancestor's id to his/her child's father/mother_id
-    const {data: findSex, error: findSexError} = await supabase
+    const { data: findSex, error: findSexError } = await supabase
       .from(`tree_${currentTree}`)
       .select("*")
-      .eq("ancestor_id", repeatAncestorId)
+      .eq("ancestor_id", repeatAncestorId);
 
     const sex = findSex[0].sex;
 
-if (sex === "male") {
-
-      const {data: addParent, error: addParentError } = await supabase
+    if (sex === "male") {
+      const { data: addParent, error: addParentError } = await supabase
         .from(`tree_${currentTree}`)
-        .update({father_id: repeatAncestorId})
-        .eq("ancestor_id", childDetails.id)
-
-} else {
-  const {data: addParent, error: addParentError } = await supabase
-  .from(`tree_${currentTree}`)
-  .update({mother_id: repeatAncestorId})
-  .eq("ancestor_id", childDetails.id)
-}
-
-const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-let childId = "";
-if (child.id) {
-  childId = child.id;
-} else {
-  childId = child.ancestor_id;
-}
-
-//finds child
-const { data: getPerson, error: getPersonError } = await supabase 
-  .from(`tree_${currentTree} `)
-  .select("*")
-  .eq("ancestor_id", childId)
-
-const person = getPerson[0];
-
-//finds parents
-const { data: getFather, error: getFatherError } = await supabase 
-  .from(`tree_${currentTree} `)
-  .select("*")
-  .eq("ancestor_id", person.father_id)
-
-const father = getFather[0];
-const { data: getMother, error: getMotherError } = await supabase 
-  .from(`tree_${currentTree} `)
-  .select("*")
-  .eq("ancestor_id", person.mother_id)
-
-const mother = getMother[0];
-
-//finds grandparents
-let pgrandfather = "";
-let pgrandmother = "";
-let mgrandfather = "";
-let mgrandmother = "";
-if (father) {
-  const {data: getpgrandfather, error: getpgrandfatherError} = await supabase
-    .from(`tree_${currentTree}`)
-    .select("*")
-    .eq("ancestor_id", father.father_id)
-
-  pgrandfather = getpgrandfather[0];
-
-  const {data: getpgrandmother, error: getpgrandmotherError} = await supabase
-    .from(`tree_${currentTree}`)
-    .select("*")
-    .eq("ancestor_id", father.mother_id)
-  pgrandmother = getpgrandmother[0];
-}
-if (mother) {
-  const {data: mgrandfather, error: mgrandfatherError} = await supabase
-    .from(`tree_${currentTree}`)
-    .select("*")
-    .eq("ancestor_id", mother.father_id)
-
-  mgrandfather = getmgrandfather[0];
-  const {data: getmgrandmother, error: getmgrandmotherError} = await supabase
-    .from(`tree_${currentTree}`)
-    .select("*")
-    .eq("ancestor_id", mother.mother_id)
-  mgrandmother = getmgrandmother[0];
-}
-
-let newRelationNum = [];
-//if the function is being called for the first time, and not in any subsequent recursive call
-if (childId === childDetails.id) {
-  //increments the items child's ID relation_to_user by one
-  for (let i = 0; i < person.relation_to_user.length; i++) {
-    newRelationNum.push(person.relation_to_user[i] + 1);
-  }
-
-  //finds the current value of the repeat ancestor's relation_to_user
-  const { data: currentValue, error: currentValueError } = await supabase
-    .from(`tree_${currentTree}`)
-    .select("*")
-    .eq("ancestor_id", repeatParentId)
-
-  const currentRelationToUser = currentValue[0].relation_to_user;
-
-  //appends the new relation_to_user to the old ones
-  for (let i = 0; i < currentRelationToUser.length; i++) {
-    newRelationNum.push(currentRelationToUser[i]);
-  }
-
-  //this new array is then added to the repeat ancestor's relation_to_user column
-  const { data: addNewRelationNum, error: addNewRelationNumError } = await supabase 
-    .from(`tree_${currentTree}`)
-    .update({relation_to_user: newRelationNum})
-    .eq("ancestor_id", repeatParentId)
-
-} else {
-  //determine if user descends from more than one of repeat ancestor's children
-  if (sex === "male") {
-
-    const { data: findOtherChildren, error: findOtherChildrenError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select("*")
-      .eq("father_id", repeatParentId)
-
-    //find relation of all children, increment all by one and add to repeat ancestor's relation
-    let repeatAncestorRelationArray = [];
-    for (let i = 0; i < findOtherChildren.rows.length; i++) {
-      for (
-        let j = 0;
-        j < findOtherChildren.rows[i].relation_to_user.length;
-        j++
-      ) {
-        repeatAncestorRelationArray.push(
-          findOtherChildren.rows[i].relation_to_user[j] + 1
-        );
-      }
+        .update({ father_id: repeatAncestorId })
+        .eq("ancestor_id", childDetails.id);
+    } else {
+      const { data: addParent, error: addParentError } = await supabase
+        .from(`tree_${currentTree}`)
+        .update({ mother_id: repeatAncestorId })
+        .eq("ancestor_id", childDetails.id);
     }
 
-    //this new array is then added to the repeat ancestor's relation_to_user column
-    const {data: addNewRelationNum, error: addNewRelationNumError} = await supabase 
-      .from(`tree_${currentTree}`)
-      .update({relation_to_user: repeatAncestorRelationArray})
-      .eq("ancestor_id", repeatParentId)
-
-  } else {
-    const { data: findOtherChildren, error: findOtherChildrenError } = await supabase
-      .from(`tree_${currentTree}`)
-      .select("*")
-      .eq("mother_id", repeatParentId)
-
-    //find relation of all children, increment all by one and add to repeat ancestor's relation
-    let repeatAncestorRelationArray = [];
-    for (let i = 0; i < findOtherChildren.rows.length; i++) {
-      for (
-        let j = 0;
-        j < findOtherChildren.rows[i].relation_to_user.length;
-        j++
-      ) {
-        repeatAncestorRelationArray.push(
-          findOtherChildren.rows[i].relation_to_user[j] + 1
-        );
+    const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
+      let childId = "";
+      if (child.id) {
+        childId = child.id;
+      } else {
+        childId = child.ancestor_id;
       }
-    }
 
-    //this new array is then added to the repeat ancestor's relation_to_user column
-    const { data: addNewRelationNum, error: addNewRelationNumError } = await supabase
-      .from(`tree_${currentTree}`)
-      .update({relation_to_user: repeatAncestorRelationArray})
-      .eq("ancestor_id", repeatParentId)
-  }
-}
+      //finds child
+      const { data: getPerson, error: getPersonError } = await supabase
+        .from(`tree_${currentTree} `)
+        .select("*")
+        .eq("ancestor_id", childId);
 
-if (pgrandfather) {
-  recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
-}
-if (pgrandmother) {
-  recursivelyUpdateRelation(father, pgrandmother.ancestor_id, "female");
-}
-if (mgrandfather) {
-  recursivelyUpdateRelation(mother, mgrandfather.ancestor_id, "male");
-}
-if (mgrandmother) {
-  recursivelyUpdateRelation(mother, mgrandmother.ancestor_id, "female");
-}
-};
+      const person = getPerson[0];
 
-recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
+      //finds parents
+      const { data: getFather, error: getFatherError } = await supabase
+        .from(`tree_${currentTree} `)
+        .select("*")
+        .eq("ancestor_id", person.father_id);
 
-res.json(true)
+      const father = getFather[0];
 
-  //   //adds repeat ancestor's id to his/her child's father/mother_id
+      const { data: getMother, error: getMotherError } = await supabase
+        .from(`tree_${currentTree} `)
+        .select("*")
+        .eq("ancestor_id", person.mother_id);
 
-  //   // const { data: findSex, error } = await supabase
-  //   //   .from(`tree_${currentTree}`)
-  //   //   .select("*")
-  //   //   .eq("ancestor_id", repeatAncestorId);
+      const mother = getMother[0];
 
-  //   // const sex = findSex[0].sex;
+      //finds grandparents
+      let pgrandfather = "";
+      let pgrandmother = "";
+      let mgrandfather = "";
+      let mgrandmother = "";
+      if (father) {
+        const { data: getpgrandfather, error: getpgrandfatherError } =
+          await supabase
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("ancestor_id", father.father_id);
 
-  //   // if (sex === "male") {
-  //   //   const { data: addParent, error } = await supabase
-  //   //     .from(`tree_${currentTree}`)
-  //   //     .update({ father_id: repeatAncestorId })
-  //   //     .eq("ancestor_id", childDetails.id);
-  //   // } else {
-  //   //   const { data: addParent, error } = await supabase
-  //   //     .from(`tree_${currentTree}`)
-  //   //     .update({ mother_id: repeatAncestorId })
-  //   //     .eq("ancestor_id", childDetails.id);
-  //   // }
+        pgrandfather = getpgrandfather[0];
 
-  //   // const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
-  //   //   console.log(`recursion!`)
-  //   //     console.log(childDetails)
-  //   //     let childId = "";
-  //   //     if (child.id) {
-  //   //       childId = child.id;
-  //   //     } else {
-  //   //       childId = child.ancestor_id;
-  //   //     }
-  //   //   console.log(childId)
+        const { data: getpgrandmother, error: getpgrandmotherError } =
+          await supabase
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("ancestor_id", father.mother_id);
+        pgrandmother = getpgrandmother[0];
+      }
+      if (mother) {
+        const { data: mgrandfather, error: mgrandfatherError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("ancestor_id", mother.father_id);
 
-  //   //   //finds child
-  //   //   const { data: getPerson, error } = await supabase
-  //   //     .from(`tree_${currentTree}`)
-  //   //     .select("*")
-  //   //     .eq("ancestor_id", child.id);
+        mgrandfather = getmgrandfather[0];
+        const { data: getmgrandmother, error: getmgrandmotherError } =
+          await supabase
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("ancestor_id", mother.mother_id);
+        mgrandmother = getmgrandmother[0];
+      }
 
-  //   //   const person = getPerson[0];
-  //   //   //finds parents
+      let newRelationNum = [];
+      //if the function is being called for the first time, and not in any subsequent recursive call
+      if (childId === childDetails.id) {
+        //increments the items child's ID relation_to_user by one
+        for (let i = 0; i < person.relation_to_user.length; i++) {
+          newRelationNum.push(person.relation_to_user[i] + 1);
+        }
 
-  //   //   const { data: getFather, getFatherError } = await supabase
-  //   //     .from(`tree_${currentTree}`)
-  //   //     .select("*")
-  //   //     .eq("ancestor_id", person.father_id);
+        //finds the current value of the repeat ancestor's relation_to_user
+        const { data: currentValue, error: currentValueError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("ancestor_id", repeatParentId);
 
-  //   //   let father = "";
-  //   //   if (getFather !== null) {
-  //   //     father = getFather[0];
-  //   //   }
+        const currentRelationToUser = currentValue[0].relation_to_user;
 
-  //   //   console.log(father)
+        //appends the new relation_to_user to the old ones
+        for (let i = 0; i < currentRelationToUser.length; i++) {
+          newRelationNum.push(currentRelationToUser[i]);
+        }
 
-  //   //   const { data: getMother, getMotherError } = await supabase
-  //   //     .from(`tree_${currentTree}`)
-  //   //     .select("*")
-  //   //     .eq("ancestor_id", person.mother_id);
+        console.log("here line 155")
+        //this new array is then added to the repeat ancestor's relation_to_user column
+        const { data: addNewRelationNum, error: addNewRelationNumError } =
+          await supabase
+            .from(`tree_${currentTree}`)
+            .update({ relation_to_user: newRelationNum })
+            .eq("ancestor_id", repeatParentId);
+      } else {
+        //determine if user descends from more than one of repeat ancestor's children
+        if (sex === "male") {
+          const { data: findOtherChildren, error: findOtherChildrenError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .select("*")
+              .eq("father_id", repeatParentId);
 
-  //   //   let mother = "";
-  //   //   if (getMother !== null) {
-  //   //     mother = getMother[0];
-  //   //   }
+          //find relation of all children, increment all by one and add to repeat ancestor's relation
+          let repeatAncestorRelationArray = [];
+          for (let i = 0; i < findOtherChildren.rows.length; i++) {
+            for (
+              let j = 0;
+              j < findOtherChildren.rows[i].relation_to_user.length;
+              j++
+            ) {
+              repeatAncestorRelationArray.push(
+                findOtherChildren.rows[i].relation_to_user[j] + 1
+              );
+            }
+          }
 
-  //   //   //finds grandparents
-  //   //   let pgrandfather = "";
-  //   //   let pgrandmother = "";
-  //   //   let mgrandfather = "";
-  //   //   let mgrandmother = "";
-  //   //   if (father) {
-  //   //     const { data: getpgrandfather, getpgrandfatherError } = await supabase
-  //   //       .from(`tree_${currentTree}`)
-  //   //       .select("*")
-  //   //       .eq("ancestor_id", father.father_id);
-  //   //     let pgrandfather = "";
-  //   //     if (getpgrandfather !== null) {
-  //   //       pgrandfather = getpgrandfather[0];
-  //   //       console.log("not null!")
-  //   //     } else {
-  //   //       console.log("null")
-  //   //     }
-  //   //     console.log(pgrandfather)
+          console.log("here line 185")
+          //this new array is then added to the repeat ancestor's relation_to_user column
+          const { data: addNewRelationNum, error: addNewRelationNumError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .update({ relation_to_user: repeatAncestorRelationArray })
+              .eq("ancestor_id", repeatParentId);
+        } else {
+          const { data: findOtherChildren, error: findOtherChildrenError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .select("*")
+              .eq("mother_id", repeatParentId);
 
-  //   //     const { data: getpgrandmother, getpgrandmotherError } = await supabase
-  //   //       .from(`tree_${currentTree}`)
-  //   //       .select("*")
-  //   //       .eq("ancestor_id", father.mother_id);
-  //   //     let pgrandmother = "";
-  //   //     if (getpgrandmother !== null) {
-  //   //       pgrandmother = getpgrandmother[0];
-  //   //     }
-  //   //   }
-  //   //   if (mother) {
-  //   //     const { data: getmgrandfather, getmgrandfatherError } = await supabase
-  //   //       .from(`tree_${currentTree}`)
-  //   //       .select("*")
-  //   //       .eq("ancestor_id", mother.father_id);
-  //   //     let mgrandfather = "";
-  //   //     if (getmgrandfather !== null) {
-  //   //       mgrandfather = getmgrandfather[0];
-  //   //     }
+          //find relation of all children, increment all by one and add to repeat ancestor's relation
+          let repeatAncestorRelationArray = [];
+          for (let i = 0; i < findOtherChildren.rows.length; i++) {
+            for (
+              let j = 0;
+              j < findOtherChildren.rows[i].relation_to_user.length;
+              j++
+            ) {
+              repeatAncestorRelationArray.push(
+                findOtherChildren.rows[i].relation_to_user[j] + 1
+              );
+            }
+          }
+          console.log("here line 212")
+          //this new array is then added to the repeat ancestor's relation_to_user column
+          const { data: addNewRelationNum, error: addNewRelationNumError } =
+            await supabase
+              .from(`tree_${currentTree}`)
+              .update({ relation_to_user: repeatAncestorRelationArray })
+              .eq("ancestor_id", repeatParentId);
+        }
+      }
 
-  //   //     const { data: getmgrandmother, getmgrandmotherError } = await supabase
-  //   //       .from(`tree_${currentTree}`)
-  //   //       .select("*")
-  //   //       .eq("ancestor_id", mother.mother_id);
-  //   //     let mgrandmother = "";
-  //   //     if (getmgrandmother !== null) {
-  //   //       mgrandmother = getmgrandmother[0];
-  //   //     }
-  //   //   }
+      console.log("now for recursion!")
+      if (pgrandfather) {
+        recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
+      }
+      if (pgrandmother) {
+        recursivelyUpdateRelation(father, pgrandmother.ancestor_id, "female");
+      }
+      if (mgrandfather) {
+        recursivelyUpdateRelation(mother, mgrandfather.ancestor_id, "male");
+      }
+      if (mgrandmother) {
+        recursivelyUpdateRelation(mother, mgrandmother.ancestor_id, "female");
+      }
+    };
 
-  //   //   let newRelationNum = [];
-  //   //   //if the function is being called for the first time, and not in any subsequent recursive call
-  //   //   if (child.id === childDetails.id) {
-  //   //     //increments the items child's ID relation_to_user by one
-  //   //     for (let i = 0; i < person.relation_to_user.length; i++) {
-  //   //       newRelationNum.push(person.relation_to_user[i] + 1);
-  //   //       console.log("item pushed!");
-  //   //     }
+    recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
 
-  //   //     //finds the current value of the repeat ancestor's relation_to_user
-  //   //     const { data: currentValue, currentValueError } = await supabase
-  //   //       .from(`tree_${currentTree}`)
-  //   //       .select("*")
-  //   //       .eq("ancestor_id", repeatParentId);
+    res.json(true);
 
-  //   //     const currentRelationToUser = currentValue[0].relation_to_user;
-  //   //     console.log(currentRelationToUser);
+    //   //adds repeat ancestor's id to his/her child's father/mother_id
 
-  //   //     //appends the new relation_to_user to the old ones
-  //   //     for (let i = 0; i < currentRelationToUser.length; i++) {
-  //   //       newRelationNum.push(currentRelationToUser[i]);
-  //   //       console.log("item pushed!");
-  //   //     }
+    //   // const { data: findSex, error } = await supabase
+    //   //   .from(`tree_${currentTree}`)
+    //   //   .select("*")
+    //   //   .eq("ancestor_id", repeatAncestorId);
 
-  //   //     //this new array is then added to the repeat ancestor's relation_to_user column
-  //   //     const { data: addNewRelationNum, addNewRelationNumError } =
-  //   //       await supabase
-  //   //         .from(`tree_${currentTree}`)
-  //   //         .update({ relation_to_user: newRelationNum })
-  //   //         .eq("ancestor_id", repeatParentId);
-  //   //   } else {
-  //   //     //determine if user descends from more than one of repeat ancestor's children
-  //   //     if (sex === "male") {
-  //   //       const { data: findOtherChildren, findOtherChildrenError } =
-  //   //         await supabase
-  //   //           .from(`tree_${currentTree}`)
-  //   //           .select("*")
-  //   //           .eq("father_id", repeatParentId);
+    //   // const sex = findSex[0].sex;
 
-  //   //       //find relation of all children, increment all by one and add to repeat ancestor's relation
-  //   //       let repeatAncestorRelationArray = [];
-  //   //       for (let i = 0; i < findOtherChildren.length; i++) {
-  //   //         for (
-  //   //           let j = 0;
-  //   //           j < findOtherChildren[i].relation_to_user.length;
-  //   //           j++
-  //   //         ) {
-  //   //           repeatAncestorRelationArray.push(
-  //   //             findOtherChildren[i].relation_to_user[j] + 1
-  //   //           );
-  //   //         }
-  //   //       }
+    //   // if (sex === "male") {
+    //   //   const { data: addParent, error } = await supabase
+    //   //     .from(`tree_${currentTree}`)
+    //   //     .update({ father_id: repeatAncestorId })
+    //   //     .eq("ancestor_id", childDetails.id);
+    //   // } else {
+    //   //   const { data: addParent, error } = await supabase
+    //   //     .from(`tree_${currentTree}`)
+    //   //     .update({ mother_id: repeatAncestorId })
+    //   //     .eq("ancestor_id", childDetails.id);
+    //   // }
 
-  //   //       //this new array is then added to the repeat ancestor's relation_to_user column
-  //   //       const { data: addNewRelationNum, addNewRelationNumError } =
-  //   //         await supabase
-  //   //           .from(`tree_${currentTree}`)
-  //   //           .update({ relation_to_user: repeatAncestorRelationArray })
-  //   //           .eq("ancestor_id", repeatParentId);
-  //   //     } else {
-  //   //       const { data: findOtherChildren, findOtherChildrenError } =
-  //   //         await supabase
-  //   //           .from(`tree_${currentTree}`)
-  //   //           .select("*")
-  //   //           .eq("mother_id", repeatParentId);
+    //   // const recursivelyUpdateRelation = async (child, repeatParentId, sex) => {
+    //   //   console.log(`recursion!`)
+    //   //     console.log(childDetails)
+    //   //     let childId = "";
+    //   //     if (child.id) {
+    //   //       childId = child.id;
+    //   //     } else {
+    //   //       childId = child.ancestor_id;
+    //   //     }
+    //   //   console.log(childId)
 
-  //   //       //find relation of all children, increment all by one and add to repeat ancestor's relation
-  //   //       let repeatAncestorRelationArray = [];
-  //   //       for (let i = 0; i < findOtherChildren.length; i++) {
-  //   //         for (
-  //   //           let j = 0;
-  //   //           j < findOtherChildren[i].relation_to_user.length;
-  //   //           j++
-  //   //         ) {
-  //   //           repeatAncestorRelationArray.push(
-  //   //             findOtherChildren[i].relation_to_user[j] + 1
-  //   //           );
-  //   //         }
-  //   //       }
+    //   //   //finds child
+    //   //   const { data: getPerson, error } = await supabase
+    //   //     .from(`tree_${currentTree}`)
+    //   //     .select("*")
+    //   //     .eq("ancestor_id", child.id);
 
-  //   //       //this new array is then added to the repeat ancestor's relation_to_user column
-  //   //       const { data: addNewRelationNum, addNewRelationNumError } =
-  //   //         await supabase
-  //   //           .from(`tree_${currentTree}`)
-  //   //           .update({ relation_to_user: repeatAncestorRelationArray })
-  //   //           .eq("ancestor_id", repeatParentId);
-  //   //     }
-  //   //   }
+    //   //   const person = getPerson[0];
+    //   //   //finds parents
 
-  //   //   console.log(pgrandfather)
-  //   //   if (pgrandfather) {
-  //   //     console.log("now updating paternal grandfather")
-  //   //     console.log(pgrandfather.ancestor_id)
-  //   //     recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
-  //   //   }
-  //   //   if (pgrandmother) {
-  //   //     recursivelyUpdateRelation(father, pgrandmother.ancestor_id, "female");
-  //   //   }
-  //   //   if (mgrandfather) {
-  //   //     recursivelyUpdateRelation(mother, mgrandfather.ancestor_id, "male");
-  //   //   }
-  //   //   if (mgrandmother) {
-  //   //     recursivelyUpdateRelation(mother, mgrandmother.ancestor_id, "female");
-  //   //   }
-  //   // };
+    //   //   const { data: getFather, getFatherError } = await supabase
+    //   //     .from(`tree_${currentTree}`)
+    //   //     .select("*")
+    //   //     .eq("ancestor_id", person.father_id);
 
-  //   // recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
+    //   //   let father = "";
+    //   //   if (getFather !== null) {
+    //   //     father = getFather[0];
+    //   //   }
 
-  //   // res.json(true);
-  // } catch (error) {
+    //   //   console.log(father)
+
+    //   //   const { data: getMother, getMotherError } = await supabase
+    //   //     .from(`tree_${currentTree}`)
+    //   //     .select("*")
+    //   //     .eq("ancestor_id", person.mother_id);
+
+    //   //   let mother = "";
+    //   //   if (getMother !== null) {
+    //   //     mother = getMother[0];
+    //   //   }
+
+    //   //   //finds grandparents
+    //   //   let pgrandfather = "";
+    //   //   let pgrandmother = "";
+    //   //   let mgrandfather = "";
+    //   //   let mgrandmother = "";
+    //   //   if (father) {
+    //   //     const { data: getpgrandfather, getpgrandfatherError } = await supabase
+    //   //       .from(`tree_${currentTree}`)
+    //   //       .select("*")
+    //   //       .eq("ancestor_id", father.father_id);
+    //   //     let pgrandfather = "";
+    //   //     if (getpgrandfather !== null) {
+    //   //       pgrandfather = getpgrandfather[0];
+    //   //       console.log("not null!")
+    //   //     } else {
+    //   //       console.log("null")
+    //   //     }
+    //   //     console.log(pgrandfather)
+
+    //   //     const { data: getpgrandmother, getpgrandmotherError } = await supabase
+    //   //       .from(`tree_${currentTree}`)
+    //   //       .select("*")
+    //   //       .eq("ancestor_id", father.mother_id);
+    //   //     let pgrandmother = "";
+    //   //     if (getpgrandmother !== null) {
+    //   //       pgrandmother = getpgrandmother[0];
+    //   //     }
+    //   //   }
+    //   //   if (mother) {
+    //   //     const { data: getmgrandfather, getmgrandfatherError } = await supabase
+    //   //       .from(`tree_${currentTree}`)
+    //   //       .select("*")
+    //   //       .eq("ancestor_id", mother.father_id);
+    //   //     let mgrandfather = "";
+    //   //     if (getmgrandfather !== null) {
+    //   //       mgrandfather = getmgrandfather[0];
+    //   //     }
+
+    //   //     const { data: getmgrandmother, getmgrandmotherError } = await supabase
+    //   //       .from(`tree_${currentTree}`)
+    //   //       .select("*")
+    //   //       .eq("ancestor_id", mother.mother_id);
+    //   //     let mgrandmother = "";
+    //   //     if (getmgrandmother !== null) {
+    //   //       mgrandmother = getmgrandmother[0];
+    //   //     }
+    //   //   }
+
+    //   //   let newRelationNum = [];
+    //   //   //if the function is being called for the first time, and not in any subsequent recursive call
+    //   //   if (child.id === childDetails.id) {
+    //   //     //increments the items child's ID relation_to_user by one
+    //   //     for (let i = 0; i < person.relation_to_user.length; i++) {
+    //   //       newRelationNum.push(person.relation_to_user[i] + 1);
+    //   //       console.log("item pushed!");
+    //   //     }
+
+    //   //     //finds the current value of the repeat ancestor's relation_to_user
+    //   //     const { data: currentValue, currentValueError } = await supabase
+    //   //       .from(`tree_${currentTree}`)
+    //   //       .select("*")
+    //   //       .eq("ancestor_id", repeatParentId);
+
+    //   //     const currentRelationToUser = currentValue[0].relation_to_user;
+    //   //     console.log(currentRelationToUser);
+
+    //   //     //appends the new relation_to_user to the old ones
+    //   //     for (let i = 0; i < currentRelationToUser.length; i++) {
+    //   //       newRelationNum.push(currentRelationToUser[i]);
+    //   //       console.log("item pushed!");
+    //   //     }
+
+    //   //     //this new array is then added to the repeat ancestor's relation_to_user column
+    //   //     const { data: addNewRelationNum, addNewRelationNumError } =
+    //   //       await supabase
+    //   //         .from(`tree_${currentTree}`)
+    //   //         .update({ relation_to_user: newRelationNum })
+    //   //         .eq("ancestor_id", repeatParentId);
+    //   //   } else {
+    //   //     //determine if user descends from more than one of repeat ancestor's children
+    //   //     if (sex === "male") {
+    //   //       const { data: findOtherChildren, findOtherChildrenError } =
+    //   //         await supabase
+    //   //           .from(`tree_${currentTree}`)
+    //   //           .select("*")
+    //   //           .eq("father_id", repeatParentId);
+
+    //   //       //find relation of all children, increment all by one and add to repeat ancestor's relation
+    //   //       let repeatAncestorRelationArray = [];
+    //   //       for (let i = 0; i < findOtherChildren.length; i++) {
+    //   //         for (
+    //   //           let j = 0;
+    //   //           j < findOtherChildren[i].relation_to_user.length;
+    //   //           j++
+    //   //         ) {
+    //   //           repeatAncestorRelationArray.push(
+    //   //             findOtherChildren[i].relation_to_user[j] + 1
+    //   //           );
+    //   //         }
+    //   //       }
+
+    //   //       //this new array is then added to the repeat ancestor's relation_to_user column
+    //   //       const { data: addNewRelationNum, addNewRelationNumError } =
+    //   //         await supabase
+    //   //           .from(`tree_${currentTree}`)
+    //   //           .update({ relation_to_user: repeatAncestorRelationArray })
+    //   //           .eq("ancestor_id", repeatParentId);
+    //   //     } else {
+    //   //       const { data: findOtherChildren, findOtherChildrenError } =
+    //   //         await supabase
+    //   //           .from(`tree_${currentTree}`)
+    //   //           .select("*")
+    //   //           .eq("mother_id", repeatParentId);
+
+    //   //       //find relation of all children, increment all by one and add to repeat ancestor's relation
+    //   //       let repeatAncestorRelationArray = [];
+    //   //       for (let i = 0; i < findOtherChildren.length; i++) {
+    //   //         for (
+    //   //           let j = 0;
+    //   //           j < findOtherChildren[i].relation_to_user.length;
+    //   //           j++
+    //   //         ) {
+    //   //           repeatAncestorRelationArray.push(
+    //   //             findOtherChildren[i].relation_to_user[j] + 1
+    //   //           );
+    //   //         }
+    //   //       }
+
+    //   //       //this new array is then added to the repeat ancestor's relation_to_user column
+    //   //       const { data: addNewRelationNum, addNewRelationNumError } =
+    //   //         await supabase
+    //   //           .from(`tree_${currentTree}`)
+    //   //           .update({ relation_to_user: repeatAncestorRelationArray })
+    //   //           .eq("ancestor_id", repeatParentId);
+    //   //     }
+    //   //   }
+
+    //   //   console.log(pgrandfather)
+    //   //   if (pgrandfather) {
+    //   //     console.log("now updating paternal grandfather")
+    //   //     console.log(pgrandfather.ancestor_id)
+    //   //     recursivelyUpdateRelation(father, pgrandfather.ancestor_id, "male");
+    //   //   }
+    //   //   if (pgrandmother) {
+    //   //     recursivelyUpdateRelation(father, pgrandmother.ancestor_id, "female");
+    //   //   }
+    //   //   if (mgrandfather) {
+    //   //     recursivelyUpdateRelation(mother, mgrandfather.ancestor_id, "male");
+    //   //   }
+    //   //   if (mgrandmother) {
+    //   //     recursivelyUpdateRelation(mother, mgrandmother.ancestor_id, "female");
+    //   //   }
+    //   // };
+
+    //   // recursivelyUpdateRelation(childDetails, repeatAncestorId, sex);
+
+    //   // res.json(true);
+    // } catch (error) {
     console.log("Error saving repeat ancestor:", error);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
