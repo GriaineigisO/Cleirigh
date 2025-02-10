@@ -50,7 +50,7 @@ export default async function handler(req, res) {
       .select("*")
       .eq("ancestor_id", repeatAncestorId)
 
-    const sex = findSex.rows[0].sex;
+    const sex = findSex[0].sex;
 
 if (sex === "male") {
 
@@ -80,7 +80,7 @@ const { data: getPerson, error: getPersonError } = await supabase
   .select("*")
   .eq("ancestor_id", childId)
 
-const person = getPerson.rows[0];
+const person = getPerson[0];
 
 //finds parents
 const { data: getFather, error: getFatherError } = await supabase 
@@ -88,13 +88,13 @@ const { data: getFather, error: getFatherError } = await supabase
   .select("*")
   .eq("ancestor_id", person.father_id)
 
-const father = getFather.rows[0];
+const father = getFather[0];
 const { data: getMother, error: getMotherError } = await supabase 
   .from(`tree_${currentTree} `)
   .select("*")
   .eq("ancestor_id", person.mother_id)
 
-const mother = getMother.rows[0];
+const mother = getMother[0];
 
 //finds grandparents
 let pgrandfather = "";
@@ -107,13 +107,13 @@ if (father) {
     .select("*")
     .eq("ancestor_id", father.father_id)
 
-  pgrandfather = getpgrandfather.rows[0];
+  pgrandfather = getpgrandfather[0];
 
   const {data: getpgrandmother, error: getpgrandmotherError} = await supabase
     .from(`tree_${currentTree}`)
     .select("*")
     .eq("ancestor_id", father.mother_id)
-  pgrandmother = getpgrandmother.rows[0];
+  pgrandmother = getpgrandmother[0];
 }
 if (mother) {
   const {data: mgrandfather, error: mgrandfatherError} = await supabase
@@ -121,12 +121,12 @@ if (mother) {
     .select("*")
     .eq("ancestor_id", mother.father_id)
 
-  mgrandfather = getmgrandfather.rows[0];
+  mgrandfather = getmgrandfather[0];
   const {data: getmgrandmother, error: getmgrandmotherError} = await supabase
     .from(`tree_${currentTree}`)
     .select("*")
     .eq("ancestor_id", mother.mother_id)
-  mgrandmother = getmgrandmother.rows[0];
+  mgrandmother = getmgrandmother[0];
 }
 
 let newRelationNum = [];
@@ -143,7 +143,7 @@ if (childId === childDetails.id) {
     .select("*")
     .eq("ancestor_id", repeatParentId)
 
-  const currentRelationToUser = currentValue.rows[0].relation_to_user;
+  const currentRelationToUser = currentValue[0].relation_to_user;
 
   //appends the new relation_to_user to the old ones
   for (let i = 0; i < currentRelationToUser.length; i++) {
