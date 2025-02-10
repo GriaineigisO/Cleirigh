@@ -92,7 +92,7 @@ export default async function handler(req, res) {
       console.log(getPerson);
 
       if (getPersonError) {
-        console.error("Error fetching user:", getPersonError);
+        console.error(`Error fetching ${childId}:`, getPersonError);
         return res
           .status(500)
           .json({ error: "Database error", details: getPersonError });
@@ -290,14 +290,14 @@ export default async function handler(req, res) {
       }
       if (pgrandmother && father) {
         await recursivelyUpdateRelation(
-          mother,
+          father,
           pgrandmother.ancestor_id,
           "female"
         );
       }
       if (mgrandfather && mother) {
         await recursivelyUpdateRelation(
-          father,
+          mother,
           mgrandfather.ancestor_id,
           "male"
         );
