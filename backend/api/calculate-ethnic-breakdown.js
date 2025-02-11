@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     const ethnicityNameArray = [];
     const ethnicityPercentageArray = [];
 
-    console.log(`Querying ancestor ${currentAncestorId} in table tree_${currentTree}`);
+  
     // Query to get the current tree id
     const { data: user, error: userError } = await supabase
       .from("users")
@@ -59,6 +59,7 @@ export default async function handler(req, res) {
 
         console.log(currentAncestorId);
 
+        console.log(`Querying ancestor ${currentAncestorId} in table tree_${currentTree}`);
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
           .from(`tree_${currentTree}`)
