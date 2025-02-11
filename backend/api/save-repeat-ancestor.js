@@ -279,8 +279,9 @@ export default async function handler(req, res) {
               .from(`tree_${currentTree}`)
               .update({ relation_to_user: repeatAncestorRelationArray })
               .eq("ancestor_id", repeatParentId);
+              console.log(`${mother.first_name}'s array has been updated`)
         }
-        console.log(`${mother.first_name}'s array has been updated`)
+        
       }
 
       console.log("now for recursion!");

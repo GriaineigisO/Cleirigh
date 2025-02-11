@@ -87,7 +87,7 @@ const HandleFirstPerson = async () => {
   setTreeId(generatedTreeId);
 
   try {
-    const createTreeResponse = await fetch('https://cleirigh-backend.vercel.app/make-new-tree', {
+    const createTreeResponse = await fetch('https://cleirigh-backend.vercel.app/api/make-new-tree', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const HandleFirstPerson = async () => {
       throw new Error('Failed to create a new tree');
     }
 
-    const addPersonResponse = await fetch('https://cleirigh-backend.vercel.app/add-first-person', {
+    const addPersonResponse = await fetch('https://cleirigh-backend.vercel.app/api/add-first-person', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -122,7 +122,7 @@ const HandleFirstPerson = async () => {
       throw new Error('Failed to add the first person');
     }
 
-    const setCurrentTreeResponse = await fetch('https://cleirigh-backend.vercel.app/set-current-tree', {
+    const setCurrentTreeResponse = await fetch('https://cleirigh-backend.vercel.app/api/set-current-tree', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, treeId: generatedTreeId }),
