@@ -89,6 +89,9 @@ export default async function handler(req, res) {
       }
   
       const resultEthnicity = ethnicityMap.get(id) || {};
+      console.log(resultEthnicity)
+      console.log(Object.keys(resultEthnicity))
+      console.log(Object.values(resultEthnicity))
       res.json({
         ethnicityNameArray: Object.keys(resultEthnicity),
         ethnicityPercentageArray: Object.values(resultEthnicity),
