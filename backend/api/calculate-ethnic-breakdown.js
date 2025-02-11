@@ -70,21 +70,19 @@ export default async function handler(req, res) {
           continue;
         }
 
-        // Process dead-end ancestors
+        // Process dead-end ancestors (no changes to their ethnicity)
         if (!ancestorData.father_id && !ancestorData.mother_id) {
-          // Leave dead-end ancestors' ethnicity intact (no splitting)
-          const ethnicities = ancestorData.ethnicity.split("-"); // Only split if needed for multiple ethnicities
-          const percentage = 100 / ethnicities.length; // Even distribution for dead-end ancestors
+          const ethnicity = ancestorData.ethnicity; // Leave ethnicity intact for dead-end ancestors
+          const percentage = 100;
 
-          ethnicities.forEach((ethnicity) => {
-            if (!ethnicityNameArray.includes(ethnicity)) {
-              ethnicityNameArray.push(ethnicity);
-              ethnicityPercentageArray.push(percentage);
-            } else {
-              const index = ethnicityNameArray.indexOf(ethnicity);
-              ethnicityPercentageArray[index] += percentage;
-            }
-          });
+          // Add to ethnicityNameArray and ethnicityPercentageArray
+          if (!ethnicityNameArray.includes(ethnicity)) {
+            ethnicityNameArray.push(ethnicity);
+            ethnicityPercentageArray.push(percentage);
+          } else {
+            const index = ethnicityNameArray.indexOf(ethnicity);
+            ethnicityPercentageArray[index] += percentage;
+          }
         } else {
           // If parents exist, add them to the stack for processing
           if (
@@ -126,7 +124,7 @@ export default async function handler(req, res) {
 
     getAncestorData(id);
 
-    // Function to retrieve and split ethnicity for an ancestor
+    // Function to retrieve ethnicity for an ancestor
     async function getAncestorEthnicity(ancestorId) {
       const { data: ancestorData, error } = await supabase
         .from(`tree_${currentTree}`)
