@@ -91,6 +91,7 @@ const Profile = () => {
 
   const calculateEthnicBreakdown = async () => {
     const userId = localStorage.getItem("userId");
+    const idNumber = Number(id);
     const getEthnicity = await fetch(
       "https://cleirigh-backend.vercel.app/api/calculate-ethnic-breakdown",
       {
@@ -99,7 +100,7 @@ const Profile = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}`,
         },
-        body: JSON.stringify({ userId, id }),
+        body: JSON.stringify({ userId, idNumber }),
       }
     );
     const data = await getEthnicity.json();

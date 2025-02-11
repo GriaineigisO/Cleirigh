@@ -25,7 +25,9 @@ export default async function handler(req, res) {
   if (req.method !== "POST")
     return res.status(405).json({ error: "Method not allowed" });
   try {
-    const { userId, id } = req.body;
+    const { userId, idNumber } = req.body;
+
+    const id = idNumber;
 
     // Query to get the current tree id
     const { data: user, error: userError } = await supabase
@@ -100,9 +102,9 @@ export default async function handler(req, res) {
     console.log("ethnicityMap size:", ethnicityMap.size);
 
 
-    console.log("Result:", ethnicityMap.get(id));
+    console.log("Result:", ethnicityMap.get(Number(id)));
 
-    const resultEthnicity = ethnicityMap.get(id) || {};
+    const resultEthnicity = ethnicityMap.get(Number(id)) || {};
     console.log(resultEthnicity);
 
     res.json({
