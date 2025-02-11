@@ -69,11 +69,12 @@ export default async function handler(req, res) {
       return allData;
     }
 
+    let ancestorCount = "";
     (async () => {
       const data = await fetchAllRows();
 
       // Exclude the first row (base person)
-      const ancestorCount = data.length - 1;
+      ancestorCount = data.length - 1;
       console.log(ancestorCount);
     })();
 
