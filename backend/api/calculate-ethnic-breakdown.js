@@ -46,6 +46,7 @@ export default async function handler(req, res) {
 
     // Function to process the ethnicities iteratively
     async function getAncestorData(ancestorId) {
+      console.log("getting data")
 
       const stack = [ancestorId];
       const processedAncestors = new Set();
@@ -79,9 +80,12 @@ export default async function handler(req, res) {
           if (!ethnicityNameArray.includes(ethnicity)) {
             ethnicityNameArray.push(ethnicity);
             ethnicityPercentageArray.push(percentage);
+            console.log("dead end ethnicity", ethnicityNameArray)
+            console.log("dead end ethnicity percent", ethnicityPercentageArray)
           } else {
             const index = ethnicityNameArray.indexOf(ethnicity);
             ethnicityPercentageArray[index] += percentage;
+            console.log("else percentage array", ethnicityPercentageArray)
           }
         } else {
           // If parents exist, add them to the stack for processing
@@ -109,6 +113,8 @@ export default async function handler(req, res) {
             ? await getAncestorEthnicity(ancestorData.mother_id)
             : [];
 
+            console.log("fatherEthnicity", fatherEthnicity)
+            console.log("motherEthnicity", motherEthnicity)
           // Merge ethnicities and percentages
           mergeEthnicityData(
             fatherEthnicity,
@@ -147,6 +153,7 @@ export default async function handler(req, res) {
       ethnicityNameArray,
       ethnicityPercentageArray
     ) {
+      console.log("merging values")
       const combinedEthnicities = [...fatherEthnicity, ...motherEthnicity];
       const totalEthnicities = combinedEthnicities.length;
       const percentage = 100 / totalEthnicities;
@@ -155,6 +162,8 @@ export default async function handler(req, res) {
         if (!ethnicityNameArray.includes(ethnicity)) {
           ethnicityNameArray.push(ethnicity);
           ethnicityPercentageArray.push(percentage);
+          console.log("merged ethnicity array", ethnicityNameArray)
+          console.log("merged ethnic percent array", ethnicityPercentageArray)
         } else {
           const index = ethnicityNameArray.indexOf(ethnicity);
           ethnicityPercentageArray[index] += percentage;
