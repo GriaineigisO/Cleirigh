@@ -66,7 +66,7 @@ export default async function handler(req, res) {
         // Dead-end ancestor, assign full ethnicity
         ethnicityMap.set(childId, { [ethnicity]: 100 });
       } else {
-        console.log("else")
+        console.log("else");
         if (fatherId !== null && !ethnicityMap.has(fatherId)) {
           stack.push(fatherId);
           continue;
@@ -75,6 +75,11 @@ export default async function handler(req, res) {
           stack.push(motherId);
           continue;
         }
+
+        console.log("Father ID:", fatherId);
+        console.log("Mother ID:", motherId);
+        console.log("Father's ethnicity data:", ethnicityMap.get(fatherId));
+        console.log("Mother's ethnicity data:", ethnicityMap.get(motherId));
 
         const childEthnicity = {};
         const processParent = (parentId) => {
@@ -95,16 +100,12 @@ export default async function handler(req, res) {
         processParent(fatherId);
         processParent(motherId);
 
-        console.log("Father's ethnicity:", ethnicityMap.get(fatherId));
-    console.log("Mother's ethnicity:", ethnicityMap.get(motherId));
-
         console.log("Adding ethnicity for childId:", childId);
         console.log("Ethnicity being assigned:", childEthnicity);
 
         ethnicityMap.set(childId, childEthnicity);
       }
     }
-
 
     console.log("ethnicityMap:", ethnicityMap);
     console.log("Looking for id:", id);
