@@ -52,28 +52,17 @@ export default async function handler(req, res) {
       const stack = [ancestorId];
       const processedAncestors = new Set();
 
-      const currentAncestorId = stack.pop();
+      while (stack.length > 0) {
+        const currentAncestorId = stack.pop();
 
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
           .from(`tree_${currentTree}`)
           .select("*")
-          .eq("ancestor_id", currentAncestorId);      
+          .eq("ancestor_id", 142684);      
 
         console.log("Data:", data); // Check what data is returned
         console.log("Error:", error); // Check if there's any error
-
-      while (stack.length > 0) {
-        // const currentAncestorId = stack.pop();
-
-        // // Fetch current ancestor data
-        // const { data: ancestorData, error } = await supabase
-        //   .from(`tree_${currentTree}`)
-        //   .select("*")
-        //   .eq("ancestor_id", currentAncestorId);      
-
-        // console.log("Data:", data); // Check what data is returned
-        // console.log("Error:", error); // Check if there's any error
 
         console.log(ancestorData);
 
