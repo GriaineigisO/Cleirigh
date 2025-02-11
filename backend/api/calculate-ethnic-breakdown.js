@@ -123,11 +123,18 @@ export default async function handler(req, res) {
     }
 
     // Find the final ethnicity data for the given ID
+    // After calculating ethnicities and storing in ethnicityMap, check the content
     const resultEthnicity = ethnicityMap.get(id) || {};
 
+    // Check if resultEthnicity contains data
+    if (Object.keys(resultEthnicity).length === 0) {
+      console.log("No ethnicity data found for the given ancestor ID:", id);
+    }
+
+    // Send the final ethnicity data as arrays
     res.json({
-      ethnicityNameArray: Object.keys(resultEthnicity),
-      ethnicityPercentageArray: Object.values(resultEthnicity),
+      ethnicityNameArray: Object.keys(resultEthnicity), // Ethnicity names (keys of the map)
+      ethnicityPercentageArray: Object.values(resultEthnicity), // Corresponding percentages (values of the map)
     });
   } catch (error) {
     console.log("Error calculating ethnic breakdown:", error);
