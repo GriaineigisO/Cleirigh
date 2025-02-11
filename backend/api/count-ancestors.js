@@ -76,10 +76,9 @@ export default async function handler(req, res) {
       // Exclude the first row (base person)
       ancestorCount = data.length - 1;
       console.log(ancestorCount);
+      // Return the ancestor count in the response
+      res.json(ancestorCount);
     })();
-
-    // Return the ancestor count in the response
-    res.json(ancestorCount);
   } catch (error) {
     console.log("Error counting ancestors:", error);
     res.status(500).json({ error: "Failed to count ancestors." });
