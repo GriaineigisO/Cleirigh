@@ -48,7 +48,6 @@ export default async function handler(req, res) {
 
     while (stack.length > 0) {
       const childId = stack.pop();
-      console.log(childId)
 
       if (ethnicityMap.has(childId)) continue;
 
@@ -68,6 +67,7 @@ export default async function handler(req, res) {
         // Assign full ethnicity to dead-end ancestor
         ethnicityMap.set(childId, { [ethnicity]: 100 });
       } else {
+        console.log("1 this line is being read")
         // Check if we need to process the parents
         if (fatherId && !ethnicityMap.has(fatherId)) {
           stack.push(fatherId);
@@ -77,6 +77,8 @@ export default async function handler(req, res) {
           stack.push(motherId);
           continue;
         }
+
+        console.log("2 this line is being read")
 
         // Calculate ethnicity for this ancestor by averaging the ethnicities of the parents
         const childEthnicity = {};
@@ -93,6 +95,8 @@ export default async function handler(req, res) {
             }
           }
         };
+
+        console.log("3 this line is being read")
 
         // Process both parents' ethnicities if available
         processParent(fatherId);
