@@ -15,6 +15,13 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
   res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
+
+  // Handle OPTIONS method (for CORS preflight)
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+  
     try {
       const { userId, treeName, treeId } = req.body;
   
