@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
+// Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -31,6 +32,7 @@ export default async function handler(req, res) {
     const ethnicityNameArray = [];
     const ethnicityPercentageArray = [];
 
+    console.log(`Querying ancestor ${currentAncestorId} in table tree_${currentTree}`);
     // Query to get the current tree id
     const { data: user, error: userError } = await supabase
       .from("users")
@@ -43,7 +45,7 @@ export default async function handler(req, res) {
     }
 
     const currentTree = user.current_tree_id;
-    console.log("current tree", currentTree)
+    console.log("current tree", currentTree);
 
     // Function to process the ethnicities iteratively
     async function getAncestorData(ancestorId) {
