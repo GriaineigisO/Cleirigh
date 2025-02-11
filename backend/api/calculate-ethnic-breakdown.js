@@ -94,6 +94,9 @@ export default async function handler(req, res) {
         processParent(fatherId);
         processParent(motherId);
 
+        console.log("Father's ethnicity:", ethnicityMap.get(fatherId));
+    console.log("Mother's ethnicity:", ethnicityMap.get(motherId));
+
         console.log("Adding ethnicity for childId:", childId);
         console.log("Ethnicity being assigned:", childEthnicity);
 
@@ -101,8 +104,6 @@ export default async function handler(req, res) {
       }
     }
 
-    console.log("Father's ethnicity:", ethnicityMap.get(fatherId));
-    console.log("Mother's ethnicity:", ethnicityMap.get(motherId));
 
     console.log("ethnicityMap:", ethnicityMap);
     console.log("Looking for id:", id);
