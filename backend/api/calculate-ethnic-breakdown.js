@@ -164,8 +164,8 @@ export default async function handler(req, res) {
 
     // Send the final ethnicity data as arrays
     res.json({
-      ethnicityNameArray: Object.keys(resultEthnicity), // Ethnicity names (keys of the map)
-      ethnicityPercentageArray: Object.values(resultEthnicity), // Corresponding percentages (values of the map)
+      ethnicityNameArray: ethnicityNameArray,
+      ethnicityPercentageArray: ethnicityPercentageArray
     });
   } catch (error) {
     console.log("Error calculating ethnic breakdown:", error);
