@@ -287,6 +287,7 @@ export default async function handler(req, res) {
         );
       }
       if (pgrandmother && father) {
+        console.log(`pgrandmother ID: ${pgrandmother.ancestor_id}`);
         await recursivelyUpdateRelation(
           father,
           pgrandmother.ancestor_id,
