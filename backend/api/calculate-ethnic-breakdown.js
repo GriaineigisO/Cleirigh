@@ -57,28 +57,40 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
-      if (findParents.length === 0) continue;
+      console.log("findParents data:", findParents);
+
+      if (findParents.length === 0) {
+        console.log("No parents found for ancestor:", childId);
+        continue;
+      }
 
       const row = findParents[0];
       const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
+
+      console.log("Father ID:", fatherId);
+      console.log("Mother ID:", motherId);
 
       // If both father and mother are unknown, the ancestor is a dead-end
       if (fatherId === null && motherId === null) {
         // Assign full ethnicity to dead-end ancestor
         ethnicityMap.set(childId, { [ethnicity]: 100 });
+        console.log("Dead-end ancestor, ethnicity assigned:", ethnicity);
       } else {
-        console.log("1 this line is being read")
+        console.log("1 this line is being read");
+
         // Check if we need to process the parents
         if (fatherId && !ethnicityMap.has(fatherId)) {
+          console.log("Father not processed yet, adding to stack:", fatherId);
           stack.push(fatherId);
           continue;
         }
         if (motherId && !ethnicityMap.has(motherId)) {
+          console.log("Mother not processed yet, adding to stack:", motherId);
           stack.push(motherId);
           continue;
         }
 
-        console.log("2 this line is being read")
+        console.log("2 this line is being read");
 
         // Calculate ethnicity for this ancestor by averaging the ethnicities of the parents
         const childEthnicity = {};
@@ -86,7 +98,9 @@ export default async function handler(req, res) {
         const processParent = (parentId) => {
           if (parentId !== null) {
             const parentEthnicity = ethnicityMap.get(parentId) || {};
-            for (const [ethnicity, percentage] of Object.entries(parentEthnicity)) {
+            for (const [ethnicity, percentage] of Object.entries(
+              parentEthnicity
+            )) {
               if (childEthnicity[ethnicity] === undefined) {
                 childEthnicity[ethnicity] = percentage / 2;
               } else {
@@ -96,7 +110,7 @@ export default async function handler(req, res) {
           }
         };
 
-        console.log("3 this line is being read")
+        console.log("3 this line is being read");
 
         // Process both parents' ethnicities if available
         processParent(fatherId);
@@ -104,10 +118,9 @@ export default async function handler(req, res) {
 
         // Store the calculated ethnicity for the current ancestor
         ethnicityMap.set(childId, childEthnicity);
-        console.log("ethnicity map", ethnicityMap)
+        console.log("ethnicity map", ethnicityMap);
       }
     }
-
 
     // Find the final ethnicity data for the given ID
     const resultEthnicity = ethnicityMap.get(id) || {};
