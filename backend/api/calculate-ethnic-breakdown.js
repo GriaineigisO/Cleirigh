@@ -67,17 +67,19 @@ export default async function handler(req, res) {
         ethnicityMap.set(childId, { [ethnicity]: 100 });
       } else {
         console.log("else");
+        console.log("Father ID:", fatherId);
+        console.log("Mother ID:", motherId);
         if (fatherId !== null && !ethnicityMap.has(fatherId)) {
+          console.log("father!")
           stack.push(fatherId);
           continue;
         }
         if (motherId !== null && !ethnicityMap.has(motherId)) {
+          console.log("mother!")
           stack.push(motherId);
           continue;
         }
 
-        console.log("Father ID:", fatherId);
-        console.log("Mother ID:", motherId);
         console.log("Father's ethnicity data:", ethnicityMap.get(fatherId));
         console.log("Mother's ethnicity data:", ethnicityMap.get(motherId));
 
