@@ -56,17 +56,17 @@ export default async function handler(req, res) {
         const currentAncestorId = stack.pop();
 
         // Fetch current ancestor data
-        const { data: ancestorData, error } = await supabase
+        const { data: ancestorData, error: ancestorDataError } = await supabase
           .from(`tree_${currentTree}`)
           .select("*")
-          .eq("ancestor_id", 142684);      
+          .eq("ancestor_id", currentAncestorId);      
 
         console.log("Data:", data); // Check what data is returned
-        console.log("Error:", error); // Check if there's any error
+        console.log("Error:", ancestorDataError); // Check if there's any error
 
         console.log(ancestorData);
 
-        if (error) {
+        if (ancestorDataError) {
           console.error("Error fetching ancestor:", error);
           continue;
         }
