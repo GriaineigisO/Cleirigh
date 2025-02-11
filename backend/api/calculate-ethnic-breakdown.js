@@ -42,93 +42,126 @@ export default async function handler(req, res) {
 
     const currentTree = user.current_tree_id;
 
-    // Stack-based approach to replace recursion
-    const stack = [id];
-    const ethnicityMap = new Map();
+    // Function to process the ethnicities iteratively
+    async function getAncestorData(ancestorId) {
+      const ethnicityNameArray = [];
+      const ethnicityPercentageArray = [];
 
-    while (stack.length > 0) {
-      const childId = stack.pop();
+      const stack = [ancestorId];
+      const processedAncestors = new Set();
 
-      if (ethnicityMap.has(childId)) continue;
+      while (stack.length > 0) {
+        const currentAncestorId = stack.pop();
 
-      // Query to find parents of the current ancestor
-      const { data: findParents, error: findParentsError } = await supabase
-        .from(`tree_${currentTree}`)
-        .select("*")
-        .eq("ancestor_id", childId);
+        // Fetch current ancestor data
+        const { data: ancestorData, error } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("ancestor_id, ethnicity, father_id, mother_id")
+          .eq("ancestor_id", currentAncestorId)
+          .single();
 
-      console.log("findParents data:", findParents);
-
-      if (findParents.length === 0) {
-        console.log("No parents found for ancestor:", childId);
-        continue;
-      }
-
-      const row = findParents[0];
-      const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
-
-      console.log("Father ID:", fatherId);
-      console.log("Mother ID:", motherId);
-
-      // If both father and mother are unknown, the ancestor is a dead-end
-      if (fatherId === null && motherId === null) {
-        // Assign full ethnicity to dead-end ancestor
-        ethnicityMap.set(childId, { [ethnicity]: 100 });
-        console.log("Dead-end ancestor, ethnicity assigned:", ethnicity);
-      } else {
-        console.log("1 this line is being read");
-
-        // Check if we need to process the parents
-        if (fatherId && !ethnicityMap.has(fatherId)) {
-          console.log("Father not processed yet, adding to stack:", fatherId);
-          stack.push(fatherId);
-          continue;
-        }
-        if (motherId && !ethnicityMap.has(motherId)) {
-          console.log("Mother not processed yet, adding to stack:", motherId);
-          stack.push(motherId);
+        if (error) {
+          console.error("Error fetching ancestor:", error);
           continue;
         }
 
-        console.log("2 this line is being read");
+        if (!ancestorData) {
+          console.log(`Ancestor data not found for ID: ${currentAncestorId}`);
+          continue;
+        }
 
-        // Calculate ethnicity for this ancestor by averaging the ethnicities of the parents
-        const childEthnicity = {};
+        // Process dead-end ancestors
+        if (!ancestorData.father_id && !ancestorData.mother_id) {
+          // Leave dead-end ancestors' ethnicity intact (no splitting)
+          const ethnicities = ancestorData.ethnicity.split("-"); // Only split if needed for multiple ethnicities
+          const percentage = 100 / ethnicities.length; // Even distribution for dead-end ancestors
 
-        const processParent = (parentId) => {
-          if (parentId !== null) {
-            const parentEthnicity = ethnicityMap.get(parentId) || {};
-            for (const [ethnicity, percentage] of Object.entries(
-              parentEthnicity
-            )) {
-              if (childEthnicity[ethnicity] === undefined) {
-                childEthnicity[ethnicity] = percentage / 2;
-              } else {
-                childEthnicity[ethnicity] += percentage / 2;
-              }
+          ethnicities.forEach((ethnicity) => {
+            if (!ethnicityNameArray.includes(ethnicity)) {
+              ethnicityNameArray.push(ethnicity);
+              ethnicityPercentageArray.push(percentage);
+            } else {
+              const index = ethnicityNameArray.indexOf(ethnicity);
+              ethnicityPercentageArray[index] += percentage;
             }
+          });
+        } else {
+          // If parents exist, add them to the stack for processing
+          if (
+            ancestorData.father_id &&
+            !processedAncestors.has(ancestorData.father_id)
+          ) {
+            stack.push(ancestorData.father_id);
+            processedAncestors.add(ancestorData.father_id);
           }
-        };
 
-        console.log("3 this line is being read");
+          if (
+            ancestorData.mother_id &&
+            !processedAncestors.has(ancestorData.mother_id)
+          ) {
+            stack.push(ancestorData.mother_id);
+            processedAncestors.add(ancestorData.mother_id);
+          }
 
-        // Process both parents' ethnicities if available
-        processParent(fatherId);
-        processParent(motherId);
+          // Combine ethnicity from the father and mother
+          const fatherEthnicity = ancestorData.father_id
+            ? await getAncestorEthnicity(ancestorData.father_id)
+            : [];
+          const motherEthnicity = ancestorData.mother_id
+            ? await getAncestorEthnicity(ancestorData.mother_id)
+            : [];
 
-        // Store the calculated ethnicity for the current ancestor
-        ethnicityMap.set(childId, childEthnicity);
-        console.log("ethnicity map", ethnicityMap);
+          // Merge ethnicities and percentages
+          mergeEthnicityData(
+            fatherEthnicity,
+            motherEthnicity,
+            ethnicityNameArray,
+            ethnicityPercentageArray
+          );
+        }
       }
+
+      return { ethnicityNameArray, ethnicityPercentageArray };
     }
 
-    // Find the final ethnicity data for the given ID
-    // After calculating ethnicities and storing in ethnicityMap, check the content
-    const resultEthnicity = ethnicityMap.get(id) || {};
+    getAncestorData(id);
 
-    // Check if resultEthnicity contains data
-    if (Object.keys(resultEthnicity).length === 0) {
-      console.log("No ethnicity data found for the given ancestor ID:", id);
+    // Function to retrieve and split ethnicity for an ancestor
+    async function getAncestorEthnicity(ancestorId) {
+      const { data: ancestorData, error } = await supabase
+        .from(`tree_${currentTree}`)
+        .select("ethnicity")
+        .eq("ancestor_id", ancestorId)
+        .single();
+
+      if (error || !ancestorData) {
+        console.error("Error fetching ancestor ethnicity:", error);
+        return [];
+      }
+
+      return ancestorData.ethnicity.split("-"); // Split combined ethnicities if needed
+    }
+
+    // Function to merge two ethnicity data arrays (father and mother)
+    function mergeEthnicityData(
+      fatherEthnicity,
+      motherEthnicity,
+      ethnicityNameArray,
+      ethnicityPercentageArray
+    ) {
+      const combinedEthnicities = [...fatherEthnicity, ...motherEthnicity];
+      const totalEthnicities = combinedEthnicities.length;
+      const percentage = 100 / totalEthnicities;
+
+      combinedEthnicities.forEach((ethnicity) => {
+        if (!ethnicityNameArray.includes(ethnicity)) {
+          ethnicityNameArray.push(ethnicity);
+          ethnicityPercentageArray.push(percentage);
+        } else {
+          const index = ethnicityNameArray.indexOf(ethnicity);
+          ethnicityPercentageArray[index] += percentage;
+        }
+      });
     }
 
     // Send the final ethnicity data as arrays
