@@ -45,17 +45,14 @@ export default async function handler(req, res) {
     }
 
     const currentTree = user.current_tree_id;
-    console.log("current tree", currentTree);
 
     // Function to process the ethnicities iteratively
     async function getAncestorData(ancestorId) {
-      console.log("getting data");
 
       const stack = [ancestorId];
       const processedAncestors = new Set();
 
-      while (stack.length > 0) {
-        const currentAncestorId = stack.pop();
+      const currentAncestorId = stack.pop();
 
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
@@ -65,6 +62,18 @@ export default async function handler(req, res) {
 
         console.log("Data:", data); // Check what data is returned
         console.log("Error:", error); // Check if there's any error
+
+      while (stack.length > 0) {
+        // const currentAncestorId = stack.pop();
+
+        // // Fetch current ancestor data
+        // const { data: ancestorData, error } = await supabase
+        //   .from(`tree_${currentTree}`)
+        //   .select("*")
+        //   .eq("ancestor_id", currentAncestorId);      
+
+        // console.log("Data:", data); // Check what data is returned
+        // console.log("Error:", error); // Check if there's any error
 
         console.log(ancestorData);
 
