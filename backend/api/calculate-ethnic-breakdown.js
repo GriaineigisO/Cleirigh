@@ -22,83 +22,95 @@ export default async function handler(req, res) {
   );
 
   if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-    try {
-      const { userId, id } = req.body;
-  
-      // Query to get the current tree id
-      const { data: user, error: userError } = await supabase
-        .from('users')
-        .select('current_tree_id')
-        .eq('id', userId)
-        .single();
-  
-      if (userError) {
-        throw new Error(userError.message);
-      }
-  
-      const currentTree = user.current_tree_id;
-  
-      // Stack-based approach to replace recursion
-      const stack = [id];
-      const ethnicityMap = new Map();
-  
-      while (stack.length > 0) {
-        const childId = stack.pop();
-        if (ethnicityMap.has(childId)) continue;
-  
-        const { data: findParents, error: findParentsError } = await supabase
-            .from(`tree_${currentTree}`)
-            .select("*")
-            .eq("ancestor_id", childId)
-  
-        if (findParents.length === 0) continue;
-  
-        const row = findParents[0];
-        const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
-  
-        if (fatherId === null && motherId === null) {
-          // Dead-end ancestor, assign full ethnicity
-          ethnicityMap.set(childId, { [ethnicity]: 100 });
-        } else {
-          if (fatherId !== null && !ethnicityMap.has(fatherId)) {
-            stack.push(fatherId);
-            continue;
-          }
-          if (motherId !== null && !ethnicityMap.has(motherId)) {
-            stack.push(motherId);
-            continue;
-          }
-  
-          const childEthnicity = {};
-          const processParent = (parentId) => {
-            if (parentId !== null) {
-              const parentEthnicity = ethnicityMap.get(parentId) || {};
-              for (const [ethnicity, percentage] of Object.entries(parentEthnicity)) {
-                childEthnicity[ethnicity] =
-                  (childEthnicity[ethnicity] || 0) + percentage / 2;
-              }
-            }
-          };
-  
-          processParent(fatherId);
-          processParent(motherId);
-  
-          ethnicityMap.set(childId, childEthnicity);
-        }
-      }
-  
-      const resultEthnicity = ethnicityMap.get(id) || {};
-      console.log(resultEthnicity)
-      console.log(Object.keys(resultEthnicity))
-      console.log(Object.values(resultEthnicity))
-      res.json({
-        ethnicityNameArray: Object.keys(resultEthnicity),
-        ethnicityPercentageArray: Object.values(resultEthnicity),
-      });
-    } catch (error) {
-      console.log("Error calculating ethnic breakdown:", error);
-      res.status(500).json({ error: "Internal server error" });
+  if (req.method !== "POST")
+    return res.status(405).json({ error: "Method not allowed" });
+  try {
+    const { userId, id } = req.body;
+
+    // Query to get the current tree id
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("current_tree_id")
+      .eq("id", userId)
+      .single();
+
+    if (userError) {
+      throw new Error(userError.message);
     }
-  };
-  
+
+    const currentTree = user.current_tree_id;
+
+    // Stack-based approach to replace recursion
+    const stack = [id];
+    const ethnicityMap = new Map();
+
+    while (stack.length > 0) {
+      const childId = stack.pop();
+      if (ethnicityMap.has(childId)) continue;
+
+      const { data: findParents, error: findParentsError } = await supabase
+        .from(`tree_${currentTree}`)
+        .select("*")
+        .eq("ancestor_id", childId);
+
+      if (findParents.length === 0) continue;
+
+      const row = findParents[0];
+      const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
+
+      if (fatherId === null && motherId === null) {
+        // Dead-end ancestor, assign full ethnicity
+        ethnicityMap.set(childId, { [ethnicity]: 100 });
+      } else {
+        if (fatherId !== null && !ethnicityMap.has(fatherId)) {
+          stack.push(fatherId);
+          continue;
+        }
+        if (motherId !== null && !ethnicityMap.has(motherId)) {
+          stack.push(motherId);
+          continue;
+        }
+
+        const childEthnicity = {};
+        const processParent = (parentId) => {
+          if (parentId !== null) {
+            const parentEthnicity = ethnicityMap.get(parentId) || {};
+            for (const [ethnicity, percentage] of Object.entries(
+              parentEthnicity
+            )) {
+              childEthnicity[ethnicity] =
+                (childEthnicity[ethnicity] || 0) + percentage / 2;
+            }
+          }
+        };
+
+        processParent(fatherId);
+        processParent(motherId);
+
+        ethnicityMap.set(childId, childEthnicity);
+      }
+    }
+
+    console.log("ethnicityMap:", ethnicityMap);
+    console.log("Looking for id:", id);
+
+    console.log("Available keys in ethnicityMap:", [...ethnicityMap.keys()]);
+    console.log("Type of id:", typeof id);
+
+    console.log("ethnicityMap size:", ethnicityMap.size);
+
+
+    console.log("Result:", ethnicityMap.get(id));
+
+    const resultEthnicity = ethnicityMap.get(id) || {};
+    console.log(resultEthnicity);
+
+    res.json({
+      ethnicityNameArray: Object.keys(resultEthnicity),
+      ethnicityPercentageArray: Object.values(resultEthnicity),
+    });
+  } catch (error) {
+    console.log("Error calculating ethnic breakdown:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}

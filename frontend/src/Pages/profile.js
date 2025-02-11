@@ -103,9 +103,7 @@ const Profile = () => {
       }
     );
     const data = await getEthnicity.json();
-    if (data.ethnicityNameArray.length === 0) {
-      console.log(data.ethnicityNameArray)
-      console.log(data.ethnicityPercentageArray)
+    if (ethnicityNameArray.length === 0) {
       setEthnicityNameArray((prev) => [...prev, data.ethnicityNameArray]);
       setEthnicityPercentageArray((prev) => [
         ...prev,
