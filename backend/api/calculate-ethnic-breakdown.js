@@ -24,6 +24,7 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST")
     return res.status(405).json({ error: "Method not allowed" });
+
   try {
     const { userId, idNumber } = req.body;
     const id = idNumber;
@@ -46,12 +47,11 @@ export default async function handler(req, res) {
     const ethnicityMap = new Map();
 
     while (stack.length > 0) {
-      console.log("Current stack:", stack);
       const childId = stack.pop();
-      console.log("Processing childId:", childId);
 
       if (ethnicityMap.has(childId)) continue;
 
+      // Query to find parents of the current ancestor
       const { data: findParents, error: findParentsError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
@@ -62,56 +62,28 @@ export default async function handler(req, res) {
       const row = findParents[0];
       const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
 
-      console.log("Fetched row data:", row);
-      console.log(
-        "Father ID:",
-        fatherId,
-        "Mother ID:",
-        motherId,
-        "Ethnicity:",
-        ethnicity
-      );
-
+      // If both father and mother are unknown, the ancestor is a dead-end
       if (fatherId === null && motherId === null) {
-        // Dead-end ancestor, assign full ethnicity
+        // Assign full ethnicity to dead-end ancestor
         ethnicityMap.set(childId, { [ethnicity]: 100 });
       } else {
-        console.log("Both parents exist, checking ethnicityMap...");
-        console.log(
-          "Father ID exists in ethnicityMap?",
-          ethnicityMap.has(fatherId)
-        );
-        console.log(
-          "Mother ID exists in ethnicityMap?",
-          ethnicityMap.has(motherId)
-        );
-
-        if (fatherId !== null && !ethnicityMap.has(fatherId)) {
-          console.log("Father not processed, adding to stack");
+        // Check if we need to process the parents
+        if (fatherId && !ethnicityMap.has(fatherId)) {
           stack.push(fatherId);
           continue;
         }
-        if (motherId !== null && !ethnicityMap.has(motherId)) {
-          console.log("Mother not processed, adding to stack");
+        if (motherId && !ethnicityMap.has(motherId)) {
           stack.push(motherId);
           continue;
         }
 
-        console.log("Father's ethnicity data:", ethnicityMap.get(fatherId));
-        console.log("Mother's ethnicity data:", ethnicityMap.get(motherId));
-
+        // Calculate ethnicity for this ancestor by averaging the ethnicities of the parents
         const childEthnicity = {};
+
         const processParent = (parentId) => {
           if (parentId !== null) {
-            const parentEthnicity = ethnicityMap[parentId] || {}; // Use bracket notation for objects
-            console.log(
-              "Processing parent ethnicity for parentId:",
-              parentId,
-              parentEthnicity
-            );
-            for (const [ethnicity, percentage] of Object.entries(
-              parentEthnicity
-            )) {
+            const parentEthnicity = ethnicityMap.get(parentId) || {};
+            for (const [ethnicity, percentage] of Object.entries(parentEthnicity)) {
               if (childEthnicity[ethnicity] === undefined) {
                 childEthnicity[ethnicity] = percentage / 2;
               } else {
@@ -119,32 +91,19 @@ export default async function handler(req, res) {
               }
             }
           }
-          ethnicityMap[parentId] = fetchedData.ethnicity; // Store the ethnicity data
         };
 
+        // Process both parents' ethnicities if available
         processParent(fatherId);
         processParent(motherId);
 
-        console.log("Adding ethnicity for childId:", childId);
-        console.log("Ethnicity being assigned:", childEthnicity);
-
+        // Store the calculated ethnicity for the current ancestor
         ethnicityMap.set(childId, childEthnicity);
-        console.log("Updated ethnicityMap:", ethnicityMap);
       }
     }
 
-    console.log("Final ethnicityMap:", ethnicityMap);
-    console.log("Looking for id:", id);
-
-    console.log("Available keys in ethnicityMap:", [...ethnicityMap.keys()]);
-    console.log("Type of id:", typeof id);
-
-    console.log("ethnicityMap size:", ethnicityMap.size);
-
-    console.log("Result for id:", id, ethnicityMap.get(Number(id)));
-
+    // Find the final ethnicity data for the given ID
     const resultEthnicity = ethnicityMap.get(Number(id)) || {};
-    console.log("Final resultEthnicity:", resultEthnicity);
 
     res.json({
       ethnicityNameArray: Object.keys(resultEthnicity),
