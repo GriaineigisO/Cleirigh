@@ -57,20 +57,11 @@ export default async function handler(req, res) {
       while (stack.length > 0) {
         const currentAncestorId = stack.pop();
 
-        console.log(currentAncestorId);
-
-        console.log(`Querying ancestor ${currentAncestorId} in table tree_${currentTree}`);
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
           .from(`tree_${currentTree}`)
           .select("*")
-          .eq("ancestor_id", currentAncestorId)
-          .single();
-
-          process.on("unhandledRejection", (error) => {
-            console.log("Unhandled Rejection:", error);
-          });
-          
+          .eq("ancestor_id", currentAncestorId);      
 
         console.log("Data:", data); // Check what data is returned
         console.log("Error:", error); // Check if there's any error
