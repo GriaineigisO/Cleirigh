@@ -66,6 +66,7 @@ export default async function handler(req, res) {
         // Dead-end ancestor, assign full ethnicity
         ethnicityMap.set(childId, { [ethnicity]: 100 });
       } else {
+        console.log("else")
         if (fatherId !== null && !ethnicityMap.has(fatherId)) {
           stack.push(fatherId);
           continue;
