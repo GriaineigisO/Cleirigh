@@ -48,6 +48,7 @@ export default async function handler(req, res) {
 
     while (stack.length > 0) {
       const childId = stack.pop();
+      console.log(childId)
       if (ethnicityMap.has(childId)) continue;
 
       const { data: findParents, error: findParentsError } = await supabase
