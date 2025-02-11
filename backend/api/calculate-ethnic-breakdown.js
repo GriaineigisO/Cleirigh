@@ -67,6 +67,11 @@ export default async function handler(req, res) {
           .eq("ancestor_id", currentAncestorId)
           .single();
 
+          process.on("unhandledRejection", (error) => {
+            console.log("Unhandled Rejection:", error);
+          });
+          
+
         console.log("Data:", data); // Check what data is returned
         console.log("Error:", error); // Check if there's any error
 
