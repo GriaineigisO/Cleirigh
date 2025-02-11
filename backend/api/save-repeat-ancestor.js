@@ -74,9 +74,6 @@ export default async function handler(req, res) {
         .eq("ancestor_id", repeatParentId)
         .single();
 
-      if (currentValue) {
-        newRelationNum = [...newRelationNum, ...currentValue.relation_to_user];
-      }
 
       await supabase
         .from(`tree_${currentTree}`)
