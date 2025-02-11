@@ -157,7 +157,7 @@ export default async function handler(req, res) {
               .select("*")
               .eq("ancestor_id", father.mother_id);
           pgrandmother = getpgrandmother[0];
-          console.log(`pgrandmother is next`)
+          console.log(`pgrandmother is next`);
           console.log(pgrandmother);
         }
       }
@@ -239,7 +239,9 @@ export default async function handler(req, res) {
               );
             }
           }
-
+          console.log(
+            `new repeat ancestor array for ${father.first_name}: ${repeatAncestorRelationArray}`
+          );
           console.log("here line 185");
           //this new array is then added to the repeat ancestor's relation_to_user column
           const { data: addNewRelationNum, error: addNewRelationNumError } =
@@ -267,6 +269,9 @@ export default async function handler(req, res) {
               );
             }
           }
+          console.log(
+            `new repeat ancestor array for ${mother.first_name}: ${repeatAncestorRelationArray}`
+          );
           console.log("here line 212");
           //this new array is then added to the repeat ancestor's relation_to_user column
           const { data: addNewRelationNum, error: addNewRelationNumError } =
@@ -275,6 +280,7 @@ export default async function handler(req, res) {
               .update({ relation_to_user: repeatAncestorRelationArray })
               .eq("ancestor_id", repeatParentId);
         }
+        console.log(`${mother.first_name}'s array has been updated`)
       }
 
       console.log("now for recursion!");
