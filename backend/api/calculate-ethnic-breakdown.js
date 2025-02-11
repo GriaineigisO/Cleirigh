@@ -51,8 +51,13 @@ export default async function handler(req, res) {
       const stack = [ancestorId];
       const processedAncestors = new Set();
 
+      console.log(stack)
+
       while (stack.length > 0) {
+
         const currentAncestorId = stack.pop();
+
+        console.log(currentAncestorId)
 
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
