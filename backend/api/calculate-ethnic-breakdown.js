@@ -28,6 +28,8 @@ export default async function handler(req, res) {
   try {
     const { userId, idNumber } = req.body;
     const id = idNumber;
+    const ethnicityNameArray = [];
+    const ethnicityPercentageArray = [];
 
     // Query to get the current tree id
     const { data: user, error: userError } = await supabase
@@ -44,8 +46,6 @@ export default async function handler(req, res) {
 
     // Function to process the ethnicities iteratively
     async function getAncestorData(ancestorId) {
-      const ethnicityNameArray = [];
-      const ethnicityPercentageArray = [];
 
       const stack = [ancestorId];
       const processedAncestors = new Set();
