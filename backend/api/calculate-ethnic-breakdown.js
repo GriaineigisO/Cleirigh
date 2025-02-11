@@ -26,13 +26,18 @@ export default async function handler(req, res) {
     try {
       const { userId, id } = req.body;
   
-      // Query to get the current tree
-      const getCurrentTreeId = await pool.query(
-        "SELECT current_tree_id FROM users WHERE id = $1",
-        [userId]
-      );
+      // Query to get the current tree id
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('current_tree_id')
+        .eq('id', userId)
+        .single();
   
-      const currentTree = getCurrentTreeId.rows[0].current_tree_id;
+      if (userError) {
+        throw new Error(userError.message);
+      }
+  
+      const currentTree = user.current_tree_id;
   
       // Stack-based approach to replace recursion
       const stack = [id];
@@ -42,10 +47,10 @@ export default async function handler(req, res) {
         const childId = stack.pop();
         if (ethnicityMap.has(childId)) continue;
   
-        const findParents = await pool.query(
-          `SELECT * FROM tree_${currentTree} WHERE ancestor_id = $1`,
-          [childId]
-        );
+        const { data: findParents, error: findParentsError } = await supabase
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("ancestor_id", childId)
   
         if (findParents.rows.length === 0) continue;
   
