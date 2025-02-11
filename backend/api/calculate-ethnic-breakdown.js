@@ -66,6 +66,8 @@ export default async function handler(req, res) {
           .eq("ancestor_id", currentAncestorId)
           .single();
 
+          console.log(ancestorData)
+
         if (error) {
           console.error("Error fetching ancestor:", error);
           continue;
