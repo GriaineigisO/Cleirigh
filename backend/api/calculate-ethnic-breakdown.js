@@ -47,6 +47,7 @@ export default async function handler(req, res) {
     const ethnicityMap = new Map();
 
     while (stack.length > 0) {
+        console.log(stack)
       const childId = stack.pop();
       console.log(childId)
       if (ethnicityMap.has(childId)) continue;
