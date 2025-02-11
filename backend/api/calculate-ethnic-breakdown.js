@@ -52,9 +52,9 @@ export default async function handler(req, res) {
             .select("*")
             .eq("ancestor_id", childId)
   
-        if (findParents.rows.length === 0) continue;
+        if (findParents.length === 0) continue;
   
-        const row = findParents.rows[0];
+        const row = findParents[0];
         const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
   
         if (fatherId === null && motherId === null) {
