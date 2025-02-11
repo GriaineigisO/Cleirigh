@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       while (stack.length > 0) {
         const currentAncestorId = stack.pop();
 
-        // Fetch current ancestor data
+        // Fetch current ancestor  FIGURE OUT WHY THIS QUERY WILL NOT RUN. NO CODE AFTER THIS RUNS
         const { data: ancestorData, error: ancestorDataError } = await supabase
           .from(`tree_${currentTree}`)
           .select("*")
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
         console.log(ancestorData);
 
         if (ancestorDataError) {
-          console.error("Error fetching ancestor:", error);
+          console.error("Error fetching ancestor:", ancestorDataError);
           continue;
         }
 

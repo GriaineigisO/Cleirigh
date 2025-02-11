@@ -45,6 +45,7 @@ export default async function handler(req, res) {
 
     // Exclude the first row (base person)
     const ancestorCount = data.length - 1;
+    console.log(ancestorCount)
 
     // Return the ancestor count in the response
     res.json( ancestorCount );
