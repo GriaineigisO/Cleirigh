@@ -37,7 +37,8 @@ export default async function handler(req, res) {
     // Fetch all rows from the tree_{currentTree} table
     const { data, error } = await supabase
       .from(treeTableName)
-      .select('*'); 
+      .select('*')
+      .range(0, 100000);
 
     if (error) {
       throw new Error(error.message);
