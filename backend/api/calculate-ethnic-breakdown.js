@@ -51,8 +51,6 @@ export default async function handler(req, res) {
       const stack = [ancestorId];
       const processedAncestors = new Set();
 
-      console.log(stack)
-
       while (stack.length > 0) {
 
         const currentAncestorId = stack.pop();
@@ -62,7 +60,7 @@ export default async function handler(req, res) {
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
           .from(`tree_${currentTree}`)
-          .select("ancestor_id, ethnicity, father_id, mother_id")
+          .select("*")
           .eq("ancestor_id", currentAncestorId)
           .single();
 
