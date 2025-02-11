@@ -43,19 +43,19 @@ export default async function handler(req, res) {
     }
 
     const currentTree = user.current_tree_id;
+    console.log("current tree", currentTree)
 
     // Function to process the ethnicities iteratively
     async function getAncestorData(ancestorId) {
-      console.log("getting data")
+      console.log("getting data");
 
       const stack = [ancestorId];
       const processedAncestors = new Set();
 
       while (stack.length > 0) {
-
         const currentAncestorId = stack.pop();
 
-        console.log(currentAncestorId)
+        console.log(currentAncestorId);
 
         // Fetch current ancestor data
         const { data: ancestorData, error } = await supabase
@@ -64,7 +64,10 @@ export default async function handler(req, res) {
           .eq("ancestor_id", currentAncestorId)
           .single();
 
-          console.log(ancestorData)
+        console.log("Data:", data); // Check what data is returned
+        console.log("Error:", error); // Check if there's any error
+
+        console.log(ancestorData);
 
         if (error) {
           console.error("Error fetching ancestor:", error);
@@ -85,12 +88,12 @@ export default async function handler(req, res) {
           if (!ethnicityNameArray.includes(ethnicity)) {
             ethnicityNameArray.push(ethnicity);
             ethnicityPercentageArray.push(percentage);
-            console.log("dead end ethnicity", ethnicityNameArray)
-            console.log("dead end ethnicity percent", ethnicityPercentageArray)
+            console.log("dead end ethnicity", ethnicityNameArray);
+            console.log("dead end ethnicity percent", ethnicityPercentageArray);
           } else {
             const index = ethnicityNameArray.indexOf(ethnicity);
             ethnicityPercentageArray[index] += percentage;
-            console.log("else percentage array", ethnicityPercentageArray)
+            console.log("else percentage array", ethnicityPercentageArray);
           }
         } else {
           // If parents exist, add them to the stack for processing
@@ -118,8 +121,8 @@ export default async function handler(req, res) {
             ? await getAncestorEthnicity(ancestorData.mother_id)
             : [];
 
-            console.log("fatherEthnicity", fatherEthnicity)
-            console.log("motherEthnicity", motherEthnicity)
+          console.log("fatherEthnicity", fatherEthnicity);
+          console.log("motherEthnicity", motherEthnicity);
           // Merge ethnicities and percentages
           mergeEthnicityData(
             fatherEthnicity,
@@ -158,7 +161,7 @@ export default async function handler(req, res) {
       ethnicityNameArray,
       ethnicityPercentageArray
     ) {
-      console.log("merging values")
+      console.log("merging values");
       const combinedEthnicities = [...fatherEthnicity, ...motherEthnicity];
       const totalEthnicities = combinedEthnicities.length;
       const percentage = 100 / totalEthnicities;
@@ -167,8 +170,8 @@ export default async function handler(req, res) {
         if (!ethnicityNameArray.includes(ethnicity)) {
           ethnicityNameArray.push(ethnicity);
           ethnicityPercentageArray.push(percentage);
-          console.log("merged ethnicity array", ethnicityNameArray)
-          console.log("merged ethnic percent array", ethnicityPercentageArray)
+          console.log("merged ethnicity array", ethnicityNameArray);
+          console.log("merged ethnic percent array", ethnicityPercentageArray);
         } else {
           const index = ethnicityNameArray.indexOf(ethnicity);
           ethnicityPercentageArray[index] += percentage;
@@ -179,7 +182,7 @@ export default async function handler(req, res) {
     // Send the final ethnicity data as arrays
     res.json({
       ethnicityNameArray: ethnicityNameArray,
-      ethnicityPercentageArray: ethnicityPercentageArray
+      ethnicityPercentageArray: ethnicityPercentageArray,
     });
   } catch (error) {
     console.log("Error calculating ethnic breakdown:", error);
