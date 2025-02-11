@@ -469,7 +469,7 @@ const HomePageWithTree = () => {
                 <p className="homePageDivLabel">
                   Number of ancestors in the tree
                 </p>
-                <p className="homePageDivContent">{numOfAncestors}</p>
+                <p className="homePageDivContent">{numOfAncestors.toLocaleString()}</p>
               </div>
 
               <div className="homePageDiv">
