@@ -62,6 +62,9 @@ export default async function handler(req, res) {
       const row = findParents[0];
       const { father_id: fatherId, mother_id: motherId, ethnicity } = row;
 
+      console.log("Fetched row data:", row);
+      console.log("Father ID:", fatherId, "Mother ID:", motherId, "Ethnicity:", ethnicity);
+
       if (fatherId === null && motherId === null) {
         // Dead-end ancestor, assign full ethnicity
         ethnicityMap.set(childId, { [ethnicity]: 100 });
