@@ -47,9 +47,9 @@ export default async function handler(req, res) {
     const ethnicityMap = new Map();
 
     while (stack.length > 0) {
-        console.log(stack)
+      console.log(stack);
       const childId = stack.pop();
-      console.log(childId)
+      console.log(childId);
       if (ethnicityMap.has(childId)) continue;
 
       const { data: findParents, error: findParentsError } = await supabase
@@ -82,8 +82,11 @@ export default async function handler(req, res) {
             for (const [ethnicity, percentage] of Object.entries(
               parentEthnicity
             )) {
-              childEthnicity[ethnicity] =
-                (childEthnicity[ethnicity] || 0) + percentage / 2;
+              if (childEthnicity[ethnicity] === undefined) {
+                childEthnicity[ethnicity] = percentage / 2;
+              } else {
+                childEthnicity[ethnicity] += percentage / 2;
+              }
             }
           }
         };
@@ -91,9 +94,15 @@ export default async function handler(req, res) {
         processParent(fatherId);
         processParent(motherId);
 
+        console.log("Adding ethnicity for childId:", childId);
+        console.log("Ethnicity being assigned:", childEthnicity);
+
         ethnicityMap.set(childId, childEthnicity);
       }
     }
+
+    console.log("Father's ethnicity:", ethnicityMap.get(fatherId));
+    console.log("Mother's ethnicity:", ethnicityMap.get(motherId));
 
     console.log("ethnicityMap:", ethnicityMap);
     console.log("Looking for id:", id);
@@ -102,7 +111,6 @@ export default async function handler(req, res) {
     console.log("Type of id:", typeof id);
 
     console.log("ethnicityMap size:", ethnicityMap.size);
-
 
     console.log("Result:", ethnicityMap.get(Number(id)));
 
