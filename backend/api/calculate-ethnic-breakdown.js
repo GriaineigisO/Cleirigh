@@ -48,6 +48,7 @@ export default async function handler(req, res) {
 
     while (stack.length > 0) {
       const childId = stack.pop();
+      console.log(childId)
 
       if (ethnicityMap.has(childId)) continue;
 
@@ -99,11 +100,13 @@ export default async function handler(req, res) {
 
         // Store the calculated ethnicity for the current ancestor
         ethnicityMap.set(childId, childEthnicity);
+        console.log("ethnicity map", ethnicityMap)
       }
     }
 
+
     // Find the final ethnicity data for the given ID
-    const resultEthnicity = ethnicityMap.get(Number(id)) || {};
+    const resultEthnicity = ethnicityMap.get(id) || {};
 
     res.json({
       ethnicityNameArray: Object.keys(resultEthnicity),
