@@ -78,6 +78,7 @@ export default async function handler(req, res) {
 
       //increments child's relation_to_user by one and then assigns it to child's parent
       //let repeatAncestorRelationArray = person.relation_to_user.map((num) => num + 1);
+      let repeatAncestorRelationArray = [];
       if (sex === "male") { //determine if user descends from more than one of repeat ancestor's children
 
         const {data: findOtherChildren, findOtherChildrenError} = await supabase   
