@@ -74,11 +74,15 @@ export default async function handler(req, res) {
         .eq("ancestor_id", repeatParentId)
         .single();
 
-
-      await supabase
+      console.log("repeat parent id:", repeatParentId)
+      const { data: updateRepeatParentRelation, error: updateRepeatParentRelationError } = await supabase
         .from(`tree_${currentTree}`)
         .update({ relation_to_user: newRelationNum })
         .eq("ancestor_id", repeatParentId);
+
+        if (updateRepeatParentRelationError) {
+          console.error(updateRepeatParentRelationError)
+        }
 
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
