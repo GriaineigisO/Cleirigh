@@ -2975,7 +2975,7 @@ const FamilyTree = () => {
               ></input>
               <button
                 onClick={() =>
-                  saveRepeatAncestor(childDetails, repeatAncestorProfileNum)
+                  saveRepeatAncestor(childDetails, Number(repeatAncestorProfileNum))
                 }
               >
                 Select
