@@ -76,17 +76,17 @@ export default async function handler(req, res) {
         .eq("ancestor_id", repeatParentId)
         .single();
 
-      console.log("next should be object")
-      console.log(typeof newRelationNum);
+        const formattedArray = `{${newRelationNum.join(",")}}`
+
       const {
         data: updateRepeatParentRelation,
         error: updateRepeatParentRelationError,
       } = await supabase
         .from(`tree_${currentTree}`)
-        .update({ relation_to_user: newRelationNum })
+        .update({ relation_to_user: formattedArray })
         .eq("ancestor_id", repeatParentId);
 
-      console.log("updateRepeatParentRelation", updateRepeatParentRelation);
+      console.log("updateRepeatParentRelation:", updateRepeatParentRelation);
 
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
