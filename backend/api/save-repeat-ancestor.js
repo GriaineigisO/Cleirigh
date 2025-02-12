@@ -83,7 +83,7 @@ export default async function handler(req, res) {
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
       if (person.mother_id) parents.push({ id: person.mother_id, sex: "female" });
-      console.log(parent)
+      console.log(parents)
 
       
       for (let parent of parents) {
