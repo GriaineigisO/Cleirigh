@@ -82,6 +82,7 @@ export default async function handler(req, res) {
         .select("relation_to_user")
         .eq("ancestor_id", repeatParentId);
 
+        console.log("Next")
       console.log(data, error); // Returned null
 
       console.log(newRelationNum);
