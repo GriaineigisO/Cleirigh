@@ -2791,7 +2791,7 @@ const FamilyTree = () => {
           body: JSON.stringify({ userId, personID, pageNumber }),
         });
       }
-
+      repeatAncestorId = Number(repeatAncestorId);
       const userId = localStorage.getItem("userId");
       const response = await fetch(
         "https://cleirigh-backend.vercel.app/api/save-repeat-ancestor",
