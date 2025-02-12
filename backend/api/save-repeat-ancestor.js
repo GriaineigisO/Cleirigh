@@ -131,7 +131,7 @@ export default async function handler(req, res) {
             .update({relation_to_user: repeatAncestorRelationArray})
             .eq("ancestor_id", repeatParentId)
       }
-    }
+    
 
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
