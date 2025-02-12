@@ -71,7 +71,7 @@ export default async function handler(req, res) {
       if (personError) continue;
 
       //find relation of all children, increment all by one and add to repeat ancestor's relation
-      const parentId = sex === male ? "father_id" : "mother_id";
+      const parentId = sex === "male" ? "father_id" : "mother_id";
       const { data: findOtherChildren, findOtherChildrenError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
