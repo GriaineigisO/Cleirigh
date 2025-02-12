@@ -67,7 +67,7 @@ export default async function handler(req, res) {
       
       if (personError) continue;
       let newRelationNum = person.relation_to_user.map(num => num + 1);
-      
+      console.log(newRelationNum)
       const { data: currentValue } = await supabase
         .from(`tree_${currentTree}`)
         .select("relation_to_user")
@@ -83,6 +83,8 @@ export default async function handler(req, res) {
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
       if (person.mother_id) parents.push({ id: person.mother_id, sex: "female" });
+      console.log(parent)
+
       
       for (let parent of parents) {
         const { data: grandparent } = await supabase
