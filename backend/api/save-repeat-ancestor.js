@@ -22,7 +22,8 @@ export default async function handler(req, res) {
   );
 
   if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== "POST")
+    return res.status(405).json({ error: "Method not allowed" });
 
   try {
     console.log("Processing request...");
@@ -42,7 +43,7 @@ export default async function handler(req, res) {
       .select("sex")
       .eq("ancestor_id", repeatAncestorId)
       .single();
-    
+
     if (findSexError) throw new Error("Failed to fetch ancestor's sex");
     const sex = findSex.sex;
 
@@ -53,46 +54,57 @@ export default async function handler(req, res) {
       .eq("ancestor_id", childDetails.id);
 
     console.log("Starting iterative relation update...");
-    let queue = [{ child: childDetails, repeatParentId: repeatAncestorId, sex }];
-    
+    let queue = [
+      { child: childDetails, repeatParentId: repeatAncestorId, sex },
+    ];
+
     while (queue.length > 0) {
       let { child, repeatParentId, sex } = queue.shift();
       let childId = child.id || child.ancestor_id;
-      
+
       const { data: person, error: personError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*, father_id, mother_id, relation_to_user")
         .eq("ancestor_id", childId)
         .single();
-      
+
       if (personError) continue;
-      let newRelationNum = person.relation_to_user.map(num => num + 1);
-      console.log(newRelationNum)
+      let newRelationNum = person.relation_to_user.map((num) => num + 1);
       const { data: currentValue } = await supabase
         .from(`tree_${currentTree}`)
         .select("relation_to_user")
         .eq("ancestor_id", repeatParentId)
         .single();
 
-      console.log("repeat parent id:", repeatParentId)
-      console.log("repeatParentId Type", typeof repeatParentId)
-      const { data: updateRepeatParentRelation, error: updateRepeatParentRelationError } = await supabase
+      /******************************************/
+      const { data, error } = await supabase
+        .from(`tree_${currentTree}`)
+        .select("relation_to_user")
+        .eq("ancestor_id", repeatParentId);
+
+      console.log(data, error); // Returned null
+
+      console.log(newRelationNum);
+      const {
+        data: updateRepeatParentRelation,
+        error: updateRepeatParentRelationError,
+      } = await supabase
         .from(`tree_${currentTree}`)
         .update({ relation_to_user: newRelationNum })
-        .eq("ancestor_id", Number(repeatParentId));
+        .eq("ancestor_id", repeatParentId);
 
-        console.log("updateRepeatParentRelation", updateRepeatParentRelation)
+      console.log("updateRepeatParentRelation", updateRepeatParentRelation);
 
-        if (updateRepeatParentRelationError) {
-          console.error(updateRepeatParentRelationError)
-        }
+      if (updateRepeatParentRelationError) {
+        console.error(updateRepeatParentRelationError);
+      }
 
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
-      if (person.mother_id) parents.push({ id: person.mother_id, sex: "female" });
-      console.log(parents)
+      if (person.mother_id)
+        parents.push({ id: person.mother_id, sex: "female" });
+      console.log(parents);
 
-      
       for (let parent of parents) {
         const { data: grandparent } = await supabase
           .from(`tree_${currentTree}`)
@@ -100,7 +112,11 @@ export default async function handler(req, res) {
           .eq("ancestor_id", parent.id)
           .single();
         if (grandparent) {
-          queue.push({ child: parent, repeatParentId: grandparent.ancestor_id, sex: parent.sex });
+          queue.push({
+            child: parent,
+            repeatParentId: grandparent.ancestor_id,
+            sex: parent.sex,
+          });
         }
       }
     }
