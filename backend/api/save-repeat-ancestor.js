@@ -69,24 +69,69 @@ export default async function handler(req, res) {
         .single();
 
       if (personError) continue;
-      let newRelationNum = person.relation_to_user.map((num) => num + 1);
-      const { data: currentValue } = await supabase
-        .from(`tree_${currentTree}`)
-        .select("relation_to_user")
-        .eq("ancestor_id", repeatParentId)
-        .single();
 
-        const formattedArray = `{${newRelationNum.join(",")}}`
 
-      const {
-        data: updateRepeatParentRelation,
-        error: updateRepeatParentRelationError,
-      } = await supabase
-        .from(`tree_${currentTree}`)
-        .update({ relation_to_user: formattedArray })
-        .eq("ancestor_id", repeatParentId);
 
-      console.log("updateRepeatParentRelation:", updateRepeatParentRelation);
+
+
+
+
+      //increments child's relation_to_user by one and then assigns it to child's parent
+      let repeatAncestorRelationArray = person.relation_to_user.map((num) => num + 1);
+      if (sex === "male") { //determine if user descends from more than one of repeat ancestor's children
+
+        const {data: findOtherChildren, findOtherChildrenError} = await supabase   
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("father_id", repeatParentId)
+
+        //find relation of all children, increment all by one and add to repeat ancestor's relation
+        for (let i = 0; i < findOtherChildren.length; i++) {
+          for (
+            let j = 0;
+            j < findOtherChildren[i].relation_to_user.length;
+            j++
+          ) {
+            repeatAncestorRelationArray.push(
+              findOtherChildren[i].relation_to_user[j] + 1
+            );
+          }
+        }
+
+        //this new array is then added to the repeat ancestor's relation_to_user column
+        const {data: addNewRelationNum, addNewRelationNumError} = await supabase 
+            .from(`tree_${currentTree}`)
+            .update({relation_to_user: repeatAncestorRelationArray})
+            .eq("ancestor_id", repeatParentId)
+
+      } else {
+
+        const {data: findOtherChildren, findOtherChildrenError} = await supabase 
+            .from(`tree_${currentTree}`)
+            .select("*")
+            .eq("mother_id", repeatParentId)
+
+        //find relation of all children, increment all by one and add to repeat ancestor's relation
+        let repeatAncestorRelationArray = [];
+        for (let i = 0; i < findOtherChildren.length; i++) {
+          for (
+            let j = 0;
+            j < findOtherChildren[i].relation_to_user.length;
+            j++
+          ) {
+            repeatAncestorRelationArray.push(
+              findOtherChildren[i].relation_to_user[j] + 1
+            );
+          }
+        }
+
+        //this new array is then added to the repeat ancestor's relation_to_user column
+        const {data: addNewRelationNum, addNewRelationNumError} = await supabase 
+            .from(`tree_${currentTree}`)
+            .update({relation_to_user: repeatAncestorRelationArray})
+            .eq("ancestor_id", repeatParentId)
+      }
+    }
 
       let parents = [];
       if (person.father_id) parents.push({ id: person.father_id, sex: "male" });
