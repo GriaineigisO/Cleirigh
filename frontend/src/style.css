@@ -895,6 +895,7 @@ textarea {
   .table-label, .table-content, .ancestor-box-border-bottom {
     background-color: transparent !important;
     border: 1px solid black;
+    font-size: 6px;
   }
 
   .ancestor-box {
