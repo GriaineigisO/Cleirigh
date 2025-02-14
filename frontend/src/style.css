@@ -895,4 +895,8 @@ textarea {
     margin-top: -20px;
   }
 
+  .table-label, .table-content {
+    background-color: transparent !important;
+  }
+
 }
