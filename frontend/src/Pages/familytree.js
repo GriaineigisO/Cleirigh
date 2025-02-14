@@ -11,6 +11,7 @@ import warningLogo from "../Images/warning.png";
 import "../style.css";
 import treeLines from "../cleirighTreeLines.png";
 import crown from "../Images/crown.png";
+import { useReactToPrint } from "react-to-print";
 
 //note for self:
 //paternalpaternalgreatgrandparents = paternal grandfather's parents
@@ -4318,8 +4319,14 @@ const FamilyTree = () => {
     }
   }, [isLeftNote]);
 
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: "Family Tree Page",
+  });
+
   return (
-    <div id="family-tree-parent-div">
+    <div id="family-tree-parent-div" ref={componentRef}>
       {MakeModal(
         showFather,
         closeAddFatherModal,
@@ -5707,6 +5714,13 @@ const FamilyTree = () => {
                   }}
                 >
                   Random Page
+                </button>
+                <button
+                  style={{ marginRight: "3px" }}
+                  className="bottom-bar-button"
+                  onClick={handlePrint}
+                >
+                  Print Page
                 </button>
               </div>
             </div>
