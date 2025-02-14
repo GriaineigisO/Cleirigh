@@ -882,7 +882,7 @@ textarea {
   }
 
   .empty-slot, .unknown-ancestor {
-    border: dashed 1px black;
+    border: none;
     border-radius: 5px !important;
     background-color:transparent;
     z-index: 500;
