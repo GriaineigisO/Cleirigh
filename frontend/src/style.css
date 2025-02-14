@@ -881,7 +881,7 @@ textarea {
   #left-button,
   #right-button,
   .editLogo, .add-parent-button, #treeLines, #navbar {
-    display: none;
+    display: none !important;
   }
 
   .empty-slot, .unknown-ancestor {
@@ -891,9 +891,6 @@ textarea {
     z-index: 500;
   }
 
-  .family-tree-parent-div {
-    margin-top: -50px;
-  }
 
   .table-label, .table-content, .ancestor-box-border-bottom {
     background-color: transparent !important;
