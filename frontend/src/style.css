@@ -892,11 +892,17 @@ textarea {
   }
 
   .arrow-page-num-div {
-    margin-top: -20px;
+    margin-top: -50px;
   }
 
   .table-label, .table-content {
     background-color: transparent !important;
+    border: 1px solid black;
+  }
+
+  .ancestor-box {
+    box-shadow: none !important;
+    border-radius: 0;
   }
 
 }
