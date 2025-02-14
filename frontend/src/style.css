@@ -912,6 +912,7 @@ textarea {
     height: fit-content;
     padding: 0;
     margin-bottom: 0;
+    background-color: transparent !important;
   }
 
 
