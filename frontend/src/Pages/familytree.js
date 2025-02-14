@@ -4323,13 +4323,11 @@ const FamilyTree = () => {
 
   const handlePrint = useReactToPrint({
     content: () => {
-      if (!componentRef.current) {
-        console.error("componentRef is null!");
-        return null;
-      }
+      console.log(componentRef.current); // Check if it logs an HTML element
       return componentRef.current;
     },
   });
+  
   
 
   return (
