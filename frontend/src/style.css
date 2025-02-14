@@ -884,7 +884,7 @@ textarea {
 }
 
 @media print {
-    .gg-parent-buttons {
+    .gg-parent-buttons, #left-button, #right-button, .editLogo, .unknown-ancestor, .empty-slot {
         display: none;
     }
 }
