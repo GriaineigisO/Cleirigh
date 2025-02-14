@@ -80,6 +80,7 @@ export default async function handler(req, res) {
         .eq("ancestor_id", childId);
 
         console.log(spouseData);
+        console.log(spouseData.father_id)
         let spouseId = "";
         if (sex === "male") {
           spouseId = spouseData.mother_id;
