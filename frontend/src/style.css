@@ -880,7 +880,7 @@ textarea {
   .gg-parent-buttons,
   #left-button,
   #right-button,
-  .editLogo, .add-parent-button {
+  .editLogo, .add-parent-button, #treeLines, #navbar {
     display: none;
   }
 
