@@ -887,4 +887,8 @@ textarea {
     background-color:transparent;
     z-index: 500;
   }
+
+  .table-label, .table-content {
+    font-size: 6px;
+  }
 }
