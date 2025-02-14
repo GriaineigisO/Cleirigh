@@ -3490,9 +3490,9 @@ const FamilyTree = () => {
     }
 
     const handleOpenProfile = (id) => {
-      window.location.href = `profile/${id}`;
+      window.open(`profile/${id}`, '_blank');
     };
-
+    
     const handleOpenPage = async (num) => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
