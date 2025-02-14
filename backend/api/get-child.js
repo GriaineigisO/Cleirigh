@@ -79,8 +79,6 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
-        console.log(spouseData);
-        console.log(spouseData[0].father_id)
         let spouseId = "";
         if (sex === "male") {
           spouseId = spouseData[0].mother_id;
@@ -88,15 +86,13 @@ export default async function handler(req, res) {
           spouseId = spouseData[0].father_id;
         }
 
-        console.log(spouseId);
+        if (!spouseId) return null;
 
       const { data: spouse, error: spouseDetailsError } = await supabase
         .from(`tree_${currentTree}`)
         .select("*")
         .eq("ancestor_id", spouseId)
         .single();
-
-      if (!spouseId) return null;
 
       if (spouseDetailsError) {
         throw new Error(spouseDetailsError.message);
