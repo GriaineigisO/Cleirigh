@@ -91,7 +91,7 @@ export default async function handler(req, res) {
           throw new Error(spouseDetailsError.message);
         }
   
-        return getName(spouse);
+        return [getName(spouse), spouseId];
       };
   
       // Get child details
@@ -99,13 +99,15 @@ export default async function handler(req, res) {
   
       if (childDetails.length > 0) {
         // Get the spouse for the first child (if exists)
-        const spouseName = await getSpouseDetails(childDetails[0].id, sex);
+        const spouseDetailsArray = await getSpouseDetails(childDetails[0].id, sex);
+        const spouseName = spouseDetailsArray[0];
+        const spouseId = spouseDetailsArray[1];
         
         res.json({
           childName: childDetails.map(child => child.name),
           spouseName: spouseName || "",
           childId: childDetails.map(child => child.id),
-          spouseId: spouseName ? childDetails[0].id : "",
+          spouseId: spouseId,
         });
       } else {
         res.json({
