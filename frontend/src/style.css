@@ -877,7 +877,7 @@ textarea {
   .gg-parent-buttons,
   #left-button,
   #right-button,
-  .editLogo {
+  .editLogo, .add-parent-button {
     display: none;
   }
 
