@@ -4320,11 +4320,15 @@ const FamilyTree = () => {
   }, [isLeftNote]);
 
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current, // Correct way to reference the component
-    documentTitle: "Family Tree Page",
-    onBeforePrint: () => console.log("Preparing document..."),
-    onAfterPrint: () => console.log("Document printed!"),
+    content: () => {
+      if (!componentRef.current) {
+        console.error("componentRef is null!");
+        return null;
+      }
+      return componentRef.current;
+    },
   });
+  
 
   return (
     <>
