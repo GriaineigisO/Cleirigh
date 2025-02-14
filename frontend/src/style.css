@@ -907,4 +907,10 @@ textarea {
     color: black;
   }
 
+  .arrow-page-num-div div {
+    height: fit-content;
+    padding: 0;
+    margin-bottom: 0;
+  }
+
 }
