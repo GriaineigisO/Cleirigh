@@ -884,7 +884,7 @@ textarea {
 }
 
 @media print {
-    .arrow-page-num-div {
+    .gg-parent-buttons {
         display: none;
     }
-  }
+}
