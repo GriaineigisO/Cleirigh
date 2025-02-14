@@ -761,6 +761,9 @@ textarea {
   width: 350px;
   height: 150px;
   font-size: 10px;
+  display: "flex";
+  justify-content: "center";
+  align-content: "center";
 }
 
 #search {
@@ -888,8 +891,8 @@ textarea {
     z-index: 500;
   }
 
-  .table-label, .table-content {
-    font-size: 6px;
-    background-color: transparent;
+  .arrow-page-num-div {
+    margin-top: -20px;
   }
+
 }

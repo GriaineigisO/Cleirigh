@@ -5478,11 +5478,6 @@ const FamilyTree = () => {
                 ) : (
                   <div
                     id="left-button"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignContent: "center",
-                    }}
                   >
                     <button
                       onClick={() => setWriteLeftNoteModalOpen(true)}
