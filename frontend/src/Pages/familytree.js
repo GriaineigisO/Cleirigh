@@ -4319,6 +4319,8 @@ const FamilyTree = () => {
     }
   }, [isLeftNote]);
 
+  console.log("ComponentRef:", componentRef.current);
+
   const handlePrint = useReactToPrint({
     content: () => {
       if (!componentRef.current) {
