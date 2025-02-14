@@ -103,6 +103,7 @@ export default async function handler(req, res) {
 
     // Get child details
     const childDetails = await getChildDetails(id, sex);
+    console.log(childDetails)
 
     if (childDetails.length > 0) {
       // Get the spouse for the first child (if exists)
