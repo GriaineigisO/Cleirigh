@@ -73,6 +73,8 @@ export default async function handler(req, res) {
           .from(`tree_${currentTree}`)
           .select('*')
           .eq('ancestor_id', childId);
+
+          console.log(spouseData)
   
         if (spouseError) {
           throw new Error(spouseError.message);
@@ -88,7 +90,6 @@ export default async function handler(req, res) {
           .eq('ancestor_id', spouseId)
           .single();
   
-          console.log(spouse)
         if (spouseDetailsError) {
           throw new Error(spouseDetailsError.message);
         }
