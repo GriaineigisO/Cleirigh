@@ -882,3 +882,9 @@ textarea {
       display: none; 
     }
 }
+
+@media print {
+    .arrow-page-num-div {
+        display: none;
+    }
+  }
