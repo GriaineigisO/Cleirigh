@@ -905,4 +905,9 @@ textarea {
     border-radius: 0;
   }
 
+  .span-link {
+    text-decoration: none;
+    color: black;
+  }
+
 }
