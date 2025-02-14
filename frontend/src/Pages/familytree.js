@@ -852,39 +852,46 @@ const FamilyTree = () => {
 
   const navigateDown = async (personID) => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/get-previous-page", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, personID }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-previous-page",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, personID }),
+      }
+    );
     const data = await response.json();
     setPageNumber(data.pageNum);
     window.location.reload();
   };
 
-  
   const countTotalPageNum = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/count-all-pages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/count-all-pages",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }
+    );
     const data = await response.json();
     setTotalNumOfPages(data);
   };
   useEffect(() => {
     countTotalPageNum();
-  }, [])
-  
+  }, []);
 
   const handleNavigateUpwards = async (personID) => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/get-next-page", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, personID }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-next-page",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, personID }),
+      }
+    );
     const data = await response.json();
     setPageNumber(data.pageNum);
     window.location.reload();
@@ -898,11 +905,14 @@ const FamilyTree = () => {
     if (bottomPersonDetails.id) {
       const personID = bottomPersonDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setFatherDetails((prevDetails) => ({
@@ -941,11 +951,14 @@ const FamilyTree = () => {
     if (bottomPersonDetails.id) {
       const personID = bottomPersonDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMotherDetails((prevDetails) => ({
@@ -984,11 +997,14 @@ const FamilyTree = () => {
     if (fatherDetails.id) {
       const personID = fatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setPaternalGrandfatherDetails((prevDetails) => ({
@@ -1027,11 +1043,14 @@ const FamilyTree = () => {
     if (fatherDetails.id) {
       const personID = fatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setPaternalGrandmotherDetails((prevDetails) => ({
@@ -1078,11 +1097,14 @@ const FamilyTree = () => {
     if (motherDetails.id) {
       const personID = motherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMaternalGrandfatherDetails((prevDetails) => ({
@@ -1121,11 +1143,14 @@ const FamilyTree = () => {
     if (motherDetails.id) {
       const personID = motherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMaternalGrandmotherDetails((prevDetails) => ({
@@ -1162,11 +1187,14 @@ const FamilyTree = () => {
     if (paternalGrandfatherDetails.id) {
       const personID = paternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setPaternalPaternalGreatGrandfatherDetails((prevDetails) => ({
@@ -1205,12 +1233,14 @@ const FamilyTree = () => {
     if (paternalGrandfatherDetails.id) {
       const personID = paternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
-
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setPaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
@@ -1249,11 +1279,14 @@ const FamilyTree = () => {
     if (paternalGrandmotherDetails.id) {
       const personID = paternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setPaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
@@ -1282,7 +1315,6 @@ const FamilyTree = () => {
         memberOfNobility: data.memberOfNobility,
         pageNum: data.pageNum,
       }));
-
     }
   };
   useEffect(() => {
@@ -1293,11 +1325,14 @@ const FamilyTree = () => {
     if (paternalGrandmotherDetails.id) {
       const personID = paternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setPaternalMaternalGreatGrandmotherDetails((prevDetails) => ({
@@ -1336,11 +1371,14 @@ const FamilyTree = () => {
     if (maternalGrandfatherDetails.id) {
       const personID = maternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMaternalPaternalGreatGrandfatherDetails((prevDetails) => ({
@@ -1379,11 +1417,14 @@ const FamilyTree = () => {
     if (maternalGrandfatherDetails.id) {
       const personID = maternalGrandfatherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMaternalPaternalGreatGrandmotherDetails((prevDetails) => ({
@@ -1422,11 +1463,14 @@ const FamilyTree = () => {
     if (maternalGrandmotherDetails.id) {
       const personID = maternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-father", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-father",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMaternalMaternalGreatGrandfatherDetails((prevDetails) => ({
@@ -1465,11 +1509,14 @@ const FamilyTree = () => {
     if (maternalGrandmotherDetails.id) {
       const personID = maternalGrandmotherDetails.id;
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-mother", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-mother",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID }),
+        }
+      );
 
       const data = await response.json();
       setMaternalMaternalGreatGrandmotherDetails((prevDetails) => ({
@@ -1573,8 +1620,7 @@ const FamilyTree = () => {
         ...prev,
         ethnicity: motherDetails.ethnicity,
       }));
-      
-    } 
+    }
   }, [motherDetails.ethnicity]);
 
   //updates paternalPaternalGreatGrandfatherDetails whenever it changes
@@ -1602,13 +1648,11 @@ const FamilyTree = () => {
 
   //updates paternalMaternalGreatGrandfatherDetails whenever it changes
   useEffect(() => {
-      setPaternalMaternalGreatGrandfatherDetails((prev) => ({
-        ...prev,
-        lastName: paternalGrandmotherDetails.lastName,
-      }));
+    setPaternalMaternalGreatGrandfatherDetails((prev) => ({
+      ...prev,
+      lastName: paternalGrandmotherDetails.lastName,
+    }));
   }, []);
-
-
 
   useEffect(() => {
     setPaternalMaternalGreatGrandfatherDetails((prev) => ({
@@ -1731,9 +1775,6 @@ const FamilyTree = () => {
       ethnicity: paternalMaternalGreatGrandfatherDetails.ethnicity,
     }));
   }, [paternalMaternalGreatGrandfatherDetails.ethnicity]);
-
-
-
 
   //updates paternalMaternalGreatGrandfathersMotherDetails whenever it changes
   useEffect(() => {
@@ -1861,11 +1902,14 @@ const FamilyTree = () => {
   const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/save-ancestor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, ancestorDetails, childID, sex }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/save-ancestor",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, ancestorDetails, childID, sex }),
+        }
+      );
 
       const data = await response.json();
       return data;
@@ -2174,11 +2218,14 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2202,11 +2249,14 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2231,11 +2281,14 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
 
@@ -2261,11 +2314,14 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2290,11 +2346,14 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2318,11 +2377,14 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2346,11 +2408,14 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2374,11 +2439,14 @@ const FamilyTree = () => {
     if (!paternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2402,11 +2470,14 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2430,11 +2501,14 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2458,11 +2532,14 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2486,11 +2563,14 @@ const FamilyTree = () => {
     if (!maternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2514,11 +2594,14 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2542,11 +2625,14 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2570,11 +2656,14 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2598,11 +2687,14 @@ const FamilyTree = () => {
     if (!maternalMaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandmotherDetails.id;
-      const response = fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, pageNumber }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-page",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, pageNumber }),
+        }
+      );
       countTotalPageNum();
     }
     try {
@@ -2624,11 +2716,14 @@ const FamilyTree = () => {
     setEditShow(false);
     try {
       const userId = localStorage.getItem("userId");
-      const response = fetch("https://cleirigh-backend.vercel.app/api/edit-person", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personDetails }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/edit-person",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personDetails }),
+        }
+      );
       getPerson();
     } catch (error) {
       console.log("Error saving edits:", error);
@@ -2642,16 +2737,19 @@ const FamilyTree = () => {
     getPerson,
     closeEditPerson
   ) => {
-    console.log("HERE")
+    console.log("HERE");
     const personID = details.id;
     openDeletePopup();
     try {
       const userId = localStorage.getItem("userId");
-      const response = fetch("https://cleirigh-backend.vercel.app/api/delete-person", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personID, sex }),
-      });
+      const response = fetch(
+        "https://cleirigh-backend.vercel.app/api/delete-person",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, personID, sex }),
+        }
+      );
       setDetails((prev) => ({
         id: null,
       }));
@@ -2670,11 +2768,14 @@ const FamilyTree = () => {
   const toggleUncertain = async (details, setDetails, infoType) => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/toggle-uncertain", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, details, infoType }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/toggle-uncertain",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, details, infoType }),
+        }
+      );
       const data = await response.json();
 
       switch (infoType) {
@@ -2785,11 +2886,14 @@ const FamilyTree = () => {
       if (ggparentIDs.includes(childDetails.id)) {
         const userId = localStorage.getItem("userId");
         const personID = childDetails.id;
-        const response = await fetch("https://cleirigh-backend.vercel.app/api/make-new-page", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumber }),
-        });
+        const response = await fetch(
+          "https://cleirigh-backend.vercel.app/api/make-new-page",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, personID, pageNumber }),
+          }
+        );
       }
       repeatAncestorId = Number(repeatAncestorId);
       const userId = localStorage.getItem("userId");
@@ -2802,11 +2906,10 @@ const FamilyTree = () => {
         }
       );
       const data = response.json();
-      window.location.reload();
-      
-      
+      if (data) {
+        window.location.reload();
+      }
     };
-
 
     return (
       <Modal
@@ -2975,7 +3078,10 @@ const FamilyTree = () => {
               ></input>
               <button
                 onClick={() =>
-                  saveRepeatAncestor(childDetails, Number(repeatAncestorProfileNum))
+                  saveRepeatAncestor(
+                    childDetails,
+                    Number(repeatAncestorProfileNum)
+                  )
                 }
               >
                 Select
@@ -3047,11 +3153,14 @@ const FamilyTree = () => {
     closeSaveProgressHerePopup();
     closeEditPerson();
     const userId = localStorage.getItem("userId");
-    const removedResponse = await fetch("https://cleirigh-backend.vercel.app/api/save-progress", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, progressNote, details }),
-    });
+    const removedResponse = await fetch(
+      "https://cleirigh-backend.vercel.app/api/save-progress",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, progressNote, details }),
+      }
+    );
   };
 
   function MakeEditModal(
@@ -3490,9 +3599,9 @@ const FamilyTree = () => {
     }
 
     const handleOpenProfile = (id) => {
-      window.open(`profile/${id}`, '_blank');
+      window.open(`profile/${id}`, "_blank");
     };
-    
+
     const handleOpenPage = async (num) => {
       const userId = localStorage.getItem("userId");
       const response = await fetch(
@@ -3695,15 +3804,12 @@ const FamilyTree = () => {
           <>
             {childID ? (
               <table className="unknown-ancestor">
-                <tr>
-                  
-                </tr>
+                <tr></tr>
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
                   <td>
                     <button onClick={openAddModal}>Add {motherFather}</button>
                   </td>
-                  
                 </tr>
                 <tr></tr>
                 <tr></tr>
@@ -3740,7 +3846,7 @@ const FamilyTree = () => {
     const uncertainText = <sup>(uncertain)</sup>;
 
     const handleOpenProfile = (id) => {
-      window.open(`profile/${id}`, '_blank');
+      window.open(`profile/${id}`, "_blank");
     };
 
     let boxShadowColor = "5px 5px 35px rgba(2, 110, 2)";
@@ -3939,15 +4045,12 @@ const FamilyTree = () => {
           <>
             {childID ? (
               <table className="unknown-ancestor">
-                <tr>
-                  
-                </tr>
+                <tr></tr>
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
                   <td>
                     <button onClick={openAddModal}>Add {motherFather}</button>
                   </td>
-                  
                 </tr>
                 <tr></tr>
                 <tr></tr>
@@ -3969,23 +4072,22 @@ const FamilyTree = () => {
   const checkIfGGHasParents = async (greatgrandparentID, setHasParents) => {
     if (greatgrandparentID) {
       try {
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(
+          "https://cleirigh-backend.vercel.app/api/check-if-great-grandparent-has-parents",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, greatgrandparentID }),
+          }
+        );
 
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/check-if-great-grandparent-has-parents",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, greatgrandparentID }),
-        }
-      );
-
-      const data = await response.json();
-      setHasParents(data);
+        const data = await response.json();
+        setHasParents(data);
       } catch (error) {
-      console.log("Error checking if gg has parents:", error.message)
+        console.log("Error checking if gg has parents:", error.message);
+      }
     }
-  }
   };
 
   useEffect(() => {
@@ -3996,61 +4098,64 @@ const FamilyTree = () => {
   }, [paternalPaternalGreatGrandfatherDetails.id]);
 
   useEffect(() => {
-  checkIfGGHasParents(
-    paternalPaternalGreatGrandmotherDetails.id,
-    setPaternalPaternalGreatGrandmotherHasParents
-  );
-}, [paternalPaternalGreatGrandmotherDetails.id]);
+    checkIfGGHasParents(
+      paternalPaternalGreatGrandmotherDetails.id,
+      setPaternalPaternalGreatGrandmotherHasParents
+    );
+  }, [paternalPaternalGreatGrandmotherDetails.id]);
 
-useEffect(() => {
-  checkIfGGHasParents(
-    paternalMaternalGreatGrandfatherDetails.id,
-    setPaternalMaternalGreatGrandfatherHasParents
-  );
-}, [paternalMaternalGreatGrandfatherDetails.id]);
+  useEffect(() => {
+    checkIfGGHasParents(
+      paternalMaternalGreatGrandfatherDetails.id,
+      setPaternalMaternalGreatGrandfatherHasParents
+    );
+  }, [paternalMaternalGreatGrandfatherDetails.id]);
 
-useEffect(() => {
-  checkIfGGHasParents(
-    paternalMaternalGreatGrandmotherDetails.id,
-    setPaternalMaternalGreatGrandmotherHasParents
-  );
-}, [paternalMaternalGreatGrandmotherDetails.id]);
+  useEffect(() => {
+    checkIfGGHasParents(
+      paternalMaternalGreatGrandmotherDetails.id,
+      setPaternalMaternalGreatGrandmotherHasParents
+    );
+  }, [paternalMaternalGreatGrandmotherDetails.id]);
 
-useEffect(() => {
-  checkIfGGHasParents(
-    maternalPaternalGreatGrandfatherDetails.id,
-    setMaternalPaternalGreatGrandfatherHasParents
-  );
-}, [maternalPaternalGreatGrandfatherDetails.id]);
+  useEffect(() => {
+    checkIfGGHasParents(
+      maternalPaternalGreatGrandfatherDetails.id,
+      setMaternalPaternalGreatGrandfatherHasParents
+    );
+  }, [maternalPaternalGreatGrandfatherDetails.id]);
 
-useEffect(() => {
-  checkIfGGHasParents(
-    maternalPaternalGreatGrandmotherDetails.id,
-    setMaternalPaternalGreatGrandmotherHasParents
-  );
-}, [maternalPaternalGreatGrandmotherDetails.id]);
+  useEffect(() => {
+    checkIfGGHasParents(
+      maternalPaternalGreatGrandmotherDetails.id,
+      setMaternalPaternalGreatGrandmotherHasParents
+    );
+  }, [maternalPaternalGreatGrandmotherDetails.id]);
 
-useEffect(() => {
-  checkIfGGHasParents(
-    maternalMaternalGreatGrandfatherDetails.id,
-    setMaternalMaternalGreatGrandfatherHasParents
-  );
-}, [maternalMaternalGreatGrandfatherDetails.id]);
+  useEffect(() => {
+    checkIfGGHasParents(
+      maternalMaternalGreatGrandfatherDetails.id,
+      setMaternalMaternalGreatGrandfatherHasParents
+    );
+  }, [maternalMaternalGreatGrandfatherDetails.id]);
 
-useEffect(() => {
-  checkIfGGHasParents(
-    maternalMaternalGreatGrandmotherDetails.id,
-    setMaternalMaternalGreatGrandmotherHasParents
-  );
-}, [maternalMaternalGreatGrandmotherDetails.id]);
+  useEffect(() => {
+    checkIfGGHasParents(
+      maternalMaternalGreatGrandmotherDetails.id,
+      setMaternalMaternalGreatGrandmotherHasParents
+    );
+  }, [maternalMaternalGreatGrandmotherDetails.id]);
 
   const saveLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/save-left-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/save-left-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
+      }
+    );
 
     const data = response.json();
     setWriteLeftNoteModalOpen(false);
@@ -4059,11 +4164,14 @@ useEffect(() => {
 
   const editLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/edit-left-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/edit-left-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, leftNote, leftNoteHeadline }),
+      }
+    );
 
     const data = response.json();
     setWriteLeftNoteModalOpen(false);
@@ -4072,11 +4180,14 @@ useEffect(() => {
 
   const deleteLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/delete-left-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, leftNote }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/delete-left-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, leftNote }),
+      }
+    );
 
     const data = response.json();
     setWriteLeftNoteModalOpen(false);
@@ -4085,11 +4196,14 @@ useEffect(() => {
 
   const getLeftNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/get-left-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-left-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }
+    );
 
     const data = await response.json();
     setIsLeftNote(data.isLeftNote);
@@ -4103,11 +4217,14 @@ useEffect(() => {
 
   const saveRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/save-right-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/save-right-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
+      }
+    );
 
     const data = response.json();
     setWriteRightNoteModalOpen(false);
@@ -4116,11 +4233,14 @@ useEffect(() => {
 
   const editRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/edit-right-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/edit-right-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
+      }
+    );
 
     const data = response.json();
     setWriteRightNoteModalOpen(false);
@@ -4129,11 +4249,14 @@ useEffect(() => {
 
   const deleteRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/delete-right-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, rightNote }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/delete-right-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, rightNote }),
+      }
+    );
 
     const data = response.json();
     setWriteRightNoteModalOpen(false);
@@ -4142,11 +4265,14 @@ useEffect(() => {
 
   const getRightNote = async () => {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/get-right-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-right-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }
+    );
 
     const data = await response.json();
     setIsRightNote(data.isRightNote);
@@ -4292,7 +4418,6 @@ useEffect(() => {
         savePaternalMaternalGreatGrandfatherChanges,
         closeAddPaternalMaternalGreatGrandfatherModal
       )}
-      
 
       {MakeModal(
         showPaternalMaternalGreatGrandmother,
@@ -5561,7 +5686,7 @@ useEffect(() => {
                 >
                   Go
                 </button>
-                
+
                 <button
                   style={{ marginRight: "3px" }}
                   className="bottom-bar-button"
