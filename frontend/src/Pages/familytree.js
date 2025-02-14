@@ -4022,7 +4022,7 @@ const FamilyTree = () => {
                 className=" table-label shrink"
                 style={{ backgroundColor: tableColor }}
               >
-                Profile <br />
+                Profile <br class="lineBreak"/>
                 Number:
               </td>
               <td className="table-content profile-cell">

@@ -880,7 +880,7 @@ textarea {
   .gg-parent-buttons,
   #left-button,
   #right-button,
-  .editLogo, .add-parent-button, #treeLines, #navbar {
+  .editLogo, .add-parent-button, #treeLines, #navbar, .lineBreak {
     display: none !important;
   }
 
@@ -894,7 +894,7 @@ textarea {
 
   .table-label, .table-content, .ancestor-box-border-bottom {
     background-color: transparent !important;
-    border: 1px solid black;
+    border: 1px solid black !important;
     font-size: 6px;
   }
 
@@ -913,5 +913,7 @@ textarea {
     padding: 0;
     margin-bottom: 0;
   }
+
+
 
 }
