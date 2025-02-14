@@ -19,8 +19,7 @@ import { useReactToPrint } from "react-to-print";
 //maternalmaternalgrandparents = maternal grandmother's parents
 
 const FamilyTree = () => {
-  const componentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({ componentRef });
+  const componentRef = React.useRef(null);
   const [rightNoteMargin, setRightNoteMargin] = useState();
   const [noteTop, setNoteTop] = useState();
   const [isEditingLeftNote, setIsEditingLeftNote] = useState(false);
@@ -4322,6 +4321,11 @@ const FamilyTree = () => {
 
   
 
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+    documentTitle: "AwesomeFileName"
+  });
+
   return (
     <>
       <div id="family-tree-parent-div">
@@ -5734,7 +5738,7 @@ const FamilyTree = () => {
                   <button
                     style={{ marginRight: "3px" }}
                     className="bottom-bar-button"
-                    onClick={reactToPrintFn}
+                    onClick={handlePrint}
                   >
                     Print Page
                   </button>
