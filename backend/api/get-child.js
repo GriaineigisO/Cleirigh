@@ -79,14 +79,14 @@ export default async function handler(req, res) {
         .select("*")
         .eq("ancestor_id", childId);
 
-        let spouseId = "";
-        if (sex === "male") {
-          spouseId = spouseData[0].mother_id;
-        } else {
-          spouseId = spouseData[0].father_id;
-        }
+      let spouseId = "";
+      if (sex === "male") {
+        spouseId = spouseData[0].mother_id;
+      } else {
+        spouseId = spouseData[0].father_id;
+      }
 
-        if (!spouseId) return null;
+      if (!spouseId) return null;
 
       const { data: spouse, error: spouseDetailsError } = await supabase
         .from(`tree_${currentTree}`)
@@ -103,7 +103,6 @@ export default async function handler(req, res) {
 
     // Get child details
     const childDetails = await getChildDetails(id, sex);
-    console.log(childDetails)
 
     if (childDetails.length > 0) {
       // Get the spouse for the first child (if exists)
@@ -111,8 +110,12 @@ export default async function handler(req, res) {
         childDetails[0].id,
         sex
       );
-      const spouseName = spouseDetailsArray[0];
-      const spouseId = spouseDetailsArray[1];
+      let spouseName = "";
+      let spouseId = "";
+      if (spouseDetailsArray) {
+        spouseName = spouseDetailsArray[0];
+        spouseId = spouseDetailsArray[1];
+      }
 
       res.json({
         childName: childDetails.map((child) => child.name),
