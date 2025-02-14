@@ -890,5 +890,6 @@ textarea {
 
   .table-label, .table-content {
     font-size: 6px;
+    background-color: transparent;
   }
 }
