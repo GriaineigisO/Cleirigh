@@ -4328,7 +4328,7 @@ const FamilyTree = () => {
 
   return (
     <>
-      <div id="family-tree-parent-div" ref={componentRef}>
+      <div id="family-tree-parent-div">
         {MakeModal(
           showFather,
           closeAddFatherModal,
@@ -4857,835 +4857,837 @@ const FamilyTree = () => {
         <div className="row">
           {/*contains the whole tree*/}
           <div className="col">
-            <img id="treeLines" src={treeLines}></img>
+            <div ref={componentRef}>
+              <img id="treeLines" src={treeLines}></img>
 
-            <div className="row scrollable">
-              <div id="tree-container scrollable">
-                {/*contains great-grandparents*/}
-                <div className="row">
-                  <div className="row arrow-page-num-div">
-                    <div className="col">
-                      {paternalPaternalGreatGrandfatherDetails.id ? (
-                        <>
-                          {paternalPaternalGreatGrandfatherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    paternalPaternalGreatGrandfatherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  paternalPaternalGreatGrandfatherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddPaternalPaternalGreatGrandfathersFatherModal
+              <div className="row scrollable">
+                <div id="tree-container scrollable">
+                  {/*contains great-grandparents*/}
+                  <div className="row">
+                    <div className="row arrow-page-num-div">
+                      <div className="col">
+                        {paternalPaternalGreatGrandfatherDetails.id ? (
+                          <>
+                            {paternalPaternalGreatGrandfatherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      paternalPaternalGreatGrandfatherDetails.id
+                                    )
                                   }
                                 >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddPaternalPaternalGreatGrandfathersMotherModal
+                                  Page:{" "}
+                                  {
+                                    paternalPaternalGreatGrandfatherDetails.pageNum
                                   }
-                                >
-                                  Add Mother
-                                </button>
+                                  <br />⇑
+                                </p>
                               </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
-                      )}
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddPaternalPaternalGreatGrandfathersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddPaternalPaternalGreatGrandfathersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {paternalPaternalGreatGrandmotherDetails.id ? (
+                          <>
+                            {paternalPaternalGreatGrandmotherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      paternalPaternalGreatGrandmotherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    paternalPaternalGreatGrandmotherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddPaternalPaternalGreatGrandmothersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddPaternalPaternalGreatGrandmothersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {paternalMaternalGreatGrandfatherDetails.id ? (
+                          <>
+                            {paternalMaternalGreatGrandfatherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      paternalMaternalGreatGrandfatherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    paternalMaternalGreatGrandfatherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddPaternalMaternalGreatGrandfathersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddPaternalMaternalGreatGrandfathersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {paternalMaternalGreatGrandmotherDetails.id ? (
+                          <>
+                            {paternalMaternalGreatGrandmotherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      paternalMaternalGreatGrandmotherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    paternalMaternalGreatGrandmotherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddPaternalMaternalGreatGrandmothersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddPaternalMaternalGreatGrandmothersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {maternalPaternalGreatGrandfatherDetails.id ? (
+                          <>
+                            {maternalPaternalGreatGrandfatherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      maternalPaternalGreatGrandfatherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    maternalPaternalGreatGrandfatherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddMaternalPaternalGreatGrandfathersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddMaternalPaternalGreatGrandfathersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {maternalPaternalGreatGrandmotherDetails.id ? (
+                          <>
+                            {maternalPaternalGreatGrandmotherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      maternalPaternalGreatGrandmotherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    maternalPaternalGreatGrandmotherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddMaternalPaternalGreatGrandmothersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddMaternalPaternalGreatGrandmothersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {maternalMaternalGreatGrandfatherDetails.id ? (
+                          <>
+                            {maternalMaternalGreatGrandfatherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      maternalMaternalGreatGrandfatherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    maternalMaternalGreatGrandfatherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddMaternalMaternalGreatGrandfathersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddMaternalMaternalGreatGrandfathersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="col">
+                        {maternalMaternalGreatGrandmotherDetails.id ? (
+                          <>
+                            {maternalMaternalGreatGrandmotherHasParents ? (
+                              <div>
+                                <p
+                                  className="up-arrow"
+                                  onClick={() =>
+                                    handleNavigateUpwards(
+                                      maternalMaternalGreatGrandmotherDetails.id
+                                    )
+                                  }
+                                >
+                                  Page:{" "}
+                                  {
+                                    maternalMaternalGreatGrandmotherDetails.pageNum
+                                  }
+                                  <br />⇑
+                                </p>
+                              </div>
+                            ) : (
+                              <div>
+                                <div className="up-arrow gg-parent-buttons">
+                                  <button
+                                    onClick={
+                                      openAddMaternalMaternalGreatGrandmothersFatherModal
+                                    }
+                                  >
+                                    Add Father
+                                  </button>
+                                  <button
+                                    onClick={
+                                      openAddMaternalMaternalGreatGrandmothersMotherModal
+                                    }
+                                  >
+                                    Add Mother
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <div>
+                            <p className="up-arrow">
+                              {" "}
+                              <br />
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="col">
-                      {paternalPaternalGreatGrandmotherDetails.id ? (
-                        <>
-                          {paternalPaternalGreatGrandmotherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    paternalPaternalGreatGrandmotherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  paternalPaternalGreatGrandmotherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddPaternalPaternalGreatGrandmothersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddPaternalPaternalGreatGrandmothersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                    <div className="tree-row justify-content-center">
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "male",
+                        paternalPaternalGreatGrandfatherDetails,
+                        paternalGrandfatherDetails.id,
+                        openAddPaternalPaternalGreatGrandfatherModal,
+                        openEditPaternalPaternalGreatGrandfatherModal
                       )}
-                    </div>
 
-                    <div className="col">
-                      {paternalMaternalGreatGrandfatherDetails.id ? (
-                        <>
-                          {paternalMaternalGreatGrandfatherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    paternalMaternalGreatGrandfatherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  paternalMaternalGreatGrandfatherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddPaternalMaternalGreatGrandfathersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddPaternalMaternalGreatGrandfathersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "female",
+                        paternalPaternalGreatGrandmotherDetails,
+                        paternalGrandfatherDetails.id,
+                        openAddPaternalPaternalGreatGrandmotherModal,
+                        openEditPaternalPaternalGreatGrandmotherModal
                       )}
-                    </div>
 
-                    <div className="col">
-                      {paternalMaternalGreatGrandmotherDetails.id ? (
-                        <>
-                          {paternalMaternalGreatGrandmotherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    paternalMaternalGreatGrandmotherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  paternalMaternalGreatGrandmotherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddPaternalMaternalGreatGrandmothersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddPaternalMaternalGreatGrandmothersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "male",
+                        paternalMaternalGreatGrandfatherDetails,
+                        paternalGrandmotherDetails.id,
+                        openAddPaternalMaternalGreatGrandfatherModal,
+                        openEditPaternalMaternalGreatGrandfatherModal
                       )}
-                    </div>
 
-                    <div className="col">
-                      {maternalPaternalGreatGrandfatherDetails.id ? (
-                        <>
-                          {maternalPaternalGreatGrandfatherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    maternalPaternalGreatGrandfatherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  maternalPaternalGreatGrandfatherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddMaternalPaternalGreatGrandfathersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddMaternalPaternalGreatGrandfathersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "female",
+                        paternalMaternalGreatGrandmotherDetails,
+                        paternalGrandmotherDetails.id,
+                        openAddPaternalMaternalGreatGrandmotherModal,
+                        openEditPaternalMaternalGreatGrandmotherModal
                       )}
-                    </div>
 
-                    <div className="col">
-                      {maternalPaternalGreatGrandmotherDetails.id ? (
-                        <>
-                          {maternalPaternalGreatGrandmotherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    maternalPaternalGreatGrandmotherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  maternalPaternalGreatGrandmotherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddMaternalPaternalGreatGrandmothersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddMaternalPaternalGreatGrandmothersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "male",
+                        maternalPaternalGreatGrandfatherDetails,
+                        maternalGrandfatherDetails.id,
+                        openAddMaternalPaternalGreatGrandfatherModal,
+                        openEditMaternalPaternalGreatGrandfatherModal
                       )}
-                    </div>
 
-                    <div className="col">
-                      {maternalMaternalGreatGrandfatherDetails.id ? (
-                        <>
-                          {maternalMaternalGreatGrandfatherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    maternalMaternalGreatGrandfatherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  maternalMaternalGreatGrandfatherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddMaternalMaternalGreatGrandfathersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddMaternalMaternalGreatGrandfathersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "female",
+                        maternalPaternalGreatGrandmotherDetails,
+                        maternalGrandfatherDetails.id,
+                        openAddMaternalPaternalGreatGrandmotherModal,
+                        openEditMaternalPaternalGreatGrandmotherModal
                       )}
-                    </div>
 
-                    <div className="col">
-                      {maternalMaternalGreatGrandmotherDetails.id ? (
-                        <>
-                          {maternalMaternalGreatGrandmotherHasParents ? (
-                            <div>
-                              <p
-                                className="up-arrow"
-                                onClick={() =>
-                                  handleNavigateUpwards(
-                                    maternalMaternalGreatGrandmotherDetails.id
-                                  )
-                                }
-                              >
-                                Page:{" "}
-                                {
-                                  maternalMaternalGreatGrandmotherDetails.pageNum
-                                }
-                                <br />⇑
-                              </p>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="up-arrow gg-parent-buttons">
-                                <button
-                                  onClick={
-                                    openAddMaternalMaternalGreatGrandmothersFatherModal
-                                  }
-                                >
-                                  Add Father
-                                </button>
-                                <button
-                                  onClick={
-                                    openAddMaternalMaternalGreatGrandmothersMotherModal
-                                  }
-                                >
-                                  Add Mother
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <div>
-                          <p className="up-arrow">
-                            {" "}
-                            <br />
-                          </p>
-                        </div>
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "male",
+                        maternalMaternalGreatGrandfatherDetails,
+                        maternalGrandmotherDetails.id,
+                        openAddMaternalMaternalGreatGrandfatherModal,
+                        openEditMaternalMaternalGreatGrandfatherModal
+                      )}
+
+                      {ShowGreatGrandParentTable(
+                        basePersonDetails,
+                        "female",
+                        maternalMaternalGreatGrandmotherDetails,
+                        maternalGrandmotherDetails.id,
+                        openAddMaternalMaternalGreatGrandmotherModal,
+                        openEditMaternalMaternalGreatGrandmotherModal
                       )}
                     </div>
                   </div>
 
-                  <div className="tree-row justify-content-center">
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "male",
-                      paternalPaternalGreatGrandfatherDetails,
-                      paternalGrandfatherDetails.id,
-                      openAddPaternalPaternalGreatGrandfatherModal,
-                      openEditPaternalPaternalGreatGrandfatherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "female",
-                      paternalPaternalGreatGrandmotherDetails,
-                      paternalGrandfatherDetails.id,
-                      openAddPaternalPaternalGreatGrandmotherModal,
-                      openEditPaternalPaternalGreatGrandmotherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "male",
-                      paternalMaternalGreatGrandfatherDetails,
-                      paternalGrandmotherDetails.id,
-                      openAddPaternalMaternalGreatGrandfatherModal,
-                      openEditPaternalMaternalGreatGrandfatherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "female",
-                      paternalMaternalGreatGrandmotherDetails,
-                      paternalGrandmotherDetails.id,
-                      openAddPaternalMaternalGreatGrandmotherModal,
-                      openEditPaternalMaternalGreatGrandmotherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "male",
-                      maternalPaternalGreatGrandfatherDetails,
-                      maternalGrandfatherDetails.id,
-                      openAddMaternalPaternalGreatGrandfatherModal,
-                      openEditMaternalPaternalGreatGrandfatherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "female",
-                      maternalPaternalGreatGrandmotherDetails,
-                      maternalGrandfatherDetails.id,
-                      openAddMaternalPaternalGreatGrandmotherModal,
-                      openEditMaternalPaternalGreatGrandmotherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "male",
-                      maternalMaternalGreatGrandfatherDetails,
-                      maternalGrandmotherDetails.id,
-                      openAddMaternalMaternalGreatGrandfatherModal,
-                      openEditMaternalMaternalGreatGrandfatherModal
-                    )}
-
-                    {ShowGreatGrandParentTable(
-                      basePersonDetails,
-                      "female",
-                      maternalMaternalGreatGrandmotherDetails,
-                      maternalGrandmotherDetails.id,
-                      openAddMaternalMaternalGreatGrandmotherModal,
-                      openEditMaternalMaternalGreatGrandmotherModal
-                    )}
-                  </div>
-                </div>
-
-                {/*contains grandparents*/}
-                <div className="row tree-row">
-                  <div className="tree-row justify-content-center">
-                    {ShowAncestorTable(
-                      basePersonDetails,
-                      "male",
-                      paternalGrandfatherDetails,
-                      fatherDetails.id,
-                      openAddPaternalGrandfatherModal,
-                      openEditPaternalGrandfatherModal
-                    )}
-
-                    {ShowAncestorTable(
-                      basePersonDetails,
-                      "female",
-                      paternalGrandmotherDetails,
-                      fatherDetails.id,
-                      openAddPaternalGrandmotherModal,
-                      openEditPaternalGrandmotherModal
-                    )}
-
-                    {ShowAncestorTable(
-                      basePersonDetails,
-                      "male",
-                      maternalGrandfatherDetails,
-                      motherDetails.id,
-                      openAddMaternalGrandfatherModal,
-                      openEditMaternalGrandfatherModal
-                    )}
-
-                    {ShowAncestorTable(
-                      basePersonDetails,
-                      "female",
-                      maternalGrandmotherDetails,
-                      motherDetails.id,
-                      openAddMaternalGrandmotherModal,
-                      openEditMaternalGrandmotherModal
-                    )}
-                  </div>
-                </div>
-
-                {/*contains parents*/}
-                <div className="row tree-row">
-                  <div className="tree-row justify-content-center">
-                    {ShowAncestorTable(
-                      basePersonDetails,
-                      "male",
-                      fatherDetails,
-                      bottomPersonDetails.id,
-                      openAddFatherModal,
-                      openEditFatherModal
-                    )}
-
-                    {ShowAncestorTable(
-                      basePersonDetails,
-                      "female",
-                      motherDetails,
-                      bottomPersonDetails.id,
-                      openAddMotherModal,
-                      openEditMotherModal
-                    )}
-                  </div>
-                </div>
-
-                {/*person at the bottom of page*/}
-                <div className="row tree-row">
-                  <div className="col-sm ">
+                  {/*contains grandparents*/}
+                  <div className="row tree-row">
                     <div className="tree-row justify-content-center">
                       {ShowAncestorTable(
                         basePersonDetails,
-                        bottomPersonDetails.sex,
-                        bottomPersonDetails,
-                        bottomPersonDetails.id,
-                        true,
-                        openEditBottomPersonModal
+                        "male",
+                        paternalGrandfatherDetails,
+                        fatherDetails.id,
+                        openAddPaternalGrandfatherModal,
+                        openEditPaternalGrandfatherModal
+                      )}
+
+                      {ShowAncestorTable(
+                        basePersonDetails,
+                        "female",
+                        paternalGrandmotherDetails,
+                        fatherDetails.id,
+                        openAddPaternalGrandmotherModal,
+                        openEditPaternalGrandmotherModal
+                      )}
+
+                      {ShowAncestorTable(
+                        basePersonDetails,
+                        "male",
+                        maternalGrandfatherDetails,
+                        motherDetails.id,
+                        openAddMaternalGrandfatherModal,
+                        openEditMaternalGrandfatherModal
+                      )}
+
+                      {ShowAncestorTable(
+                        basePersonDetails,
+                        "female",
+                        maternalGrandmotherDetails,
+                        motherDetails.id,
+                        openAddMaternalGrandmotherModal,
+                        openEditMaternalGrandmotherModal
                       )}
                     </div>
+                  </div>
 
-                    {pageNumber !== 1 ? (
-                      <div className="col">
-                        <p
-                          className="up-arrow"
-                          onClick={() => navigateDown(bottomPersonDetails.id)}
-                        >
-                          ⇓
-                        </p>
+                  {/*contains parents*/}
+                  <div className="row tree-row">
+                    <div className="tree-row justify-content-center">
+                      {ShowAncestorTable(
+                        basePersonDetails,
+                        "male",
+                        fatherDetails,
+                        bottomPersonDetails.id,
+                        openAddFatherModal,
+                        openEditFatherModal
+                      )}
+
+                      {ShowAncestorTable(
+                        basePersonDetails,
+                        "female",
+                        motherDetails,
+                        bottomPersonDetails.id,
+                        openAddMotherModal,
+                        openEditMotherModal
+                      )}
+                    </div>
+                  </div>
+
+                  {/*person at the bottom of page*/}
+                  <div className="row tree-row">
+                    <div className="col-sm ">
+                      <div className="tree-row justify-content-center">
+                        {ShowAncestorTable(
+                          basePersonDetails,
+                          bottomPersonDetails.sex,
+                          bottomPersonDetails,
+                          bottomPersonDetails.id,
+                          true,
+                          openEditBottomPersonModal
+                        )}
                       </div>
-                    ) : (
-                      <></>
-                    )}
+
+                      {pageNumber !== 1 ? (
+                        <div className="col">
+                          <p
+                            className="up-arrow"
+                            onClick={() => navigateDown(bottomPersonDetails.id)}
+                          >
+                            ⇓
+                          </p>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              id="tree-notes"
-              style={{
-                position: "absolute",
-                top: noteTop,
-                left: "5px",
-                width: "100%",
-                zIndex: "1000",
-              }}
-            >
-              {isLeftNote ? (
-                <div id="left-note" style={{ width: "450px" }}>
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+              <div
+                id="tree-notes"
+                style={{
+                  position: "absolute",
+                  top: noteTop,
+                  left: "5px",
+                  width: "100%",
+                  zIndex: "1000",
+                }}
+              >
+                {isLeftNote ? (
+                  <div id="left-note" style={{ width: "450px" }}>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <img
+                        src={warningLogo}
+                        style={{ width: "30px", height: "30px" }}
+                      ></img>
+                      <h4>{leftNoteHeadline}</h4>
+                    </div>
+
+                    <hr></hr>
+                    <p>{leftNote}</p>
                     <img
-                      src={warningLogo}
-                      style={{ width: "30px", height: "30px" }}
+                      className="editLogo"
+                      src={editLogo}
+                      onClick={() => {
+                        setWriteLeftNoteModalOpen(true);
+                        setIsEditingLeftNote(true);
+                      }}
                     ></img>
-                    <h4>{leftNoteHeadline}</h4>
                   </div>
-
-                  <hr></hr>
-                  <p>{leftNote}</p>
-                  <img
-                    className="editLogo"
-                    src={editLogo}
-                    onClick={() => {
-                      setWriteLeftNoteModalOpen(true);
-                      setIsEditingLeftNote(true);
+                ) : (
+                  <div
+                    id="left-button"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignContent: "center",
                     }}
-                  ></img>
-                </div>
-              ) : (
-                <div
-                  id="left-button"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignContent: "center",
-                  }}
-                >
-                  <button
-                    onClick={() => setWriteLeftNoteModalOpen(true)}
-                    style={{ height: "40px", marginTop: "40px" }}
                   >
-                    Add Note
-                  </button>
-                </div>
-              )}
+                    <button
+                      onClick={() => setWriteLeftNoteModalOpen(true)}
+                      style={{ height: "40px", marginTop: "40px" }}
+                    >
+                      Add Note
+                    </button>
+                  </div>
+                )}
 
-              {writeLeftNoteModalOpen ? (
-                <Modal
-                  show={writeLeftNoteModalOpen}
-                  onHide={() => setWriteLeftNoteModalOpen(false)}
-                  dialogclassName="custom-modal-width"
-                  backdrop="static"
-                >
-                  <Modal.Header closeButton>
-                    {isEditingLeftNote ? (
-                      <Modal.Title>Edit Note</Modal.Title>
-                    ) : (
-                      <Modal.Title>Add Note</Modal.Title>
-                    )}
-                  </Modal.Header>
-                  <Modal.Body>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <div>
-                        <label>Headline</label>
-
-                        <input
-                          type="text"
-                          value={leftNoteHeadline}
-                          onChange={(event) => {
-                            setLeftNoteHeadline(event.target.value);
-                          }}
-                          style={{ marginLeft: "40px", width: "400px" }}
-                        ></input>
-
+                {writeLeftNoteModalOpen ? (
+                  <Modal
+                    show={writeLeftNoteModalOpen}
+                    onHide={() => setWriteLeftNoteModalOpen(false)}
+                    dialogclassName="custom-modal-width"
+                    backdrop="static"
+                  >
+                    <Modal.Header closeButton>
+                      {isEditingLeftNote ? (
+                        <Modal.Title>Edit Note</Modal.Title>
+                      ) : (
+                        <Modal.Title>Add Note</Modal.Title>
+                      )}
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
                         <div>
-                          <label style={{ marginRight: "67px" }}>Note</label>
-                          <textarea
+                          <label>Headline</label>
+
+                          <input
                             type="text"
-                            value={leftNote}
+                            value={leftNoteHeadline}
                             onChange={(event) => {
-                              setLeftNote(event.target.value);
+                              setLeftNoteHeadline(event.target.value);
                             }}
-                          ></textarea>
+                            style={{ marginLeft: "40px", width: "400px" }}
+                          ></input>
+
+                          <div>
+                            <label style={{ marginRight: "67px" }}>Note</label>
+                            <textarea
+                              type="text"
+                              value={leftNote}
+                              onChange={(event) => {
+                                setLeftNote(event.target.value);
+                              }}
+                            ></textarea>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <div className="modal-footer-buttons">
-                      <div className="non-delete-buttons">
-                        <Button
-                          variant="secondary"
-                          onClick={() => setWriteLeftNoteModalOpen(false)}
-                        >
-                          Cancel
-                        </Button>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <div className="modal-footer-buttons">
+                        <div className="non-delete-buttons">
+                          <Button
+                            variant="secondary"
+                            onClick={() => setWriteLeftNoteModalOpen(false)}
+                          >
+                            Cancel
+                          </Button>
 
-                        {isEditingLeftNote ? (
-                          <>
-                            <Button variant="primary" onClick={editLeftNote}>
+                          {isEditingLeftNote ? (
+                            <>
+                              <Button variant="primary" onClick={editLeftNote}>
+                                Save Changes
+                              </Button>
+                              <Button
+                                style={{ marginLeft: "400px" }}
+                                onClick={deleteLeftNote}
+                              >
+                                Delete Note
+                              </Button>
+                            </>
+                          ) : (
+                            <Button variant="primary" onClick={saveLeftNote}>
                               Save Changes
                             </Button>
-                            <Button
-                              style={{ marginLeft: "400px" }}
-                              onClick={deleteLeftNote}
-                            >
-                              Delete Note
-                            </Button>
-                          </>
-                        ) : (
-                          <Button variant="primary" onClick={saveLeftNote}>
-                            Save Changes
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </Modal.Footer>
-                </Modal>
-              ) : (
-                <></>
-              )}
-
-              {isRightNote ? (
-                <div
-                  id="right-note"
-                  style={{ marginLeft: rightNoteMargin, width: "425px" }}
-                >
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    <img
-                      src={warningLogo}
-                      style={{ width: "30px", height: "30px" }}
-                    ></img>
-                    <h4>{rightNoteHeadline}</h4>
-                  </div>
-
-                  <hr></hr>
-                  <p>{rightNote}</p>
-                  <img
-                    className="editLogo"
-                    src={editLogo}
-                    onClick={() => {
-                      setWriteRightNoteModalOpen(true);
-                      setIsEditingRightNote(true);
-                    }}
-                  ></img>
-                </div>
-              ) : (
-                <div
-                  id="right-button"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    marginLeft: "700px",
-                  }}
-                >
-                  <button
-                    onClick={() => setWriteRightNoteModalOpen(true)}
-                    style={{ height: "40px", marginTop: "40px" }}
-                  >
-                    Add Note
-                  </button>
-                </div>
-              )}
-
-              {writeRightNoteModalOpen ? (
-                <Modal
-                  show={writeRightNoteModalOpen}
-                  onHide={() => setWriteRightNoteModalOpen(false)}
-                  dialogclassName="custom-modal-width"
-                  backdrop="static"
-                >
-                  <Modal.Header closeButton>
-                    {isEditingRightNote ? (
-                      <Modal.Title>Edit Note</Modal.Title>
-                    ) : (
-                      <Modal.Title>Add Note</Modal.Title>
-                    )}
-                  </Modal.Header>
-                  <Modal.Body>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <div>
-                        <label>Headline</label>
-
-                        <input
-                          type="text"
-                          value={rightNoteHeadline}
-                          onChange={(event) => {
-                            setRightNoteHeadline(event.target.value);
-                          }}
-                          style={{ marginLeft: "40px", width: "400px" }}
-                        ></input>
-
-                        <div>
-                          <label style={{ marginRight: "67px" }}>Note</label>
-                          <textarea
-                            type="text"
-                            value={rightNote}
-                            onChange={(event) => {
-                              setRightNote(event.target.value);
-                            }}
-                          ></textarea>
+                          )}
                         </div>
                       </div>
-                    </div>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <div className="modal-footer-buttons">
-                      <div className="non-delete-buttons">
-                        <Button
-                          variant="secondary"
-                          onClick={() => setWriteRightNoteModalOpen(false)}
-                        >
-                          Cancel
-                        </Button>
+                    </Modal.Footer>
+                  </Modal>
+                ) : (
+                  <></>
+                )}
 
-                        {isEditingRightNote ? (
-                          <>
-                            <Button variant="primary" onClick={editRightNote}>
+                {isRightNote ? (
+                  <div
+                    id="right-note"
+                    style={{ marginLeft: rightNoteMargin, width: "425px" }}
+                  >
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <img
+                        src={warningLogo}
+                        style={{ width: "30px", height: "30px" }}
+                      ></img>
+                      <h4>{rightNoteHeadline}</h4>
+                    </div>
+
+                    <hr></hr>
+                    <p>{rightNote}</p>
+                    <img
+                      className="editLogo"
+                      src={editLogo}
+                      onClick={() => {
+                        setWriteRightNoteModalOpen(true);
+                        setIsEditingRightNote(true);
+                      }}
+                    ></img>
+                  </div>
+                ) : (
+                  <div
+                    id="right-button"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignContent: "center",
+                      marginLeft: "700px",
+                    }}
+                  >
+                    <button
+                      onClick={() => setWriteRightNoteModalOpen(true)}
+                      style={{ height: "40px", marginTop: "40px" }}
+                    >
+                      Add Note
+                    </button>
+                  </div>
+                )}
+
+                {writeRightNoteModalOpen ? (
+                  <Modal
+                    show={writeRightNoteModalOpen}
+                    onHide={() => setWriteRightNoteModalOpen(false)}
+                    dialogclassName="custom-modal-width"
+                    backdrop="static"
+                  >
+                    <Modal.Header closeButton>
+                      {isEditingRightNote ? (
+                        <Modal.Title>Edit Note</Modal.Title>
+                      ) : (
+                        <Modal.Title>Add Note</Modal.Title>
+                      )}
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div>
+                          <label>Headline</label>
+
+                          <input
+                            type="text"
+                            value={rightNoteHeadline}
+                            onChange={(event) => {
+                              setRightNoteHeadline(event.target.value);
+                            }}
+                            style={{ marginLeft: "40px", width: "400px" }}
+                          ></input>
+
+                          <div>
+                            <label style={{ marginRight: "67px" }}>Note</label>
+                            <textarea
+                              type="text"
+                              value={rightNote}
+                              onChange={(event) => {
+                                setRightNote(event.target.value);
+                              }}
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <div className="modal-footer-buttons">
+                        <div className="non-delete-buttons">
+                          <Button
+                            variant="secondary"
+                            onClick={() => setWriteRightNoteModalOpen(false)}
+                          >
+                            Cancel
+                          </Button>
+
+                          {isEditingRightNote ? (
+                            <>
+                              <Button variant="primary" onClick={editRightNote}>
+                                Save Changes
+                              </Button>
+                              <Button
+                                style={{ marginLeft: "400px" }}
+                                onClick={deleteRightNote}
+                              >
+                                Delete Note
+                              </Button>
+                            </>
+                          ) : (
+                            <Button variant="primary" onClick={saveRightNote}>
                               Save Changes
                             </Button>
-                            <Button
-                              style={{ marginLeft: "400px" }}
-                              onClick={deleteRightNote}
-                            >
-                              Delete Note
-                            </Button>
-                          </>
-                        ) : (
-                          <Button variant="primary" onClick={saveRightNote}>
-                            Save Changes
-                          </Button>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </Modal.Footer>
-                </Modal>
-              ) : (
-                <></>
-              )}
+                    </Modal.Footer>
+                  </Modal>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
 
             <div className="row bottom-bar">
@@ -5733,19 +5735,19 @@ const FamilyTree = () => {
                   >
                     Random Page
                   </button>
+                  <button
+                    style={{ marginRight: "3px" }}
+                    className="bottom-bar-button"
+                    onClick={handlePrint}
+                  >
+                    Print Page
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button
-        style={{ marginRight: "3px" }}
-        className="bottom-bar-button"
-        onClick={handlePrint}
-      >
-        Print Page
-      </button>
     </>
   );
 };
