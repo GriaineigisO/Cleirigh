@@ -877,12 +877,11 @@ textarea {
   .gg-parent-buttons,
   #left-button,
   #right-button,
-  .editLogo,
-  .unknown-ancestor {
+  .editLogo {
     display: none;
   }
 
-  .empty-slot {
+  .empty-slot, .unknown-ancestor {
     border: dashed 1px black;
     border-radius: 5px !important;
     background-color:transparent;
