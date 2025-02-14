@@ -895,7 +895,7 @@ textarea {
     margin-top: -50px;
   }
 
-  .table-label, .table-content {
+  .table-label, .table-content, .ancestor-box-border-bottom {
     background-color: transparent !important;
     border: 1px solid black;
   }
