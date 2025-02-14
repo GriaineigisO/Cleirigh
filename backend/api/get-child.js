@@ -72,7 +72,7 @@ export default async function handler(req, res) {
         const { data: spouseData, error: spouseError } = await supabase
           .from(`tree_${currentTree}`)
           .select('*')
-          .eq('ancestor_id', childId);
+          .eq(['ancestor_id'], childId);
 
           console.log(spouseData)
   
@@ -80,16 +80,16 @@ export default async function handler(req, res) {
           throw new Error(spouseError.message);
         }
   
-        const spouseId = spouseData[0][field];
-  
-        if (!spouseId) return null;
-  
         const { data: spouse, error: spouseDetailsError } = await supabase
           .from(`tree_${currentTree}`)
           .select('*')
           .eq('ancestor_id', spouseId)
           .single();
+
+          const spouseId = spouse[0].ancestor_id;
   
+        if (!spouseId) return null;
+
         if (spouseDetailsError) {
           throw new Error(spouseDetailsError.message);
         }
