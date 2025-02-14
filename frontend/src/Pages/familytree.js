@@ -3808,8 +3808,8 @@ const FamilyTree = () => {
                 <tr></tr>
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
-                  <td>
-                    <button class="add-parent-button" onClick={openAddModal}>Add {motherFather}</button>
+                  <td class="add-parent-button">
+                    <button onClick={openAddModal}>Add {motherFather}</button>
                   </td>
                 </tr>
                 <tr></tr>
@@ -4050,7 +4050,7 @@ const FamilyTree = () => {
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
                   <td>
-                    <button onClick={openAddModal}>Add {motherFather}</button>
+                    <button class="add-parent-button" onClick={openAddModal}>Add {motherFather}</button>
                   </td>
                 </tr>
                 <tr></tr>
