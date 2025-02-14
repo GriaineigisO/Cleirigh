@@ -66,6 +66,7 @@ export default async function handler(req, res) {
   
       // Function to get spouse info from the first child's mother/father id
       const getSpouseDetails = async (childId, sex) => {
+        console.log(childId)
         const field = sex === "male" ? "mother_id" : "father_id";
         
         const { data: spouseData, error: spouseError } = await supabase
