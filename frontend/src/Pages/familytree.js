@@ -3719,10 +3719,10 @@ const FamilyTree = () => {
                 Name:
               </td>
               <td
-                className="ancestor-box-border-bottom table-content all-border"
+                className="ancestor-box-border-bottom table-content all-border ancestor-name"
                 colSpan="5"
               >
-                <b class="ancestor-name">
+                <b>
                   {details.occupation &&
                   (details.occupation.includes("King") ||
                     details.occupation.includes("king") ||
@@ -5682,6 +5682,15 @@ const FamilyTree = () => {
                 ) : (
                   <></>
                 )}
+              </div>
+
+              <div style={{
+                  position: "absolute",
+                  top: noteTop,
+                  left: "5px",
+                  zIndex: "1000",
+                }}>
+                <h4>Page {pageNumber}</h4> {/*White Power*/}
               </div>
             </div>
 
