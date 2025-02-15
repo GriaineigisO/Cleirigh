@@ -3671,7 +3671,7 @@ const FamilyTree = () => {
             className="ancestor-box"
             style={{ boxShadow: boxShadowColor, zIndex: "1001" }}
           >
-            <tr>
+            <tr class="table-row-border">
               {details.relationToUser && details.relationToUser.length > 1 ? (
                 <td
                   colSpan="4"
@@ -3745,7 +3745,7 @@ const FamilyTree = () => {
                 {details.uncertainLastName ? uncertainText : <></>}
               </td>
             </tr>
-            <tr>
+            <tr class="table-row-border">
               <td
                 className="ancestor-box-border-bottom birth-date-cell table-label"
                 style={{ backgroundColor: tableColor }}
@@ -3762,7 +3762,7 @@ const FamilyTree = () => {
                 {details.uncertainBirthPlace ? uncertainText : <></>}
               </td>
             </tr>
-            <tr>
+            <tr  class="table-row-border">
               <td
                 className="ancestor-box-border-bottom birth-date-cell table-label"
                 style={{ backgroundColor: tableColor }}
@@ -3779,7 +3779,7 @@ const FamilyTree = () => {
                 {details.uncertainDeathPlace ? uncertainText : <></>}
               </td>
             </tr>
-            <tr>
+            <tr  class="table-row-border">
               <td
                 className=" ancestor-box-border-top table-label shrink"
                 style={{ backgroundColor: tableColor }}
