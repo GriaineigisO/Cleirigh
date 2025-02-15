@@ -928,10 +928,8 @@ textarea {
   }
 
   #page-num-print {
-    position: absolute;
-    top: 10px;
-    left: 400px;
-    z-index: 1000;
+    margin-left: 80%;
+    margin-top: 60%
   }
 
 }
