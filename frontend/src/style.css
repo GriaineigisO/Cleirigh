@@ -862,6 +862,10 @@ textarea {
   background-color: rgb(41, 39, 39, 0.5);
 }
 
+#page-num-print {
+    display: none;
+}
+
 /*media queries*/
 /*tablet*/
 @media (max-width: 1206px) {
@@ -923,7 +927,11 @@ textarea {
     font-size: 10px;
   }
 
-
-
+  #page-num-print {
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    z-index: 1000;
+  }
 
 }

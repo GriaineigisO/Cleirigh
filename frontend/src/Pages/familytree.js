@@ -5684,13 +5684,8 @@ const FamilyTree = () => {
                 )}
               </div>
 
-              <div style={{
-                  position: "absolute",
-                  top: noteTop,
-                  left: "5px",
-                  zIndex: "1000",
-                }}>
-                <h4>Page {pageNumber}</h4> {/*White Power*/}
+              <div>
+                <h4 id="page-num-print">Page {pageNumber}</h4> {/*White Power*/}
               </div>
             </div>
 
