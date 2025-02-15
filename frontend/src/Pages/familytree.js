@@ -3671,7 +3671,7 @@ const FamilyTree = () => {
             className="ancestor-box"
             style={{ boxShadow: boxShadowColor, zIndex: "1001" }}
           >
-            <tr class="table-row-border">
+            <tr class="table-row-border all-border">
               {details.relationToUser && details.relationToUser.length > 1 ? (
                 <td
                   colSpan="4"
@@ -3683,26 +3683,26 @@ const FamilyTree = () => {
               ) : (
                 <>
                   <td
-                    className="ancestor-box-border-bottom table-label shrink"
+                    className="ancestor-box-border-bottom table-label shrink all-border"
                     style={{ backgroundColor: tableColor }}
                   >
                     Relation to {basePersonDetails.firstName}:
                   </td>
                   <td
                     colSpan="3"
-                    className="ancestor-box-border-bottom table-content"
+                    className="ancestor-box-border-bottom table-content all-border"
                   >
                     <Relation relation={details.relationToUser} sex={sex} />
                   </td>
                 </>
               )}
               <td
-                className="ancestor-box-border-bottom table-label shrink"
+                className="ancestor-box-border-bottom table-label shrink all-border"
                 style={{ backgroundColor: tableColor }}
               >
                 Profile Number:
               </td>
-              <td className="ancestor-box-border-bottom table-content shrink profile-cell">
+              <td className="ancestor-box-border-bottom table-content shrink profile-cell all-border">
                 <span
                   className="span-link"
                   onClick={() => handleOpenProfile(details.id)}
@@ -3713,13 +3713,13 @@ const FamilyTree = () => {
             </tr>
             <tr>
               <td
-                className="ancestor-box-border-bottom table-label shrink"
+                className="ancestor-box-border-bottom table-label shrink all-border"
                 style={{ backgroundColor: tableColor }}
               >
                 Name:
               </td>
               <td
-                className="ancestor-box-border-bottom table-content"
+                className="ancestor-box-border-bottom table-content all-border"
                 colSpan="5"
               >
                 <b>
@@ -3745,15 +3745,15 @@ const FamilyTree = () => {
                 {details.uncertainLastName ? uncertainText : <></>}
               </td>
             </tr>
-            <tr class="table-row-border">
+            <tr class="table-row-border all-border">
               <td
-                className="ancestor-box-border-bottom birth-date-cell table-label"
+                className="ancestor-box-border-bottom birth-date-cell table-label all-border"
                 style={{ backgroundColor: tableColor }}
               >
                 Birth
               </td>
               <td
-                className="ancestor-box-border-bottom table-content"
+                className="ancestor-box-border-bottom table-content all-border"
                 colSpan="5"
               >
                 {details.birthDate}
@@ -3762,15 +3762,15 @@ const FamilyTree = () => {
                 {details.uncertainBirthPlace ? uncertainText : <></>}
               </td>
             </tr>
-            <tr  class="table-row-border">
+            <tr class="table-row-border all-border">
               <td
-                className="ancestor-box-border-bottom birth-date-cell table-label"
+                className="ancestor-box-border-bottom birth-date-cell table-label all-border"
                 style={{ backgroundColor: tableColor }}
               >
                 Death
               </td>
               <td
-                className="ancestor-box-border-bottom table-content"
+                className="ancestor-box-border-bottom table-content all-border"
                 colSpan="5"
               >
                 {details.deathDate}
@@ -3779,18 +3779,18 @@ const FamilyTree = () => {
                 {details.uncertainDeathPlace ? uncertainText : <></>}
               </td>
             </tr>
-            <tr  class="table-row-border">
+            <tr  class="table-row-border all-border">
               <td
-                className=" ancestor-box-border-top table-label shrink"
+                className=" ancestor-box-border-top table-label shrink all-border"
                 style={{ backgroundColor: tableColor }}
               >
                 Occupation:
               </td>
-              <td className="table-content" colSpan="4">
+              <td className="table-content all-border" colSpan="4">
                 {capitaliseFirstLetter(details.occupation)}
                 {details.uncertainOccupation ? uncertainText : <></>}
               </td>
-              <td className="table-content">
+              <td className="table-content all-border">
                 {
                   <img
                     className="editLogo"

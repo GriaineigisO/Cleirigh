@@ -892,7 +892,7 @@ textarea {
   }
 
 
-  .table-label, .table-content, .ancestor-box-border-bottom, .shrink, .profile-cell, .table-row-border {
+  .table-label, .table-content, .ancestor-box-border-bottom, .shrink, .profile-cell, .table-row-border, .all-border {
     background-color: transparent !important;
     border: 1px solid black !important;
     font-size: 6px;
