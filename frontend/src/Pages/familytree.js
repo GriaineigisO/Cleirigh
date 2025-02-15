@@ -5428,7 +5428,7 @@ const FamilyTree = () => {
                       </div>
 
                       {pageNumber !== 1 ? (
-                        <div className="col">
+                        <div className="col" id="down-arrow">
                           <p
                             className="up-arrow"
                             onClick={() => navigateDown(bottomPersonDetails.id)}

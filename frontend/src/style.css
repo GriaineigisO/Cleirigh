@@ -911,7 +911,11 @@ textarea {
   .arrow-page-num-div div {
     height: fit-content;
     padding: 0;
-    margin-bottom: -20px;
+    margin-bottom: -10px;
+    background-color: transparent !important;
+  }
+
+  #down-arrow {
     background-color: transparent !important;
   }
 
