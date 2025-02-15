@@ -4323,7 +4323,7 @@ const FamilyTree = () => {
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: "AwesomeFileName"
+    documentTitle: `Page ${pageNumber}`
   });
 
   return (
