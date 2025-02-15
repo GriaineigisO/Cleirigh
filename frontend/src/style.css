@@ -919,6 +919,10 @@ textarea {
     background-color: transparent !important;
   }
 
+  .ancestor-name {
+    font-size: 10px;
+  }
+
 
 
 

@@ -3722,7 +3722,7 @@ const FamilyTree = () => {
                 className="ancestor-box-border-bottom table-content all-border"
                 colSpan="5"
               >
-                <b>
+                <b class="ancestor-name">
                   {details.occupation &&
                   (details.occupation.includes("King") ||
                     details.occupation.includes("king") ||
@@ -3929,7 +3929,7 @@ const FamilyTree = () => {
               {details.relationToUser && details.relationToUser.length > 1 ? (
                 <td
                   colSpan="2"
-                  className="ancestor-box-border-bottom table-label repeat-ancestor"
+                  className="ancestor-box-border-bottom table-label repeat-ancestor all-border"
                   style={{ backgroundColor: tableColor, color: "black" }}
                 >
                   <Relation relation={details.relationToUser} sex={sex} />
@@ -3937,12 +3937,12 @@ const FamilyTree = () => {
               ) : (
                 <>
                   <td
-                    className="ancestor-box-border-bottom table-label shrink"
+                    className="ancestor-box-border-bottom table-label shrink all-border"
                     style={{ backgroundColor: tableColor }}
                   >
                     Relation to {basePersonDetails.firstName}:
                   </td>
-                  <td className="ancestor-box-border-bottom table-content">
+                  <td className="ancestor-box-border-bottom table-content all-border">
                     <Relation relation={details.relationToUser} sex={sex} />
                   </td>
                 </>
@@ -3950,12 +3950,12 @@ const FamilyTree = () => {
             </tr>
             <tr>
               <td
-                className="ancestor-box-border-bottom table-label shrink"
+                className="ancestor-box-border-bottom table-label shrink all-border"
                 style={{ backgroundColor: tableColor }}
               >
                 Name:
               </td>
-              <td className="ancestor-box-border-bottom table-content">
+              <td className="ancestor-box-border-bottom table-content all-border">
                 {details.occupation &&
                 (details.occupation.includes("King") ||
                   details.occupation.includes("king") ||
