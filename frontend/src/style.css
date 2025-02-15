@@ -919,6 +919,10 @@ textarea {
     background-color: transparent !important;
   }
 
+  tr td {
+    border: 1px solid black !important;
+  }
+
 
 
 }
