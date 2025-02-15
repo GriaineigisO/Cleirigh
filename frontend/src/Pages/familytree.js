@@ -4325,7 +4325,7 @@ const FamilyTree = () => {
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: `Page ${pageNumber}`
+    documentTitle: `${treeName} Tree Page ${pageNumber}`
   });
 
   return (
@@ -5687,7 +5687,7 @@ const FamilyTree = () => {
               </div>
 
               <div>
-                <h4 id="page-num-print">{treeName} Tree Page {pageNumber}</h4> {/*White Power*/}
+                <h4 id="page-num-print">Page {pageNumber}</h4>
               </div>
             </div>
 
