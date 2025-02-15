@@ -3955,7 +3955,7 @@ const FamilyTree = () => {
               >
                 Name:
               </td>
-              <td className="ancestor-box-border-bottom table-content all-border">
+              <td className="ancestor-box-border-bottom table-content all-border ancestor-name">
                 {details.occupation &&
                 (details.occupation.includes("King") ||
                   details.occupation.includes("king") ||
