@@ -45,6 +45,14 @@ export default async function handler(req, res) {
 
     const currentTree = currentTreeData.current_tree_id;
 
+    //get tree's name
+    const { data: tree, error: treeError } = await supabase
+    .from(`trees`)
+    .select('*')
+    .eq('tree_id', currentTree)
+    .single();
+    
+
     // Get the base person from the tree
     const { data: basePersonData, error: basePersonError } = await supabase
       .from(`tree_${currentTree}`)
@@ -75,6 +83,7 @@ export default async function handler(req, res) {
       profileNumber: basePersonData.ancestor_id,
       sex: basePersonData.sex_id,
       memberOfNobility: basePersonData.member_of_nobility,
+      treeName: tree.tree_name
     });
 
   } catch (error) {

@@ -22,6 +22,7 @@ const FamilyTree = () => {
   const componentRef = React.useRef(null);
   const [rightNoteMargin, setRightNoteMargin] = useState();
   const [noteTop, setNoteTop] = useState();
+  const [treeName, setTreeName] = useState();
   const [isEditingLeftNote, setIsEditingLeftNote] = useState(false);
   const [isLeftNote, setIsLeftNote] = useState(false);
   const [leftNote, setLeftNote] = useState();
@@ -765,6 +766,7 @@ const FamilyTree = () => {
         sex: baseData.sex,
         ethnicity: baseData.ethnicity,
       }));
+      setTreeName(baseData.treeName)
     } catch (error) {
       console.error("Error fetching initial data:", error);
     }
@@ -5685,7 +5687,7 @@ const FamilyTree = () => {
               </div>
 
               <div>
-                <h4 id="page-num-print">Page {pageNumber}</h4> {/*White Power*/}
+                <h4 id="page-num-print">{treeName} Tree Page {pageNumber}</h4> {/*White Power*/}
               </div>
             </div>
 
