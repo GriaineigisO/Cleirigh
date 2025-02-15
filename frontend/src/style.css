@@ -929,9 +929,10 @@ textarea {
 
   #page-num-print {
     position: absolute;
-    top: 600%;
-    left: 600px;
+    top: 200px;
+    left: 200px;
     z-index: 1000;
   }
 
 }
+

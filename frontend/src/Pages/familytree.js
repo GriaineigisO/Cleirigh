@@ -5686,8 +5686,8 @@ const FamilyTree = () => {
                 )}
               </div>
 
-              <div>
-                <h4 id="page-num-print">Page {pageNumber}</h4>
+              <div id="page-num-print">
+                <h4>Page {pageNumber}</h4>
               </div>
             </div>
 
