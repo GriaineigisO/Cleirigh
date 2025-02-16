@@ -5630,6 +5630,7 @@ const FamilyTree = () => {
                     <hr></hr>
                     <p>{rightNote}</p>
                     <img
+                      class="note-icon"
                       className="editLogo"
                       src={editLogo}
                       onClick={() => {
