@@ -4322,6 +4322,7 @@ const FamilyTree = () => {
   }, [isLeftNote]);
 
   const ShowChildrenPages = async () => {
+    console.log(bottomPersonDetails)
     const userId = localStorage.getItem("userId");
     const response = await fetch(
       "https://cleirigh-backend.vercel.app/api/get-children-pages",

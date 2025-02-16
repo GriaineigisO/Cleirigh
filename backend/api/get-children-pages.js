@@ -41,6 +41,7 @@ if (req.method === 'OPTIONS') {3
       const currentTree = user.current_tree_id;
   
       //find all rows where person is either father_id or mother_id
+      console.log(bottomPersonDetails.sex)
       const parentId = bottomPersonDetails.sex === "male" ? "father_id" : "mother_id"
       const { data: findChildren, error: findChildrenError } = await supabase
         .from(`tree_${currentTree}`)
