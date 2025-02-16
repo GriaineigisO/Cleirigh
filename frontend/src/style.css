@@ -969,9 +969,7 @@ textarea {
 }
 
 #tree-notes {
-    position: absolute;
-    top: 500px;
-    left: 5px;
+    margin-top: 500px;
     width: 10%;
     z-index: 1000;
   }
