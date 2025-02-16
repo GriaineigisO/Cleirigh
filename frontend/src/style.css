@@ -966,6 +966,7 @@ textarea {
   width: 350px;
   height: 150px;
   font-size: 10px;
+  margin-left: 10px;
 }
 
 #tree-notes {
