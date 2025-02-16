@@ -973,6 +973,7 @@ textarea {
   margin-left: 10px !important;
   display: flex;
   flex-direction: row;
+  align-items: baseline;
 }
 
 #tree-notes {
