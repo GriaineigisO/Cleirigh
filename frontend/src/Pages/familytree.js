@@ -5514,7 +5514,7 @@ const FamilyTree = () => {
                       <h4>{leftNoteHeadline}</h4>
                     </div>
 
-                    <hr></hr>
+                    <hr class="hr-line"></hr>
                     <p>{leftNote}</p>
                     <img
                       className="editLogo"
@@ -5621,13 +5621,14 @@ const FamilyTree = () => {
                   >
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       <img
+                        class="note-icon"
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
                       <h4>{rightNoteHeadline}</h4>
                     </div>
 
-                    <hr></hr>
+                    <hr  class="hr-line"></hr>
                     <p>{rightNote}</p>
                     <img
                       class="note-icon"
