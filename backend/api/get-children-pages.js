@@ -39,6 +39,7 @@ if (req.method === 'OPTIONS') {3
       }
   
       const currentTree = user.current_tree_id;
+      console.log(props)
       console.log(props.id)
   
       //find all rows where person is either father_id or mother_id
