@@ -4321,34 +4321,45 @@ const FamilyTree = () => {
     }
   }, [isLeftNote]);
 
-  const ShowChildrenPages = async (props) => {
-    if (props.details) {
-    const userId = localStorage.getItem("userId");
-    const response = await fetch(
-      "https://cleirigh-backend.vercel.app/api/get-children-pages",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, personDetails: props.details }),
-      }
-    );
-
-    const data = await response.json();
-
+  const ShowChildrenPages = (props) => {
+    const [childrenPages, setChildrenPages] = useState([]);
+  
+    useEffect(() => {
+      const fetchChildrenPages = async () => {
+        if (props.details) {
+          const userId = localStorage.getItem("userId");
+          try {
+            const response = await fetch(
+              "https://cleirigh-backend.vercel.app/api/get-children-pages",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId, personDetails: props.details }),
+              }
+            );
+            const data = await response.json();
+            setChildrenPages(data);
+          } catch (error) {
+            console.error("Error fetching children pages:", error);
+          }
+        }
+      };
+  
+      fetchChildrenPages();
+    }, [props.details]);
+  
+    if (!props.details) return null; // Return nothing if no details are provided
+    if (childrenPages.length === 0) return <p>Loading children pages...</p>; // Show loading state
+  
     return (
       <ol>
-        {
-          data.map((k, index) => (
-              <li>
-                {data[index].firstName} {data[index].middleName} {data[index].lastName} ⇒ P.{data[index].page_number}
-              </li>
-
-          ))
-        }
+        {childrenPages.map((k, index) => (
+          <li key={index}>
+            {k.firstName} {k.middleName} {k.lastName} ⇒ P.{k.page_number}
+          </li>
+        ))}
       </ol>
-    )
-  }
-    
+    );
   };
    
 
