@@ -45,7 +45,7 @@ if (req.method === 'OPTIONS') {3
       const { data: findChildren, error: findChildrenError } = await supabase
         .from(`tree_${currentTree}`)
         .select('*')
-        .eq([parentId], props.id)
+        .eq("father_id", props.id)
   
     console.log(findChildren)
       res.json(findChildren);
