@@ -4322,7 +4322,6 @@ const FamilyTree = () => {
   }, [isLeftNote]);
 
   const ShowChildrenPages = async (props) => {
-    console.log(props.details)
     if (props.details) {
     const userId = localStorage.getItem("userId");
     const response = await fetch(
@@ -4336,10 +4335,17 @@ const FamilyTree = () => {
 
     const data = await response.json();
 
-
     return (
       <table>
-
+        {
+          data.map((k, index) => (
+            <tr>
+              <td>{data[index].firstName} {data[index].middleName} {data[index].lastName}</td>
+              <td>⇒</td>
+              <td>{data[index].page_number}</td>
+            </tr>
+          ))
+        }
       </table>
     )
   }

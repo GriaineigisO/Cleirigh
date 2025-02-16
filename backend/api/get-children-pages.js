@@ -39,9 +39,6 @@ if (req.method === 'OPTIONS') {3
       }
   
       const currentTree = user.current_tree_id;
-      console.log(personDetails)
-      console.log(personDetails.id)
-  
       //find all rows where person is either father_id or mother_id
       const parentId = personDetails.sex === "male" ? "father_id" : "mother_id"
       const { data: findChildren, error: findChildrenError } = await supabase
@@ -49,7 +46,6 @@ if (req.method === 'OPTIONS') {3
         .select('*')
         .eq([parentId], personDetails.id)
   
-    console.log(findChildren)
       res.json(findChildren);
     } catch (error) {
       console.log("Error getting child pages: ", error);
