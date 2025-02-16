@@ -4349,7 +4349,6 @@ const FamilyTree = () => {
     }, [props.details]);
   
     if (!props.details) return null; // Return nothing if no details are provided
-    if (childrenPages.length === 0) return <p>Loading children pages...</p>; // Show loading state
   
     return (
       <ol id="childrenPageOl">

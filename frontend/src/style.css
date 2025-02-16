@@ -934,7 +934,8 @@ textarea {
   }
 
   #descendant-page-num-for-print {
-    display: block;
+    display: flex;
+    justify-content: center;
   }
 
   #childrenPageOl {
