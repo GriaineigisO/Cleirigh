@@ -862,7 +862,9 @@ textarea {
   background-color: rgb(41, 39, 39, 0.5);
 }
 
-#page-num-print {
+#page-num-print, #descendant-page-num-for-print {
+  display: block;
+} {
     display: none;
 }
 
@@ -930,6 +932,10 @@ textarea {
   #page-num-print {
     margin-left: 80%;
     margin-top: 40px;
+    display: block;
+  }
+
+  #descendant-page-num-for-print {
     display: block;
   }
 

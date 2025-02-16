@@ -4321,7 +4321,28 @@ const FamilyTree = () => {
     }
   }, [isLeftNote]);
 
-  
+  const ShowChildrenPages = async () => {
+    const userId = localStorage.getItem("userId");
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-children-pages",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, bottomPersonDetails }),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data)
+
+    return (
+      <table>
+
+      </table>
+    )
+    
+  };
+   
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
@@ -5437,6 +5458,10 @@ const FamilyTree = () => {
                           >
                             ⇓
                           </p>
+                          {/*the following div only appears when printed to PDF. It shows the bottom person's child, or children is a repeat ancestor, and then the page where one may navigate down*/}
+                          <div id="descendant-page-num-for-print">
+                              <ShowChildrenPages />
+                          </div>
                         </div>
                       ) : (
                         <></>
