@@ -4352,10 +4352,10 @@ const FamilyTree = () => {
     if (childrenPages.length === 0) return <p>Loading children pages...</p>; // Show loading state
   
     return (
-      <ol>
+      <ol id="childrenPageOl">
         {childrenPages.map((k, index) => (
           <li key={index}>
-            {k.firstName} {k.middleName} {k.lastName} ⇒ P.{k.page_number}
+            {k.first_name} {k.middle_name} {k.last_name} ⇒ P.{k.page_number}
           </li>
         ))}
       </ol>
