@@ -5619,7 +5619,7 @@ const FamilyTree = () => {
                     id="right-note"
                     style={{ marginLeft: rightNoteMargin, width: "425px" }}
                   >
-                    <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div id="right-note-div">
                       <img
                         class="note-icon"
                         src={warningLogo}

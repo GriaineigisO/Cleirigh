@@ -871,6 +871,10 @@ textarea {
   flex-direction: "row"
 }
 
+#right-note-div {
+  display: "flex";
+   flex-direction: "row";
+}
 
 /*media queries*/
 /*tablet*/
@@ -966,7 +970,9 @@ textarea {
   width: 350px;
   height: 150px;
   font-size: 10px;
-  margin-left: 10px;
+  margin-left: 10px !important;
+  display: flex;
+  flex-direction: row;
 }
 
 #tree-notes {
@@ -980,6 +986,7 @@ textarea {
   .hr-line {
     display: none;
   }
+
 
 }
 
