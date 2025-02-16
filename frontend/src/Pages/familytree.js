@@ -4336,17 +4336,16 @@ const FamilyTree = () => {
     const data = await response.json();
 
     return (
-      <table>
+      <ol>
         {
           data.map((k, index) => (
-            <tr>
-              <td>{data[index].firstName} {data[index].middleName} {data[index].lastName}</td>
-              <td>⇒</td>
-              <td>{data[index].page_number}</td>
-            </tr>
+              <li>
+                {data[index].firstName} {data[index].middleName} {data[index].lastName} ⇒ P.{data[index].page_number}
+              </li>
+
           ))
         }
-      </table>
+      </ol>
     )
   }
     
