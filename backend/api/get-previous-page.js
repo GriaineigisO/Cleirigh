@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
   
 // Handle OPTIONS method (for CORS preflight)
-if (req.method === 'OPTIONS') {
+if (req.method === 'OPTIONS') {3
     res.status(200).end();
     return;
   }
