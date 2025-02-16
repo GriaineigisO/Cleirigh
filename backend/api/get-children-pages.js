@@ -46,9 +46,10 @@ if (req.method === 'OPTIONS') {3
         .select('*')
         .eq(parentId = bottomPersonDetails.sex === "male" ? "father_id" : "mother_id", bottomPersonDetails.id)
   
+    console.log(findChildren)
       res.json(findChildren);
     } catch (error) {
-      console.log("Error getting previous page: ", error);
-      res.status(500).json({ error: "Error getting previous page" });
+      console.log("Error getting child pages: ", error);
+      res.status(500).json({ error: "Error getting child pages" });
     }
   };
