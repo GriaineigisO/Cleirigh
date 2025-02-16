@@ -866,6 +866,11 @@ textarea {
     display: none;
 }
 
+#validleft-note {
+  display: "flex";
+  flex-direction: "row"
+}
+
 /*media queries*/
 /*tablet*/
 @media (max-width: 1206px) {
@@ -884,7 +889,7 @@ textarea {
   .gg-parent-buttons,
   #left-button,
   #right-button,
-  .editLogo, .add-parent-button, #treeLines, #navbar, .lineBreak {
+  .editLogo, .add-parent-button, #treeLines, #navbar, .lineBreak, .note-icon {
     display: none !important;
   }
 
@@ -941,6 +946,15 @@ textarea {
   #childrenPageOl {
     margin-left: auto;
     margin-right: auto
+  }
+
+  #validleft-note {
+    display: "flex";
+    flex-direction: "row"
+  }
+
+  .table-content {
+    font-family: Georgia, 'Times New Roman', Times, serif;
   }
 
 }

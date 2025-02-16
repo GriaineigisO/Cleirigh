@@ -5505,8 +5505,9 @@ const FamilyTree = () => {
               >
                 {isLeftNote ? (
                   <div id="left-note" style={{ width: "450px" }}>
-                    <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div id="validleft-note">
                       <img
+                      class="note-icon"
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
