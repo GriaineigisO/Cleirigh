@@ -795,9 +795,9 @@ const FamilyTree = () => {
     initialPageNum();
   }, []);
 
-  const setNewPageNum = (num) => {
+  const setNewPageNum = async (num) => {
     const userId = localStorage.getItem("userId");
-    const pageResponse = fetch(
+    const pageResponse = await fetch(
       "https://cleirigh-backend.vercel.app/api/set-current-page-number",
       {
         method: "POST",
@@ -805,8 +805,12 @@ const FamilyTree = () => {
         body: JSON.stringify({ userId, num }),
       }
     );
+    const data = await pageResponse.json();
     setPageNumber(num);
-    window.location.reload();
+    if (data) {
+      window.location.reload();
+    }
+    
   };
 
   const getNewPageNum = async () => {
