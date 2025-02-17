@@ -6,7 +6,7 @@ export const capitaliseFirstLetter = (str) => {
       (str[0] === "o" && str[1] === "f" && str[2] === " ") ||
       (str[0] === "i" && str[1] === "n" && str[2] === "g" && str[3] === "e" && str[4] === "n") ||
       (str[0] === "m" && str[1] === "a" && str[2] === "c" && str[3] === " ") ||
-      (str[0] === "v" && str[1] === "o" && str[2] === "n" && str[3] === " ") 
+      (str[0] === "v" && str[1] === "o" && str[2] === "n" && str[3] === " ") ||
       (str[0] === "t" && str[1] === "h" && str[2] === "e" && str[3] === " ") 
     ) {
       return str;
