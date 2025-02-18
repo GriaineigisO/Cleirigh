@@ -9,7 +9,8 @@ export const capitaliseFirstLetter = (str) => {
       (str[0] === "v" && str[1] === "o" && str[2] === "n" && str[3] === " ") ||
       (str[0] === "t" && str[1] === "h" && str[2] === "e" && str[3] === " ") ||
       (str[0] === "n" && str[1] === "í" && str[2] === "c" && str[3] === " ") ||
-      (str[0] === "f" && str[1] === "e" && str[2] === "r" && str[3] === "c" && str[4] === "h" && str[5] === " ")
+      (str[0] === "f" && str[1] === "e" && str[2] === "r" && str[3] === "c" && str[4] === "h" && str[5] === " ") ||
+      (str[0] === "a" && str[1] === "p" && str[2] === " ") 
     ) {
       return str;
     } else {
