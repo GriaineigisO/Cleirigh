@@ -5511,7 +5511,7 @@ const FamilyTree = () => {
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
-                      <h4 class="note-headline">{leftNoteHeadline}</h4>
+                      <h4 class="note-headline">{leftNoteHeadline}<span class="note-headline-colon">: </span></h4>
                     </div>
 
                     <hr class="hr-line"></hr>
@@ -5625,7 +5625,7 @@ const FamilyTree = () => {
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
-                      <h4 class="note-headline">{rightNoteHeadline} </h4>
+                      <h4 class="note-headline">{rightNoteHeadline}<span class="note-headline-colon">: </span></h4>
                     </div>
 
                     <hr  class="hr-line"></hr>

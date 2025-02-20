@@ -876,6 +876,10 @@ textarea {
    flex-direction: "row";
 }
 
+.note-headline-colon {
+  display: none;
+}
+
 /*media queries*/
 /*tablet*/
 @media (max-width: 1206px) {
@@ -995,6 +999,10 @@ textarea {
 
   .hr-line {
     display: none;
+  }
+
+  .note-headline-colon {
+    display: inline;
   }
 
 
