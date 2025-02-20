@@ -933,9 +933,6 @@ textarea {
     background-color: transparent !important;
   }
 
-  .ancestor-name {
-    font-size: 10px;
-  }
 
   #page-num-print {
     margin-left: 80%;
@@ -958,8 +955,13 @@ textarea {
     flex-direction: "row"
   }
 
-  .table-content {
+  .table-content, .table-label {
     font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 9px;
+  }
+
+  .ancestor-name {
+    font-size: 12px;
   }
 
   #left-note,
@@ -974,6 +976,14 @@ textarea {
   display: flex;
   flex-direction: row;
   align-items: baseline;
+}
+
+.note-headline, .note-text {
+  font-size: 9px;
+}
+
+.note-headline {
+  font-weight: bold;
 }
 
 #tree-notes {
