@@ -70,8 +70,13 @@ export default async function handler(req, res) {
   
         //checks if each parent is a deadend ancestor
         if (fatherId === null && motherId === null) {
-          //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array
-          ethnicityNameArray.push(findParents[0].ethnicity);
+          //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array. If no ethnicity has been assigned to a dead end ancestor, then the label UNASSIGNED will be pushed - a prompt for the user to look for the dead-end ancestor and then assign an ethnicity
+          if (findParents[0].ethnicity) {
+            ethnicityNameArray.push(findParents[0].ethnicity);
+          } else {
+            ethnicityNameArray.push("UNASSIGNED");
+          }
+          
           ethnicityPercentageArray.push(100);
   
           return [ethnicityNameArray, ethnicityPercentageArray];
