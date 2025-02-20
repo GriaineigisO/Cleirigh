@@ -187,7 +187,7 @@ const Profile = () => {
         );
       }
     }
-  }
+  
 
     let count = 0;
 
