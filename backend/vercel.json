@@ -1,13 +1,15 @@
 {
-    "version": 2,
-    "routes": [
-      { 
-        "src": "/api/(.*)", 
-        "dest": "/backend/api/$1" 
-      }
-    ],
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/api/$1"
+    }
+  ],
+  "functions": {
     "api/calculate-ethnic-breakdown.js": {
+      "runtime": "nodejs20.x",
       "maxDuration": 300
     }
   }
-  
+}
