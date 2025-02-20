@@ -58,13 +58,13 @@ export default async function handler(req, res) {
             .select('*')
             .eq('ancestor_id', childId)
   
-        const fatherId = findParents.rows[0].father_id;
-        const motherId = findParents.rows[0].mother_id;
+        const fatherId = findParents[0].father_id;
+        const motherId = findParents[0].mother_id;
   
         //checks if each parent is a deadend ancestor
         if (fatherId === null && motherId === null) {
           //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array
-          ethnicityNameArray.push(findParents.rows[0].ethnicity);
+          ethnicityNameArray.push(findParents[0].ethnicity);
           ethnicityPercentageArray.push(100);
   
           return [ethnicityNameArray, ethnicityPercentageArray];
