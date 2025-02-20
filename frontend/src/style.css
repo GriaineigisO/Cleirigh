@@ -955,11 +955,11 @@ textarea {
     flex-direction: "row"
   }
 
-  .table-content, .table-label {
+  .table-content, .table-label, .note-headline, .note-text {
     font-family: Georgia, 'Times New Roman', Times, serif;
   }
 
-  .ancestor-name {
+  .ancestor-name, .profile-cell {
     font-size: 10px;
   }
 
