@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     }
     try {
       const { userId, idNumber } = req.body;
-      id = idNumber;
+      const id = idNumber;
 
       console.log("id is:", id)
   
