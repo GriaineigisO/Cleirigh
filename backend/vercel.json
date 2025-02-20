@@ -5,6 +5,9 @@
         "src": "/api/(.*)", 
         "dest": "/backend/api/$1" 
       }
-    ]
+    ],
+    "api/calculate-ethnic-breakdown.js": {
+      "maxDuration": 300
+    }
   }
   
