@@ -30,6 +30,8 @@ export default async function handler(req, res) {
     }
     try {
       const { userId, id } = req.body;
+
+      console.log("id is:", id)
   
       // Get the current tree ID from the user's record
       const { data: user, error: userError } = await supabase
@@ -53,6 +55,8 @@ export default async function handler(req, res) {
         let ethnicityNameArray = [];
         let ethnicityPercentageArray = [];
 
+        console.log("childId is:", childId)
+
         const {data: findParents} = await supabase  
             .from(`tree_${currentTree}`)
             .select('*')
@@ -60,13 +64,13 @@ export default async function handler(req, res) {
 
             console.log(findParents)
   
-        const fatherId = findParents.father_id;
-        const motherId = findParents.mother_id;
+        const fatherId = findParents[0].father_id;
+        const motherId = findParents[0].mother_id;
   
         //checks if each parent is a deadend ancestor
         if (fatherId === null && motherId === null) {
           //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array
-          ethnicityNameArray.push(findParents.ethnicity);
+          ethnicityNameArray.push(findParents[0].ethnicity);
           ethnicityPercentageArray.push(100);
   
           return [ethnicityNameArray, ethnicityPercentageArray];
