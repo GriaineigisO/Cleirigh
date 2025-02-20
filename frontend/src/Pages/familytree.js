@@ -4358,7 +4358,7 @@ const FamilyTree = () => {
       <ol id="childrenPageOl">
         {childrenPages.map((k, index) => (
           <li key={index}>
-            {childrenPages[index].first_name} {childrenPages[index].middle_name} {childrenPages[index].last_name} ⇒ P.{childrenPages[index].page_number}
+            {childrenPages[index].first_name ? (childrenPages[index].first_name) : ("Unknown")} {childrenPages[index].middle_name} {childrenPages[index].last_name} ⇒ P.{childrenPages[index].page_number}
           </li>
         ))}
       </ol>
