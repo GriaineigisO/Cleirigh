@@ -957,11 +957,10 @@ textarea {
 
   .table-content, .table-label {
     font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 9px;
   }
 
   .ancestor-name {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   #left-note,

@@ -5625,11 +5625,11 @@ const FamilyTree = () => {
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
-                      <h4>{rightNoteHeadline}</h4>
+                      <h4 class="note-headline">{rightNoteHeadline}</h4>
                     </div>
 
                     <hr  class="hr-line"></hr>
-                    <p>{rightNote}</p>
+                    <p class="note-text">{rightNote}</p>
                     <img
                       class="note-icon"
                       className="editLogo"
