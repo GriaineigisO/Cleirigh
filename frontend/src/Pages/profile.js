@@ -686,7 +686,7 @@ const Profile = () => {
 
     if (pageNumRecieved) {
       //redirect to tree
-      window.location.href = "/familytree";
+      window.location.href = `/familytree/${num}`;
     }
   };
 
