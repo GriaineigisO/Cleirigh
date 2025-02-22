@@ -4336,6 +4336,8 @@ const FamilyTree = () => {
     }, [props.details]);
   
     if (!props.details) return null; // Return nothing if no details are provided
+
+    console.log(childrenPages)
   
     return (
       <ol id="childrenPageOl">
