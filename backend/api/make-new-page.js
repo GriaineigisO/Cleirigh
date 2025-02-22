@@ -24,7 +24,9 @@ export default async function handler(req, res) {
     return;
   }
     try {
-      const { userId, personID, pageNumber } = req.body;
+      const { userId, personID, pageNumFromParams } = req.body;
+
+      const pageNumber = Number(pageNumFromParams);
   
       // Get the current tree ID from the user's record
       const { data: user, error: userError } = await supabase

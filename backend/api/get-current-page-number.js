@@ -24,27 +24,29 @@ export default async function handler(req, res) {
     return;
   }
     try {
-      const { userId } = req.body;
+      const { userId, pageNumFromParams } = req.body;
+
+      const pageNumber = Number(pageNumFromParams);
   
       // Get the current page number from the user's record
-      const { data: user, error: userError } = await supabase
-        .from('users')
-        .select('current_page, current_tree_id')
-        .eq('id', userId)
-        .single();
+      // const { data: user, error: userError } = await supabase
+      //   .from('users')
+      //   .select('current_page, current_tree_id')
+      //   .eq('id', userId)
+      //   .single();
   
-      if (userError) {
-        throw new Error(userError.message);
-      }
+      // if (userError) {
+      //   throw new Error(userError.message);
+      // }
   
-      const currentPageNum = Number(user.current_page);
-      const currentTree = user.current_tree_id;
+      // const currentPageNum = Number(user.current_page);
+      // const currentTree = user.current_tree_id;
   
       // Get the ancestor's details from the current tree using the page number
       const { data: baseOfPage, error: pageError } = await supabase
         .from(`tree_${currentTree}`)
         .select('*')
-        .eq('base_of_page', currentPageNum)
+        .eq('base_of_page', pageNumber)
         .single();
   
       if (pageError) {
@@ -60,7 +62,7 @@ export default async function handler(req, res) {
   
       // Respond with the required details
       res.json({
-        pageNum: currentPageNum,
+        pageNum: pageNumber,
         firstName,
         middleName,
         lastName,

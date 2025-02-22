@@ -122,8 +122,6 @@ const Profile = () => {
     let ancientGroupPercent = [];
     let ancientGroupGraphColor = [];
     let ancientGroupPercentTotal = 0;
-    console.log(ethnicityNameArray)
-    console.log(ethnicityPercentageArray)
     for (let i = 0; i < ethnicityNameArray[0].length; i++) {
       const modernEthnicity = ethnicityNameArray[0][i]
         .toLowerCase()
