@@ -49,7 +49,7 @@ function App() {
           <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/familytree" element={<FamilyTree />} />
+          <Route path="/familytree/:pageNum" element={<FamilyTree />} />
           <Route path="/queries" element={<Queries />} />
           <Route path="/register" element={<Register />} />
           <Route path="/:id" element={<Account />} />
