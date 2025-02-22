@@ -693,7 +693,7 @@ const FamilyTree = () => {
     setMaternalMaternalGreatGrandmothersMotherDetails,
   ] = useState({});
 
-  const [pageNumber, setPageNumber] = useState(1);
+
   const [totalNumOfPages, setTotalNumOfPages] = useState(1);
   const [pageEntry, setPageEntry] = useState();
 
@@ -797,23 +797,6 @@ const FamilyTree = () => {
     initialPageNum();
   }, []);
 
-  const setNewPageNum = async (num) => {
-    const userId = localStorage.getItem("userId");
-    const pageResponse = await fetch(
-      "https://cleirigh-backend.vercel.app/api/set-current-page-number",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, num }),
-      }
-    );
-    const data = await pageResponse.json();
-    setPageNumber(num);
-    if (data) {
-      window.location.href = `/familytree/${num}`;
-    }
-    
-  };
 
   const getNewPageNum = async () => {
     const userId = localStorage.getItem("userId");
@@ -870,10 +853,7 @@ const FamilyTree = () => {
       }
     );
     const data = await response.json();
-    //setPageNumber(data.pageNum);
     window.location.href = `/familytree/${data.pageNum}`;
-    
-    //window.location.reload();
   };
 
   const countTotalPageNum = async () => {
@@ -905,8 +885,6 @@ const FamilyTree = () => {
     );
     const data = await response.json();
     window.location.href = `/familytree/${data.pageNum}`;
-    // setPageNumber(data.pageNum);
-    // window.location.reload();
   };
 
   const handlePageEntry = async (event) => {
@@ -5764,7 +5742,6 @@ const FamilyTree = () => {
                     style={{ marginRight: "10px" }}
                     className="bottom-bar-button"
                     onClick={() => {
-                      //setNewPageNum(pageEntry);
                       window.location.href = `/familytree/${pageEntry}`;
                     }}
                   >
