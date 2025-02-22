@@ -24,6 +24,7 @@ export default async function handler(req, res) {
     return;
   }
     try {
+      console.log("API IS TRIGGERED")
       const { userId, personID, pageNumFromParams } = req.body;
 
       const pageNumber = Number(pageNumFromParams);
@@ -65,6 +66,9 @@ export default async function handler(req, res) {
       if (updateError1) {
         throw new Error(updateError1.message);
       }
+
+      console.log("here")
+      console.log(pageNumber)
   
       // Update the previous_page reference for the person
       const {data: previousPage, error: updateError2 } = await supabase
