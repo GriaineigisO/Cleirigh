@@ -3714,8 +3714,8 @@ const FamilyTree = () => {
               >
                 <b>
                   {details.occupation &&
-                  (details.occupation.includes("King") ||
-                    details.occupation.includes("king") ||
+                  (details.occupation.includes("King ") ||
+                    details.occupation.includes("king ") ||
                     details.occupation.includes("emperor") ||
                     details.occupation.includes("Emperor")) ? (
                     <img
