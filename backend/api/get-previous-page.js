@@ -53,15 +53,6 @@ if (req.method === 'OPTIONS') {3
   
       const previousPage = Number(previousData ? previousData.previous_page : 0); // Default to 0 if not found
   
-      // Update the current page number in the user's record
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({ current_page: previousPage })
-        .eq('id', userId);
-  
-      if (updateError) {
-        throw new Error(updateError.message);
-      }
   
       res.json({ pageNum: previousPage });
     } catch (error) {
