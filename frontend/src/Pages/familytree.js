@@ -5765,7 +5765,7 @@ const FamilyTree = () => {
                     className="bottom-bar-button"
                     onClick={() => {
                       //setNewPageNum(pageEntry);
-                      window.location.href = `familytree/${pageEntry}`;
+                      window.location.href = `/familytree/${pageEntry}`;
                     }}
                   >
                     Go
@@ -5775,7 +5775,7 @@ const FamilyTree = () => {
                     style={{ marginRight: "3px" }}
                     className="bottom-bar-button"
                     onClick={() => {
-                      window.location.href = `familytree/1`;
+                      window.location.href = `/familytree/1`;
                     }}
                   >
                     Return To Base Person
@@ -5785,7 +5785,7 @@ const FamilyTree = () => {
                     style={{ marginRight: "3px" }}
                     className="bottom-bar-button"
                     onClick={() => {
-                      window.location.href = `familytree/${Math.floor(Math.random() * (totalNumOfPages - 1) + 1)}`;
+                      window.location.href = `/familytree/${Math.floor(Math.random() * (totalNumOfPages - 1) + 1)}`;
                     }}
                   >
                     Random Page
