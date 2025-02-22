@@ -781,6 +781,7 @@ const FamilyTree = () => {
   //grabs the current page number as stored in the database. This only runs once upon the page's reload
   useEffect(() => {
     const initialPageNum = async () => {
+      console.log("current page number is:", pageNumFromParams)
       // Fetch Current Page Number
       const userId = localStorage.getItem("userId");
       const pageResponse = await fetch(
@@ -792,8 +793,8 @@ const FamilyTree = () => {
         }
       );
       const pageData = await pageResponse.json();
-      setPageNumber(pageData.pageNum);
-      window.location.href = `/familytree?page=${pageData.pageNum}`
+      //setPageNumber(pageData.pageNum);
+      //window.location.href = `/familytree?page=${pageData.pageNum}`
       
     };
     initialPageNum();
