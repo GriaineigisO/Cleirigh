@@ -2582,7 +2582,6 @@ const FamilyTree = () => {
     setShowMaternalMaternalGreatGrandfathersFather(false);
     //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
     if (!maternalMaternalGreatGrandfatherHasParents) {
-      console.log("making new page!", pageNum)
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
       const response = fetch(
@@ -2614,6 +2613,7 @@ const FamilyTree = () => {
     setShowMaternalMaternalGreatGrandfathersMother(false);
     //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
     if (!maternalMaternalGreatGrandfatherHasParents) {
+      console.log("making new page!", pageNum)
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
       const response = fetch(
