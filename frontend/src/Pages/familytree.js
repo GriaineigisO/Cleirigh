@@ -793,8 +793,6 @@ const FamilyTree = () => {
         }
       );
       const pageData = await pageResponse.json();
-      //setPageNumber(pageData.pageNum);
-      //window.location.href = `/familytree?page=${pageData.pageNum}`
       
     };
     initialPageNum();
@@ -813,7 +811,7 @@ const FamilyTree = () => {
     const data = await pageResponse.json();
     setPageNumber(num);
     if (data) {
-      window.location.href = `/familytree?page=${num}`;
+      window.location.href = `/familytree?]/page/${num}`;
     }
     
   };
@@ -875,7 +873,7 @@ const FamilyTree = () => {
     );
     const data = await response.json();
     setPageNumber(data.pageNum);
-    window.location.href = `familytree?page=${data.pageNum}`;
+    window.location.href = `familytree/page/${data.pageNum}`;
     
     //window.location.reload();
   };
@@ -908,7 +906,7 @@ const FamilyTree = () => {
       }
     );
     const data = await response.json();
-    window.location.href = `familytree?page=${data.pageNum}`;
+    window.location.href = `familytree/page/${data.pageNum}`;
     // setPageNumber(data.pageNum);
     // window.location.reload();
   };
