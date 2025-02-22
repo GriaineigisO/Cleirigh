@@ -20,8 +20,7 @@ import { useParams } from "react-router-dom";
 //maternalmaternalgrandparents = maternal grandmother's parents
 
 const FamilyTree = () => {
-  const { pageNumFromParams } = useParams();
-  console.log(pageNumFromParams)
+  const { pageNum } = useParams();
   const componentRef = React.useRef(null);
   const [rightNoteMargin, setRightNoteMargin] = useState();
   const [noteTop, setNoteTop] = useState();
@@ -782,7 +781,7 @@ const FamilyTree = () => {
   //grabs the current page number as stored in the database. This only runs once upon the page's reload
   useEffect(() => {
     const initialPageNum = async () => {
-      console.log("current page number is:", pageNumFromParams)
+      console.log("current page number is:", pageNum)
       // Fetch Current Page Number
       const userId = localStorage.getItem("userId");
       const pageResponse = await fetch(
@@ -819,13 +818,13 @@ const FamilyTree = () => {
 
   const getNewPageNum = async () => {
     const userId = localStorage.getItem("userId");
-    console.log("pageNumFromParams:" , pageNumFromParams)
+    console.log("pageNum:" , pageNum)
     const pageResponse = await fetch(
       "https://cleirigh-backend.vercel.app/api/get-current-page-number",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId,  pageNumFromParams}),
+        body: JSON.stringify({ userId,  pageNum}),
       }
     );
 
@@ -2238,7 +2237,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2269,7 +2268,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2301,7 +2300,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2334,7 +2333,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2366,7 +2365,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2397,7 +2396,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2428,7 +2427,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2459,7 +2458,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2490,7 +2489,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2521,7 +2520,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2552,7 +2551,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2583,7 +2582,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2614,7 +2613,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2645,7 +2644,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2676,7 +2675,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2707,7 +2706,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, personID, pageNumFromParams }),
+          body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
       countTotalPageNum();
@@ -2906,7 +2905,7 @@ const FamilyTree = () => {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, personID, pageNumFromParams }),
+            body: JSON.stringify({ userId, personID, pageNum }),
           }
         );
       }
