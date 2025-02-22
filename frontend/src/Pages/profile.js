@@ -186,7 +186,6 @@ const Profile = () => {
         );
       }
     }
-  
 
     let count = 0;
 
@@ -464,23 +463,23 @@ const Profile = () => {
   useEffect(() => {
     const GetAllAssociatedTopics = async () => {
       if (!id) {
-        console.error("ID not found")
+        console.error("ID not found");
       }
       if (id) {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/get-all-associated-topics",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId, id })
-        }
-      );
-      const data = await response.json();
-      setAssociatedTopicNames(data.topicNames);
-      setAssociatedTopicLinks(data.topicLinks);
-      setAssociatedTopicIds(data.topicIds);
-    }
+        const userId = localStorage.getItem("userId");
+        const response = await fetch(
+          "https://cleirigh-backend.vercel.app/api/get-all-associated-topics",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, id }),
+          }
+        );
+        const data = await response.json();
+        setAssociatedTopicNames(data.topicNames);
+        setAssociatedTopicLinks(data.topicLinks);
+        setAssociatedTopicIds(data.topicIds);
+      }
     };
     GetAllAssociatedTopics();
   }, [id]);
@@ -672,22 +671,8 @@ const Profile = () => {
       }
     );
     const num = await getPageNum.json();
-
-    //sets current page to ancestor's page
-    const setPageNum = await fetch(
-      "https://cleirigh-backend.vercel.app/api/set-current-page-number",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, num }),
-      }
-    );
-    const pageNumRecieved = await setPageNum.json();
-
-    if (pageNumRecieved) {
-      //redirect to tree
-      window.location.href = `/familytree/${num}`;
-    }
+    //redirect to tree
+    window.location.href = `/familytree/${num}`;
   };
 
   const ListChildren = () => {
@@ -816,7 +801,6 @@ const Profile = () => {
       alert("File upload failed");
     }
   };
-
 
   const EditTextSourceModal = (
     sourceNameTextArray,
@@ -1509,19 +1493,23 @@ const Profile = () => {
 
         {associatedTopicNames.length > 0 ? (
           <>
-          <p>{profileData.first_name} is associated with the following topics:</p>
-          <ol>
-            {associatedTopicNames.map((topic, index) => (
-              <li
-                className="span-link"
-                onClick={() => handleOpenTopic(associatedTopicLinks[index])}
-              >
-                {associatedTopicNames[index]}
-              </li>
-            ))}
-          </ol>
+            <p>
+              {profileData.first_name} is associated with the following topics:
+            </p>
+            <ol>
+              {associatedTopicNames.map((topic, index) => (
+                <li
+                  className="span-link"
+                  onClick={() => handleOpenTopic(associatedTopicLinks[index])}
+                >
+                  {associatedTopicNames[index]}
+                </li>
+              ))}
+            </ol>
           </>
-        ) : (<></>)} 
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="timeline-section">
