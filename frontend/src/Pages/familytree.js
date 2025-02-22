@@ -21,6 +21,7 @@ import { useParams } from "react-router-dom";
 
 const FamilyTree = () => {
   const { pageNumFromParams } = useParams();
+  console.log(pageNumFromParams)
   const componentRef = React.useRef(null);
   const [rightNoteMargin, setRightNoteMargin] = useState();
   const [noteTop, setNoteTop] = useState();
@@ -811,7 +812,7 @@ const FamilyTree = () => {
     const data = await pageResponse.json();
     setPageNumber(num);
     if (data) {
-      window.location.href = `/familytree?]/page/${num}`;
+      window.location.href = `/familytree/page/${num}`;
     }
     
   };
