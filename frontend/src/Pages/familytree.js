@@ -781,7 +781,6 @@ const FamilyTree = () => {
   //grabs the current page number as stored in the database. This only runs once upon the page's reload
   useEffect(() => {
     const initialPageNum = async () => {
-      console.log("current page number is:", pageNum)
       // Fetch Current Page Number
       const userId = localStorage.getItem("userId");
       const pageResponse = await fetch(
@@ -818,7 +817,6 @@ const FamilyTree = () => {
 
   const getNewPageNum = async () => {
     const userId = localStorage.getItem("userId");
-    console.log("pageNum:" , pageNum)
     const pageResponse = await fetch(
       "https://cleirigh-backend.vercel.app/api/get-current-page-number",
       {

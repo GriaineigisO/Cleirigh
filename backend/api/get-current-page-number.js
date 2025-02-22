@@ -24,11 +24,11 @@ export default async function handler(req, res) {
     return;
   }
     try {
-      const { userId, pageNumFromParams } = req.body;
+      const { userId, pageNum } = req.body;
 
-      const pageNumber = Number(pageNumFromParams);
+      const pageNumber = Number(pageNum);
 
-      console.log("Pagenumber is:", pageNumber)
+      console.log("Pagenumber is:", pageNum)
       console.log("pageNumber is a ", typeof pageNumber)
   
       // Get the current page number from the user's record
