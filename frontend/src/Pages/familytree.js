@@ -810,7 +810,7 @@ const FamilyTree = () => {
     const data = await pageResponse.json();
     setPageNumber(num);
     if (data) {
-      window.location.href = `//${num}`;
+      window.location.href = `/familytree/${num}`;
     }
     
   };
@@ -870,8 +870,8 @@ const FamilyTree = () => {
       }
     );
     const data = await response.json();
-    setPageNumber(data.pageNum);
-    window.location.href = `/${data.pageNum}`;
+    //setPageNumber(data.pageNum);
+    window.location.href = `/familytree/${data.pageNum}`;
     
     //window.location.reload();
   };
@@ -904,7 +904,7 @@ const FamilyTree = () => {
       }
     );
     const data = await response.json();
-    window.location.href = `/${data.pageNum}`;
+    window.location.href = `/familytree/${data.pageNum}`;
     // setPageNumber(data.pageNum);
     // window.location.reload();
   };
