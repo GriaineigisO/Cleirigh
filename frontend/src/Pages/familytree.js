@@ -799,7 +799,6 @@ const FamilyTree = () => {
 
 
   const getNewPageNum = async () => {
-    console.log(pageNum)
     const userId = localStorage.getItem("userId");
     const pageResponse = await fetch(
       "https://cleirigh-backend.vercel.app/api/get-current-page-number",
@@ -3849,18 +3848,7 @@ const FamilyTree = () => {
     }
 
     const handleOpenPage = async (num) => {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/set-current-page-number",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId, num }),
-        }
-      );
-      window.location.reload();
+      window.location.href = `/familytree/${num}`;
     };
 
     const Relation = (props) => {
@@ -3894,10 +3882,9 @@ const FamilyTree = () => {
 
         const handleLinkClick = async () => {
           console.log("click");
-          const pageNum = await findPageNum();
-          console.log(pageNum);
-          if (pageNum) {
-            handleOpenPage(pageNum);
+          const pageNumber = await findPageNum();
+          if (pageNumber) {
+            handleOpenPage(pageNumber);
           }
         };
 

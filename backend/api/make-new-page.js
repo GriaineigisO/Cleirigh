@@ -28,6 +28,7 @@ export default async function handler(req, res) {
 
       const pageNumber = Number(pageNumFromParams);
   
+      console.log("previous page num:", pageNumber)
       // Get the current tree ID from the user's record
       const { data: user, error: userError } = await supabase
         .from('users')
@@ -56,7 +57,7 @@ export default async function handler(req, res) {
       const newPageNum = maxPageData ? Number(maxPageData.page_number) + 1 : 1;
   
       // Update the page number and set it as the base for the new page
-      const { error: updateError1 } = await supabase
+      const {data: basePageNum, error: updateError1 } = await supabase
         .from(`tree_${currentTree}`)
         .update({ page_number: newPageNum, base_of_page: newPageNum })
         .eq('ancestor_id', personID);
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
       }
   
       // Update the previous_page reference for the person
-      const { error: updateError2 } = await supabase
+      const {data: previousPage, error: updateError2 } = await supabase
         .from(`tree_${currentTree}`)
         .update({ previous_page: pageNumber })
         .eq('ancestor_id', personID);
