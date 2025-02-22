@@ -799,6 +799,7 @@ const FamilyTree = () => {
 
 
   const getNewPageNum = async () => {
+    console.log(pageNum)
     const userId = localStorage.getItem("userId");
     const pageResponse = await fetch(
       "https://cleirigh-backend.vercel.app/api/get-current-page-number",
