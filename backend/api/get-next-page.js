@@ -52,16 +52,6 @@ export default async function handler(req, res) {
   
       const nextPage = Number(pageData ? pageData.base_of_page : 0); // Default to 0 if not found
   
-      // Update the current page number in the user's record
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({ current_page: nextPage })
-        .eq('id', userId);
-  
-      if (updateError) {
-        throw new Error(updateError.message);
-      }
-  
       res.json({ pageNum: nextPage });
     } catch (error) {
       console.log("Error getting next page: ", error);
