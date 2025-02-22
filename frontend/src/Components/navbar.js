@@ -179,7 +179,7 @@ const Navbar = ({ onLogin, onLogout }) => {
           <Link to={"/home"} className="navlink">
               Home
             </Link>
-            <Link to={"/familytree?page=1"} className="navlink">
+            <Link to={"/familytree/page/1"} className="navlink">
               View tree
             </Link>
             <Link to={"/search"} className="navlink">
