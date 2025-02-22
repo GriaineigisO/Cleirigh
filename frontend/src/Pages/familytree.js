@@ -4339,6 +4339,7 @@ const FamilyTree = () => {
 
     console.log(childrenPages)
   
+    if (childrenPages) {
     return (
       <ol id="childrenPageOl">
         {childrenPages.map((k, index) => (
@@ -4348,6 +4349,7 @@ const FamilyTree = () => {
         ))}
       </ol>
     );
+  }
   };
    
 
