@@ -796,7 +796,7 @@ const FamilyTree = () => {
       window.location.href = `/familytree?page=${pageData.pageNum}`
       
     };
-    //initialPageNum();
+    initialPageNum();
   }, []);
 
   const setNewPageNum = async (num) => {
