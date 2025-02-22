@@ -857,7 +857,7 @@ const FamilyTree = () => {
 
   useEffect(() => {
     getNewPageNum();
-  }, [pageNumber]);
+  }, [pageNum]);
 
   const navigateDown = async (personID) => {
     const userId = localStorage.getItem("userId");
@@ -4373,7 +4373,7 @@ const FamilyTree = () => {
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: `${treeName} Tree Page ${pageNumber}`
+    documentTitle: `${treeName} Tree Page ${pageNum}`
   });
 
   return (
@@ -5477,7 +5477,7 @@ const FamilyTree = () => {
                         )}
                       </div>
 
-                      {pageNumber !== 1 ? (
+                      {pageNum !== 1 ? (
                         <div className="col" id="down-arrow">
                           <p
                             className="up-arrow"
@@ -5742,14 +5742,14 @@ const FamilyTree = () => {
               </div>
 
               <div id="page-num-print">
-                <h4>Page {pageNumber}</h4>
+                <h4>Page {pageNum}</h4>
               </div>
             </div>
 
             <div className="row bottom-bar">
               <div className="bottom-bar-content">
                 <p>
-                  Current Page: {pageNumber}/{totalNumOfPages}
+                  Current Page: {pageNum}/{totalNumOfPages}
                 </p>
 
                 <div className="bottom-bar-searching">
