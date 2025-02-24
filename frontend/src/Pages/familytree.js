@@ -3590,7 +3590,7 @@ const FamilyTree = () => {
     }
 
     const handleOpenProfile = (id) => {
-      window.open(`profile/${id}`, "_blank");
+      window.open(`https://cleirighgenealogy.com/profile/${id}`, "_blank");
     };
 
     const handleOpenPage = async (num) => {
