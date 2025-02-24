@@ -3837,7 +3837,7 @@ const FamilyTree = () => {
     const uncertainText = <sup>(uncertain)</sup>;
 
     const handleOpenProfile = (id) => {
-      window.open(`profile/${id}`, "_blank");
+      window.open(`./profile/${id}`, "_blank");
     };
 
     let boxShadowColor = "5px 5px 35px rgba(2, 110, 2)";
