@@ -2331,7 +2331,7 @@ const FamilyTree = () => {
 
   const savePaternalMaternalGreatGrandfathersFatherChanges = async () => {
     setShowPaternalMaternalGreatGrandfathersFather(false);
-
+    console.log("william's father!!")
     //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
@@ -2520,7 +2520,6 @@ const FamilyTree = () => {
     setShowMaternalPaternalGreatGrandmothersFather(false);
     //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
     if (!maternalPaternalGreatGrandmotherHasParents) {
-      console.log("maud's father!!")
       const userId = localStorage.getItem("userId");
       const personID = maternalPaternalGreatGrandmotherDetails.id;
       const response = fetch(
