@@ -2271,6 +2271,7 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
+      console.log("margarets father!!")
       const response = fetch(
         "https://cleirigh-backend.vercel.app/api/make-new-page",
         {
@@ -2279,7 +2280,11 @@ const FamilyTree = () => {
           body: JSON.stringify({ userId, personID, pageNum }),
         }
       );
-      countTotalPageNum();
+      const data = response.json();
+      if (data) {
+        countTotalPageNum();
+      }
+      
     }
 
     try {
@@ -2331,7 +2336,6 @@ const FamilyTree = () => {
 
   const savePaternalMaternalGreatGrandfathersFatherChanges = async () => {
     setShowPaternalMaternalGreatGrandfathersFather(false);
-    console.log("william's father!!")
     //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
     if (!paternalMaternalGreatGrandfatherHasParents) {
       const userId = localStorage.getItem("userId");
