@@ -778,7 +778,7 @@ const FamilyTree = () => {
     fetchInitialData();
   }, []);
 
-  //grabs the current page number as stored in the database. This only runs once upon the page's reload
+
   useEffect(() => {
     const initialPageNum = async () => {
       // Fetch Current Page Number
@@ -788,7 +788,7 @@ const FamilyTree = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
+          body: JSON.stringify({ userId, pageNum }),
         }
       );
       const pageData = await pageResponse.json();

@@ -29,7 +29,6 @@ export default async function handler(req, res) {
       const pageNumber = Number(pageNum);
 
       console.log("Pagenumber is:", pageNum)
-      console.log("pageNumber is a ", typeof pageNumber)
   
       // Get the current page number from the user's record
       const { data: user, error: userError } = await supabase
