@@ -2271,7 +2271,8 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      console.log("margarets father!!")
+      console.log(pageNum)
+      console.log(typeof pageNum)
       const response = fetch(
         "https://cleirigh-backend.vercel.app/api/make-new-page",
         {
