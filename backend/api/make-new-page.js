@@ -25,9 +25,9 @@ export default async function handler(req, res) {
   }
     try {
       console.log("API IS TRIGGERED")
-      const { userId, personID, pageNumFromParams } = req.body;
+      const { userId, personID, pageNum } = req.body;
 
-      const pageNumber = Number(pageNumFromParams);
+      const pageNumber = Number(pageNum);
   
       console.log("previous page num:", pageNumber)
       // Get the current tree ID from the user's record
