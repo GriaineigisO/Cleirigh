@@ -30,7 +30,9 @@ export default async function handler(req, res) {
     return;
   }
   try {
-    const { userId, leftNote, leftNoteHeadline } = req.body;
+    const { userId, leftNote, leftNoteHeadline, pageNum } = req.body;
+
+    const pageNumber = Number(pageNum);
 
     // Get current tree id from users table
     const { data: user, error: userError } = await supabase
@@ -41,20 +43,12 @@ export default async function handler(req, res) {
 
     const currentTree = user.current_tree_id;
 
-    // Query to get the current page
-    const { data: getCurrentPage, getCurrentPageError } = await supabase
-      .from("users")
-      .select("current_page")
-      .eq("id", userId);
-
-    const currentPage = getCurrentPage.current_page;
-
     const { data: checkIfPageHasNotes, checkIfPageHasNotesError } =
       await supabase
         .from("notes")
         .select("*")
         .eq("tree_id", currentTree)
-        .eq("page_number", currentPage);
+        .eq("page_number", pageNumber);
 
     if (checkIfPageHasNotes.length === 0) {
       const { data, error } = await supabase
@@ -62,7 +56,7 @@ export default async function handler(req, res) {
         .insert([
           {
             tree_id: currentTree,
-            page_number: currentPage,
+            page_number: pageNumber,
             left_note: leftNote,
             left_note_headline: leftNoteHeadline,
           },
