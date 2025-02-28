@@ -47,7 +47,7 @@ export default async function handler(req, res) {
       .select("current_page")
       .eq("id", userId);
 
-    const currentPage = getCurrentPage[0].current_page;
+    const currentPage = getCurrentPage.current_page;
 
     const { data: checkIfPageHasNotes, checkIfPageHasNotesError } =
       await supabase
