@@ -67,8 +67,8 @@ export default async function handler(req, res) {
         throw new Error(updateError1.message);
       }
 
-      console.log("here")
       console.log(pageNumber)
+      console.log(typeof pageNumber)
   
       // Update the previous_page reference for the person
       const {data: previousPage, error: updateError2 } = await supabase
