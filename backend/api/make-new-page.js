@@ -77,7 +77,7 @@ export default async function handler(req, res) {
         .eq('ancestor_id', personID);
   
       if (updateError2) {
-        throw new Error(updateError2.message);
+        console.error.log("Error making new page: ", updateError2.message);
       }
   
       res.json({ success: true, newPageNum });
