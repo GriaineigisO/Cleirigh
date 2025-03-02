@@ -189,10 +189,10 @@ const Search = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="li-span search-label search-border-right">
+                  <td className="li-span search-label search-border-right  search-border-bottom">
                     death
                   </td>
-                  <td className="search-content search-border-right">
+                  <td className="search-content search-border-right  search-border-bottom">
                     {results[index].date_of_death}{" "}
                   </td>
                   <td
@@ -207,7 +207,7 @@ const Search = () => {
                   <td  className="li-span search-label search-border-right">
                     Occupation
                   </td>
-                  <td className="search-content search-border-right" colSpan="3">
+                  <td className="search-content search-border-right" colSpan="4">
                   {results[index].occupation}{" "}
                   </td>
                 </tr>
