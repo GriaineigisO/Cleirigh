@@ -25,7 +25,9 @@ export default async function handler(req, res) {
   }
     try {
   
-      const {userId} = req.body;
+      const {userId, pageNum} = req.body;
+
+      const currentPage = Number(pageNum)
   
       // Query to get the current tree
       const { data: currentTreeData, error: currentTreeError } = await supabase
@@ -35,15 +37,6 @@ export default async function handler(req, res) {
         .single(); 
   
       const currentTree = currentTreeData.current_tree_id;
-
-      const {data: getCurrentPage, error: currentPageError } = await supabase
-        .from(`users`)
-        .select('*')
-        .eq('id', userId)
-
-      const currentPage = getCurrentPage[0].current_page;
-
-      console.log(currentPage)
   
       const {data: getRightNote, error: rightNoteError} = await supabase    
         .from(`notes`)

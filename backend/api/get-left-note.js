@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   
       const {userId, pageNum} = req.body;
 
-      currentPage = Number(pageNum)
+      const currentPage = Number(pageNum)
   
       // Query to get the current tree
       const { data: currentTreeData, error: currentTreeError } = await supabase
