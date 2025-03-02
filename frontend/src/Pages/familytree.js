@@ -4206,7 +4206,7 @@ const FamilyTree = () => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, rightNote, rightNoteHeadline }),
+        body: JSON.stringify({ userId, rightNote, rightNoteHeadline, pageNum }),
       }
     );
 
