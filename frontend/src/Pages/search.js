@@ -203,6 +203,14 @@ const Search = () => {
                   </td>
                   <td className="search-content"></td>
                 </tr>
+                <tr>
+                  <td  className="li-span search-label search-border-right">
+                    Occupation
+                  </td>
+                  <td className="search-content search-border-right" colSpan="3">
+                  {results[index].occupation}{" "}
+                  </td>
+                </tr>
               </table>
             ))}
           </div>

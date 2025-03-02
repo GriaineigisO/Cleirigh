@@ -74,7 +74,7 @@ export default async function handler(req, res) {
         .from("notes")
         .update({left_note: leftNote, left_note_headline: leftNoteHeadline})
         .eq("tree_id", currentTree)
-        .eq("page_number", currentPage)
+        .eq("page_number", pageNumber)
 
       res.json(true);
     }
