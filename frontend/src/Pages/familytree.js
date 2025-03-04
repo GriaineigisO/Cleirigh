@@ -2944,6 +2944,8 @@ const FamilyTree = () => {
             {sex === "male" ? (
               <div className="inputandQuestionMark">
               {details.lastName ? (
+                <>
+                {console.log(details.lastName)}
                 <input
                 type="text"
                 placeholder="Last Name"
@@ -2952,6 +2954,7 @@ const FamilyTree = () => {
                   setDetails({ ...details, lastName: e.target.value })
                 }
               ></input>
+              </>
               ) : (
                 <input
                   type="text"
