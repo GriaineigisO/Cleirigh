@@ -2949,7 +2949,7 @@ const FamilyTree = () => {
                   placeholder="Last Name"
                   value={childDetails.lastName}
                   onChange={(e) =>
-                    setDetails({ ...details, lastName: e.target.value })
+                    setDetails({ ...childDetails, lastName: e.target.value })
                   }
                 ></input>
               </div>
@@ -3037,7 +3037,7 @@ const FamilyTree = () => {
                 placeholder="Ethnicity"
                 value={childDetails.ethnicity}
                 onChange={(e) =>
-                  setDetails({ ...details, ethnicity: e.target.value })
+                  setDetails({ ...childDetails, ethnicity: e.target.value })
                 }
               ></input>
             </div>
