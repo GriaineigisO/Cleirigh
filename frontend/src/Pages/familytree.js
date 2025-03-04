@@ -2858,7 +2858,7 @@ const FamilyTree = () => {
     }, [childDetails]); // Runs when childDetails changes
     
       useEffect(() => {
-        if (sex === male) {
+        if (sex === "male") {
         setDetails((prev) => ({
           ...prev,
           lastName: prev.lastName || childDetails.lastName, // Only set if undefined
