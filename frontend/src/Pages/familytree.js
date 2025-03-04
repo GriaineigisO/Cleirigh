@@ -2943,6 +2943,7 @@ const FamilyTree = () => {
             {/*if the person is male, then his default surname is the same as his childrens'*/}
             {sex === "male" ? (
               <div className="inputandQuestionMark">
+              {console.log(details.lastName)}
                 <input
                   type="text"
                   placeholder="Last Name"
