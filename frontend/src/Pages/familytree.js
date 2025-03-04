@@ -2849,6 +2849,21 @@ const FamilyTree = () => {
     closeAdd
   ) {
     const [isNobility, setIsNobility] = useState(false);
+    useEffect(() => {
+      setDetails((prev) => ({
+        ...prev,
+        ethnicity: prev.ethnicity || childDetails.ethnicity, // Only set if undefined
+      }));
+    }, [childDetails]); // Runs when childDetails changes
+    if (sex === "male") {
+      useEffect(() => {
+        setDetails((prev) => ({
+          ...prev,
+          lastName: prev.lastName || childDetails.lastName, // Only set if undefined
+        }));
+      }, [childDetails]); // Runs when childDetails changes
+    }
+    
 
     let motherOrFather = "";
     if (sex === "male") {
@@ -3037,7 +3052,7 @@ const FamilyTree = () => {
                 placeholder="Ethnicity"
                 value={childDetails.ethnicity}
                 onChange={(e) =>
-                  setDetails({ ...childDetails, ethnicity: e.target.value })
+                  setDetails({ ...details, ethnicity: e.target.value })
                 }
               ></input>
             </div>
