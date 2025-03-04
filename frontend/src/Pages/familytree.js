@@ -2952,7 +2952,7 @@ const FamilyTree = () => {
                 <input
                   type="text"
                   placeholder="Last Name"
-                  value={childDetails.lastName}
+                  value={details.lastName}
                   onChange={(e) =>
                     setDetails({ ...childDetails, lastName: e.target.value })
                   }
