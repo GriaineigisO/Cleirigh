@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
       const { userId, ancestorDetails, childID, sex } = req.body;
+      console.log(ancestorDetails)
   
       // Query to get the current tree id
       const { data: user, error: userError } = await supabase

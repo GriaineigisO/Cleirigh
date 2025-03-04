@@ -1891,6 +1891,7 @@ const FamilyTree = () => {
 
   const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
     try {
+      console.log(ancestorDetails)
       const userId = localStorage.getItem("userId");
       const response = await fetch(
         "https://cleirigh-backend.vercel.app/api/save-ancestor",
