@@ -192,11 +192,11 @@ const Search = () => {
                   <td className="li-span search-label search-border-right  search-border-bottom">
                     death
                   </td>
-                  <td className="search-content search-border-right  search-border-bottom">
+                  <td className="search-content search-border-right search-border-bottom">
                     {results[index].date_of_death}{" "}
                   </td>
                   <td
-                    className="search-place search-content search-border-right"
+                    className="search-place search-content search-border-right search-border-bottom"
                     colSpan="2"
                   >
                     {results[index].place_of_death}

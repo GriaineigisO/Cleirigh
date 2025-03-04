@@ -3034,7 +3034,7 @@ const FamilyTree = () => {
               <input
                 type="text"
                 placeholder="Ethnicity"
-                value={details.ethnicity}
+                value={childDetails.ethnicity}
                 onChange={(e) =>
                   setDetails({ ...details, ethnicity: e.target.value })
                 }
