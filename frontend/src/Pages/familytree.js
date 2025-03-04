@@ -2851,6 +2851,12 @@ const FamilyTree = () => {
           ...prev,
           ethnicity: prev.ethnicity || childDetails.ethnicity, // Only sets if undefined
         }));
+        if (sex === "male") {
+          setDetails((prev) => ({
+            ...prev,
+            lastName: prev.lastName || childDetails.lastName, // Only sets if undefined
+          }));
+        }
       }
     }, [showPerson, childDetails]);
     
