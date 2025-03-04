@@ -2849,20 +2849,23 @@ const FamilyTree = () => {
     closeAdd
   ) {
     const [isNobility, setIsNobility] = useState(false);
+
     useEffect(() => {
       setDetails((prev) => ({
         ...prev,
         ethnicity: prev.ethnicity || childDetails.ethnicity, // Only set if undefined
       }));
     }, [childDetails]); // Runs when childDetails changes
-    if (sex === "male") {
+    
       useEffect(() => {
+        if (sex === male) {
         setDetails((prev) => ({
           ...prev,
           lastName: prev.lastName || childDetails.lastName, // Only set if undefined
         }));
+      }
       }, [childDetails]); // Runs when childDetails changes
-    }
+    
     
 
     let motherOrFather = "";
