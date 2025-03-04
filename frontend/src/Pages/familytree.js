@@ -693,7 +693,6 @@ const FamilyTree = () => {
     setMaternalMaternalGreatGrandmothersMotherDetails,
   ] = useState({});
 
-
   const [totalNumOfPages, setTotalNumOfPages] = useState(1);
   const [pageEntry, setPageEntry] = useState();
 
@@ -768,7 +767,7 @@ const FamilyTree = () => {
         sex: baseData.sex,
         ethnicity: baseData.ethnicity,
       }));
-      setTreeName(baseData.treeName)
+      setTreeName(baseData.treeName);
     } catch (error) {
       console.error("Error fetching initial data:", error);
     }
@@ -777,7 +776,6 @@ const FamilyTree = () => {
   useEffect(() => {
     fetchInitialData();
   }, []);
-
 
   useEffect(() => {
     const initialPageNum = async () => {
@@ -792,11 +790,9 @@ const FamilyTree = () => {
         }
       );
       const pageData = await pageResponse.json();
-      
     };
     initialPageNum();
   }, []);
-
 
   const getNewPageNum = async () => {
     const userId = localStorage.getItem("userId");
@@ -805,7 +801,7 @@ const FamilyTree = () => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId,  pageNum}),
+        body: JSON.stringify({ userId, pageNum }),
       }
     );
 
@@ -1891,7 +1887,7 @@ const FamilyTree = () => {
 
   const saveAncestorChanges = async (ancestorDetails, childID, sex) => {
     try {
-      console.log(ancestorDetails)
+      console.log(ancestorDetails);
       const userId = localStorage.getItem("userId");
       const response = await fetch(
         "https://cleirigh-backend.vercel.app/api/save-ancestor",
@@ -2272,8 +2268,8 @@ const FamilyTree = () => {
     if (!paternalPaternalGreatGrandmotherHasParents) {
       const userId = localStorage.getItem("userId");
       const personID = paternalPaternalGreatGrandmotherDetails.id;
-      console.log(pageNum)
-      console.log(typeof pageNum)
+      console.log(pageNum);
+      console.log(typeof pageNum);
       const response = fetch(
         "https://cleirigh-backend.vercel.app/api/make-new-page",
         {
@@ -2286,7 +2282,6 @@ const FamilyTree = () => {
       if (data) {
         countTotalPageNum();
       }
-      
     }
 
     try {
@@ -2619,7 +2614,7 @@ const FamilyTree = () => {
     setShowMaternalMaternalGreatGrandfathersMother(false);
     //  if this person didn't already have parents, this addition of a parent will result in this person becoming the bottom page person on a new page
     if (!maternalMaternalGreatGrandfatherHasParents) {
-      console.log("making new page!", pageNum)
+      console.log("making new page!", pageNum);
       const userId = localStorage.getItem("userId");
       const personID = maternalMaternalGreatGrandfatherDetails.id;
       const response = fetch(
@@ -2851,21 +2846,13 @@ const FamilyTree = () => {
     const [isNobility, setIsNobility] = useState(false);
 
     useEffect(() => {
-      setDetails((prev) => ({
-        ...prev,
-        ethnicity: prev.ethnicity || childDetails.ethnicity, // Only set if undefined
-      }));
-    }, [childDetails]); // Runs when childDetails changes
-    
-      useEffect(() => {
-        if (sex === "male") {
+      if (showPerson) {
         setDetails((prev) => ({
           ...prev,
-          lastName: prev.lastName || childDetails.lastName, // Only set if undefined
+          ethnicity: prev.ethnicity || childDetails.ethnicity, // Only sets if undefined
         }));
       }
-      }, [childDetails]); // Runs when childDetails changes
-    
+    }, [showPerson, childDetails]);
     
 
     let motherOrFather = "";
@@ -3053,11 +3040,11 @@ const FamilyTree = () => {
               <input
                 type="text"
                 placeholder="Ethnicity"
-                value={childDetails.ethnicity}
+                value={details.ethnicity || ""} // Ensures the field is controlled
                 onChange={(e) =>
                   setDetails({ ...details, ethnicity: e.target.value })
                 }
-              ></input>
+              />
             </div>
           </div>
 
@@ -3793,7 +3780,7 @@ const FamilyTree = () => {
                 {details.uncertainDeathPlace ? uncertainText : <></>}
               </td>
             </tr>
-            <tr  class="table-row-border all-border">
+            <tr class="table-row-border all-border">
               <td
                 className=" ancestor-box-border-top table-label shrink all-border"
                 style={{ backgroundColor: tableColor }}
@@ -4024,7 +4011,7 @@ const FamilyTree = () => {
                 className=" table-label shrink"
                 style={{ backgroundColor: tableColor }}
               >
-                Profile <br class="lineBreak"/>
+                Profile <br class="lineBreak" />
                 Number:
               </td>
               <td className="table-content profile-cell">
@@ -4052,7 +4039,9 @@ const FamilyTree = () => {
                 <tr></tr>
                 <tr colSpan="5" rowSpan="6" className="unknown-ancestor-cell">
                   <td>
-                    <button class="add-parent-button" onClick={openAddModal}>Add {motherFather}</button>
+                    <button class="add-parent-button" onClick={openAddModal}>
+                      Add {motherFather}
+                    </button>
                   </td>
                 </tr>
                 <tr></tr>
@@ -4323,7 +4312,7 @@ const FamilyTree = () => {
 
   const ShowChildrenPages = (props) => {
     const [childrenPages, setChildrenPages] = useState([]);
-  
+
     useEffect(() => {
       const fetchChildrenPages = async () => {
         if (props.details) {
@@ -4344,29 +4333,33 @@ const FamilyTree = () => {
           }
         }
       };
-  
+
       fetchChildrenPages();
     }, [props.details]);
-  
+
     if (!props.details) return null; // Return nothing if no details are provided
-  
+
     if (childrenPages) {
-    return (
-      <ol id="childrenPageOl">
-        {childrenPages.map((k, index) => (
-          <li key={index}>
-            {childrenPages[index].first_name ? (childrenPages[index].first_name) : ("Unknown")} {childrenPages[index].middle_name} {childrenPages[index].last_name} ⇒ P.{childrenPages[index].page_number}
-          </li>
-        ))}
-      </ol>
-    );
-  }
+      return (
+        <ol id="childrenPageOl">
+          {childrenPages.map((k, index) => (
+            <li key={index}>
+              {childrenPages[index].first_name
+                ? childrenPages[index].first_name
+                : "Unknown"}{" "}
+              {childrenPages[index].middle_name}{" "}
+              {childrenPages[index].last_name} ⇒ P.
+              {childrenPages[index].page_number}
+            </li>
+          ))}
+        </ol>
+      );
+    }
   };
-   
 
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: `${treeName} Tree Page ${pageNum}`
+    documentTitle: `${treeName} Tree Page ${pageNum}`,
   });
 
   return (
@@ -5480,7 +5473,7 @@ const FamilyTree = () => {
                           </p>
                           {/*the following div only appears when printed to PDF. It shows the bottom person's child, or children is a repeat ancestor, and then the page where one may navigate down*/}
                           <div id="descendant-page-num-for-print">
-                              <ShowChildrenPages details={bottomPersonDetails}/>
+                            <ShowChildrenPages details={bottomPersonDetails} />
                           </div>
                         </div>
                       ) : (
@@ -5505,11 +5498,14 @@ const FamilyTree = () => {
                   <div id="left-note" style={{ width: "450px" }}>
                     <div id="validleft-note">
                       <img
-                      class="note-icon"
+                        class="note-icon"
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
-                      <h4 class="note-headline">{leftNoteHeadline}<span class="note-headline-colon">: </span></h4>
+                      <h4 class="note-headline">
+                        {leftNoteHeadline}
+                        <span class="note-headline-colon">: </span>
+                      </h4>
                     </div>
 
                     <hr class="hr-line"></hr>
@@ -5524,9 +5520,7 @@ const FamilyTree = () => {
                     ></img>
                   </div>
                 ) : (
-                  <div
-                    id="left-button"
-                  >
+                  <div id="left-button">
                     <button
                       onClick={() => setWriteLeftNoteModalOpen(true)}
                       style={{ height: "40px", marginTop: "40px" }}
@@ -5623,10 +5617,13 @@ const FamilyTree = () => {
                         src={warningLogo}
                         style={{ width: "30px", height: "30px" }}
                       ></img>
-                      <h4 class="note-headline">{rightNoteHeadline}<span class="note-headline-colon">: </span></h4>
+                      <h4 class="note-headline">
+                        {rightNoteHeadline}
+                        <span class="note-headline-colon">: </span>
+                      </h4>
                     </div>
 
-                    <hr  class="hr-line"></hr>
+                    <hr class="hr-line"></hr>
                     <p class="note-text">{rightNote}</p>
                     <img
                       class="note-icon"
@@ -5777,7 +5774,9 @@ const FamilyTree = () => {
                     style={{ marginRight: "3px" }}
                     className="bottom-bar-button"
                     onClick={() => {
-                      window.location.href = `/familytree/${Math.floor(Math.random() * (totalNumOfPages - 1) + 1)}`;
+                      window.location.href = `/familytree/${Math.floor(
+                        Math.random() * (totalNumOfPages - 1) + 1
+                      )}`;
                     }}
                   >
                     Random Page
