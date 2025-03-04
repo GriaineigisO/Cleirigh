@@ -2943,28 +2943,14 @@ const FamilyTree = () => {
             {/*if the person is male, then his default surname is the same as his childrens'*/}
             {sex === "male" ? (
               <div className="inputandQuestionMark">
-              {details.lastName ? (
-                <>
-                {console.log(details.lastName)}
-                <input
-                type="text"
-                placeholder="Last Name"
-                value={details.lastName}
-                onChange={(e) =>
-                  setDetails({ ...details, lastName: e.target.value })
-                }
-              ></input>
-              </>
-              ) : (
                 <input
                   type="text"
                   placeholder="Last Name"
+                  value={childDetails.lastName}
                   onChange={(e) =>
                     setDetails({ ...details, lastName: e.target.value })
                   }
                 ></input>
-              )}
-                
               </div>
             ) : (
               <div className="inputandQuestionMark">
