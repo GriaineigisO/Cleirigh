@@ -111,7 +111,7 @@ export default async function handler(req, res) {
 
       return migrations;
     });
-
+    console.log(validPairs)
     return res.json(validPairs);
   } catch (error) {
     console.error("Error processing parent-child migrations:", error);

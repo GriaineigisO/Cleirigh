@@ -18,8 +18,7 @@ const FamilyMigrationMap = () => {
 
         const fetchParentChildBirths = async () => {
             const response = await fetch("/api/migration-map");
-            const data = response.json()
-            console.log(data)
+            const data = response.json();
             return data;
         };
 
