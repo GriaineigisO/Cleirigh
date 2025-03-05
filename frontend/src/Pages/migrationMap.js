@@ -49,21 +49,37 @@ const FamilyMigrationMap = () => {
     return Math.max(100 - relationLevel, 10) / 100;
   };
 
-  const getAncestorBirthPlace = async (ancestorId) => {
-    // Assuming there's a function that gets the ancestor's birthplace from your database
-    const ancestorData = await fetchAncestorData(ancestorId); // Replace with actual data fetching
-    return ancestorData ? ancestorData.birthplace : null;
+  // Simulate fetching ancestor data (replace with actual backend request)
+  const fetchAncestorData = async (ancestorId) => {
+    // Simulate ancestor data (replace with your backend call)
+    const ancestorData = {
+      birthplace: ancestorId === "greatx5" ? "Perth" : null, // Example: "greatx5" has Perth as birthplace
+    };
+    return ancestorData;
+  };
+
+  // Simulate fetching the parent ID (replace with actual logic)
+  const getParentId = async (ancestorId) => {
+    // Simulate traversal (replace with actual parent ID lookup logic)
+    const parentMap = {
+      greatx5: "greatx4",
+      greatx4: "greatx3",
+      greatx3: "greatx2",
+      greatx2: "greatx1",
+      greatx1: "grandfather",
+      grandfather: "father",
+      father: "me",
+    };
+    return parentMap[ancestorId] || null; // Return null if no parent found
   };
 
   const getInheritedBirthPlace = async (ancestorId) => {
-    // Start by looking for the nearest ancestor with a known birthplace
     let birthPlace = null;
 
     // Traverse the ancestor chain upwards
     while (ancestorId && !birthPlace) {
       birthPlace = await getAncestorBirthPlace(ancestorId);
-      // Move upwards in the family tree (this part depends on your database structure)
-      ancestorId = await getParentId(ancestorId); // Get the next ancestor's ID, assuming you have this data
+      ancestorId = await getParentId(ancestorId); // Get the next ancestor's ID
     }
 
     return birthPlace; // Return the first valid birth place found
@@ -77,8 +93,8 @@ const FamilyMigrationMap = () => {
     }
 
     for (const migration of migrations) {
-      const parentId = migration.parent_id; // Assuming you have parent_id to get ancestor's birthplace
-      const childId = migration.child_id; // Assuming you have child_id to get ancestor's birthplace
+      const parentId = migration.parent_id;
+      const childId = migration.child_id;
 
       let parentCoords = migration.parent_birth
         ? await geocodeLocation(migration.parent_birth)
