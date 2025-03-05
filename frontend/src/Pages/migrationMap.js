@@ -73,7 +73,9 @@ const FamilyMigrationMap = () => {
           query = `${town}, ${country}`;
         }
 
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          query
+        )}`;
 
         const response = await fetch(url);
         const data = await response.json();
@@ -105,11 +107,11 @@ const FamilyMigrationMap = () => {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
-        console.log(`${migration.parent_birth} > ${migration.child_birth}`)
+        console.log(`${migration.parent_birth} > ${migration.child_birth}`);
 
         let relation = migration.relation_to_user[0];
         if (relation < 7) {
-          relation += 10
+          relation += 10;
         } else {
           relation += 50;
         }
@@ -121,11 +123,26 @@ const FamilyMigrationMap = () => {
         // If both parent and child have valid coordinates (or fallback to the previous valid one), draw the line
         if (finalParentCoords && finalChildCoords) {
           // Add the line from parent to child
-          const polyline = L.polyline([finalParentCoords, finalChildCoords], {
-            color: "green",
-            weight: 4,
-            opacity: getOpacity(relation),
-          }).addTo(map);
+          let polyline = "";
+          if (relation < 7) {
+             polyline = L.polyline([finalParentCoords, finalChildCoords], {
+              color: "green",
+              weight: 4,
+              opacity: getOpacity(relation),
+            }).addTo(map);
+          } else if (relation < 17) {
+             polyline = L.polyline([finalParentCoords, finalChildCoords], {
+              color: "blue",
+              weight: 4,
+              opacity: getOpacity(relation),
+            }).addTo(map);
+          } else if (relation >= 17) {
+            polyline = L.polyline([finalParentCoords, finalChildCoords], {
+             color: "yellow",
+             weight: 4,
+             opacity: getOpacity(relation),
+           }).addTo(map);
+         }
 
           // Add an arrowhead to the polyline
           setTimeout(() => {
@@ -164,13 +181,13 @@ const FamilyMigrationMap = () => {
 
   return (
     <div>
-      <div
-        id="map"
-        style={{ height: "600px", width: "100%" }}
-      />
+      <div id="map" style={{ height: "600px", width: "100%" }} />
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
-          <p style={{textAlign:"center"}}>{progress.current} of {progress.total} lines added. {(progress.current/progress.total*100).toFixed(2)}% Complete</p>
+          <p style={{ textAlign: "center" }}>
+            {progress.current} of {progress.total} lines added.{" "}
+            {((progress.current / progress.total) * 100).toFixed(2)}% Complete
+          </p>
         )}
       </div>
     </div>
