@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     // Fetch all ancestors from the tree
     const { data, error } = await supabase
       .from(`tree_${currentTree}`)
-      .select("ancestor_id, place_of_birth, father_id, mother_id");
+      .select("ancestor_id, place_of_birth, father_id, mother_id, relation_to_user");
 
     if (error) throw error;
 
