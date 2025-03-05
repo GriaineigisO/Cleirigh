@@ -107,9 +107,10 @@ const FamilyMigrationMap = () => {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
-        console.log(`${migration.parent_birth} > ${migration.child_birth}`);
+        //console.log(`${migration.parent_birth} > ${migration.child_birth}`);
 
         let relation = migration.relation_to_user[0];
+        let unchangedRelation = relation;
         if (relation < 7) {
           relation += 10;
         } else {
@@ -124,19 +125,19 @@ const FamilyMigrationMap = () => {
         if (finalParentCoords && finalChildCoords) {
           // Add the line from parent to child
           let polyline = "";
-          if (relation < 7) {
+          if (unchangedRelation < 7) {
              polyline = L.polyline([finalParentCoords, finalChildCoords], {
               color: "blue",
               weight: 4,
               opacity: getOpacity(relation),
             }).addTo(map);
-          } else if (relation >= 7 && relation <= 17) {
+          } else if (unchangedRelation >= 7 && unchangedRelation <= 17) {
              polyline = L.polyline([finalParentCoords, finalChildCoords], {
               color: "green",
               weight: 4,
               opacity: getOpacity(relation),
             }).addTo(map);
-          } else if (relation > 17) {
+          } else if (unchangedRelation > 17) {
             polyline = L.polyline([finalParentCoords, finalChildCoords], {
              color: "black",
              weight: 4,
