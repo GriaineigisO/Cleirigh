@@ -45,9 +45,8 @@ const FamilyMigrationMap = () => {
     const addMigrationArrow = (parentCoords, childCoords, opacity) => {
       L.polyline([parentCoords, childCoords], {
         color: "blue",
-        weight: 2,
-        opacity: opacity,
-        dashArray: "5,5",
+        weight: 4,
+        opacity: opacity
       }).addTo(map);
     };
 
@@ -63,7 +62,6 @@ const FamilyMigrationMap = () => {
         const childCoords = await geocodeLocation(migration.child_birth);
 
         const relation = migration.relation_to_user[0]
-        console.log(relation)
 
         if (parentCoords && childCoords) {
           addMigrationArrow(
