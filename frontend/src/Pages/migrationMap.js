@@ -56,20 +56,19 @@ const FamilyMigrationMap = () => {
         console.log(town);
 
         //retrieves country name only
-        let country = [];
-        const countryArray = Array.from(place);
-        for (let i = countryArray.length - 1; i >= 0; i--) {
-          if (countryArray[i] !== ",") {
-            for (let i = countryArray.length - 1; i >= 0; i--) {
-              const valueAtIndex = countryArray[i];
-              country.push(valueAtIndex);
-            }
-          } else {
-            return;
-          }
-        }
-        country = country.join("");
+        let country = "";
+
+        // Split the place string by commas
+        const countryArray = place.split(",");
+
+        // The country is always the last part after the final comma
+        country = countryArray[countryArray.length - 1].trim(); // Remove any leading/trailing spaces
+
+
         console.log(country);
+        if (country === "Scotland") {
+          country = "United Kingdom";
+        }
 
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           town
