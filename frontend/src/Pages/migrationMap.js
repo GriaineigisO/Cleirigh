@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-arrowheads";
-
-
+import "leaflet-polylinedecorator"; // ✅ Added missing import
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
@@ -12,7 +11,6 @@ const FamilyMigrationMap = () => {
     console.log("L.polyline.prototype.arrowheads:", L.polyline.prototype.arrowheads);
   }, []);
 
-  
   useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -34,8 +32,8 @@ const FamilyMigrationMap = () => {
           body: JSON.stringify({ userId }),
         }
       );
-      const data = await response.json();  // Corrected this line
-      console.log(data);  // Check the response data structure
+      const data = await response.json();
+      console.log(data);
       return data;
     };
 
@@ -50,28 +48,28 @@ const FamilyMigrationMap = () => {
         : null;
     };
 
-    // Plotting a sample line for testing
+    // Test line to verify arrow functionality
     const simpleLine = L.polyline([[51.505, -0.09], [51.51, -0.1]], {
       color: "blue",
       weight: 4,
       opacity: 1,
     }).addTo(map);
 
-    simpleLine.arrowheads({
-      size: "15px",
-      frequency: "end",
-      fill: true,
-      color: "red",
-      opacity: 1,
-    });
+    setTimeout(() => {
+      simpleLine.arrowheads({
+        size: "15px",
+        frequency: "end",
+        fill: true,
+        color: "red",
+        opacity: 1,
+      });
+    }, 100); // ✅ Added slight delay for stability
 
-    // Function to calculate opacity based on relation
     const getOpacity = (relationLevel) => {
       console.log(relationLevel);
-      return Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
+      return Math.max(100 - relationLevel, 10) / 100;
     };
 
-    // Function to plot parent-child migrations
     const plotParentChildMigrations = async () => {
       const migrations = await fetchParentChildBirths();
       if (!migrations || migrations.length === 0) {
@@ -90,16 +88,25 @@ const FamilyMigrationMap = () => {
           const polyline = L.polyline([parentCoords, childCoords], {
             color: "blue",
             weight: 4,
-            opacity: getOpacity(relation + 40), // Adjust opacity based on relation
+            opacity: getOpacity(relation + 40),
           }).addTo(map);
 
-          polyline.arrowheads({
-            size: "15px",
-            frequency: "end",
-            fill: true,
-            color: "red",
-            opacity: getOpacity(relation + 40),
-          });
+          // ✅ Ensure arrowheads appear by adding a delay
+          setTimeout(() => {
+            const decorator = L.polylineDecorator(polyline, {
+              patterns: [
+                {
+                  offset: "100%",
+                  repeat: 0,
+                  symbol: L.Symbol.arrowHead({
+                    pixelSize: 10,
+                    headAngle: 30,
+                    pathOptions: { stroke: true, color: "red" },
+                  }),
+                },
+              ],
+            }).addTo(map);
+          }, 100);
         }
       }
     };
