@@ -8,7 +8,10 @@ const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
-    console.log("L.polyline.prototype.arrowheads:", L.polyline.prototype.arrowheads);
+    console.log(
+      "L.polyline.prototype.arrowheads:",
+      L.polyline.prototype.arrowheads
+    );
   }, []);
 
   useEffect(() => {
@@ -38,21 +41,48 @@ const FamilyMigrationMap = () => {
     };
 
     const geocodeLocation = async (place) => {
-      console.log(place)
-      if (place) {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        place
-      )}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.length > 0
-        ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
-        : null;
-    } else {
-      return null;
-    }
-    };
+      //retrieves name of the village/town/city only and excludes the district and country
+      let town = [];
+      const placeArray = Array.from(place);
+      for (let i = 0; i < placeArray.length; i++) {
+        if (placeArray[i] !== ",") {
+          town.push(placeArray[i]);
+        } else {
+          return;
+        }
+      }
+      town = town.join("");
+      console.log(town);
 
+      //retrieves country name only
+      let country = [];
+      const countryArray = Array.from(place);
+      for (let i = countryArray.length - 1; i >= 0; i--) {
+        if (countryArray[i] !== ",") {
+          for (let i = countryArray.length - 1; i >= 0; i--) {
+            const valueAtIndex = countryArray[i];
+            country.push(valueAtIndex);
+          }
+        } else {
+          return;
+        }
+      }
+      country = country.join("");
+          console.log(country);
+
+      if (place) {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          town
+        )}&county=${country}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.length > 0
+          ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
+          : null;
+      } else {
+        return null;
+      }
+    };
 
     const getOpacity = (relationLevel) => {
       return Math.max(100 - relationLevel, 10) / 100;
