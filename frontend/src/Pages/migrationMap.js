@@ -44,23 +44,13 @@ const FamilyMigrationMap = () => {
     };
 
     const addMigrationArrow = (parentCoords, childCoords, opacity) => {
-      console.log("Drawing line from", parentCoords, "to", childCoords, "with opacity", opacity);
-    
       const line = L.polyline([parentCoords, childCoords], {
         color: "blue",
         weight: 4,
         opacity: opacity,
       }).addTo(map);
     
-      console.log("Polyline added:", line);
-      
-      // Apply arrowheads after a small delay
       setTimeout(() => {
-        console.log("Applying arrowheads...");
-        
-        // Check if the line has been added to the map correctly
-        console.log("Line properties:", line);
-    
         if (line.arrowheads) {
           line.arrowheads({
             size: "15px",
@@ -71,10 +61,11 @@ const FamilyMigrationMap = () => {
           });
           console.log("Arrowheads applied!");
         } else {
-          console.error("Arrowheads method not found!");
+          console.error("Arrowheads method is not available!");
         }
-      }, 500);
+      }, 500); // Adjust this timeout if needed
     };
+    
     
     
 
