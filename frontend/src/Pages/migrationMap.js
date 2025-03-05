@@ -98,6 +98,8 @@ const FamilyMigrationMap = () => {
 
       setProgress({ current: 0, total: migrations.length });
 
+      let lastValidCoordinates = null; // To track the last valid place when a child's POB is NULL
+
       for (let index = 0; index < migrations.length; index++) {
         const migration = migrations[index];
         const parentCoords = await geocodeLocation(migration.parent_birth);
@@ -105,36 +107,41 @@ const FamilyMigrationMap = () => {
 
         const relation = migration.relation_to_user[0];
 
-        if (parentCoords && childCoords) {
-          // If the child has already been processed as a parent, skip this line
-          if (!processedChildren.has(migration.parent_birth)) {
-            // Add a line from parent to child
-            const polyline = L.polyline([parentCoords, childCoords], {
-              color: "green",
-              weight: 4,
-              opacity: getOpacity(relation + 50),
-            }).addTo(map);
+        // Use lastValidCoordinates if childCoords is NULL
+        const finalChildCoords = childCoords || lastValidCoordinates;
+        const finalParentCoords = parentCoords || lastValidCoordinates;
 
-            setTimeout(() => {
-              const decorator = L.polylineDecorator(polyline, {
-                patterns: [
-                  {
-                    offset: "100%",
-                    repeat: 0,
-                    symbol: L.Symbol.arrowHead({
-                      pixelSize: 10,
-                      opacity: getOpacity(relation + 40),
-                      headAngle: 30,
-                      pathOptions: { stroke: true, color: "blue" },
-                    }),
-                  },
-                ],
-              }).addTo(map);
-            }, 100);
-          }
-          
-          // Track this place as a child that later becomes a parent
-          setProcessedChildren((prevState) => new Set(prevState.add(migration.child_birth)));
+        // If both parent and child have valid coordinates (or fallback to the previous valid one), draw the line
+        if (finalParentCoords && finalChildCoords) {
+          // Add the line from parent to child
+          const polyline = L.polyline([finalParentCoords, finalChildCoords], {
+            color: "green",
+            weight: 4,
+            opacity: getOpacity(relation + 50),
+          }).addTo(map);
+
+          // Add an arrowhead to the polyline
+          setTimeout(() => {
+            const decorator = L.polylineDecorator(polyline, {
+              patterns: [
+                {
+                  offset: "100%",
+                  repeat: 0,
+                  symbol: L.Symbol.arrowHead({
+                    pixelSize: 10,
+                    opacity: getOpacity(relation + 40),
+                    headAngle: 30,
+                    pathOptions: { stroke: true, color: "blue" },
+                  }),
+                },
+              ],
+            }).addTo(map);
+          }, 100);
+        }
+
+        // Update the last valid coordinates (either parent's or child's)
+        if (finalChildCoords) {
+          lastValidCoordinates = finalChildCoords;
         }
 
         // Update progress
