@@ -27,6 +27,7 @@ const FamilyMigrationMap = () => {
         }
       );
       const data = response.json();
+      console.log(data)
       return data;
     };
 
