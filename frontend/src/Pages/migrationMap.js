@@ -123,9 +123,9 @@ const FamilyMigrationMap = () => {
                 {
                   offset: "100%",
                   repeat: 0,
-                  opacity: getOpacity(relation + 40),
                   symbol: L.Symbol.arrowHead({
                     pixelSize: 10,
+                    opacity: getOpacity(relation + 40),
                     headAngle: 30,
                     pathOptions: { stroke: true, color: "blue" },
                   }),
