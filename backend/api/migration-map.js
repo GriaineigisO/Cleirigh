@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         // Fetch all ancestors
         const { data, error } = await supabase
             .from(`tree_${currentTree}`)
-            .select("ancestor_id, birth_place, father_id, mother_id");
+            .select("ancestor_id, place_of_birth, father_id, mother_id");
 
         if (error) throw error;
 
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         data.forEach((person) => {
             ancestors[person.ancestor_id] = {
                 id: person.ancestor_id,
-                birth_place: person.place_of_birth,
+                place_of_birth: person.place_of_birth,
                 father_id: person.father_id,
                 mother_id: person.mother_id
             };
@@ -62,17 +62,17 @@ export default async function handler(req, res) {
         // Function to find the closest known birthplace in the lineage
         const getBirthPlace = (id) => {
             let current = ancestors[id];
-            while (current && !current.birth_place) {
+            while (current && !current.place_of_birth) {
                 // Try to inherit birthplace from father first, then mother
                 current = ancestors[current.father_id] || ancestors[current.mother_id];
             }
-            return current?.birth_place || null; // Return closest found birthplace
+            return current?.place_of_birth || null; // Return closest found birthplace
         };
 
         // Process each child and assign missing birthplaces
         Object.values(ancestors).forEach((child) => {
-            if (!child.birth_place) {
-                child.birth_place = getBirthPlace(child.id);
+            if (!child.place_of_birth) {
+                child.place_of_birth = getBirthPlace(child.id);
             }
         });
 
@@ -80,17 +80,17 @@ export default async function handler(req, res) {
         const validPairs = Object.values(ancestors).flatMap((child) => {
             const migrations = [];
 
-            if (child.father_id && ancestors[child.father_id]?.birth_place !== child.birth_place) {
+            if (child.father_id && ancestors[child.father_id]?.place_of_birth !== child.place_of_birth) {
                 migrations.push({
-                    parent_birth: ancestors[child.father_id]?.birth_place,
-                    child_birth: child.birth_place
+                    parent_birth: ancestors[child.father_id]?.place_of_birth,
+                    child_birth: child.place_of_birth
                 });
             }
 
-            if (child.mother_id && ancestors[child.mother_id]?.birth_place !== child.birth_place) {
+            if (child.mother_id && ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth) {
                 migrations.push({
-                    parent_birth: ancestors[child.mother_id]?.birth_place,
-                    child_birth: child.birth_place
+                    parent_birth: ancestors[child.mother_id]?.place_of_birth,
+                    child_birth: child.place_of_birth
                 });
             }
 
