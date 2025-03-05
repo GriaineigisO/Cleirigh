@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet-arrowheads";
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
@@ -27,7 +28,7 @@ const FamilyMigrationMap = () => {
         }
       );
       const data = response.json();
-      console.log(data)
+      console.log(data);
       return data;
     };
 
@@ -46,14 +47,22 @@ const FamilyMigrationMap = () => {
       L.polyline([parentCoords, childCoords], {
         color: "blue",
         weight: 4,
-        opacity: opacity
+        opacity: opacity,
       }).addTo(map);
+
+      // Add an arrowhead at the child's birthplace
+      line.arrowheads({
+        size: "10px",
+        frequency: "end", 
+        fill: "blue",
+        opacity: opacity
+      });
     };
 
     const getOpacity = (relationLevel) => {
-      console.log(relationLevel)
+      console.log(relationLevel);
       return Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
-    }
+    };
 
     const plotParentChildMigrations = async () => {
       const migrations = await fetchParentChildBirths();
@@ -61,7 +70,7 @@ const FamilyMigrationMap = () => {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
-        const relation = migration.relation_to_user[0]
+        const relation = migration.relation_to_user[0];
 
         if (parentCoords && childCoords) {
           addMigrationArrow(
