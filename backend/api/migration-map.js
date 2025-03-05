@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         throw new Error(userError.message);
       }
       const currentTree = user.current_tree_id;
-      
+
         // Fetch all ancestors
         const { data, error } = await supabase
             .from(`tree_${currentTree}`)
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         data.forEach((person) => {
             ancestors[person.ancestor_id] = {
                 id: person.ancestor_id,
-                birth_place: person.birth_place,
+                birth_place: person.place_of_birth,
                 father_id: person.father_id,
                 mother_id: person.mother_id
             };
