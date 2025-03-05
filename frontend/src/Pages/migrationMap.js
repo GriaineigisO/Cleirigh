@@ -67,6 +67,9 @@ const FamilyMigrationMap = () => {
         if (country === "scandinavia") {
           country = "norway";
         }
+        if (town === "scandinavia") {
+          town = "norway";
+        }
 
         let query = town;
         if (country) {
