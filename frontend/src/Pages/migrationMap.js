@@ -67,7 +67,7 @@ const FamilyMigrationMap = () => {
           addMigrationArrow(
             parentCoords,
             childCoords,
-            getOpacity(relation + 20)
+            getOpacity(relation + 40)
           );
         }
       }
