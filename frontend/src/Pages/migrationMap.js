@@ -54,7 +54,7 @@ const FamilyMigrationMap = () => {
       if (typeof line.arrowheads === "function") {
         console.log("here")
         line.arrowheads({
-          size: "10px",
+          size: "50px",
           frequency: "end",
           fill: "blue",
           opacity: opacity,
