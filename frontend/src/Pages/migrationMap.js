@@ -42,37 +42,40 @@ const FamilyMigrationMap = () => {
 
     const geocodeLocation = async (place) => {
       if (place) {
-        //retrieves name of the village/town/city only and excludes the district and country
-        let town = [];
-        const placeArray = Array.from(place);
-        for (let i = 0; i < placeArray.length; i++) {
-          if (placeArray[i] !== ",") {
-            town.push(placeArray[i]);
-          } else {
-            return;
-          }
-        }
-        town = town.join("");
-        console.log(town);
-
-        //retrieves country name only
+        // Initialize the town and country variables
+        let town = "";
         let country = "";
-
-        // Split the place string by commas
-        const countryArray = place.split(",");
-
-        // The country is always the last part after the final comma
-        country = countryArray[countryArray.length - 1].trim(); // Remove any leading/trailing spaces
-
-
-        console.log(country);
+    
+        // Check how many commas are in the place string
+        const placeArray = place.split(",");
+    
+        if (placeArray.length === 1) {
+          // If there's no comma, the whole string is the town
+          town = placeArray[0].trim();
+        } else if (placeArray.length === 2) {
+          // If there's one comma, the first part is the town and the second is the country
+          town = placeArray[0].trim();
+          country = placeArray[1].trim();
+        } else {
+          // If there are two or more commas, the first part is the town and the last part is the country
+          town = placeArray[0].trim();
+          country = placeArray[placeArray.length - 1].trim();
+        }
+    
+        console.log("Town:", town);
+        console.log("Country:", country);
+    
+        // If country is "Scotland", adjust it to "United Kingdom"
         if (country === "Scotland") {
           country = "United Kingdom";
         }
-
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          town
-        )}&county=${country}`;
+    
+        // Build the URL based on whether a country is provided
+        let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(town)}`;
+        if (country) {
+          url += `&country=${encodeURIComponent(country)}`;
+        }
+    
         const response = await fetch(url);
         const data = await response.json();
         return data.length > 0
@@ -82,6 +85,7 @@ const FamilyMigrationMap = () => {
         return null;
       }
     };
+    
 
     const getOpacity = (relationLevel) => {
       return Math.max(100 - relationLevel, 10) / 100;
