@@ -60,10 +60,7 @@ const FamilyMigrationMap = () => {
 
         console.log("Town:", town);
         console.log("Country:", country);
-
-        if (country === "Scotland") {
-          country = "United Kingdom";
-        }
+        
         if (country === "Scandinavia") {
           country = "Norway";
         }
