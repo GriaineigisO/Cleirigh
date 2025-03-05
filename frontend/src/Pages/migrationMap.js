@@ -71,12 +71,15 @@ const FamilyMigrationMap = () => {
           town = "norway";
         }
 
-        let query = town;
+
+        let url = "";
         if (country) {
-          query = `${town}, ${country}`;
+          url = `https://nominatim.openstreetmap.org/search?format=json&q=${town}&country=${country}`;
+        } else {
+          url = `https://nominatim.openstreetmap.org/search?format=json&q=${town}`;
         }
 
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+        
 
         const response = await fetch(url);
         const data = await response.json();
