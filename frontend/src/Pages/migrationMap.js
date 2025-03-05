@@ -97,42 +97,44 @@ const FamilyMigrationMap = () => {
         console.log("No migration data available.");
         return;
       }
-    
+
       setProgress({ current: 0, total: migrations.length });
-    
+
       let ancestorBirthplaces = new Map(); // Track most recent ancestor's valid POB
-    
+
       for (let index = 0; index < migrations.length; index++) {
         const migration = migrations[index];
-    
+
         // Check if the parent's birthplace is NULL
         let parentBirthplace = migration.parent_birth || null;
         if (!parentBirthplace && migration.parent_id) {
-          parentBirthplace = ancestorBirthplaces.get(migration.parent_id) || null;
+          parentBirthplace =
+            ancestorBirthplaces.get(migration.parent_id) || null;
         }
-    
+
         // Store parent birthplace in ancestor map (if valid)
         if (parentBirthplace && migration.parent_id) {
           ancestorBirthplaces.set(migration.parent_id, parentBirthplace);
         }
-    
+
         // Check if the child's birthplace is NULL
         let childBirthplace = migration.child_birth || null;
         if (!childBirthplace && migration.child_id) {
-          childBirthplace = ancestorBirthplaces.get(migration.child_id) || parentBirthplace;
+          childBirthplace =
+            ancestorBirthplaces.get(migration.child_id) || parentBirthplace;
         }
-    
+
         // Store child's birthplace in ancestor map (if valid)
         if (childBirthplace && migration.child_id) {
           ancestorBirthplaces.set(migration.child_id, childBirthplace);
         }
-    
+
         // Get coordinates
         const parentCoords = await geocodeLocation(parentBirthplace);
         const childCoords = await geocodeLocation(childBirthplace);
-    
+
         console.log(`${parentBirthplace} > ${childBirthplace}`);
-    
+
         let relation = migration.relation_to_user[0];
         let unchangedRelation = relation;
         if (relation < 7) {
@@ -140,7 +142,7 @@ const FamilyMigrationMap = () => {
         } else {
           relation += 50;
         }
-    
+
         if (parentCoords && childCoords) {
           let polyline = "";
           if (unchangedRelation < 7) {
@@ -162,14 +164,14 @@ const FamilyMigrationMap = () => {
               opacity: getOpacity(relation),
             }).addTo(map);
           }
-    
+
           // Add an arrowhead to the polyline
           setTimeout(() => {
             const decorator = L.polylineDecorator(polyline, {
               patterns: [
                 {
-                  offset: "100%",
-                  repeat: 0,
+                  offset: "10%", // Start arrows 10% into the line
+                  repeat: "20%", // Repeat every 20% of the line length
                   symbol: L.Symbol.arrowHead({
                     pixelSize: 10,
                     opacity: getOpacity(relation + 40),
@@ -181,7 +183,7 @@ const FamilyMigrationMap = () => {
             }).addTo(map);
           }, 100);
         }
-    
+
         // Update progress
         setProgress((prevState) => ({
           current: prevState.current + 1,
@@ -189,7 +191,6 @@ const FamilyMigrationMap = () => {
         }));
       }
     };
-    
 
     plotParentChildMigrations();
   }, [map]);
