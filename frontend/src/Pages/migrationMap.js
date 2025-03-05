@@ -61,25 +61,22 @@ const FamilyMigrationMap = () => {
         console.log("Town:", town);
         console.log("Country:", country);
 
-        if (country === "scotland") {
+        if (country === "Scotland") {
           country = "United Kingdom";
         }
-        if (country === "scandinavia") {
-          country = "norway";
+        if (country === "Scandinavia") {
+          country = "Norway";
         }
-        if (town === "scandinavia") {
-          town = "norway";
+        if (town === "Scandinavia") {
+          town = "Norway";
         }
 
-
-        let url = "";
+        let query = town;
         if (country) {
-          url = `https://nominatim.openstreetmap.org/search?format=json&q=${town}&country=${country}`;
-        } else {
-          url = `https://nominatim.openstreetmap.org/search?format=json&q=${town}`;
+          query = `${town}, ${country}`;
         }
 
-        
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
 
         const response = await fetch(url);
         const data = await response.json();
@@ -111,13 +108,12 @@ const FamilyMigrationMap = () => {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
-        let relation = migration.relation_to_user[0];
+        const relation = migration.relation_to_user[0];
         if (relation < 13) {
-          relation += 10;
+          relation += 10
         } else {
           relation += 50;
-        };
-
+        }
 
         // Use lastValidCoordinates if childCoords is NULL
         const finalChildCoords = childCoords || lastValidCoordinates;
@@ -175,7 +171,7 @@ const FamilyMigrationMap = () => {
       />
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
-          <p style={{textAlign:"center"}}>{progress.current} of {progress.total} lines added. {(progress.current/progress.total*100).toFixed(2)}% Complete</p>
+          <p>{progress.current} of {progress.total} lines added</p>
         )}
       </div>
     </div>
