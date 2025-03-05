@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet-arrowheads";
+import "leaflet-arrowheads/dist/leaflet-arrowheads.js"; // Ensure correct path
+
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
 
+  useEffect(() => {
+    console.log("L.polyline.prototype.arrowheads:", L.polyline.prototype.arrowheads);
+  }, []);
+
+  
   useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
