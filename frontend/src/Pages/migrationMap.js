@@ -51,9 +51,10 @@ const FamilyMigrationMap = () => {
       }).addTo(map);
     };
 
-    const getOpacity = (relationLevel) =>
+    const getOpacity = (relationLevel) => {
       console.log(relationLevel)
-      Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
+      return Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
+    }
 
     const plotParentChildMigrations = async () => {
       const migrations = await fetchParentChildBirths();
@@ -62,6 +63,7 @@ const FamilyMigrationMap = () => {
         const childCoords = await geocodeLocation(migration.child_birth);
 
         const relation = migration.relation_to_user[0]
+        console.log(relation)
 
         if (parentCoords && childCoords) {
           addMigrationArrow(
