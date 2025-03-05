@@ -27,8 +27,8 @@ const FamilyMigrationMap = () => {
           body: JSON.stringify({ userId }),
         }
       );
-      const data = response.json();
-      console.log(data);
+      const data = await response.json();  // Corrected this line
+      console.log(data);  // Check the response data structure
       return data;
     };
 
@@ -43,12 +43,13 @@ const FamilyMigrationMap = () => {
         : null;
     };
 
+    // Plotting a sample line for testing
     const simpleLine = L.polyline([[51.505, -0.09], [51.51, -0.1]], {
       color: "blue",
       weight: 4,
       opacity: 1,
     }).addTo(map);
-    
+
     simpleLine.arrowheads({
       size: "15px",
       frequency: "end",
@@ -56,17 +57,21 @@ const FamilyMigrationMap = () => {
       color: "red",
       opacity: 1,
     });
-    
-    
-    
 
+    // Function to calculate opacity based on relation
     const getOpacity = (relationLevel) => {
       console.log(relationLevel);
       return Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
     };
 
+    // Function to plot parent-child migrations
     const plotParentChildMigrations = async () => {
       const migrations = await fetchParentChildBirths();
+      if (!migrations || migrations.length === 0) {
+        console.log("No migration data available.");
+        return;
+      }
+
       for (const migration of migrations) {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
@@ -74,11 +79,20 @@ const FamilyMigrationMap = () => {
         const relation = migration.relation_to_user[0];
 
         if (parentCoords && childCoords) {
-         /* addMigrationArrow(
-            parentCoords,
-            childCoords,
-            getOpacity(relation + 40)
-          );*/
+          // Add arrows between parent and child if both coordinates are available
+          const polyline = L.polyline([parentCoords, childCoords], {
+            color: "blue",
+            weight: 4,
+            opacity: getOpacity(relation + 40), // Adjust opacity based on relation
+          }).addTo(map);
+
+          polyline.arrowheads({
+            size: "15px",
+            frequency: "end",
+            fill: true,
+            color: "red",
+            opacity: getOpacity(relation + 40),
+          });
         }
       }
     };
