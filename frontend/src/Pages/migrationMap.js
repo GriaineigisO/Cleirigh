@@ -57,6 +57,7 @@ const FamilyMigrationMap = () => {
     const plotParentChildMigrations = async () => {
       const migrations = await fetchParentChildBirths();
       for (const migration of migrations) {
+        console.log(migration.relation_to_user)
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
