@@ -130,15 +130,13 @@ const FamilyMigrationMap = () => {
               weight: 4,
               opacity: getOpacity(relation),
             }).addTo(map);
-          } 
-          if (relation > 7 && relation <= 17) {
+          } else if (relation >= 7 && relation <= 17) {
              polyline = L.polyline([finalParentCoords, finalChildCoords], {
               color: "green",
               weight: 4,
               opacity: getOpacity(relation),
             }).addTo(map);
-          } 
-          if (relation > 17) {
+          } else if (relation > 17) {
             polyline = L.polyline([finalParentCoords, finalChildCoords], {
              color: "black",
              weight: 4,
