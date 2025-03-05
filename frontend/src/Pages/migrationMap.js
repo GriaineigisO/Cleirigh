@@ -83,7 +83,6 @@ const FamilyMigrationMap = () => {
             childCoords,
             getOpacity(relation + 40)
           );
-          addArrowhead(getOpacity(relation + 40));
         }
       }
     };
