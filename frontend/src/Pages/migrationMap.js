@@ -49,21 +49,21 @@ const FamilyMigrationMap = () => {
     };
 
     // Test line to verify arrow functionality
-    const simpleLine = L.polyline([[51.505, -0.09], [51.51, -0.1]], {
-      color: "blue",
-      weight: 4,
-      opacity: 1,
-    }).addTo(map);
+    // const simpleLine = L.polyline([[51.505, -0.09], [51.51, -0.1]], {
+    //   color: "blue",
+    //   weight: 4,
+    //   opacity: 1,
+    // }).addTo(map);
 
-    setTimeout(() => {
-      simpleLine.arrowheads({
-        size: "15px",
-        frequency: "end",
-        fill: true,
-        color: "red",
-        opacity: 1,
-      });
-    }, 100); // ✅ Added slight delay for stability
+    // setTimeout(() => {
+    //   simpleLine.arrowheads({
+    //     size: "15px",
+    //     frequency: "end",
+    //     fill: true,
+    //     color: "red",
+    //     opacity: 1,
+    //   });
+    // }, 100); // ✅ Added slight delay for stability
 
     const getOpacity = (relationLevel) => {
       console.log(relationLevel);
