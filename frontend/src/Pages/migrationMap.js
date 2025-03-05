@@ -6,6 +6,7 @@ import "leaflet-polylinedecorator"; // ✅ Added missing import
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
+  const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
   useEffect(() => {
     console.log(
@@ -42,46 +43,37 @@ const FamilyMigrationMap = () => {
 
     const geocodeLocation = async (place) => {
       if (place) {
-        // Initialize the town and country variables
         let town = "";
         let country = "";
-    
-        // Check how many commas are in the place string
         const placeArray = place.split(",");
-    
+
         if (placeArray.length === 1) {
-          // If there's no comma, the whole string is the town
           town = placeArray[0].trim();
         } else if (placeArray.length === 2) {
-          // If there's one comma, the first part is the town and the second is the country
           town = placeArray[0].trim();
           country = placeArray[1].trim();
         } else {
-          // If there are two or more commas, the first part is the town and the last part is the country
           town = placeArray[0].trim();
           country = placeArray[placeArray.length - 1].trim();
         }
-    
+
         console.log("Town:", town);
         console.log("Country:", country);
-    
-        // If country is "Scotland", adjust it to "United Kingdom"
+
         if (country === "Scotland") {
           country = "United Kingdom";
         }
         if (country === "Scandinavia") {
           country = "Norway";
         }
-    
-        // If a country is provided, create a combined query string (town, country)
+
         let query = town;
         if (country) {
           query = `${town}, ${country}`;
         }
-    
-        // Build the URL with the 'q' parameter only
+
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
-    
+
         const response = await fetch(url);
         const data = await response.json();
         return data.length > 0
@@ -91,8 +83,6 @@ const FamilyMigrationMap = () => {
         return null;
       }
     };
-    
-    
 
     const getOpacity = (relationLevel) => {
       return Math.max(100 - relationLevel, 10) / 100;
@@ -105,14 +95,17 @@ const FamilyMigrationMap = () => {
         return;
       }
 
-      for (const migration of migrations) {
+      // Set the total number of migrations for progress tracking
+      setProgress({ current: 0, total: migrations.length });
+
+      for (let index = 0; index < migrations.length; index++) {
+        const migration = migrations[index];
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
         const relation = migration.relation_to_user[0];
 
         if (parentCoords && childCoords) {
-          // Add arrows between parent and child if both coordinates are available
           const polyline = L.polyline([parentCoords, childCoords], {
             color: "green",
             weight: 4,
@@ -137,13 +130,31 @@ const FamilyMigrationMap = () => {
             }).addTo(map);
           }, 100);
         }
+
+        // Update progress after each line is added
+        setProgress((prevState) => ({
+          current: prevState.current + 1,
+          total: prevState.total,
+        }));
       }
     };
 
     plotParentChildMigrations();
   }, [map]);
 
-  return <div id="map" style={{ height: "600px", width: "100%" }} />;
+  return (
+    <div>
+      <div
+        id="map"
+        style={{ height: "600px", width: "100%" }}
+      />
+      <div style={{ marginTop: "10px" }}>
+        {progress.total > 0 && (
+          <p>{progress.current} of {progress.total} lines added</p>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default FamilyMigrationMap;
