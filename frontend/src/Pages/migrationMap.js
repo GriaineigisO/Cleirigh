@@ -108,6 +108,8 @@ const FamilyMigrationMap = () => {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
+        console.log(`${migration.parent_birth} > ${migration.child_birth}`)
+
         let relation = migration.relation_to_user[0];
         if (relation < 13) {
           relation += 10
