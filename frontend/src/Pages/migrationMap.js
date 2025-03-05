@@ -86,7 +86,7 @@ const FamilyMigrationMap = () => {
         if (parentCoords && childCoords) {
           // Add arrows between parent and child if both coordinates are available
           const polyline = L.polyline([parentCoords, childCoords], {
-            color: "blue",
+            color: "green",
             weight: 4,
             opacity: getOpacity(relation + 40),
           }).addTo(map);
@@ -98,10 +98,11 @@ const FamilyMigrationMap = () => {
                 {
                   offset: "100%",
                   repeat: 0,
+                  opacity: getOpacity(relation + 40),
                   symbol: L.Symbol.arrowHead({
                     pixelSize: 10,
                     headAngle: 30,
-                    pathOptions: { stroke: true, color: "red" },
+                    pathOptions: { stroke: true, color: "blue" },
                   }),
                 },
               ],
