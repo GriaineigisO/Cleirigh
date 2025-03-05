@@ -38,6 +38,8 @@ const FamilyMigrationMap = () => {
     };
 
     const geocodeLocation = async (place) => {
+      console.log(AnimationPlaybackEvent)
+      if (place) {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
         place
       )}`;
@@ -46,6 +48,9 @@ const FamilyMigrationMap = () => {
       return data.length > 0
         ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
         : null;
+    } else {
+      return null;
+    }
     };
 
 
@@ -63,8 +68,6 @@ const FamilyMigrationMap = () => {
       for (const migration of migrations) {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
-        console.log(parentCoords)
-        console.log(childCoords)
 
         const relation = migration.relation_to_user[0];
 
