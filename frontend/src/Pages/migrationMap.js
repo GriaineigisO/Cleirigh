@@ -59,7 +59,7 @@ const FamilyMigrationMap = () => {
           size: "50px",
           frequency: "end",
           fill: "blue",
-          opacity: opacity,
+          opacity: "1",
         });
       } else {
         console.error("arrowheads() function is missing! Ensure leaflet-arrowheads is installed and imported.");
