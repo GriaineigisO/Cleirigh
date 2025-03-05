@@ -61,11 +61,11 @@ const FamilyMigrationMap = () => {
         console.log("Town:", town);
         console.log("Country:", country);
 
-        if (country === "Scotland") {
+        if (country === "scotland") {
           country = "United Kingdom";
         }
-        if (country === "Scandinavia") {
-          country = "Norway";
+        if (country === "scandinavia") {
+          country = "norway";
         }
 
         let query = town;
@@ -106,6 +106,12 @@ const FamilyMigrationMap = () => {
         const childCoords = await geocodeLocation(migration.child_birth);
 
         const relation = migration.relation_to_user[0];
+        if (relation < 13) {
+          relation += 10
+        } else {
+          relation += 50
+        }
+
 
         // Use lastValidCoordinates if childCoords is NULL
         const finalChildCoords = childCoords || lastValidCoordinates;
@@ -117,7 +123,7 @@ const FamilyMigrationMap = () => {
           const polyline = L.polyline([finalParentCoords, finalChildCoords], {
             color: "green",
             weight: 4,
-            opacity: getOpacity(relation + 50),
+            opacity: getOpacity(relation),
           }).addTo(map);
 
           // Add an arrowhead to the polyline
