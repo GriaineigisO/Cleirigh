@@ -69,6 +69,9 @@ const FamilyMigrationMap = () => {
         if (country === "Scotland") {
           country = "United Kingdom";
         }
+        if (country === "Scandinavia") {
+          country = "Norway";
+        }
     
         // If a country is provided, create a combined query string (town, country)
         let query = town;
