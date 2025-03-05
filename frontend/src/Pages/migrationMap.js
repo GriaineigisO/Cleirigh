@@ -12,20 +12,28 @@ const FamilyMigrationMap = () => {
 
   useEffect(() => {
     if (!map) return;
-
+  
     map.on("zoomend", () => {
       const zoomLevel = map.getZoom();
       const minZoomToShowArrows = 5; // Set threshold zoom level
-
+  
       decorators.forEach((decorator) => {
-        if (zoomLevel < minZoomToShowArrows) {
-          map.removeLayer(decorator); // Hide arrows when zoomed out
-        } else {
-          map.addLayer(decorator); // Show arrows when zoomed in
-        }
+        decorator.setPatterns([
+          {
+            offset: "10%",
+            repeat: "20%",
+            symbol: L.Symbol.arrowHead({
+              pixelSize: 10,
+              opacity: zoomLevel < minZoomToShowArrows ? 0 : 1, // Hide when zoomed out
+              headAngle: 30,
+              pathOptions: { stroke: true, color: "blue" },
+            }),
+          },
+        ]);
       });
     });
   }, [map, decorators]);
+  
 
   useEffect(() => {
     console.log(
