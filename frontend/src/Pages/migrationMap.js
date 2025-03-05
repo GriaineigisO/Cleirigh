@@ -49,15 +49,17 @@ const FamilyMigrationMap = () => {
         weight: 4,
         opacity: opacity,
       }).addTo(map);
-
-      // Add an arrowhead at the child's birthplace
-      L.arrowheads({
-        size: "10px",
-        frequency: "end", 
-        fill: "blue",
-        opacity: opacity
-      });
     };
+
+    // Add an arrowhead at the child's birthplace
+    const addArrowhead = (opacity) => {
+    L.arrowheads({
+      size: "10px",
+      frequency: "end", 
+      fill: "blue",
+      opacity: opacity
+    });
+  }
 
     const getOpacity = (relationLevel) => {
       console.log(relationLevel);
@@ -78,6 +80,7 @@ const FamilyMigrationMap = () => {
             childCoords,
             getOpacity(relation + 40)
           );
+          addArrowhead(getOpacity(relation + 40))
         }
       }
     };
