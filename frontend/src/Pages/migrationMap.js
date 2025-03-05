@@ -53,7 +53,7 @@ const FamilyMigrationMap = () => {
 
     // Add an arrowhead at the child's birthplace
     const addArrowhead = (opacity) => {
-    L.arrowheads({
+      addMigrationArrow.arrowheads({
       size: "10px",
       frequency: "end", 
       fill: "blue",
