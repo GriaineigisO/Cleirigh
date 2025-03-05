@@ -150,7 +150,7 @@ const FamilyMigrationMap = () => {
       />
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
-          <p>{progress.current} of {progress.total} lines added</p>
+          <p style={{textAlign:"center"}}>{progress.current} of {progress.total} lines added</p>
         )}
       </div>
     </div>
