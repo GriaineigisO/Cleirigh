@@ -138,7 +138,7 @@ const FamilyMigrationMap = () => {
         let relation = migration.relation_to_user[0];
         let unchangedRelation = relation;
         if (relation < 7) {
-          relation += 10;
+          relation += 20;
         } else {
           relation += 50;
         }
