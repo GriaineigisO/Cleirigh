@@ -55,12 +55,15 @@ const FamilyMigrationMap = () => {
       // Add arrowheads directly to the polyline
       if (typeof line.arrowheads === "function") {
         console.log("here")
-        line.arrowheads({
-          size: "50px",
-          frequency: "end",
-          fill: "blue",
-          opacity: "1",
-        });
+        setTimeout(() => {
+          line.arrowheads({
+            size: "20px",
+            frequency: "end",
+            fill: true,
+            color: "black",
+            opacity: 1,
+          });
+        }, 500);
       } else {
         console.error("arrowheads() function is missing! Ensure leaflet-arrowheads is installed and imported.");
       }
