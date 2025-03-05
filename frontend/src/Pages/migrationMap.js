@@ -44,36 +44,38 @@ const FamilyMigrationMap = () => {
     };
 
     const addMigrationArrow = (parentCoords, childCoords, opacity) => {
+      console.log("Drawing line from", parentCoords, "to", childCoords, "with opacity", opacity);
+    
       const line = L.polyline([parentCoords, childCoords], {
         color: "blue",
         weight: 4,
         opacity: opacity,
       }).addTo(map);
-
-      console.log("Adding arrowheads...");
     
-      // Add arrowheads directly to the polyline
-      if (typeof line.arrowheads === "function") {
-        console.log("here")
-        setTimeout(() => {
-          console.log("Applying arrowheads...");
-          if (line.arrowheads) {
-            line.arrowheads({
-              size: "15px",
-              frequency: "end",
-              fill: true,
-              color: "red",
-              opacity: 1,
-            });
-            console.log("Arrowheads applied!");
-          } else {
-            console.error("Arrowheads method not found!");
-          }
-        }, 500);
-      } else {
-        console.error("arrowheads() function is missing! Ensure leaflet-arrowheads is installed and imported.");
-      }
+      console.log("Polyline added:", line);
+      
+      // Apply arrowheads after a small delay
+      setTimeout(() => {
+        console.log("Applying arrowheads...");
+        
+        // Check if the line has been added to the map correctly
+        console.log("Line properties:", line);
+    
+        if (line.arrowheads) {
+          line.arrowheads({
+            size: "15px",
+            frequency: "end",
+            fill: true,
+            color: "red",
+            opacity: 1,
+          });
+          console.log("Arrowheads applied!");
+        } else {
+          console.error("Arrowheads method not found!");
+        }
+      }, 500);
     };
+    
     
 
     const getOpacity = (relationLevel) => {
