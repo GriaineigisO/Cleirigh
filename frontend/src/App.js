@@ -15,7 +15,7 @@ import NewTree from './Pages/newTree.js';
 import Profile from './Pages/profile.js';
 import Topics from './Pages/topics.js';
 import Topic from './Pages/topic.js';
-
+import FamilyMigrationMap from './Pages/migrationMap.js';
 
 
 
@@ -60,6 +60,7 @@ function App() {
           <Route path="/topics" element={<Topics />}></Route>
           <Route path="/topic/:topic" element={<Topic />} />
           <Route path="profile/:id" element={<Profile />} />
+          <Route path="/migrationmap" element={<FamilyMigrationMap />} />
         </Routes>
       </div>
     </Router>

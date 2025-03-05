@@ -642,7 +642,7 @@ const Home = () => {
             <Link to={"/topics"}>Topics</Link>
           </div>
           <div className="row">
-            <a href="">Random Ancestor's Profile</a>
+            <Link to={"/migrationmap"}>Migration Map</Link>
           </div>
           <div className="row">
             <a href="">On This Day</a>
