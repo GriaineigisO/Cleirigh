@@ -73,7 +73,7 @@ const FamilyMigrationMap = () => {
     plotMigrations();
   }, [map]);
 
-  return <div id="map" style={{ height: "100%", width: "100%" }} />;
+  return <div id="map" style={{ height: "600px", width: "100%" }} />;
 };
 
 export default FamilyMigrationMap;
