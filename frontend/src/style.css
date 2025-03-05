@@ -894,6 +894,11 @@ textarea {
   }
 }
 
+.leaflet-overlay-pane path {
+  z-index: 1000 !important;
+}
+
+
 @media print {
   .gg-parent-buttons,
   #left-button,
