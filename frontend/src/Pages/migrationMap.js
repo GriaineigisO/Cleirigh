@@ -105,12 +105,12 @@ const FamilyMigrationMap = () => {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
 
-        const relation = migration.relation_to_user[0];
+        let relation = migration.relation_to_user[0];
         if (relation < 13) {
-          relation += 10
+          relation += 10;
         } else {
-          relation += 50
-        }
+          relation += 50;
+        };
 
 
         // Use lastValidCoordinates if childCoords is NULL
