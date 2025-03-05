@@ -60,7 +60,7 @@ const FamilyMigrationMap = () => {
 
         console.log("Town:", town);
         console.log("Country:", country);
-        
+
         if (country === "Scandinavia") {
           country = "Norway";
         }
@@ -108,7 +108,7 @@ const FamilyMigrationMap = () => {
         console.log(`${migration.parent_birth} > ${migration.child_birth}`)
 
         let relation = migration.relation_to_user[0];
-        if (relation < 13) {
+        if (relation < 7) {
           relation += 10
         } else {
           relation += 50;
