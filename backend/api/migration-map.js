@@ -55,7 +55,8 @@ export default async function handler(req, res) {
                 id: person.ancestor_id,
                 place_of_birth: person.place_of_birth,
                 father_id: person.father_id,
-                mother_id: person.mother_id
+                mother_id: person.mother_id,
+                relation_to_user: person.relation_to_user
             };
         });
 
@@ -83,14 +84,16 @@ export default async function handler(req, res) {
             if (child.father_id && ancestors[child.father_id]?.place_of_birth !== child.place_of_birth) {
                 migrations.push({
                     parent_birth: ancestors[child.father_id]?.place_of_birth,
-                    child_birth: child.place_of_birth
+                    child_birth: child.place_of_birth,
+                    relation: child.relation_to_user
                 });
             }
 
             if (child.mother_id && ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth) {
                 migrations.push({
                     parent_birth: ancestors[child.mother_id]?.place_of_birth,
-                    child_birth: child.place_of_birth
+                    child_birth: child.place_of_birth,
+                    relation: child.relation_to_user
                 });
             }
 

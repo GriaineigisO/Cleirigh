@@ -3,77 +3,56 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const FamilyMigrationMap = () => {
-  const [map, setMap] = useState(null);
+    const [map, setMap] = useState(null);
 
-  useEffect(() => {
-    const initMap = L.map("map").setView([20, 0], 2);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(initMap);
-    setMap(initMap);
-  }, []);
+    useEffect(() => {
+        const initMap = L.map("map").setView([20, 0], 2);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(initMap);
+        setMap(initMap);
+    }, []);
 
-  useEffect(() => {
-    if (!map) return;
+    useEffect(() => {
+        if (!map) return;
 
-    const fetchAncestors = async () => {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        "https://cleirigh-backend.vercel.app/api/migration-map",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId }),
-        }
-      );
-      const data = response.json();
-      console.log(data)
-      return data;
-    };
+        const fetchParentChildBirths = async () => {
+            const response = await fetch("/api/migration-map");
+            return response.json();
+        };
 
-    const geocodeLocation = async (place) => {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        place
-      )}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.length > 0
-        ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
-        : null;
-    };
+        const geocodeLocation = async (place) => {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place)}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.length > 0 ? [parseFloat(data[0].lat), parseFloat(data[0].lon)] : null;
+        };
 
-    const getOpacity = (relationLevel) =>
-      Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
+        const addMigrationArrow = (parentCoords, childCoords) => {
+            L.polyline([parentCoords, childCoords], {
+                color: "blue",
+                weight: 2,
+                opacity: 0.8,
+                dashArray: "5,5",
+            }).addTo(map);
+        };
 
-    const addMigrationArrow = (birthCoords, deathCoords, opacity) => {
-      L.polyline([birthCoords, deathCoords], {
-        color: "blue",
-        weight: 2,
-        opacity: opacity,
-        dashArray: "5,5",
-      }).addTo(map);
-    };
+        const plotParentChildMigrations = async () => {
+            const migrations = await fetchParentChildBirths();
+            for (const migration of migrations) {
+                const parentCoords = await geocodeLocation(migration.parent_birth);
+                const childCoords = await geocodeLocation(migration.child_birth);
 
-    const plotMigrations = async () => {
-      const ancestors = await fetchAncestors();
-      for (const ancestor of ancestors) {
-        const birthCoords = await geocodeLocation(ancestor.place_of_birth);
-        const deathCoords = await geocodeLocation(ancestor.place_of_death);
+                if (parentCoords && childCoords) {
+                    addMigrationArrow(parentCoords, childCoords);
+                }
+            }
+        };
 
-        if (birthCoords && deathCoords) {
-          addMigrationArrow(
-            birthCoords,
-            deathCoords,
-            getOpacity(ancestor.relation_to_user - 2)
-          );
-        }
-      }
-    };
+        plotParentChildMigrations();
+    }, [map]);
 
-    plotMigrations();
-  }, [map]);
-
-  return <div id="map" style={{ height: "600px", width: "100%" }} />;
+    return <div id="map" style={{ height: "600px", width: "100%" }} />;
 };
 
 export default FamilyMigrationMap;
