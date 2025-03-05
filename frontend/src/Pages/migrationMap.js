@@ -17,7 +17,7 @@ const FamilyMigrationMap = () => {
         if (!map) return;
 
         const fetchParentChildBirths = async () => {
-            const response = await fetch("/api/migration-map");
+            const response = await fetch("https://cleirigh-backend.vercel.app/api/migration-map");
             const data = response.json();
             return data;
         };
