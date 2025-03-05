@@ -63,10 +63,12 @@ const FamilyMigrationMap = () => {
       for (const migration of migrations) {
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
+        console.log(parentCoords)
+        console.log(childCoords)
 
         const relation = migration.relation_to_user[0];
 
-        if (parentCoords !== "null" && parentCoords !== "undefined" && childCoords !== "null" && childCoords !== "undefined") {
+        if (parentCoords && childCoords) {
           // Add arrows between parent and child if both coordinates are available
           const polyline = L.polyline([parentCoords, childCoords], {
             color: "green",
