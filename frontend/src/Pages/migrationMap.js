@@ -57,14 +57,14 @@ const FamilyMigrationMap = () => {
     const plotMigrations = async () => {
       const ancestors = await fetchAncestors();
       for (const ancestor of ancestors) {
-        const birthCoords = await geocodeLocation(ancestor.birth_place);
-        const deathCoords = await geocodeLocation(ancestor.death_place);
+        const birthCoords = await geocodeLocation(ancestor.place_of_birth);
+        const deathCoords = await geocodeLocation(ancestor.place_of_death);
 
         if (birthCoords && deathCoords) {
           addMigrationArrow(
             birthCoords,
             deathCoords,
-            getOpacity(ancestor.relation_level)
+            getOpacity(ancestor.relation_to_user - 2)
           );
         }
       }
