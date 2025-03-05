@@ -61,6 +61,7 @@ export default async function handler(req, res) {
         place_of_birth: person.place_of_birth,
         father_id: person.father_id,
         mother_id: person.mother_id,
+        relation_to_user: person.relation_to_user
       };
     });
 
@@ -102,6 +103,7 @@ export default async function handler(req, res) {
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           child_birth: child.place_of_birth,
+        relation_to_user: child.relation_to_user
         });
       }
 
@@ -109,6 +111,7 @@ export default async function handler(req, res) {
         migrations.push({
           parent_birth: ancestors[child.mother_id]?.place_of_birth,
           child_birth: child.place_of_birth,
+          relation_to_user: child.relation_to_user
         });
       }
 
