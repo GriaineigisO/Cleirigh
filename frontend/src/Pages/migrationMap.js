@@ -41,36 +41,36 @@ const FamilyMigrationMap = () => {
     };
 
     const geocodeLocation = async (place) => {
-      //retrieves name of the village/town/city only and excludes the district and country
-      let town = [];
-      const placeArray = Array.from(place);
-      for (let i = 0; i < placeArray.length; i++) {
-        if (placeArray[i] !== ",") {
-          town.push(placeArray[i]);
-        } else {
-          return;
-        }
-      }
-      town = town.join("");
-      console.log(town);
-
-      //retrieves country name only
-      let country = [];
-      const countryArray = Array.from(place);
-      for (let i = countryArray.length - 1; i >= 0; i--) {
-        if (countryArray[i] !== ",") {
-          for (let i = countryArray.length - 1; i >= 0; i--) {
-            const valueAtIndex = countryArray[i];
-            country.push(valueAtIndex);
-          }
-        } else {
-          return;
-        }
-      }
-      country = country.join("");
-          console.log(country);
-
       if (place) {
+        //retrieves name of the village/town/city only and excludes the district and country
+        let town = [];
+        const placeArray = Array.from(place);
+        for (let i = 0; i < placeArray.length; i++) {
+          if (placeArray[i] !== ",") {
+            town.push(placeArray[i]);
+          } else {
+            return;
+          }
+        }
+        town = town.join("");
+        console.log(town);
+
+        //retrieves country name only
+        let country = [];
+        const countryArray = Array.from(place);
+        for (let i = countryArray.length - 1; i >= 0; i--) {
+          if (countryArray[i] !== ",") {
+            for (let i = countryArray.length - 1; i >= 0; i--) {
+              const valueAtIndex = countryArray[i];
+              country.push(valueAtIndex);
+            }
+          } else {
+            return;
+          }
+        }
+        country = country.join("");
+        console.log(country);
+
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           town
         )}&county=${country}`;
