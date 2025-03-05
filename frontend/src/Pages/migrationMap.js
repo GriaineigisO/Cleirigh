@@ -70,11 +70,14 @@ const FamilyMigrationMap = () => {
           country = "United Kingdom";
         }
     
-        // Build the URL based on whether a country is provided
-        let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(town)}`;
+        // If a country is provided, create a combined query string (town, country)
+        let query = town;
         if (country) {
-          url += `&country=${encodeURIComponent(country)}`;
+          query = `${town}, ${country}`;
         }
+    
+        // Build the URL with the 'q' parameter only
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
     
         const response = await fetch(url);
         const data = await response.json();
@@ -85,6 +88,7 @@ const FamilyMigrationMap = () => {
         return null;
       }
     };
+    
     
 
     const getOpacity = (relationLevel) => {
