@@ -82,11 +82,11 @@ const FamilyMigrationMap = () => {
         const relation = migration.relation_to_user[0];
 
         if (parentCoords && childCoords) {
-          addMigrationArrow(
+          /*addMigrationArrow(
             parentCoords,
             childCoords,
             getOpacity(relation + 40)
-          );
+          );*/
         }
       }
     };
