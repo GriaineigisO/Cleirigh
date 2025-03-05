@@ -48,25 +48,8 @@ const FamilyMigrationMap = () => {
         : null;
     };
 
-    // Test line to verify arrow functionality
-    // const simpleLine = L.polyline([[51.505, -0.09], [51.51, -0.1]], {
-    //   color: "blue",
-    //   weight: 4,
-    //   opacity: 1,
-    // }).addTo(map);
-
-    // setTimeout(() => {
-    //   simpleLine.arrowheads({
-    //     size: "15px",
-    //     frequency: "end",
-    //     fill: true,
-    //     color: "red",
-    //     opacity: 1,
-    //   });
-    // }, 100); // ✅ Added slight delay for stability
 
     const getOpacity = (relationLevel) => {
-      console.log(relationLevel);
       return Math.max(100 - relationLevel, 10) / 100;
     };
 
@@ -88,7 +71,7 @@ const FamilyMigrationMap = () => {
           const polyline = L.polyline([parentCoords, childCoords], {
             color: "green",
             weight: 4,
-            opacity: getOpacity(relation + 40),
+            opacity: getOpacity(relation + 60),
           }).addTo(map);
 
           // ✅ Ensure arrowheads appear by adding a delay
