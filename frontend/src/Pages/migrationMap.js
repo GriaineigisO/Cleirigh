@@ -44,22 +44,25 @@ const FamilyMigrationMap = () => {
     };
 
     const addMigrationArrow = (parentCoords, childCoords, opacity) => {
-      L.polyline([parentCoords, childCoords], {
+      const line = L.polyline([parentCoords, childCoords], {
         color: "blue",
         weight: 4,
         opacity: opacity,
       }).addTo(map);
+    
+      // ✅ Add arrowheads directly to the polyline
+      if (typeof line.arrowheads === "function") {
+        line.arrowheads({
+          size: "10px",
+          frequency: "end",
+          fill: "blue",
+          opacity: opacity,
+        });
+      } else {
+        console.error("arrowheads() function is missing! Ensure leaflet-arrowheads is installed and imported.");
+      }
     };
-
-    // Add an arrowhead at the child's birthplace
-    const addArrowhead = (opacity) => {
-      addMigrationArrow.arrowheads({
-      size: "10px",
-      frequency: "end", 
-      fill: "blue",
-      opacity: opacity
-    });
-  }
+    
 
     const getOpacity = (relationLevel) => {
       console.log(relationLevel);
@@ -80,7 +83,7 @@ const FamilyMigrationMap = () => {
             childCoords,
             getOpacity(relation + 40)
           );
-          addArrowhead(getOpacity(relation + 40))
+          addArrowhead(getOpacity(relation + 40));
         }
       }
     };
