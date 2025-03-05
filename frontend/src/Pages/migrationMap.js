@@ -7,7 +7,7 @@ import "leaflet-polylinedecorator"; // ✅ Added missing import
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
-  const [placeTracker, setPlaceTracker] = useState(new Set()); // To track places already processed
+  const [processedChildren, setProcessedChildren] = useState(new Set()); // Track children who later become parents
 
   useEffect(() => {
     console.log(
@@ -105,46 +105,18 @@ const FamilyMigrationMap = () => {
 
         const relation = migration.relation_to_user[0];
 
-        // Check if child becomes parent in subsequent migrations
-        const childIsParent = placeTracker.has(migration.child_birth);
-        const parentIsChild = placeTracker.has(migration.parent_birth);
-
         if (parentCoords && childCoords) {
-          // Add polyline in both directions if child is parent or parent is child
-          const polyline = L.polyline([parentCoords, childCoords], {
-            color: "green",
-            weight: 4,
-            opacity: getOpacity(relation + 50),
-          }).addTo(map);
-
-          // Add arrowheads (if child is a parent or parent is a child)
-          setTimeout(() => {
-            const decorator = L.polylineDecorator(polyline, {
-              patterns: [
-                {
-                  offset: "100%",
-                  repeat: 0,
-                  symbol: L.Symbol.arrowHead({
-                    pixelSize: 10,
-                    opacity: getOpacity(relation + 40),
-                    headAngle: 30,
-                    pathOptions: { stroke: true, color: "blue" },
-                  }),
-                },
-              ],
-            }).addTo(map);
-          }, 100);
-
-          // Add an arrow from child to parent if needed
-          if (childIsParent || parentIsChild) {
-            const reversePolyline = L.polyline([childCoords, parentCoords], {
+          // If the child has already been processed as a parent, skip this line
+          if (!processedChildren.has(migration.parent_birth)) {
+            // Add a line from parent to child
+            const polyline = L.polyline([parentCoords, childCoords], {
               color: "green",
               weight: 4,
               opacity: getOpacity(relation + 50),
             }).addTo(map);
 
             setTimeout(() => {
-              const reverseDecorator = L.polylineDecorator(reversePolyline, {
+              const decorator = L.polylineDecorator(polyline, {
                 patterns: [
                   {
                     offset: "100%",
@@ -160,12 +132,12 @@ const FamilyMigrationMap = () => {
               }).addTo(map);
             }, 100);
           }
+          
+          // Track this place as a child that later becomes a parent
+          setProcessedChildren((prevState) => new Set(prevState.add(migration.child_birth)));
         }
 
-        // Track places that are parents or children
-        placeTracker.add(migration.parent_birth);
-        placeTracker.add(migration.child_birth);
-
+        // Update progress
         setProgress((prevState) => ({
           current: prevState.current + 1,
           total: prevState.total,
@@ -184,7 +156,7 @@ const FamilyMigrationMap = () => {
       />
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
-          <p>{progress.current} of {progress.total} lines added</p>
+          <p style={{textAlign:"center"}}>{progress.current} of {progress.total} lines added. {(progress.current/progress.total*100).toFixed(2)}% Complete</p>
         )}
       </div>
     </div>
