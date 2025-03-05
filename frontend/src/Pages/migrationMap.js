@@ -42,30 +42,32 @@ const FamilyMigrationMap = () => {
         : null;
     };
 
-    const addMigrationArrow = (parentCoords, childCoords) => {
+    const addMigrationArrow = (parentCoords, childCoords, opacity) => {
       L.polyline([parentCoords, childCoords], {
         color: "blue",
         weight: 2,
-        opacity: 0.8,
+        opacity: opacity,
         dashArray: "5,5",
       }).addTo(map);
     };
 
     const getOpacity = (relationLevel) =>
+      console.log(relationLevel)
       Math.max(100 - relationLevel, 10) / 100; // Min opacity 10%
 
     const plotParentChildMigrations = async () => {
       const migrations = await fetchParentChildBirths();
       for (const migration of migrations) {
-        console.log(migration.relation_to_user)
         const parentCoords = await geocodeLocation(migration.parent_birth);
         const childCoords = await geocodeLocation(migration.child_birth);
+
+        const relation = migration.relation_to_user[0]
 
         if (parentCoords && childCoords) {
           addMigrationArrow(
             parentCoords,
             childCoords,
-            getOpacity(migration.relation_to_user - 2)
+            getOpacity(relation - 2)
           );
         }
       }
