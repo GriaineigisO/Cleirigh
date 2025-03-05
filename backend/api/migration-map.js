@@ -27,30 +27,55 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
     try {
+        // Fetch all ancestors
         const { data, error } = await supabase
             .from("ancestors")
-            .select("ancestor_id, birth_place, father:father_id(birth_place), mother:mother_id(birth_place)");
+            .select("ancestor_id, birth_place, father_id, mother_id");
 
         if (error) throw error;
 
-        // Process parent-child birthplace relationships
-        const validPairs = data.flatMap((child) => {
+        // Convert to a dictionary for easy lookup
+        const ancestors = {};
+        data.forEach((person) => {
+            ancestors[person.ancestor_id] = {
+                id: person.ancestor_id,
+                birth_place: person.birth_place,
+                father_id: person.father_id,
+                mother_id: person.mother_id
+            };
+        });
+
+        // Function to find the closest known birthplace in the lineage
+        const getBirthPlace = (id) => {
+            let current = ancestors[id];
+            while (current && !current.birth_place) {
+                // Try to inherit birthplace from father first, then mother
+                current = ancestors[current.father_id] || ancestors[current.mother_id];
+            }
+            return current?.birth_place || null; // Return closest found birthplace
+        };
+
+        // Process each child and assign missing birthplaces
+        Object.values(ancestors).forEach((child) => {
+            if (!child.birth_place) {
+                child.birth_place = getBirthPlace(child.id);
+            }
+        });
+
+        // Create migration arrows for parents
+        const validPairs = Object.values(ancestors).flatMap((child) => {
             const migrations = [];
 
-            // Handle Father's birthplace
-            const fatherBirth = child.father?.birth_place || child.birth_place; // If NULL, assume same as child
-            if (fatherBirth && child.birth_place && fatherBirth !== child.birth_place) {
+            if (child.father_id && ancestors[child.father_id]?.birth_place !== child.birth_place) {
                 migrations.push({
-                    parent_birth: fatherBirth,
+                    parent_birth: ancestors[child.father_id]?.birth_place,
                     child_birth: child.birth_place
                 });
             }
 
-            // Handle Mother's birthplace
-            const motherBirth = child.mother?.birth_place || child.birth_place; // If NULL, assume same as child
-            if (motherBirth && child.birth_place && motherBirth !== child.birth_place) {
+            if (child.mother_id && ancestors[child.mother_id]?.birth_place !== child.birth_place) {
                 migrations.push({
-                    parent_birth: motherBirth,
+                    parent_birth: ancestors[child.mother_id]?.birth_place,
                     child_birth: child.birth_place
                 });
             }
@@ -60,7 +85,7 @@ export default async function handler(req, res) {
 
         res.json(validPairs);
     } catch (error) {
-        console.error("Error fetching parent-child birthplaces:", error);
+        console.error("Error processing parent-child migrations:", error);
         res.status(500).send("Server error");
     }
       
