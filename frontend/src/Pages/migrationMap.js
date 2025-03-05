@@ -18,8 +18,9 @@ const FamilyMigrationMap = () => {
 
         const fetchParentChildBirths = async () => {
             const response = await fetch("/api/migration-map");
-            console.log(response.json())
-            return response.json();
+            const data = response.json()
+            console.log(data)
+            return data;
         };
 
         const geocodeLocation = async (place) => {
