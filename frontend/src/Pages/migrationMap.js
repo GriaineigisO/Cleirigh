@@ -52,6 +52,7 @@ const FamilyMigrationMap = () => {
     
       // ✅ Add arrowheads directly to the polyline
       if (typeof line.arrowheads === "function") {
+        console.log("here")
         line.arrowheads({
           size: "10px",
           frequency: "end",
