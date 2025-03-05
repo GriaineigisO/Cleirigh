@@ -56,13 +56,19 @@ const FamilyMigrationMap = () => {
       if (typeof line.arrowheads === "function") {
         console.log("here")
         setTimeout(() => {
-          line.arrowheads({
-            size: "20px",
-            frequency: "end",
-            fill: true,
-            color: "black",
-            opacity: 1,
-          });
+          console.log("Applying arrowheads...");
+          if (line.arrowheads) {
+            line.arrowheads({
+              size: "15px",
+              frequency: "end",
+              fill: true,
+              color: "red",
+              opacity: 1,
+            });
+            console.log("Arrowheads applied!");
+          } else {
+            console.error("Arrowheads method not found!");
+          }
         }, 500);
       } else {
         console.error("arrowheads() function is missing! Ensure leaflet-arrowheads is installed and imported.");
