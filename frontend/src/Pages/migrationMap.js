@@ -51,7 +51,7 @@ const FamilyMigrationMap = () => {
       }).addTo(map);
 
       // Add an arrowhead at the child's birthplace
-      line.arrowheads({
+      L.arrowheads({
         size: "10px",
         frequency: "end", 
         fill: "blue",
