@@ -38,7 +38,7 @@ const FamilyMigrationMap = () => {
     };
 
     const geocodeLocation = async (place) => {
-      console.log(AnimationPlaybackEvent)
+      console.log(place)
       if (place) {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
         place
