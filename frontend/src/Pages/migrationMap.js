@@ -43,27 +43,28 @@ const FamilyMigrationMap = () => {
         : null;
     };
 
-    const simpleLine = L.polyline([[51.505, -0.09], [51.51, -0.1]], {
-      color: "blue",
-      weight: 4,
-      opacity: 1,
-    }).addTo(map);
+    const addMigrationArrow = (parentCoords, childCoords, opacity) => {
+      const line = L.polyline([parentCoords, childCoords], {
+        color: "blue",
+        weight: 4,
+        opacity: opacity,
+      }).addTo(map);
     
-    setTimeout(() => {
-      if (simpleLine.arrowheads) {
-        simpleLine.arrowheads({
-          size: "15px",
-          frequency: "end",
-          fill: true,
-          color: "red",
-          opacity: 1,
-        });
-        console.log("Arrowheads applied to simple line!");
-      } else {
-        console.error("Arrowheads method is not available for simple line!");
-      }
-    }, 500);
-    
+      setTimeout(() => {
+        if (line.arrowheads) {
+          line.arrowheads({
+            size: "15px",
+            frequency: "end",
+            fill: true,
+            color: "red",
+            opacity: 1,
+          });
+          console.log("Arrowheads applied!");
+        } else {
+          console.error("Arrowheads method is not available!");
+        }
+      }, 500); // Adjust this timeout if needed
+    };
     
     
     
@@ -82,11 +83,11 @@ const FamilyMigrationMap = () => {
         const relation = migration.relation_to_user[0];
 
         if (parentCoords && childCoords) {
-          /*addMigrationArrow(
+          addMigrationArrow(
             parentCoords,
             childCoords,
             getOpacity(relation + 40)
-          );*/
+          );
         }
       }
     };
