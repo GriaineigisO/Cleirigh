@@ -49,8 +49,10 @@ const FamilyMigrationMap = () => {
         weight: 4,
         opacity: opacity,
       }).addTo(map);
+
+      console.log("Adding arrowheads...");
     
-      // ✅ Add arrowheads directly to the polyline
+      // Add arrowheads directly to the polyline
       if (typeof line.arrowheads === "function") {
         console.log("here")
         line.arrowheads({
