@@ -27,9 +27,23 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
     try {
+        const { userId } = req.body;
+  
+      // Query to get the current tree id
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('current_tree_id')
+        .eq('id', userId)
+        .single();
+  
+      if (userError) {
+        throw new Error(userError.message);
+      }
+      const currentTree = user.current_tree_id;
+      
         // Fetch all ancestors
         const { data, error } = await supabase
-            .from("ancestors")
+            .from(`tree_${currentTree}`)
             .select("ancestor_id, birth_place, father_id, mother_id");
 
         if (error) throw error;
