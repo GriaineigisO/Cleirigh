@@ -120,6 +120,7 @@ export default async function handler(req, res) {
         child.place_of_birth = getBirthPlace(child.id);
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
+        console.log("presumed birth place", child.place_of_birth)
       }
     });
 
