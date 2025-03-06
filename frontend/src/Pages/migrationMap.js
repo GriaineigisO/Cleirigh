@@ -7,7 +7,6 @@ import "leaflet-polylinedecorator"; // ✅ Added missing import
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
-  const [processedChildren, setProcessedChildren] = useState(new Set()); // Track children who later become parents
 
   useEffect(() => {
     console.log(
@@ -87,6 +86,7 @@ const FamilyMigrationMap = () => {
       }
     };
 
+    //determines a line's opactiy based on the ancestor's relation to the user: more distant = more opaque
     const getOpacity = (relationLevel) => {
       return Math.max(100 - relationLevel, 10) / 100;
     };
@@ -144,6 +144,28 @@ const FamilyMigrationMap = () => {
         }
 
         if (parentCoords && childCoords) {
+          //loads data of parent and child to populate popups
+          const polylineDataMap = new Map(); // Store data for each polyline
+
+          const polylineKey = `${parentCoords}-${childCoords}`;
+
+          if (!polylineDataMap.has(polylineKey)) {
+            polylineDataMap.set(polylineKey, []);
+          }
+
+          polylineDataMap.get(polylineKey).push({
+            parent: {
+              name: migration.parent_name,
+              birth: migration.parent_birth,
+              dob: migration.parent_dob,
+            },
+            child: {
+              name: migration.child_name,
+              birth: migration.child_birth,
+              dob: migration.child_dob,
+            },
+          });
+
           let polyline = "";
           if (unchangedRelation < 7) {
             polyline = L.polyline([parentCoords, childCoords], {
@@ -164,6 +186,24 @@ const FamilyMigrationMap = () => {
               opacity: getOpacity(relation),
             }).addTo(map);
           }
+
+          polyline.on("click", (e) => {
+            const details = polylineDataMap
+              .get(polylineKey)
+              .map(
+                (entry) =>
+                  `<b>Parent:</b> ${entry.parent.name} (${entry.parent.dob}) - ${entry.parent.birth}<br>
+                   <b>Child:</b> ${entry.child.name} (${entry.child.dob}) - ${entry.child.birth}<br><br>`
+              )
+              .join("");
+
+            L.popup()
+              .setLatLng(e.latlng)
+              .setContent(`<div>${details}</div>`)
+              .openOn(map);
+          });
+
+          polylineDataMap.get(polylineKey).polyline = polyline;
 
           // Add an arrowhead to the polyline
           setTimeout(() => {
