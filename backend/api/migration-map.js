@@ -56,7 +56,8 @@ export default async function handler(req, res) {
       .from(`tree_${currentTree}`)
       .select(
         "*"
-      );
+      )
+      .limit(10000);
 
     if (error) throw error;
 
