@@ -20,6 +20,44 @@ const FamilyMigrationMap = () => {
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(initMap);
+    // Create a custom control for the info button
+  const infoControl = L.control({ position: "topright" });
+
+  infoControl.onAdd = function () {
+    const div = L.DomUtil.create("div", "info-button");
+    div.innerHTML = "ℹ️"; // Unicode info symbol
+    div.style.cursor = "pointer";
+    div.style.fontSize = "24px";
+    div.style.background = "white";
+    div.style.padding = "5px 10px";
+    div.style.borderRadius = "5px";
+    div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
+
+    // Prevent clicks from propagating to the map
+    L.DomEvent.on(div, "click", function (e) {
+      L.DomEvent.stopPropagation(e);
+      L.popup()
+        .setLatLng(initMap.getCenter()) // Show popup at center of map
+        .setContent(
+          `<div style="max-width: 300px;">
+            <h3>Migration Map Info</h3>
+            <p>This map displays migration paths of your ancestors based on birthplaces.</p>
+            <p>Click on the migration lines to view ancestor details.</p>
+            <p>Different colors represent different generations:</p>
+            <ul>
+              <li><span style="color:blue;">Blue</span> - Close ancestors</li>
+              <li><span style="color:green;">Green</span> - Mid-range ancestors</li>
+              <li><span style="color:black;">Black</span> - Distant ancestors</li>
+            </ul>
+          </div>`
+        )
+        .openOn(initMap);
+    });
+
+    return div;
+  };
+
+  infoControl.addTo(initMap);
     setMap(initMap);
   }, []);
 
@@ -217,6 +255,7 @@ const FamilyMigrationMap = () => {
 
     plotParentChildMigrations();
   }, [map]);
+
 
   return (
     <div>
