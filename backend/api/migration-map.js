@@ -113,8 +113,8 @@ export default async function handler(req, res) {
       const father = ancestors["father_id"];
       const mother = ancestors["mother_id"];
       
-      console.log("Father data:", father); // Log father data
-      console.log("Mother data:", mother); // Log mother data
+      // console.log("Father data:", father); // Log father data
+      // console.log("Mother data:", mother); // Log mother data
 
 
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
@@ -128,9 +128,9 @@ export default async function handler(req, res) {
     // Create migration arrows for parents
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
-
-  
-
+      console.log("child", child.first_name)
+      console.log("father", child.father_id)
+      console.log("mother", child.mother_id)
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
