@@ -113,6 +113,8 @@ export default async function handler(req, res) {
       console.log("Child data:", child); // Log child data to ensure it's correct
       const father = ancestors[child.father_id];
       const mother = ancestors[child.mother_id];
+
+      console.log("Ancestors:", ancestors[child.id]); // Log the whole ancestors object
       
       console.log("Father data:", father); // Log father data
       console.log("Mother data:", mother); // Log mother data
@@ -130,7 +132,7 @@ export default async function handler(req, res) {
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
 
-      console.log("Ancestors:", ancestors); // Log the whole ancestors object
+  
 
       if (
         child.father_id &&
