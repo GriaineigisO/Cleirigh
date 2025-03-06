@@ -85,30 +85,44 @@ export default async function handler(req, res) {
     const birthplaceCache = {};
 
     // Function to find the closest known birthplace
+    // Cache ancestors by ancestor_id for quick lookup
+    const ancestorsMap = ancestors.reduce((acc, ancestor) => {
+      acc[ancestor.ancestor_id] = ancestor;
+      return acc;
+    }, {});
+
     const getBirthPlace = (id) => {
-      if (!id || !ancestors[id]) {
-        console.log(`No ancestor found with ID: ${id}`);
+      if (!id) {
+        console.log(`Invalid ID passed: ${id}`);
         return null; // Ensure valid ID
       }
 
-      if (birthplaceCache[id]) return birthplaceCache[id]; // Return cached value
+      const current = ancestorsMap[id]; // Get ancestor by ancestor_id
 
-      let current = ancestors[id];
-
-      // If ancestor has no place of birth listed
-      while (current && !current.place_of_birth) {
-        // Try father first, then mother
-        console.log(`No birthplace for ancestor ${id}. Trying parents...`);
-
-        // Try father first
-        current = ancestors[current.father_id] || ancestors[current.mother_id];
-
-        if (!current) break; // If no parent exists, exit loop
+      if (!current) {
+        console.log(`No ancestor found with ID: ${id}`);
+        return null; // No ancestor found for the given ID
       }
 
-      const resolvedBirthplace = current?.place_of_birth || null;
-      birthplaceCache[id] = resolvedBirthplace; // Cache result
-      return resolvedBirthplace;
+      // If ancestor has no place of birth listed, look for parents
+      if (!current.place_of_birth) {
+        console.log(
+          `No birthplace for ancestor with ID: ${id}. Trying parents...`
+        );
+
+        // Try father first, then mother
+        if (current.father_id) {
+          return getBirthPlace(current.father_id); // Try father
+        }
+
+        if (current.mother_id) {
+          return getBirthPlace(current.mother_id); // Try mother
+        }
+
+        return null; // No birthplace found even with parents
+      }
+
+      return current.place_of_birth;
     };
 
     // Function to format the name
@@ -126,11 +140,15 @@ export default async function handler(req, res) {
         child.place_of_birth = getBirthPlace(child.ancestor_id);
 
         if (!child.place_of_birth) {
-          console.log(`No birthplace found for child with ancestor_id: ${child.ancestor_id}`);
+          console.log(
+            `No birthplace found for child with ancestor_id: ${child.ancestor_id}`
+          );
         }
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
-        console.log(`Presumed birthplace for ${child.ancestor_id}: ${child.place_of_birth}`);
+        console.log(
+          `Presumed birthplace for ${child.ancestor_id}: ${child.place_of_birth}`
+        );
       }
     });
 
