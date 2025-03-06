@@ -60,6 +60,19 @@ export default async function handler(req, res) {
 
     if (error) throw error;
 
+    const formatName = (first, middle, last) => {
+      if (!first) {
+        first = "Unknown"
+      }
+      if (!middle) {
+        middle = "";
+      }
+      if (!last) {
+        last = "";
+      }
+      return `${first} ${middle} ${last}`
+    }
+
     // Convert to a dictionary for lookup
     const ancestors = {};
     data.forEach((person) => {
@@ -114,15 +127,12 @@ export default async function handler(req, res) {
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
 
-        let parent_name = `${ancestors[child.father_id]?.first_name} ${ancestors[child.father_id]?.middle_name} ${ancestors[child.father_id]?.last_name}`
-        let child_name = `${child.first_name} ${child.middle_name} ${child.last_name}`
-
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
-          parent_name: parent_name,
+          parent_name: formatName(ancestors[child.father_id]?.first_name, ancestors[child.father_id]?.middle_name, ancestors[child.father_id]?.last_name),
           parent_id: ancestors[child.father_id]?.id,
           child_birth: child.place_of_birth,
-          child_name: child_name,
+          child_name: formatName(child.first_name, child.middle_name, child.last_name),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
         });
@@ -133,15 +143,12 @@ export default async function handler(req, res) {
         ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth
       ) {
 
-        let parent_name = `${ancestors[child.mother_id]?.first_name} ${ancestors[child.mother_id]?.middle_name} ${ancestors[child.mother_id]?.last_name}`
-        let child_name = `${child.first_name} ${child.middle_name} ${child.last_name}`
-
         migrations.push({
           parent_birth: ancestors[child.mother_id]?.place_of_birth,
-          parent_name: parent_name,
+          parent_name: formatName(ancestors[child.mother_id]?.first_name, ancestors[child.mother_id]?.middle_name, ancestors[child.mother_id]?.last_name),
           parent_id: ancestors[child.mother_id]?.id,
           child_birth: child.place_of_birth,
-          child_name: child_name,
+          child_name: formatName(child.first_name, child.middle_name, child.last_name),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
         });
