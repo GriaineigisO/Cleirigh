@@ -112,10 +112,9 @@ export default async function handler(req, res) {
       //console.log("Child data:", child); // Log child data to ensure it's correct
       // const father = ancestors["father_id"];
       // const mother = ancestors["mother_id"];
-      
+
       // console.log("Father data:", father); // Log father data
       // console.log("Mother data:", mother); // Log mother data
-
 
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
@@ -127,17 +126,25 @@ export default async function handler(req, res) {
 
     // Create migration arrows for parents
     const validPairs = Object.values(ancestors).flatMap((child) => {
+      const fatherId = String(child.father_id); // Convert father_id to string if necessary
+      if (fatherId in ancestors) {
+        console.log(`Father ID ${fatherId} exists in ancestors.`);
+        console.log("Father's details:", ancestors[fatherId]);
+      } else {
+        console.log(`Father ID ${fatherId} does NOT exist in ancestors.`);
+      }
+
       const migrations = [];
-      console.log("child", child)
-      console.log("father", child.father_id)
-      console.log("mother", child.mother_id)
+      console.log("child", child);
+      console.log("father", child.father_id);
+      console.log("mother", child.mother_id);
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-        console.log("father_id type:", typeof child.father_id);
-        console.log("father ancestor_id type:", typeof ancestors[child.father_id].id);
-        
+        // console.log("father_id type:", typeof child.father_id);
+        // console.log("father ancestor_id type:", typeof ancestors[child.father_id]?.id);
+
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: formatName(
