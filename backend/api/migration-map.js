@@ -111,6 +111,11 @@ export default async function handler(req, res) {
     // Process each child and assign missing birthplaces. If a birth place is missing but there is a presumed birth place, use that, else, find the nearest birth place of an ancestor
     Object.values(ancestors).forEach((child) => {
       console.log("Child data:", child); // Log child data to ensure it's correct
+      const father = ancestors[child.father_id];
+      const mother = ancestors[child.mother_id];
+      
+      console.log("Father data:", father); // Log father data
+      console.log("Mother data:", mother); // Log mother data
 
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
@@ -124,11 +129,6 @@ export default async function handler(req, res) {
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
 
-      const father = ancestors[child.father_id];
-const mother = ancestors[child.mother_id];
-
-console.log("Father data:", father); // Log father data
-console.log("Mother data:", mother); // Log mother data
 
 
       if (
