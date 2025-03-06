@@ -82,11 +82,7 @@ export default async function handler(req, res) {
         dob: person.date_of_birth,
       };
     });
-    const ancestors = { 
-      959947: { name: 'John Doe' }, 
-      888102: { name: 'Jane Smith' } 
-    };
-    
+
     console.log("Number of keys in ancestors:", Object.keys(ancestors).length);
     
 
