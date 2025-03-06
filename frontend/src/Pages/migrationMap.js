@@ -45,10 +45,13 @@ const FamilyMigrationMap = () => {
             <p>Click on the migration lines to view ancestor details.</p>
             <p>Different colors represent different generations:</p>
             <ul>
-              <li><span style="color:blue;">Blue</span> - Close ancestors</li>
-              <li><span style="color:green;">Green</span> - Mid-range ancestors</li>
-              <li><span style="color:black;">Black</span> - Distant ancestors</li>
+              <li><span style="color:blue;">Blue</span> - Greatx5 Grandparents and below, these ancestors constitute >1% of your ancestry</li>
+              <li><span style="color:green;">Green</span> - Greatx5 Grandparents and above, these ancestors constitude <1% of your ancestry</li>
+              <li><span style="color:black;">Black</span> - Greatx15 Grandparents and above, these ancestors constitude < 0.000762939453125% of your ancestry</li>
             </ul>
+
+            <h2>Valid Placenames</h2>
+            <p>To check if the places of birth that you entered return the desired place, enter the place after the equals sign in this link and paste the link in your browser and check the first result: https://nominatim.openstreetmap.org/search?format=json&q=</p>
           </div>`
         )
         .openOn(initMap);
