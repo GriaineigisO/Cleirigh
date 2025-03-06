@@ -194,8 +194,8 @@ const FamilyMigrationMap = () => {
               .get(polylineKey)
               .map(
                 (entry) =>
-                  `<b>Parent:</b> <a href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (${entry.parent.dob}) - ${entry.parent.birth}</a><br>
-                   <b>Child:</b> <a href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
+                  `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (${entry.parent.dob}) - ${entry.parent.birth}</a><br>
+                   <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
               )
               .join("");
 

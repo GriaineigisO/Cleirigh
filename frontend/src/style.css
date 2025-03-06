@@ -898,6 +898,15 @@ textarea {
   z-index: 1000 !important;
 }
 
+.popup_migration_link {
+  text-decoration: none;
+  color: black;
+}
+
+.popup_migration_link:hover {
+  text-decoration: underline;
+  color: black;
+}
 
 @media print {
   .gg-parent-buttons,
