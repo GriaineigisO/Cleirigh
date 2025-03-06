@@ -111,6 +111,9 @@ export default async function handler(req, res) {
     // Process each child and assign missing birthplaces. If a birth place is missing but there is a presumed birth place, use that, else, find the nearest birth place of an ancestor
     Object.values(ancestors).forEach((child) => {
       console.log("Child data:", child); // Log child data to ensure it's correct
+      console.log("Child father_id:", child.father_id); // Log father_id
+      console.log("Child mother_id:", child.mother_id); // Log mother_id
+
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
