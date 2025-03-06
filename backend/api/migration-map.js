@@ -105,6 +105,14 @@ export default async function handler(req, res) {
       return resolvedBirthplace;
     };
 
+    // Function to format the name
+    const formatName = (first, middle, last) => {
+      if (!first) first = "Unknown"; // Only set to Unknown if first name is missing
+      if (!middle) middle = ""; // Middle name can be empty
+      if (!last) last = ""; // Last name can be empty
+      return `${first} ${middle} ${last}`;
+    };
+
     // Process each child and assign missing birthplaces
     Object.values(ancestors).forEach((child) => {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
