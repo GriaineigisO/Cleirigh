@@ -118,7 +118,7 @@ export default async function handler(req, res) {
     Object.values(ancestors).forEach((child) => {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
-      } else if (!child.place_of_birth && !child.presumed_place_of_birth) {
+      } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
       }
     });
