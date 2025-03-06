@@ -908,6 +908,10 @@ textarea {
   color: black;
 }
 
+.leaflet-content-popup-wrapper {
+  width: 550px;
+}
+
 @media print {
   .gg-parent-buttons,
   #left-button,
