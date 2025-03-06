@@ -216,7 +216,7 @@ const FamilyMigrationMap = () => {
                   offset: "10%", // Start arrows 10% into the line
                   repeat: "20%", // Repeat every 20% of the line length
                   symbol: L.Symbol.arrowHead({
-                    pixelSize: 30,
+                    pixelSize: 20,
                     headAngle: 30,
                     pathOptions: {
                       stroke: true,
