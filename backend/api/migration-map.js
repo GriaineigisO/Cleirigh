@@ -61,17 +61,12 @@ export default async function handler(req, res) {
     if (error) throw error;
 
     const formatName = (first, middle, last) => {
-      if (!first) {
-        first = "Unknown"
-      }
-      if (!middle) {
-        middle = "";
-      }
-      if (!last) {
-        last = "";
-      }
-      return `${first} ${middle} ${last}`
-    }
+      if (!first) first = "Unknown"; // Only set to Unknown if first name is missing
+      if (!middle) middle = ""; // Middle name can be empty
+      if (!last) last = ""; // Last name can be empty
+      console.log("Formatted Name:", first, middle, last); // For debugging
+      return `${first} ${middle} ${last}`;
+    };
 
     // Convert to a dictionary for lookup
     const ancestors = {};
@@ -85,7 +80,7 @@ export default async function handler(req, res) {
         first_name: person.first_name,
         middle_name: person.middle_name,
         last_name: person.last_name,
-        dob: person.date_of_birth
+        dob: person.date_of_birth,
       };
     });
 
@@ -102,7 +97,6 @@ export default async function handler(req, res) {
 
       //if ancestor has no place of birth listed
       while (current && !current.place_of_birth) {
-
         // Try father first, then mother
         current = ancestors[current.father_id] || ancestors[current.mother_id];
 
@@ -116,11 +110,12 @@ export default async function handler(req, res) {
 
     // Process each child and assign missing birthplaces. If a birth place is missing but there is a presumed birth place, use that, else, find the nearest birth place of an ancestor
     Object.values(ancestors).forEach((child) => {
+      console.log("Child data:", child); // Log child data to ensure it's correct
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
-        console.log("presumed birth place", child.place_of_birth)
+        console.log("presumed birth place", child.place_of_birth);
       }
     });
 
@@ -132,18 +127,25 @@ export default async function handler(req, res) {
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-
-
+        console.log("Father data:", ancestors[child.father_id]); // Log parent data
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
-          parent_name: formatName(ancestors[child.father_id]?.first_name, ancestors[child.father_id]?.middle_name, ancestors[child.father_id]?.last_name),
+          parent_name: formatName(
+            ancestors[child.father_id]?.first_name,
+            ancestors[child.father_id]?.middle_name,
+            ancestors[child.father_id]?.last_name
+          ),
           parent_id: ancestors[child.father_id]?.id,
           child_birth: child.place_of_birth,
-          child_name: formatName(child.first_name, child.middle_name, child.last_name),
+          child_name: formatName(
+            child.first_name,
+            child.middle_name,
+            child.last_name
+          ),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
-          parent_dob:ancestors[child.father_id]?.dob,
-          child_dob: child.dob
+          parent_dob: ancestors[child.father_id]?.dob,
+          child_dob: child.dob,
         });
       }
 
@@ -151,17 +153,25 @@ export default async function handler(req, res) {
         child.mother_id &&
         ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth
       ) {
-
+        console.log("Mother data:", ancestors[child.mother_id]); // Log parent data
         migrations.push({
           parent_birth: ancestors[child.mother_id]?.place_of_birth,
-          parent_name: formatName(ancestors[child.mother_id]?.first_name, ancestors[child.mother_id]?.middle_name, ancestors[child.mother_id]?.last_name),
+          parent_name: formatName(
+            ancestors[child.mother_id]?.first_name,
+            ancestors[child.mother_id]?.middle_name,
+            ancestors[child.mother_id]?.last_name
+          ),
           parent_id: ancestors[child.mother_id]?.id,
           child_birth: child.place_of_birth,
-          child_name: formatName(child.first_name, child.middle_name, child.last_name),
+          child_name: formatName(
+            child.first_name,
+            child.middle_name,
+            child.last_name
+          ),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
-          parent_dob:ancestors[child.mother_id]?.dob,
-          child_dob: child.dob
+          parent_dob: ancestors[child.mother_id]?.dob,
+          child_dob: child.dob,
         });
       }
 
