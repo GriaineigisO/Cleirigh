@@ -100,7 +100,9 @@ export default async function handler(req, res) {
 
       let current = ancestors[id];
 
+      //if ancestor has no place of birth listed
       while (current && !current.place_of_birth) {
+
         // Try father first, then mother
         current = ancestors[current.father_id] || ancestors[current.mother_id];
 
@@ -112,10 +114,12 @@ export default async function handler(req, res) {
       return resolvedBirthplace;
     };
 
-    // Process each child and assign missing birthplaces
+    // Process each child and assign missing birthplaces. If a birth place is missing but there is a presumed birth place, use that, else, find the nearest birth place of an ancestor
     Object.values(ancestors).forEach((child) => {
-      if (!child.place_of_birth) {
+      if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
+      } else if (!child.place_of_birth && !child.presumed_place_of_birth) {
+        child.place_of_birth = child.presumed_place_of_birth;
       }
     });
 
@@ -127,6 +131,7 @@ export default async function handler(req, res) {
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
+
 
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
