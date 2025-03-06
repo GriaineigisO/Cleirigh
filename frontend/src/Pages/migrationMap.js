@@ -43,34 +43,10 @@ const FamilyMigrationMap = () => {
 
     const geocodeLocation = async (place) => {
       if (place) {
-        /*let town = "";
-        let country = "";
-        const placeArray = place.split(",");
 
-        if (placeArray.length === 1) {
-          town = placeArray[0].trim();
-        } else if (placeArray.length === 2) {
-          town = placeArray[0].trim();
-          country = placeArray[1].trim();
-        } else {
-          town = placeArray[0].trim();
-          country = placeArray[placeArray.length - 1].trim();
-        }
-
-        console.log("Town:", town);
-        console.log("Country:", country);
-
-        if (country === "Scandinavia") {
+        if (place === "Scandinavia") {
           country = "Norway";
         }
-        if (town === "Scandinavia") {
-          town = "Norway";
-        }
-
-        let query = town;
-        if (country) {
-          query = `${town}, ${country}`;
-        }*/
 
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           place
