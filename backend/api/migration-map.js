@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from(`tree_${currentTree}`)
       .select(
-        "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user, first_name, middle_name, last_name, date_of_birth"
+        "*"
       );
 
     if (error) throw error;
@@ -70,9 +70,6 @@ export default async function handler(req, res) {
     // Convert to a dictionary for lookup
     const ancestors = {};
     data.forEach((person) => {
-      if(person.ancestor_id === 959947) {
-        console.log("found David's father")
-      }
       ancestors[person.ancestor_id] = {
         id: person.ancestor_id,
         place_of_birth: person.place_of_birth,
@@ -85,6 +82,13 @@ export default async function handler(req, res) {
         dob: person.date_of_birth,
       };
     });
+    const ancestors = { 
+      959947: { name: 'John Doe' }, 
+      888102: { name: 'Jane Smith' } 
+    };
+    
+    console.log("Number of keys in ancestors:", Object.keys(ancestors).length);
+    
 
     // Cache for resolved birthplaces to avoid redundant lookups
     const birthplaceCache = {};
