@@ -39,7 +39,7 @@ const FamilyMigrationMap = () => {
       L.popup()
         .setLatLng(initMap.getCenter()) // Show popup at center of map
         .setContent(
-          `<div style="max-width: 500px;">
+          `<div style="width: 500px;">
             <h3>Migration Map Info</h3>
             <p>This map displays migration paths of your ancestors based on birthplaces.</p>
             <p>Click on the migration lines to view ancestor details.</p>
