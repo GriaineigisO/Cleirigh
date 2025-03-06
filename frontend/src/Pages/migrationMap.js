@@ -45,7 +45,7 @@ const FamilyMigrationMap = () => {
       if (place) {
 
         if (place === "Scandinavia") {
-          country = "Norway";
+          place = "Norway";
         }
 
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
