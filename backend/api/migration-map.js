@@ -51,41 +51,35 @@ export default async function handler(req, res) {
 
     const currentTree = user.current_tree_id;
 
-    // Fetch all ancestors from the tree
-    const { data, error } = await supabase
-      .from(`tree_${currentTree}`)
-      .select(
-        "*"
-      )
-      .limit(10000);
+    // Pagination setup
+    const PAGE_SIZE = 1000; // Supabase default limit per query
+    let page = 0;
+    let ancestors = [];
+    let hasMoreData = true;
 
-    if (error) throw error;
+    while (hasMoreData) {
+      const { data, error } = await supabase
+        .from(`tree_${currentTree}`)
+        .select(
+          "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user, first_name, middle_name, last_name, date_of_birth"
+        )
+        .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1); // Get the current page
 
-    const formatName = (first, middle, last) => {
-      if (!first) first = "Unknown"; // Only set to Unknown if first name is missing
-      if (!middle) middle = ""; // Middle name can be empty
-      if (!last) last = ""; // Last name can be empty
-      return `${first} ${middle} ${last}`;
-    };
+      if (error) {
+        console.error("Error fetching data:", error);
+        break;
+      }
 
-    // Convert to a dictionary for lookup
-    const ancestors = {};
-    data.forEach((person) => {
-      ancestors[person.ancestor_id] = {
-        id: person.ancestor_id,
-        place_of_birth: person.place_of_birth,
-        father_id: person.father_id,
-        mother_id: person.mother_id,
-        relation_to_user: person.relation_to_user,
-        first_name: person.first_name,
-        middle_name: person.middle_name,
-        last_name: person.last_name,
-        dob: person.date_of_birth,
-      };
-    });
+      ancestors = [...ancestors, ...data]; // Add the current page of data to the ancestors array
+      page++; // Move to the next page
 
-    console.log("Number of keys in ancestors:", Object.keys(ancestors).length);
-    
+      // If the number of rows returned is less than the page size, we're done
+      if (data.length < PAGE_SIZE) {
+        hasMoreData = false;
+      }
+    }
+
+    console.log("Total ancestors fetched:", ancestors.length);
 
     // Cache for resolved birthplaces to avoid redundant lookups
     const birthplaceCache = {};
@@ -98,7 +92,7 @@ export default async function handler(req, res) {
 
       let current = ancestors[id];
 
-      //if ancestor has no place of birth listed
+      // If ancestor has no place of birth listed
       while (current && !current.place_of_birth) {
         // Try father first, then mother
         current = ancestors[current.father_id] || ancestors[current.mother_id];
@@ -111,15 +105,8 @@ export default async function handler(req, res) {
       return resolvedBirthplace;
     };
 
-    // Process each child and assign missing birthplaces. If a birth place is missing but there is a presumed birth place, use that, else, find the nearest birth place of an ancestor
+    // Process each child and assign missing birthplaces
     Object.values(ancestors).forEach((child) => {
-      //console.log("Child data:", child); // Log child data to ensure it's correct
-      // const father = ancestors["father_id"];
-      // const mother = ancestors["mother_id"];
-
-      // console.log("Father data:", father); // Log father data
-      // console.log("Mother data:", mother); // Log mother data
-
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
@@ -130,25 +117,12 @@ export default async function handler(req, res) {
 
     // Create migration arrows for parents
     const validPairs = Object.values(ancestors).flatMap((child) => {
-      const fatherId = child.father_id; 
-      // if (fatherId in ancestors) {
-      //   console.log(`Father ID ${fatherId} exists in ancestors.`);
-      //   console.log("Father's details:", ancestors[fatherId]);
-      // } else {
-      //   console.log(`Father ID ${fatherId} does NOT exist in ancestors.`);
-      // }
-
       const migrations = [];
-      // console.log("child", child);
-      // console.log("father", child.father_id);
-      // console.log("mother", child.mother_id);
+
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-        // console.log("father_id type:", typeof child.father_id);
-        // console.log("father ancestor_id type:", typeof ancestors[child.father_id]?.id);
-
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: formatName(
@@ -197,7 +171,7 @@ export default async function handler(req, res) {
 
       return migrations;
     });
-    //console.log(validPairs);
+
     return res.json(validPairs);
   } catch (error) {
     console.error("Error processing parent-child migrations:", error);
