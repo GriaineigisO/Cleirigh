@@ -143,6 +143,8 @@ export default async function handler(req, res) {
         console.log(
           `Presumed birthplace for ${child.ancestor_id}: ${child.place_of_birth}`
         );
+      } else if (child.place_of_birth) {
+        console.log(child.place_of_birth)
       }
     });
 
@@ -154,6 +156,7 @@ export default async function handler(req, res) {
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
+        console.log("father's place of birth", ancestors[child.father_id]?.place_of_birth)
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: formatName(
