@@ -908,7 +908,7 @@ textarea {
   color: black;
 }
 
-.leaflet-content-popup-wrapper {
+.leaflet-popup-content-wrapper {
   width: 550px;
 }
 
