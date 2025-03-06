@@ -64,7 +64,6 @@ export default async function handler(req, res) {
       if (!first) first = "Unknown"; // Only set to Unknown if first name is missing
       if (!middle) middle = ""; // Middle name can be empty
       if (!last) last = ""; // Last name can be empty
-      console.log("Formatted Name:", first, middle, last); // For debugging
       return `${first} ${middle} ${last}`;
     };
 
@@ -111,10 +110,8 @@ export default async function handler(req, res) {
     // Process each child and assign missing birthplaces. If a birth place is missing but there is a presumed birth place, use that, else, find the nearest birth place of an ancestor
     Object.values(ancestors).forEach((child) => {
       console.log("Child data:", child); // Log child data to ensure it's correct
-      const father = ancestors[child.father_id];
-      const mother = ancestors[child.mother_id];
-
-      console.log("Ancestors:", ancestors[child.id]); // Log the whole ancestors object
+      const father = ancestors["father_id"];
+      const mother = ancestors["mother_id"];
       
       console.log("Father data:", father); // Log father data
       console.log("Mother data:", mother); // Log mother data
