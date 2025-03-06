@@ -190,12 +190,22 @@ const FamilyMigrationMap = () => {
           }
 
           polyline.on("click", (e) => {
+
+            let parentDOB = "";
+            if (entry.parent.dob) {
+              parentDOB = ` (b.${entry.parent.dob})`
+            }
+            let childDOB = "";
+            if (entry.child.dob) {
+              childDOB = ` (b.${entry.child.dob})`
+            }
+            
             const details = polylineDataMap
               .get(polylineKey)
               .map(
                 (entry) =>
-                  `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (${entry.parent.dob}) - ${entry.parent.birth}</a><br>
-                   <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
+                  `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name}${parentDOB} - ${entry.parent.birth}</a><br>
+                   <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name}${childDOB}) - ${entry.child.birth}</a><br><br>`
               )
               .join("");
 
