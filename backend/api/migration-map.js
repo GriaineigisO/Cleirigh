@@ -117,6 +117,7 @@ export default async function handler(req, res) {
       console.log("Father data:", father); // Log father data
       console.log("Mother data:", mother); // Log mother data
 
+
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
@@ -129,13 +130,12 @@ export default async function handler(req, res) {
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
 
-
+      console.log("Ancestors:", ancestors); // Log the whole ancestors object
 
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-        console.log("Father data:", ancestors[child.father_id]); // Log parent data
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: formatName(
@@ -161,7 +161,6 @@ export default async function handler(req, res) {
         child.mother_id &&
         ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth
       ) {
-        console.log("Mother data:", ancestors[child.mother_id]); // Log parent data
         migrations.push({
           parent_birth: ancestors[child.mother_id]?.place_of_birth,
           parent_name: formatName(
