@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from(`tree_${currentTree}`)
       .select(
-        "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user, first_name, middle_name, last_name"
+        "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user, first_name, middle_name, last_name, date_of_birth"
       );
 
     if (error) throw error;
@@ -84,7 +84,8 @@ export default async function handler(req, res) {
         relation_to_user: person.relation_to_user,
         first_name: person.first_name,
         middle_name: person.middle_name,
-        last_name: person.last_name
+        last_name: person.last_name,
+        dob: person.date_of_birth
       };
     });
 
@@ -135,6 +136,8 @@ export default async function handler(req, res) {
           child_name: formatName(child.first_name, child.middle_name, child.last_name),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
+          parent_dob:ancestors[child.father_id]?.dob,
+          child_dob: child.dob
         });
       }
 
@@ -151,6 +154,8 @@ export default async function handler(req, res) {
           child_name: formatName(child.first_name, child.middle_name, child.last_name),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
+          parent_dob:ancestors[child.mother_id]?.dob,
+          child_dob: child.dob
         });
       }
 
