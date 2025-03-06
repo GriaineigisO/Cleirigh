@@ -136,7 +136,7 @@ export default async function handler(req, res) {
     // Process each child and assign missing birthplaces
     Object.values(ancestors).forEach((child) => {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
-        console.log("no birth place nor presumed place for", child..ancestor_id)
+        console.log("no birth place nor presumed place for", child.ancestor_id)
         child.place_of_birth = null;
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
