@@ -150,11 +150,13 @@ export default async function handler(req, res) {
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
 
+      let fatherId = child.father_id;
+
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-        console.log("father's details", ancestors.child.father_id)
+        console.log("father's details", ancestors.fatherId)
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: formatName(
