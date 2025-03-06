@@ -86,7 +86,10 @@ export default async function handler(req, res) {
 
     // Function to find the closest known birthplace
     const getBirthPlace = (id) => {
-      if (!id || !ancestors[id]) return null; // Ensure valid ID
+      if (!id || !ancestors[id]) {
+        console.log(`No ancestor found with ID: ${id}`);
+        return null; // Ensure valid ID
+      }
 
       if (birthplaceCache[id]) return birthplaceCache[id]; // Return cached value
 
@@ -119,13 +122,15 @@ export default async function handler(req, res) {
     // Process each child and assign missing birthplaces
     Object.values(ancestors).forEach((child) => {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
-        child.place_of_birth = getBirthPlace(child.id);
+        console.log(`Processing child with ancestor_id: ${child.ancestor_id}`);
+        child.place_of_birth = getBirthPlace(child.ancestor_id);
+
         if (!child.place_of_birth) {
-          console.log(`No birthplace found for child ${child.id}`);
+          console.log(`No birthplace found for child with ancestor_id: ${child.ancestor_id}`);
         }
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
-        console.log("presumed birth place", child.place_of_birth);
+        console.log(`Presumed birthplace for ${child.ancestor_id}: ${child.place_of_birth}`);
       }
     });
 
