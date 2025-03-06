@@ -39,7 +39,7 @@ const FamilyMigrationMap = () => {
       L.popup()
         .setLatLng(initMap.getCenter()) // Show popup at center of map
         .setContent(
-          `<div style="max-width: 300px;">
+          `<div style="max-width: 500px;">
             <h3>Migration Map Info</h3>
             <p>This map displays migration paths of your ancestors based on birthplaces.</p>
             <p>Click on the migration lines to view ancestor details.</p>
@@ -51,7 +51,7 @@ const FamilyMigrationMap = () => {
             </ul>
 
             <h2>Valid Placenames</h2>
-            <p>To check if the places of birth that you entered returns the desired place, and not another place of the same name, enter the place after the equals sign in this link and paste the link in your browser and check the first result: https://nominatim.openstreetmap.org/search?format=json&q=</p>. <br>
+            <p>To check if the places of birth that you entered returns the desired place, and not another place of the same name, enter the place after the equals sign in this link and paste the link in your browser and check the first result: https://nominatim.openstreetmap.org/search?format=json&q=</p>.
             If you want the map to choose one specific place which shares a name with other places, use the full name listed as "display name" when pasting the link in the browser and assign it as the ancestor's birth place.
           </div>`
         )
