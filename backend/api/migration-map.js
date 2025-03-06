@@ -70,6 +70,9 @@ export default async function handler(req, res) {
     // Convert to a dictionary for lookup
     const ancestors = {};
     data.forEach((person) => {
+      if(person.ancestor_id === 959947) {
+        console.log("found David's father")
+      }
       ancestors[person.ancestor_id] = {
         id: person.ancestor_id,
         place_of_birth: person.place_of_birth,
@@ -126,18 +129,18 @@ export default async function handler(req, res) {
 
     // Create migration arrows for parents
     const validPairs = Object.values(ancestors).flatMap((child) => {
-      const fatherId = String(child.father_id); // Convert father_id to string if necessary
-      if (fatherId in ancestors) {
-        console.log(`Father ID ${fatherId} exists in ancestors.`);
-        console.log("Father's details:", ancestors[fatherId]);
-      } else {
-        console.log(`Father ID ${fatherId} does NOT exist in ancestors.`);
-      }
+      const fatherId = child.father_id; 
+      // if (fatherId in ancestors) {
+      //   console.log(`Father ID ${fatherId} exists in ancestors.`);
+      //   console.log("Father's details:", ancestors[fatherId]);
+      // } else {
+      //   console.log(`Father ID ${fatherId} does NOT exist in ancestors.`);
+      // }
 
       const migrations = [];
-      console.log("child", child);
-      console.log("father", child.father_id);
-      console.log("mother", child.mother_id);
+      // console.log("child", child);
+      // console.log("father", child.father_id);
+      // console.log("mother", child.mother_id);
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
