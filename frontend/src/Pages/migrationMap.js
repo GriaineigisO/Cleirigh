@@ -158,11 +158,13 @@ const FamilyMigrationMap = () => {
               name: migration.parent_name,
               birth: migration.parent_birth,
               dob: migration.parent_dob,
+              id: migration.parent_id
             },
             child: {
               name: migration.child_name,
               birth: migration.child_birth,
               dob: migration.child_dob,
+              id: migration.child_id
             },
           });
 
@@ -192,8 +194,8 @@ const FamilyMigrationMap = () => {
               .get(polylineKey)
               .map(
                 (entry) =>
-                  `<b>Parent:</b> ${entry.parent.name} (${entry.parent.dob}) - ${entry.parent.birth}<br>
-                   <b>Child:</b> ${entry.child.name} (${entry.child.dob}) - ${entry.child.birth}<br><br>`
+                  `<b>Parent:</b> <a href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (${entry.parent.dob}) - ${entry.parent.birth}</a><br>
+                   <b>Child:</b> <a href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
               )
               .join("");
 

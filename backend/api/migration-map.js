@@ -1,31 +1,36 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", 
+  origin: "https://cleirighgenealogy.com",
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    corsOptions.allowedHeaders.join(", ")
+  );
 
-    // CORS headers
-    res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
-    res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
+  // Handle OPTIONS method for CORS preflight
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
-    // Handle OPTIONS method for CORS preflight
-    if (req.method === "OPTIONS") {
-      return res.status(200).end();
-    }
-
-    // Only allow POST requests
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
-    }
+  // Only allow POST requests
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
     const { userId } = req.body;
@@ -49,7 +54,9 @@ export default async function handler(req, res) {
     // Fetch all ancestors from the tree
     const { data, error } = await supabase
       .from(`tree_${currentTree}`)
-      .select("ancestor_id, place_of_birth, father_id, mother_id, relation_to_user");
+      .select(
+        "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user"
+      );
 
     if (error) throw error;
 
@@ -61,7 +68,7 @@ export default async function handler(req, res) {
         place_of_birth: person.place_of_birth,
         father_id: person.father_id,
         mother_id: person.mother_id,
-        relation_to_user: person.relation_to_user
+        relation_to_user: person.relation_to_user,
       };
     });
 
@@ -99,25 +106,47 @@ export default async function handler(req, res) {
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
 
-      if (child.father_id && ancestors[child.father_id]?.place_of_birth !== child.place_of_birth) {
+      if (
+        child.father_id &&
+        ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
+      ) {
+
+        let parent_name = `${ancestors[child.father_id]?.first_name} ${ancestors[child.father_id]?.middle_name} ${ancestors[child.father_id]?.last_name}`
+        let child_name = `${child.first_name} ${child.middle_name} ${child.last_name}`
+
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
+          parent_name: parent_name,
+          parent_id: ancestors[child.father_id]?.ancestor_id,
           child_birth: child.place_of_birth,
-        relation_to_user: child.relation_to_user
+          child_name: child_name,
+          child_id: child.ancestor_id,
+          relation_to_user: child.relation_to_user,
         });
       }
 
-      if (child.mother_id && ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth) {
+      if (
+        child.mother_id &&
+        ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth
+      ) {
+        
+        let parent_name = `${ancestors[child.mother_id]?.first_name} ${ancestors[child.mother_id]?.middle_name} ${ancestors[child.mother_id]?.last_name}`
+        let child_name = `${child.first_name} ${child.middle_name} ${child.last_name}`
+
         migrations.push({
           parent_birth: ancestors[child.mother_id]?.place_of_birth,
+          parent_name: parent_name,
+          parent_id: ancestors[child.mother_id]?.ancestor_id,
           child_birth: child.place_of_birth,
-          relation_to_user: child.relation_to_user
+          child_name: child_name,
+          child_id: child.ancestor_id,
+          relation_to_user: child.relation_to_user,
         });
       }
 
       return migrations;
     });
-    console.log(validPairs)
+    console.log(validPairs);
     return res.json(validPairs);
   } catch (error) {
     console.error("Error processing parent-child migrations:", error);
