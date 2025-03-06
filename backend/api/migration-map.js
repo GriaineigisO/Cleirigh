@@ -95,6 +95,9 @@ export default async function handler(req, res) {
       // If ancestor has no place of birth listed
       while (current && !current.place_of_birth) {
         // Try father first, then mother
+        console.log(`No birthplace for ancestor ${id}. Trying parents...`);
+
+        // Try father first
         current = ancestors[current.father_id] || ancestors[current.mother_id];
 
         if (!current) break; // If no parent exists, exit loop
@@ -117,6 +120,9 @@ export default async function handler(req, res) {
     Object.values(ancestors).forEach((child) => {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = getBirthPlace(child.id);
+        if (!child.place_of_birth) {
+          console.log(`No birthplace found for child ${child.id}`);
+        }
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
         console.log("presumed birth place", child.place_of_birth);
