@@ -136,7 +136,7 @@ export default async function handler(req, res) {
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
         console.log("father_id type:", typeof child.father_id);
-        console.log("father ancestor_id type:", typeof ancestors[child.father_id]?.id);
+        console.log("father ancestor_id type:", typeof ancestors[child.father_id].id);
         
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
