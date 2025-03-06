@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from(`tree_${currentTree}`)
       .select(
-        "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user"
+        "ancestor_id, place_of_birth, father_id, mother_id, relation_to_user, first_name, middle_name, last_name"
       );
 
     if (error) throw error;
@@ -69,6 +69,9 @@ export default async function handler(req, res) {
         father_id: person.father_id,
         mother_id: person.mother_id,
         relation_to_user: person.relation_to_user,
+        first_name: person.first_name,
+        middle_name: person.middle_name,
+        last_name: person.last_name
       };
     });
 
@@ -117,10 +120,10 @@ export default async function handler(req, res) {
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: parent_name,
-          parent_id: ancestors[child.father_id]?.ancestor_id,
+          parent_id: ancestors[child.father_id]?.id,
           child_birth: child.place_of_birth,
           child_name: child_name,
-          child_id: child.ancestor_id,
+          child_id: child.id,
           relation_to_user: child.relation_to_user,
         });
       }
@@ -129,17 +132,17 @@ export default async function handler(req, res) {
         child.mother_id &&
         ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth
       ) {
-        
+
         let parent_name = `${ancestors[child.mother_id]?.first_name} ${ancestors[child.mother_id]?.middle_name} ${ancestors[child.mother_id]?.last_name}`
         let child_name = `${child.first_name} ${child.middle_name} ${child.last_name}`
 
         migrations.push({
           parent_birth: ancestors[child.mother_id]?.place_of_birth,
           parent_name: parent_name,
-          parent_id: ancestors[child.mother_id]?.ancestor_id,
+          parent_id: ancestors[child.mother_id]?.id,
           child_birth: child.place_of_birth,
           child_name: child_name,
-          child_id: child.ancestor_id,
+          child_id: child.id,
           relation_to_user: child.relation_to_user,
         });
       }
