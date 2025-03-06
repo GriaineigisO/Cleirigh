@@ -138,8 +138,6 @@ export default async function handler(req, res) {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         console.log("no birth place nor presumed place for", child.id)
         child.place_of_birth = null;
-
-      
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
         console.log(
