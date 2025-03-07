@@ -119,18 +119,17 @@ export default async function handler(req, res) {
 
     let parentGender = "";
     if (ancestorDetails.sex === "male") {
-      parentGender = "father_id"
+      parentGender = "father_id";
     } else {
-      parentGender = "mother_id"
+      parentGender = "mother_id";
     }
 
+    const { data: findChild, error: findChildError } = await supabase
+      .from(`tree_${currentTree}`)
+      .select("*")
+      .eq(parentGender, ancestorDetails.id);
 
-      const { data: findChild, error: findChildError } = await supabase
-          .from(`tree_${currentTree}`)
-          .select("*")
-          .eq(parentGender, ancestorDetails.id);
-  
-
+      console.log(findChild)
     //update child's presumed birth place if necessary. If there are generations of people with no birth place and no presumed birth place and the new ancestor has a birth place, this birthplace will be recursively assigned as the presumed birthplace of each descendant who lacks a birthplace
     const recursivelyUpdateChildsPresumedBirthPlace = async (
       parentBirthPlace,
@@ -143,11 +142,11 @@ export default async function handler(req, res) {
     ) => {
       //if parent has no birth place, or if the child already has a birth place or presumed birth place, change nothing andend function immediately
       if (!parentBirthPlace || childBirthPlace || childsPresumedBirthPlace) {
-        console.log("no need to change info")
+        console.log("no need to change info");
         return;
       }
 
-      console.log("adding presumed birth place...")
+      console.log("adding presumed birth place...");
 
       //check if parent is male or female
       if (parentGender === "male") {
@@ -156,7 +155,7 @@ export default async function handler(req, res) {
           .select("*")
           .eq("father_id", parentId);
 
-          console.log("child is", findChild.ancestor_id)
+        console.log("child is", findChild.ancestor_id);
 
         const {
           data: updatedPresumedBirthPlace,
@@ -166,7 +165,7 @@ export default async function handler(req, res) {
           .update({ presumed_place_of_birth: parentBirthPlace })
           .eq("ancestor_id", childId);
 
-          console.log("child new presumed birth place has been updated")
+        console.log("child new presumed birth place has been updated");
 
         //now find the child's child
         if (childGender === "male") {
