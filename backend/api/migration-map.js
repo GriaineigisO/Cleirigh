@@ -142,6 +142,10 @@ export default async function handler(req, res) {
       }
     });
 
+
+    console.log("Ancestor keys:", Object.keys(ancestors));
+
+
     // Create migration arrows for parents
     const validPairs = Object.values(ancestors).flatMap((child) => {
       const migrations = [];
