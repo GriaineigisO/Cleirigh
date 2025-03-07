@@ -139,7 +139,7 @@ export default async function handler(req, res) {
         child.place_of_birth = null;
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
         child.place_of_birth = child.presumed_place_of_birth;
-      };
+      }
     });
 
     // Create migration arrows for parents
@@ -147,13 +147,17 @@ export default async function handler(req, res) {
       const migrations = [];
 
       let fatherId = child.father_id;
-      console.log("fatherId is", fatherId);
+      console.log("Type of father_id:", typeof child.father_id);
+      console.log(
+        "Type of ancestor_id:",
+        typeof ancestors[child.father_id]?.id
+      );
 
       if (
         child.father_id &&
         ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-        console.log("father's details", ancestors.fatherId)
+        //console.log("father's details", ancestors[fatherId]);
         migrations.push({
           parent_birth: ancestors[child.father_id]?.place_of_birth,
           parent_name: formatName(
