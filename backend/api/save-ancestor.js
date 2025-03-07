@@ -123,7 +123,7 @@ export default async function handler(req, res) {
     const { data: findChild, error: findChildError } = await supabase
       .from(`tree_${currentTree}`)
       .select("*")
-      .eq(parentGender, ancestorDetails.id);
+      .eq(parentGender, ancestor_id);
 
     console.log(findChild);
 
