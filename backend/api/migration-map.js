@@ -84,8 +84,7 @@ export default async function handler(req, res) {
     // Cache for resolved birthplaces to avoid redundant lookups
     const birthplaceCache = {};
 
-    // Function to find the closest known birthplace
-    // Cache ancestors by ancestor_id for quick lookup
+    // Create ancestors map with ancestor_id as the key
     const ancestorsMap = ancestors.reduce((acc, ancestor) => {
       acc[ancestor.ancestor_id] = ancestor;
       return acc;
@@ -134,7 +133,7 @@ export default async function handler(req, res) {
     };
 
     // Process each child and assign missing birthplaces
-    Object.values(ancestors).forEach((child) => {
+    Object.values(ancestorsMap).forEach((child) => {
       if (!child.place_of_birth && !child.presumed_place_of_birth) {
         child.place_of_birth = null;
       } else if (!child.place_of_birth && child.presumed_place_of_birth) {
@@ -142,34 +141,31 @@ export default async function handler(req, res) {
       }
     });
 
-
-    console.log("Ancestor keys:", Object.keys(ancestors));
-
+    console.log("Ancestor keys:", Object.keys(ancestorsMap));
 
     // Create migration arrows for parents
-    const validPairs = Object.values(ancestors).flatMap((child) => {
+    const validPairs = Object.values(ancestorsMap).flatMap((child) => {
       const migrations = [];
 
       let fatherId = child.father_id;
       console.log("Type of father_id:", typeof child.father_id);
       console.log(
         "Type of ancestor_id:",
-        typeof ancestors[child.father_id]?.id
+        typeof ancestorsMap[child.father_id]?.id
       );
 
       if (
         child.father_id &&
-        ancestors[child.father_id]?.place_of_birth !== child.place_of_birth
+        ancestorsMap[child.father_id]?.place_of_birth !== child.place_of_birth
       ) {
-        //console.log("father's details", ancestors[fatherId]);
         migrations.push({
-          parent_birth: ancestors[child.father_id]?.place_of_birth,
+          parent_birth: ancestorsMap[child.father_id]?.place_of_birth,
           parent_name: formatName(
-            ancestors[child.father_id]?.first_name,
-            ancestors[child.father_id]?.middle_name,
-            ancestors[child.father_id]?.last_name
+            ancestorsMap[child.father_id]?.first_name,
+            ancestorsMap[child.father_id]?.middle_name,
+            ancestorsMap[child.father_id]?.last_name
           ),
-          parent_id: ancestors[child.father_id]?.id,
+          parent_id: ancestorsMap[child.father_id]?.id,
           child_birth: child.place_of_birth,
           child_name: formatName(
             child.first_name,
@@ -178,23 +174,23 @@ export default async function handler(req, res) {
           ),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
-          parent_dob: ancestors[child.father_id]?.dob,
+          parent_dob: ancestorsMap[child.father_id]?.dob,
           child_dob: child.dob,
         });
       }
 
       if (
         child.mother_id &&
-        ancestors[child.mother_id]?.place_of_birth !== child.place_of_birth
+        ancestorsMap[child.mother_id]?.place_of_birth !== child.place_of_birth
       ) {
         migrations.push({
-          parent_birth: ancestors[child.mother_id]?.place_of_birth,
+          parent_birth: ancestorsMap[child.mother_id]?.place_of_birth,
           parent_name: formatName(
-            ancestors[child.mother_id]?.first_name,
-            ancestors[child.mother_id]?.middle_name,
-            ancestors[child.mother_id]?.last_name
+            ancestorsMap[child.mother_id]?.first_name,
+            ancestorsMap[child.mother_id]?.middle_name,
+            ancestorsMap[child.mother_id]?.last_name
           ),
-          parent_id: ancestors[child.mother_id]?.id,
+          parent_id: ancestorsMap[child.mother_id]?.id,
           child_birth: child.place_of_birth,
           child_name: formatName(
             child.first_name,
@@ -203,7 +199,7 @@ export default async function handler(req, res) {
           ),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
-          parent_dob: ancestors[child.mother_id]?.dob,
+          parent_dob: ancestorsMap[child.mother_id]?.dob,
           child_dob: child.dob,
         });
       }
