@@ -117,6 +117,18 @@ export default async function handler(req, res) {
       (rel) => rel + 1
     );
 
+    if (sex === "male") {
+      const { data: findChild, error: findChildError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("father_id", ancestorDetails.id);
+    } else {
+      const { data: findChild, error: findChildError } = await supabase
+          .from(`tree_${currentTree}`)
+          .select("*")
+          .eq("mother_id", ancestorDetails.id);
+    }
+
     //update child's presumed birth place if necessary. If there are generations of people with no birth place and no presumed birth place and the new ancestor has a birth place, this birthplace will be recursively assigned as the presumed birthplace of each descendant who lacks a birthplace
     const recursivelyUpdateChildsPresumedBirthPlace = async (
       parentBirthPlace,
