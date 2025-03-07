@@ -174,8 +174,8 @@ export default async function handler(req, res) {
           ),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
-          parent_dob: ancestorsMap[child.father_id]?.dob,
-          child_dob: child.dob,
+          parent_dob: ancestorsMap[child.father_id]?.date_of_birth,
+          child_dob: child.date_of_birth,
         });
       }
 
@@ -199,8 +199,8 @@ export default async function handler(req, res) {
           ),
           child_id: child.id,
           relation_to_user: child.relation_to_user,
-          parent_dob: ancestorsMap[child.mother_id]?.dob,
-          child_dob: child.dob,
+          parent_dob: ancestorsMap[child.mother_id]?.date_of_birth,
+          child_dob: child.date_of_birth,
         });
       }
 
