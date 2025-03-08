@@ -148,11 +148,11 @@ export default async function handler(req, res) {
       const migrations = [];
 
       let fatherId = child.father_id;
-      // console.log("Type of father_id:", typeof child.father_id);
-      // console.log(
-      //   "Type of ancestor_id:",
-      //   typeof ancestorsMap[child.father_id]?.id
-      // );
+      console.log("Type of father_id:", typeof child.father_id);
+      console.log(
+        "Type of ancestor_id:",
+        typeof ancestorsMap[child.father_id]?.ancestor_id
+      );
 
       if (
         child.father_id &&
@@ -165,7 +165,7 @@ export default async function handler(req, res) {
             ancestorsMap[child.father_id]?.middle_name,
             ancestorsMap[child.father_id]?.last_name
           ),
-          parent_id: ancestorsMap[child.father_id]?.id,
+          parent_id: ancestorsMap[child.father_id]?.ancestor_id,
           child_birth: child.place_of_birth,
           child_name: formatName(
             child.first_name,
