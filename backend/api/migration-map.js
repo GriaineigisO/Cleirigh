@@ -141,18 +141,18 @@ export default async function handler(req, res) {
       }
     });
 
-    console.log("Ancestor keys:", Object.keys(ancestorsMap));
+    //console.log("Ancestor keys:", Object.keys(ancestorsMap));
 
     // Create migration arrows for parents
     const validPairs = Object.values(ancestorsMap).flatMap((child) => {
       const migrations = [];
 
       let fatherId = child.father_id;
-      console.log("Type of father_id:", typeof child.father_id);
-      console.log(
-        "Type of ancestor_id:",
-        typeof ancestorsMap[child.father_id]?.id
-      );
+      // console.log("Type of father_id:", typeof child.father_id);
+      // console.log(
+      //   "Type of ancestor_id:",
+      //   typeof ancestorsMap[child.father_id]?.id
+      // );
 
       if (
         child.father_id &&
