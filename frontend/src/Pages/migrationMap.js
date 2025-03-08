@@ -115,6 +115,7 @@ const FamilyMigrationMap = () => {
         console.log("No migration data available.");
         return;
       }
+      console.log("migrations:", migrations.parent_id)
 
       setProgress({ current: 0, total: migrations.length });
 
@@ -123,6 +124,7 @@ const FamilyMigrationMap = () => {
       for (let index = 0; index < migrations.length; index++) {
         const migration = migrations[index];
 
+        console.log("parent_id is:", migration.parent_id)
         // Check if the parent's birthplace is NULL
         let parentBirthplace = migration.parent_birth || null;
         if (!parentBirthplace && migration.parent_id) {
