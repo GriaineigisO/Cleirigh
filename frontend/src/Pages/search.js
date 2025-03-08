@@ -180,7 +180,7 @@ const Search = () => {
                   </td>
                   <td className="search-content search-border-bottom button-cell">
                     <a
-                      href="familytree"
+                      href={treeLinks[index]}
                       onClick={() => changePageNum(results[index].page_number)}
                       target="_blank"
                       style={{ textDecoration: "none", color: "black" }}
