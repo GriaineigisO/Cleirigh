@@ -46,7 +46,7 @@ const Search = () => {
 
     for (let i = 0; i < data.length; i++) {
       profileLinks[i] = `/profile/${data[i].ancestor_id}`;
-      treeLinks[i] = `familytree`;
+      treeLinks[i] = `/familytree/${data[i].page_number}`;
     }
   };
 
