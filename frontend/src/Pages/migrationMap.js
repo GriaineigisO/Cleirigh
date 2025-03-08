@@ -115,7 +115,7 @@ const FamilyMigrationMap = () => {
         console.log("No migration data available.");
         return;
       }
-      console.log("migrations:", migrations.parent_id)
+      console.log("migrations:", migrations)
 
       setProgress({ current: 0, total: migrations.length });
 
