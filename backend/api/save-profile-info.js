@@ -40,46 +40,7 @@ export default async function handler(req, res) {
       .single();
 
     const currentTree = user.current_tree_id;
-
-    const updateProfile = await pool.query(
-      `
-              UPDATE tree_${currentTree}
-              SET
-                  first_name = $1,
-                  middle_name = $2,
-                  last_name = $3,
-                  place_of_birth = $4,
-                  date_of_birth = $5,
-                  place_of_death = $6,
-                  date_of_death = $7,
-                  cause_of_death = $8,
-                  ethnicity = $9,
-                  alternative_names = $10,
-                  occupation = $11,
-                  paternal_haplogroup = $12,
-                  maternal_haplogroup = $13,
-                  profile_pic_caption = $14
-              WHERE ancestor_id = $15
-          `,
-      [
-        profileData.first_name,
-        profileData.middle_name,
-        profileData.last_name,
-        profileData.place_of_birth,
-        profileData.date_of_birth,
-        profileData.place_of_death,
-        profileData.date_of_death,
-        profileData.cause_of_death,
-        profileData.ethnicity,
-        profileData.alternative_names,
-        profileData.occupation,
-        profileData.paternal_haplogroup,
-        profileData.maternal_haplogroup,
-        profileData.profile_pic_caption,
-        profileData.ancestor_id,
-      ]
-    );
-
+    
     const {data, error}  = await supabase 
         .from(`tree_${currentTree}`)
         .update({
