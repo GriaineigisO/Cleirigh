@@ -30,6 +30,7 @@ export default async function handler(req, res) {
     return;
   }
   try {
+    console.log("API triggered")
     const { userId, profileData } = req.body;
 
     // Get current tree id from users table
@@ -40,7 +41,9 @@ export default async function handler(req, res) {
       .single();
 
     const currentTree = user.current_tree_id;
-    
+
+    console.log("beginning to save info...")
+
     const {data, error}  = await supabase 
         .from(`tree_${currentTree}`)
         .update({
@@ -60,6 +63,8 @@ export default async function handler(req, res) {
             profile_pic_caption: profileData.ancestor_id,
 
         })
+
+        console.log("info saved")
 
   } catch (error) {
     console.log("error saving profile info:", error);

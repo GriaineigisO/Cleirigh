@@ -740,6 +740,7 @@ const Profile = () => {
   };
 
   const handlSaveInfo = async () => {
+    console.log("saving profile info!")
     setisEditingInfo(false);
     const userId = localStorage.getItem("userId");
     const response = await fetch(
