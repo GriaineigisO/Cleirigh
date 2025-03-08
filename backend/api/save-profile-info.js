@@ -61,8 +61,7 @@ export default async function handler(req, res) {
             occupation: profileData.occupation,
             paternal_haplogroup:  profileData.paternal_haplogroup,
             maternal_haplogroup: profileData.maternal_haplogroup,
-            profile_pic_caption: profileData.ancestor_id,
-
+            profile_pic_caption: profileData.ancestor_id
         })
 
         console.log("info saved")
