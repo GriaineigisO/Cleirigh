@@ -1212,7 +1212,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1259,7 +1259,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1306,7 +1306,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1353,7 +1353,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1400,7 +1400,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1447,7 +1447,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1494,7 +1494,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1541,7 +1541,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
