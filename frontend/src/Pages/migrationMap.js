@@ -262,13 +262,7 @@ const FamilyMigrationMap = () => {
     plotParentChildMigrations();
   }, [map]);
 
-  L.SmoothWheelZoom({
-    map,
-    enabled: true,
-    zoomInCurve: 'easeOutQuad',
-    zoomOutCurve: 'easeInQuad',
-    duration: 400 // Adjust animation speed
-  });
+
   
 
 
