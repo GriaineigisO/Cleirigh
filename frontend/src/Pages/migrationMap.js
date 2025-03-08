@@ -3,10 +3,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-arrowheads";
 import "leaflet-polylinedecorator"; 
-import "Leaflet.SmoothWheelZoom";
+import "Leaflet.SmoothWheelZoom/SmoothWheelZoom.js";
 
-
-/**/
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
