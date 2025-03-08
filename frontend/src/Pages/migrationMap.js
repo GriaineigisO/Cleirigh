@@ -3,7 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-arrowheads";
 import "leaflet-polylinedecorator"; 
-import './leaflet-smooth-wheel-zoom';
+import '../leaflet-smooth-wheel-zoom';
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
