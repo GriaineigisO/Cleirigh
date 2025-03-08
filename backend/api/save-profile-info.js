@@ -43,6 +43,7 @@ export default async function handler(req, res) {
     const currentTree = user.current_tree_id;
 
     console.log("beginning to save info...")
+    console.log("alternative names:", profileData.alternative_names)
 
     const {data, error}  = await supabase 
         .from(`tree_${currentTree}`)
