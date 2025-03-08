@@ -6,7 +6,7 @@ import "leaflet-polylinedecorator";
 import "Leaflet.SmoothWheelZoom/SmoothWheelZoom.js";
 
 
-
+/**/
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
