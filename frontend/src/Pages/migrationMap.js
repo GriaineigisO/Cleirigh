@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-arrowheads";
-import "leaflet-polylinedecorator"; // ✅ Added missing import
+import "leaflet-polylinedecorator"; 
+import './leaflet-smooth-wheel-zoom';
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
@@ -260,6 +261,15 @@ const FamilyMigrationMap = () => {
 
     plotParentChildMigrations();
   }, [map]);
+
+  L.SmoothWheelZoom({
+    map,
+    enabled: true,
+    zoomInCurve: 'easeOutQuad',
+    zoomOutCurve: 'easeInQuad',
+    duration: 400 // Adjust animation speed
+  });
+  
 
 
   return (
