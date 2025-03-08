@@ -115,7 +115,6 @@ const FamilyMigrationMap = () => {
         console.log("No migration data available.");
         return;
       }
-      console.log("migrations:", migrations)
 
       setProgress({ current: 0, total: migrations.length });
 
@@ -213,14 +212,10 @@ const FamilyMigrationMap = () => {
             
             const details = polylineDataMap
               .get(polylineKey)
-              // .map(
-              //   (entry) =>
-              //     `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (b.${entry.parent.dob}) - ${entry.parent.birth}</a><br>
-              //      <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (b.${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
-              // )
               .map(
                 (entry) =>
-                  console.log(entry.parent.id)
+                  `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (b.${entry.parent.dob}) - ${entry.parent.birth}</a><br>
+                   <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (b.${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
               )
               .join("");
 

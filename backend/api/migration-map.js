@@ -147,8 +147,7 @@ export default async function handler(req, res) {
     const validPairs = Object.values(ancestorsMap).flatMap((child) => {
       const migrations = [];
 
-      let fatherId = child.father_id;
-      console.log("Type of father_id:", typeof child.father_id);
+
       console.log(
         "Type of ancestor_id:",
         typeof ancestorsMap[child.father_id]?.ancestor_id
