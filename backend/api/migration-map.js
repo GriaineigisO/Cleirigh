@@ -172,7 +172,7 @@ export default async function handler(req, res) {
             child.middle_name,
             child.last_name
           ),
-          child_id: child.id,
+          child_id: child.ancestor_id,
           relation_to_user: child.relation_to_user,
           parent_dob: ancestorsMap[child.father_id]?.date_of_birth,
           child_dob: child.date_of_birth,
@@ -190,14 +190,14 @@ export default async function handler(req, res) {
             ancestorsMap[child.mother_id]?.middle_name,
             ancestorsMap[child.mother_id]?.last_name
           ),
-          parent_id: ancestorsMap[child.mother_id]?.id,
+          parent_id: ancestorsMap[child.mother_id]?.ancestor_id,
           child_birth: child.place_of_birth,
           child_name: formatName(
             child.first_name,
             child.middle_name,
             child.last_name
           ),
-          child_id: child.id,
+          child_id: child.ancestor_id,
           relation_to_user: child.relation_to_user,
           parent_dob: ancestorsMap[child.mother_id]?.date_of_birth,
           child_dob: child.date_of_birth,
