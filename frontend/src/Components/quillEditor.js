@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-// Custom keyboard handler to insert line break without creating <p> tag
+// Custom keyboard handler to insert a linebreak without creating <p> tag
 const modules = {
   toolbar: [
     [{ header: [1, 2, false] }],
@@ -16,19 +16,15 @@ const modules = {
       // Custom handler for the Enter key
       linebreak: {
         key: 13, // Enter key
-        handler: function (range, context) {
+        handler: function (range) {
           const quill = this.quill;
-          const currentFormat = quill.getFormat(range.index); // Get current format at cursor position
+          const cursorPosition = range.index;
 
-          // Insert <br> (line break) instead of creating a <p> tag
-          if (!currentFormat["list"]) {
-            quill.insertText(range.index, "\n", "break"); // Insert a line break
-            quill.setSelection(range.index + 1); // Move cursor after inserted newline
-          } else {
-            // Handle Enter key for lists
-            quill.insertText(range.index, "\n", "list", "bullet"); // Insert newline while keeping the list format
-            quill.setSelection(range.index + 1); // Move cursor after inserted newline
-          }
+          // Insert line break <br> instead of a new paragraph <p>
+          quill.insertEmbed(cursorPosition, "break", true); // Insert a <br> tag
+
+          // Move the cursor to the next position
+          quill.setSelection(cursorPosition + 1);
         },
       },
     },
