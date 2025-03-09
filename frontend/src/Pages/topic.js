@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import { Modal, Button } from "react-bootstrap";
 import warningLogo from "../Images/warning.png";
-import MyEditor from "./Components/quillEditor.js";
+import MyEditor from "../Components/quillEditor.js";
 
 const Topic = () => {
   const { topic } = useParams();
