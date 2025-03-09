@@ -10,22 +10,7 @@ const modules = {
     ["blockquote"],
     [{ list: "ordered" }, { list: "bullet" }],
     ["link"],
-  ],
-  keyboard: {
-    bindings: {
-      // Custom handler for the Enter key
-      linebreak: {
-        key: 13, // Enter key
-        handler: function (range, context) {
-          const quill = this.quill;
-          
-          // Prevent the default Enter behavior (creating a new <p> tag)
-          quill.insertText(range.index, "\n");
-          quill.setSelection(range.index + 1); // Move cursor after inserted newline
-        },
-      },
-    },
-  },
+  ]
 };
 
 export default function MyEditor({ value, onChange, style }) {
