@@ -930,7 +930,7 @@ textarea {
 
 /* Adjusting <p> tags inside ReactQuill editor */
 .content-display p {
-  margin-bottom: -6px; /* Negative margin to reduce space between paragraphs */
+  margin-bottom: -10px; /* Negative margin to reduce space between paragraphs */
 }
 
 .content-display p + p {
