@@ -929,11 +929,11 @@ textarea {
 }
 
 /* Adjusting <p> tags inside ReactQuill editor */
-.ql-editor p {
+.content-display p {
   margin-bottom: -6px; /* Negative margin to reduce space between paragraphs */
 }
 
-.ql-editor p + p {
+.content-display p + p {
   margin-top: 12px; /* Add margin-top for when there's an actual new paragraph */
 }
 
