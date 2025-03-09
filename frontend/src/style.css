@@ -921,6 +921,7 @@ textarea {
 }
 
 .content-display blockquote {
+  margin-top: 8px;
   margin-left: 20px;  /* Indent */
   font-size: 0.9em;   /* Slightly smaller font */
   color: grey;        /* Grey text */
