@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import { Modal, Button } from "react-bootstrap";
 import warningLogo from "../Images/warning.png";
+import MyEditor from "./Components/quillEditor.js";
 
 const Topic = () => {
   const { topic } = useParams();
@@ -15,7 +16,9 @@ const Topic = () => {
   const [topicName, setTopicName] = useState("");
   const [showDeletePop, setShowDeletePop] = useState(false);
   const [taggedAncestorsArray, setTaggedAncestorsArray] = useState([]);
-  const [taggedAncestorsNamesArray, setTaggedAncestorsNamesArray] = useState([]);
+  const [taggedAncestorsNamesArray, setTaggedAncestorsNamesArray] = useState(
+    []
+  );
 
   useEffect(() => {
     const getTopicData = async () => {
@@ -122,12 +125,12 @@ const Topic = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
-          topicId
+          topicId,
         }),
       }
     );
     const data = await response.json();
-    console.error(`data.taggedAncestors: ${data.taggedAncestors}`)
+    console.error(`data.taggedAncestors: ${data.taggedAncestors}`);
     setTaggedAncestorsArray(data.taggedAncestors);
     setTaggedAncestorsNamesArray(data.taggedAncestorsNames);
   };
@@ -215,12 +218,12 @@ const Topic = () => {
 
               {isEditing ? (
                 <div>
-                  <ReactQuill
-                    theme="snow"
+                  <MyEditor
                     value={value}
-                    style={{ height: "500px" }}
                     onChange={setValue}
+                    style={{ height: "500px" }}
                   />
+
                   <button
                     style={{ marginTop: "60px" }}
                     onClick={handleCancelText}
@@ -239,7 +242,13 @@ const Topic = () => {
                     <ul>
                       {taggedAncestorsArray.map((array, index) => (
                         <li>
-                          <a href={`https://cleirighgenealogy.com/profile/${taggedAncestorsArray[index]}`} target="_blank">{taggedAncestorsNamesArray[index]} ({taggedAncestorsArray[index]})</a>
+                          <a
+                            href={`https://cleirighgenealogy.com/profile/${taggedAncestorsArray[index]}`}
+                            target="_blank"
+                          >
+                            {taggedAncestorsNamesArray[index]} (
+                            {taggedAncestorsArray[index]})
+                          </a>
                         </li>
                       ))}
                     </ul>
