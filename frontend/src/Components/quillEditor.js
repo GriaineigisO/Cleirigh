@@ -18,7 +18,7 @@ const CustomToolbar = ({ onInfoClick }) => (
     <button className="ql-list" value="bullet"></button>
     <button className="ql-link"></button>
     {/* Custom Info Button */}
-    <button className="ql-info" onClick={onInfoClick}>ℹ️</button>
+    <button className="ql-info" onClick={onInfoClick}>ℹ</button>
   </div>
 );
 
@@ -33,6 +33,8 @@ export default function MyEditor({ value, onChange, style }) {
     <div>
       {/* Custom Toolbar */}
       <CustomToolbar onInfoClick={togglePopup} />
+      
+      {/* React-Quill Editor */}
       <ReactQuill
         value={value}
         onChange={onChange}
@@ -56,7 +58,7 @@ export default function MyEditor({ value, onChange, style }) {
         style={style}
       />
 
-      {/* Popup for Keybindings */}
+      {/* Popup for Keybindings (Moved outside ReactQuill to prevent unmounting) */}
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
@@ -73,7 +75,7 @@ export default function MyEditor({ value, onChange, style }) {
           </div>
         </div>
       )}
-      
+
       {/* CSS Styles for Popup */}
       <style>
         {`
