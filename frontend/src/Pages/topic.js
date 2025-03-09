@@ -253,7 +253,7 @@ const Topic = () => {
                       ))}
                     </ul>
                   </div>
-                  <div dangerouslySetInnerHTML={{ __html: value }} />
+                  <div className="content-display" dangerouslySetInnerHTML={{ __html: value }} />
                 </>
               )}
             </div>
