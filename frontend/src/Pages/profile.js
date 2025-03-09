@@ -7,6 +7,7 @@ import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { useEffectOnce } from "../Components/useEffectOnce.js";
 import ancientGroups from "../Components/AncientEthnicBreakdown.js";
+import MyEditor from "../Components/quillEditor.js";
 
 const Profile = () => {
   const [ethnicityNameArray, setEthnicityNameArray] = useState([]);
@@ -740,7 +741,7 @@ const Profile = () => {
   };
 
   const handlSaveInfo = async () => {
-    console.log("saving profile info!")
+    console.log("saving profile info!");
     setisEditingInfo(false);
     const userId = localStorage.getItem("userId");
     const response = await fetch(
@@ -1525,11 +1526,10 @@ const Profile = () => {
         </p>
         {isEditing ? (
           <div>
-            <ReactQuill
-              theme="snow"
+            <MyEditor
               value={value}
-              style={{ height: "300px" }}
               onChange={setValue}
+              style={{ height: "500px" }}
             />
             <button style={{ marginTop: "60px" }} onClick={handleCancelText}>
               Cancel
@@ -1539,7 +1539,10 @@ const Profile = () => {
             </button>
           </div>
         ) : (
-          <div dangerouslySetInnerHTML={{ __html: value }} />
+          <div
+            className="content-display"
+            dangerouslySetInnerHTML={{ __html: value }}
+          />
         )}
       </div>
 
