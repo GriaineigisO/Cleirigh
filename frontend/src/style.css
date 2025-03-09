@@ -933,7 +933,7 @@ textarea {
   margin-bottom: -16px; /* Negative margin to reduce space between paragraphs */
 }
 
-.content-display p + p {
+.content-display p + p, .content-display p + h1, .content-display p + h2, .content-display p + h3, .content-display p + h4, .content-display p + h5, .content-display p + h6, .content-display p + ul, .content-display p + ul, .content-display p + blockquote {
   margin-top: 12px; /* Add margin-top for when there's an actual new paragraph */
 }
 
