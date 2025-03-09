@@ -938,7 +938,7 @@ textarea {
 }
 
 .content-display p + blockquote {
-  margin-top: 20px; /* Add margin-top for when there's an actual new paragraph */
+  margin-top: 25px; /* Add margin-top for when there's an actual new paragraph */
 }
 
 @media print {
