@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 // Custom Toolbar Button Handler
@@ -38,16 +38,23 @@ const CustomToolbar = ({ setShowPopup }) => (
 
 export default function MyEditor({ value, onChange, style }) {
   const [showPopup, setShowPopup] = useState(false);
+
   const quillRef = useRef(null);
 
+  // Define modules with custom toolbar button handler
   const modules = {
     toolbar: {
       container: "#toolbar", // Attach to custom toolbar
       handlers: {
-        info: () => showInfoPopup(setShowPopup), // Define custom handler
+        info: () => showInfoPopup(setShowPopup), // Handle custom info button
       },
     },
   };
+
+  // Callback to update text value (onChange)
+  const handleChange = useCallback((value) => {
+    onChange(value);
+  }, [onChange]);
 
   return (
     <div>
@@ -58,7 +65,7 @@ export default function MyEditor({ value, onChange, style }) {
       <ReactQuill
         ref={quillRef}
         value={value}
-        onChange={onChange}
+        onChange={handleChange} // Prevent re-render on popup state change
         modules={modules}
         style={style}
       />
