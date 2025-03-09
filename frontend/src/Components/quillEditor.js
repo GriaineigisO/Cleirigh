@@ -2,69 +2,60 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-// Custom Toolbar Component
-const CustomToolbar = ({ onInfoClick }) => (
-  <div id="toolbar">
-    <select className="ql-header">
-      <option value="1"></option>
-      <option value="2"></option>
-      <option selected></option>
-    </select>
-    <button className="ql-bold"></button>
-    <button className="ql-italic"></button>
-    <button className="ql-underline"></button>
-    <button className="ql-blockquote"></button>
-    <button className="ql-list" value="ordered"></button>
-    <button className="ql-list" value="bullet"></button>
-    <button className="ql-link"></button>
-    {/* Custom Info Button */}
-    <button className="ql-info" onClick={onInfoClick}>ℹ</button>
-  </div>
-);
-
 export default function MyEditor({ value, onChange, style }) {
   const [showPopup, setShowPopup] = useState(false);
 
   const togglePopup = () => {
-    setShowPopup(!showPopup);
+    setShowPopup((prev) => !prev); // Avoid unnecessary state updates
+  };
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      ["blockquote", { list: "ordered" }, { list: "bullet" }],
+      ["link"],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }],
+      ["clean"],
+      [{ custom: "info" }], // Custom info button
+    ],
+    keyboard: {
+      bindings: {
+        linebreak: {
+          key: 13,
+          shiftKey: true,
+          handler: function (range, context) {
+            this.quill.insertText(range.index, "\n");
+            this.quill.setSelection(range.index + 1);
+          },
+        },
+      },
+    },
   };
 
   return (
     <div>
-      {/* Custom Toolbar */}
-      <CustomToolbar onInfoClick={togglePopup} />
-      
       {/* React-Quill Editor */}
       <ReactQuill
         value={value}
         onChange={onChange}
-        modules={{
-          toolbar: {
-            container: "#toolbar",
-          },
-          keyboard: {
-            bindings: {
-              linebreak: {
-                key: 13,
-                handler: function (range, context) {
-                  const quill = this.quill;
-                  quill.insertText(range.index, "\n");
-                  quill.setSelection(range.index + 1);
-                },
-              },
-            },
-          },
-        }}
+        modules={modules}
         style={style}
       />
 
-      {/* Popup for Keybindings (Moved outside ReactQuill to prevent unmounting) */}
+      {/* Info Button (Outside ReactQuill to prevent unmounting) */}
+      <button onClick={togglePopup} style={{ marginTop: "10px" }}>
+        ℹ️ Show Info
+      </button>
+
+      {/* Popup for Keybindings */}
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
             <h3>Keyboard Shortcuts</h3>
             <ul>
-              <li><b>Shift + Enter</b> → Insert a new line without starting a new paragraph</li>
+              <li><b>Shift + Enter</b> → New line without paragraph</li>
               <li><b>Ctrl + B</b> → Bold</li>
               <li><b>Ctrl + I</b> → Italic</li>
               <li><b>Ctrl + U</b> → Underline</li>
@@ -76,7 +67,7 @@ export default function MyEditor({ value, onChange, style }) {
         </div>
       )}
 
-      {/* CSS Styles for Popup */}
+      {/* CSS Styles */}
       <style>
         {`
           .popup {
