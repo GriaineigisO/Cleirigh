@@ -921,7 +921,6 @@ textarea {
 }
 
 .content-display blockquote {
-  margin-top: 8px;
   margin-left: 20px;  /* Indent */
   font-size: 0.9em;   /* Slightly smaller font */
   color: grey;        /* Grey text */
@@ -934,8 +933,12 @@ textarea {
   margin-bottom: -16px; /* Negative margin to reduce space between paragraphs */
 }
 
-.content-display p + p, .content-display p + h1, .content-display p + h2, .content-display p + h3, .content-display p + h4, .content-display p + h5, .content-display p + h6, .content-display p + ul, .content-display p + ol, .content-display p + blockquote {
+.content-display p + p, .content-display p + h1, .content-display p + h2, .content-display p + h3, .content-display p + h4, .content-display p + h5, .content-display p + h6, .content-display p + ul, .content-display p + ol {
   margin-top: 12px; /* Add margin-top for when there's an actual new paragraph */
+}
+
+.content-display p + blockquote {
+  margin-top: 20px; /* Add margin-top for when there's an actual new paragraph */
 }
 
 @media print {
