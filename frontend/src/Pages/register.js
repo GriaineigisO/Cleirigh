@@ -20,17 +20,18 @@ const Register = () => {
 ;
     try {
 
+
+      // Handle successful registration (e.g., store token and redirect)
+      localStorage.setItem('token', response.data.token); // Save token in localStorage
+      localStorage.setItem('username', response.data.user.username);
+      localStorage.setItem('userId', response.data.user.id);
+
       const response = await axios.post('https://cleirigh-backend.vercel.app/api/register', {
         username,
         email,
         password,
         confirmedPassword
       });
-
-      // Handle successful registration (e.g., store token and redirect)
-      localStorage.setItem('token', response.data.token); // Save token in localStorage
-      localStorage.setItem('username', response.data.user.username);
-      localStorage.setItem('userId', response.data.user.id);
 
       window.location.href = '/home'; // Redirect to the home page
     } catch (error) {
