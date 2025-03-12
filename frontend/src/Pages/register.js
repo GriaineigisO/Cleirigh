@@ -10,7 +10,7 @@ const Register = () => {
 
   const handleRegister = async (username, email, password, confirmedPassword) => {
     console.log(username)
-    e.preventDefault();
+    //e.preventDefault();
     
     setError(''); 
 
