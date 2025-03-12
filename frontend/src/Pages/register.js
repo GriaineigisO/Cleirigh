@@ -18,6 +18,8 @@ const Register = () => {
         return;
     }
 
+    console.log(username)
+
     try {
         console.log("Sending registration request:", { username, email, password, confirmedPassword });
 
