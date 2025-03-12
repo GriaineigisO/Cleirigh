@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-arrowheads";
-import "leaflet-polylinedecorator"; 
-
+import "leaflet-polylinedecorator";
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
@@ -22,25 +21,25 @@ const FamilyMigrationMap = () => {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(initMap);
     // Create a custom control for the info button
-  const infoControl = L.control({ position: "topright" });
+    const infoControl = L.control({ position: "topright" });
 
-  infoControl.onAdd = function () {
-    const div = L.DomUtil.create("div", "info-button");
-    div.innerHTML = "ℹ️"; // Unicode info symbol
-    div.style.cursor = "pointer";
-    div.style.fontSize = "24px";
-    div.style.background = "white";
-    div.style.padding = "5px 10px";
-    div.style.borderRadius = "5px";
-    div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
+    infoControl.onAdd = function () {
+      const div = L.DomUtil.create("div", "info-button");
+      div.innerHTML = "ℹ️"; // Unicode info symbol
+      div.style.cursor = "pointer";
+      div.style.fontSize = "24px";
+      div.style.background = "white";
+      div.style.padding = "5px 10px";
+      div.style.borderRadius = "5px";
+      div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
 
-    // Prevent clicks from propagating to the map
-    L.DomEvent.on(div, "click", function (e) {
-      L.DomEvent.stopPropagation(e);
-      L.popup()
-        .setLatLng(initMap.getCenter()) // Show popup at center of map
-        .setContent(
-          `<div style="width: 500px;">
+      // Prevent clicks from propagating to the map
+      L.DomEvent.on(div, "click", function (e) {
+        L.DomEvent.stopPropagation(e);
+        L.popup()
+          .setLatLng(initMap.getCenter()) // Show popup at center of map
+          .setContent(
+            `<div style="width: 500px;">
             <h3>Migration Map Info</h3>
             <p>This map displays migration paths of your ancestors based on birthplaces.</p>
             <p>Click on the migration lines to view ancestor details.</p>
@@ -55,14 +54,14 @@ const FamilyMigrationMap = () => {
             <p>To check if the places of birth that you entered returns the desired place, and not another place of the same name, enter the place after the equals sign in this link and paste the link in your browser and check the first result: https://nominatim.openstreetmap.org/search?format=json&q=</p>.
             If you want the map to choose one specific place which shares a name with other places, use the full name listed as "display name" when pasting the link in the browser and assign it as the ancestor's birth place.
           </div>`
-        )
-        .openOn(initMap);
-    });
+          )
+          .openOn(initMap);
+      });
 
-    return div;
-  };
+      return div;
+    };
 
-  infoControl.addTo(initMap);
+    infoControl.addTo(initMap);
     setMap(initMap);
   }, []);
 
@@ -86,7 +85,6 @@ const FamilyMigrationMap = () => {
 
     const geocodeLocation = async (place) => {
       if (place) {
-
         if (place === "Scandinavia") {
           place = "Norway";
         }
@@ -124,7 +122,7 @@ const FamilyMigrationMap = () => {
       for (let index = 0; index < migrations.length; index++) {
         const migration = migrations[index];
 
-        console.log("parent_id is:", migration.parent_id)
+        console.log("parent_id is:", migration.parent_id);
         // Check if the parent's birthplace is NULL
         let parentBirthplace = migration.parent_birth || null;
         if (!parentBirthplace && migration.parent_id) {
@@ -178,13 +176,13 @@ const FamilyMigrationMap = () => {
               name: migration.parent_name,
               birth: migration.parent_birth,
               dob: migration.parent_dob,
-              id: migration.parent_id
+              id: migration.parent_id,
             },
             child: {
               name: migration.child_name,
               birth: migration.child_birth,
               dob: migration.child_dob,
-              id: migration.child_id
+              id: migration.child_id,
             },
           });
 
@@ -210,7 +208,6 @@ const FamilyMigrationMap = () => {
           }
 
           polyline.on("click", (e) => {
-            
             const details = polylineDataMap
               .get(polylineKey)
               .map(
@@ -244,7 +241,6 @@ const FamilyMigrationMap = () => {
                       opacity: getOpacity(relation + 40), // Apply opacity here
                     },
                   }),
-                  
                 },
               ],
             }).addTo(map);
@@ -261,10 +257,6 @@ const FamilyMigrationMap = () => {
 
     plotParentChildMigrations();
   }, [map]);
-
-
-  
-
 
   return (
     <div>

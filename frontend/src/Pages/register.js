@@ -9,6 +9,7 @@ const Register = () => {
   const [error, setError] = useState(''); 
 
   const handleRegister = async (username, email, password, confirmedPassword) => {
+    console.log(username)
     e.preventDefault();
     
     setError(''); 
