@@ -59,6 +59,8 @@ export default async function handler(req, res) {
       expiresIn: "1h",
     });
 
+    console.log(username)
+
     // 5. Respond with token and user data
     res.json({
       token,
