@@ -11,41 +11,41 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     
-    setError(''); 
+    setError('');
 
     if (password !== confirmedPassword) {
-      alert(`Passwords do not match: ${password} - ${confirmedPassword}`);
-      return;
+        alert(`Passwords do not match: ${password} - ${confirmedPassword}`);
+        return;
     }
-;
+
     try {
+        console.log("Sending registration request:", { username, email, password, confirmedPassword });
 
-      const response = await axios.post('https://cleirigh-backend.vercel.app/api/register', {
-        username,
-        email,
-        password,
-        confirmedPassword
-      });
+        const response = await axios.post('https://cleirigh-backend.vercel.app/api/register', {
+            username,
+            email,
+            password
+        });
 
-      // Handle successful registration (e.g., store token and redirect)
-      localStorage.setItem('token', response.data.token); // Save token in localStorage
-      localStorage.setItem('username', response.data.user.username);
-      localStorage.setItem('userId', response.data.user.id);
+        localStorage.setItem('token', response.data.token);
 
-      window.location.href = '/home'; // Redirect to the home page
+        if (response.data.user) {
+            localStorage.setItem('username', response.data.user.username);
+            localStorage.setItem('userId', response.data.user.id);
+        }
+
+        window.location.href = '/home';
     } catch (error) {
-      // Log the error for debugging
-      console.log(error.response)
-      console.error('Registration error details:', error);
+        console.error('Registration error details:', error);
 
-      // Check for error response and update the error message
-      if (error.response) {
-        setError(error.response.data.message); // Set the error message from the backend
-      } else {
-        setError('Error registering: ' + error.message); // Fallback error message
-      }
+        if (error.response) {
+            setError(error.response.data.message);
+        } else {
+            setError('Error registering: ' + error.message);
+        }
     }
-  };
+};
+
 
   return (
     <div className="form-container">
