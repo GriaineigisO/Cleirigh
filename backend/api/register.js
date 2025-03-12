@@ -15,7 +15,9 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
   res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
+
   const { username, email, password } = req.body;
+  console.log(username)
 
   try {
     // 1. Check if user already exists using Supabase
@@ -59,7 +61,6 @@ export default async function handler(req, res) {
       expiresIn: "1h",
     });
 
-    console.log(username)
 
     // 5. Respond with token and user data
     res.json({
