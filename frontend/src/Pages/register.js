@@ -59,7 +59,7 @@ const Register = () => {
             <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)} // Update state without clearing error
+                onChange={(e) => setUsername(...prev, e.target.value)} 
                 required
             />
             </div>
@@ -68,7 +68,7 @@ const Register = () => {
             <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} // Update state without clearing error
+                onChange={(e) => setEmail(e.target.value)} 
                 required
             />
             </div>
