@@ -9,47 +9,80 @@ const FamilyMigrationMap = () => {
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
   useEffect(() => {
-    const mapContainer = document.getElementById("map");
-    
-    if (!mapContainer) return; // Ensure the map container exists before initializing
+    const initMap = L.map("map").setView([20, 0], 2);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(initMap);
+    // Create a custom control for the info button
+    const infoControl = L.control({ position: "topright" });
 
-    // Initialize the map
-    const initMap = L.map(mapContainer).setView([20, 0], 2);
+    infoControl.onAdd = function () {
+      const div = L.DomUtil.create("div", "info-button");
+      div.innerHTML = "ℹ️"; // Unicode info symbol
+      div.style.cursor = "pointer";
+      div.style.fontSize = "24px";
+      div.style.background = "white";
+      div.style.padding = "5px 10px";
+      div.style.borderRadius = "5px";
+      div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
 
-    // Define OpenStreetMap as a tile layer
-    const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors",
-    });
+      // Prevent clicks from propagating to the map
+      L.DomEvent.on(div, "click", function (e) {
+        L.DomEvent.stopPropagation(e);
+        L.popup()
+          .setLatLng(initMap.getCenter()) // Show popup at center of map
+          .setContent(
+            `<div style="width: 500px;">
+            <h3>Migration Map Info</h3>
+            <p>This map displays migration paths of your ancestors based on birthplaces.</p>
+            <p>Click on the migration lines to view ancestor details.</p>
+            <p>Different colors represent different generations:</p>
+            <ul>
+              <li><span style="color:blue;">Blue</span> - Greatx5 Grandparents and below, these ancestors constitute >1% of your ancestry</li>
+              <li><span style="color:green;">Green</span> - Greatx5 Grandparents and above, these ancestors constitude <1% of your ancestry</li>
+              <li><span style="color:black;">Black</span> - Greatx15 Grandparents and above, these ancestors constitude < 0.000762939453125% of your ancestry</li>
+            </ul>
 
-    // Define the Satellite layer
+            <h2>Valid Placenames</h2>
+            <p>To check if the places of birth that you entered returns the desired place, and not another place of the same name, enter the place after the equals sign in this link and paste the link in your browser and check the first result: https://nominatim.openstreetmap.org/search?format=json&q=</p>.
+            If you want the map to choose one specific place which shares a name with other places, use the full name listed as "display name" when pasting the link in the browser and assign it as the ancestor's birth place.
+          </div>`
+          )
+          .openOn(initMap);
+      });
+
+      return div;
+    };
+
+    infoControl.addTo(initMap);
+
+    const streets = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution:
+          "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
+      }
+    );
+  
     const satellite = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        {
-            attribution:
-                "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-        }
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution:
+          "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+      }
     );
 
-    // Add the default tile layer (OpenStreetMap) to the map
-    openStreetMap.addTo(initMap);
+  
+    const basemaps = {
+      Streets: streets,
+      Satellite: satellite,
+    };
+  
+    // Add layer control to the map
+    L.control.layers(basemaps).addTo(initMap);
 
-    // Wait for the map to be fully initialized before adding controls
-    initMap.whenReady(() => {
-        L.control.layers(
-            {
-                "Default (OpenStreetMap)": openStreetMap,
-                "Satellite": satellite
-            }
-        ).addTo(initMap);
-    });
-
-    // Set the map state
     setMap(initMap);
-
-}, []);
-
-
-
+  }, []);
 
   useEffect(() => {
     if (!map) return;
@@ -65,6 +98,7 @@ const FamilyMigrationMap = () => {
         }
       );
       const data = await response.json();
+      console.log(data);
       return data;
     };
 
