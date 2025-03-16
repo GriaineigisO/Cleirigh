@@ -9,6 +9,13 @@ const FamilyMigrationMap = () => {
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
   useEffect(() => {
+    console.log(
+      "L.polyline.prototype.arrowheads:",
+      L.polyline.prototype.arrowheads
+    );
+  }, []);
+
+  useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
@@ -55,8 +62,6 @@ const FamilyMigrationMap = () => {
     };
 
     infoControl.addTo(initMap);
-
-
     setMap(initMap);
   }, []);
 
@@ -252,29 +257,6 @@ const FamilyMigrationMap = () => {
 
     plotParentChildMigrations();
   }, [map]);
-
-  var streets = L.tileLayer(
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-    {
-      attribution:
-        "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
-    }
-  );
-  
-  var satellite = L.tileLayer(
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    {
-      attribution:
-        "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-    }
-  );
-  
-  var basemaps = {
-    Streets: streets,
-    Satellite: satellite,
-  };
-
-  L.control.layers(basemaps).addTo(map);
 
   return (
     <div>
