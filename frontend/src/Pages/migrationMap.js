@@ -9,12 +9,17 @@ const FamilyMigrationMap = () => {
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
   useEffect(() => {
-    const initMap = L.map("map").setView([20, 0], 2);
+    const mapContainer = document.getElementById("map");
+    
+    if (!mapContainer) return; // Ensure the map container exists before initializing
+
+    // Initialize the map
+    const initMap = L.map(mapContainer).setView([20, 0], 2);
 
     // Define OpenStreetMap as a tile layer
     const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(initMap);
+    });
 
     // Define the Satellite layer
     const satellite = L.tileLayer(
@@ -25,18 +30,24 @@ const FamilyMigrationMap = () => {
         }
     );
 
-    // Set the map state before adding controls
+    // Add the default tile layer (OpenStreetMap) to the map
+    openStreetMap.addTo(initMap);
+
+    // Wait for the map to be fully initialized before adding controls
+    initMap.whenReady(() => {
+        L.control.layers(
+            {
+                "Default (OpenStreetMap)": openStreetMap,
+                "Satellite": satellite
+            }
+        ).addTo(initMap);
+    });
+
+    // Set the map state
     setMap(initMap);
 
-    // Add layer control AFTER setting the map state
-    L.control.layers(
-        {
-            "Default (OpenStreetMap)": openStreetMap,
-            "Satellite": satellite
-        }
-    ).addTo(initMap);
-
 }, []);
+
 
 
 
