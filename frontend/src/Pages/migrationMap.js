@@ -10,81 +10,78 @@ const FamilyMigrationMap = () => {
 
   useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(initMap);
+
+    // Define OpenStreetMap as a tile layer
+    const openStreetMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+    });
+
+    // Add OpenStreetMap as the default layer
+    openStreetMap.addTo(initMap);
+
     // Create a custom control for the info button
     const infoControl = L.control({ position: "topright" });
 
     infoControl.onAdd = function () {
-      const div = L.DomUtil.create("div", "info-button");
-      div.innerHTML = "ℹ️"; // Unicode info symbol
-      div.style.cursor = "pointer";
-      div.style.fontSize = "24px";
-      div.style.background = "white";
-      div.style.padding = "5px 10px";
-      div.style.borderRadius = "5px";
-      div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
+        const div = L.DomUtil.create("div", "info-button");
+        div.innerHTML = "ℹ️"; // Unicode info symbol
+        div.style.cursor = "pointer";
+        div.style.fontSize = "24px";
+        div.style.background = "white";
+        div.style.padding = "5px 10px";
+        div.style.borderRadius = "5px";
+        div.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
 
-      // Prevent clicks from propagating to the map
-      L.DomEvent.on(div, "click", function (e) {
-        L.DomEvent.stopPropagation(e);
-        L.popup()
-          .setLatLng(initMap.getCenter()) // Show popup at center of map
-          .setContent(
-            `<div style="width: 500px;">
-            <h3>Migration Map Info</h3>
-            <p>This map displays migration paths of your ancestors based on birthplaces.</p>
-            <p>Click on the migration lines to view ancestor details.</p>
-            <p>Different colors represent different generations:</p>
-            <ul>
-              <li><span style="color:blue;">Blue</span> - Greatx5 Grandparents and below, these ancestors constitute >1% of your ancestry</li>
-              <li><span style="color:green;">Green</span> - Greatx5 Grandparents and above, these ancestors constitude <1% of your ancestry</li>
-              <li><span style="color:black;">Black</span> - Greatx15 Grandparents and above, these ancestors constitude < 0.000762939453125% of your ancestry</li>
-            </ul>
+        // Prevent clicks from propagating to the map
+        L.DomEvent.on(div, "click", function (e) {
+            L.DomEvent.stopPropagation(e);
+            L.popup()
+                .setLatLng(initMap.getCenter()) // Show popup at center of map
+                .setContent(
+                    `<div style="width: 500px;">
+                        <h3>Migration Map Info</h3>
+                        <p>This map displays migration paths of your ancestors based on birthplaces.</p>
+                        <p>Click on the migration lines to view ancestor details.</p>
+                        <p>Different colors represent different generations:</p>
+                        <ul>
+                            <li><span style="color:blue;">Blue</span> - Greatx5 Grandparents and below, these ancestors constitute >1% of your ancestry</li>
+                            <li><span style="color:green;">Green</span> - Greatx5 Grandparents and above, these ancestors constitute <1% of your ancestry</li>
+                            <li><span style="color:black;">Black</span> - Greatx15 Grandparents and above, these ancestors constitute < 0.000762939453125% of your ancestry</li>
+                        </ul>
+                        <h2>Valid Placenames</h2>
+                        <p>To check if the places of birth that you entered return the desired place, and not another place of the same name, enter the place after the equals sign in this link and paste the link in your browser and check the first result: <a href="https://nominatim.openstreetmap.org/search?format=json&q=" target="_blank">https://nominatim.openstreetmap.org/search?format=json&q=</a></p>
+                        <p>If you want the map to choose one specific place that shares a name with other places, use the full name listed as "display name" when pasting the link in the browser and assign it as the ancestor's birthplace.</p>
+                    </div>`
+                )
+                .openOn(initMap);
+        });
 
-            <h2>Valid Placenames</h2>
-            <p>To check if the places of birth that you entered returns the desired place, and not another place of the same name, enter the place after the equals sign in this link and paste the link in your browser and check the first result: https://nominatim.openstreetmap.org/search?format=json&q=</p>.
-            If you want the map to choose one specific place which shares a name with other places, use the full name listed as "display name" when pasting the link in the browser and assign it as the ancestor's birth place.
-          </div>`
-          )
-          .openOn(initMap);
-      });
-
-      return div;
+        return div;
     };
 
     infoControl.addTo(initMap);
 
-    const streets = L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-      {
-        attribution:
-          "Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012",
-      }
-    );
-  
+    // Define the Satellite layer
     const satellite = L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      {
-        attribution:
-          "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-      }
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution:
+                "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+        }
     );
-  
-    // Add a default base layer
-    streets.addTo(initMap);
-  
+
+    // Add both layers to the basemaps object
     const basemaps = {
-      Streets: streets,
-      Satellite: satellite,
+        "Default (OpenStreetMap)": openStreetMap,  // Fix: Add default map to options
+        "Satellite": satellite
     };
-  
+
     // Add layer control to the map
     L.control.layers(basemaps).addTo(initMap);
-    
+
     setMap(initMap);
-  }, []);
+}, []);
+
 
   useEffect(() => {
     if (!map) return;
@@ -100,7 +97,6 @@ const FamilyMigrationMap = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
       return data;
     };
 
