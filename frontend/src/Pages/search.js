@@ -70,12 +70,12 @@ const Search = () => {
   };
 
   const openProfile = (profileLink) => {
-    window.location.href = `${profileLink}`;
+    window.open(profileLink,"_blank")
   };
 
   const openTree = (treeLink) => {
     changePageNum(treeLink.page_number);
-    window.location.href = `${treeLink}`;
+    window.open(treeLink,"_blank")
   };
 
   return (
