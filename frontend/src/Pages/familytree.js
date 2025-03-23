@@ -2854,6 +2854,11 @@ const FamilyTree = () => {
     showPlaces(e.target.value);
   };
 
+  const handleDeathPlaceChange = (details, setDetails, e) => {
+    setDetails({ ...details, deathPlace: e.target.value });
+    showPlaces(e.target.value);
+  };
+
   const showPlaces = async (place) => {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
       place
@@ -3087,11 +3092,44 @@ const FamilyTree = () => {
             <div className="inputandQuestionMark">
               <input
                 type="text"
+                value={details.deathPlace}
                 placeholder="Death Place"
-                onChange={(e) =>
-                  setDetails({ ...details, deathPlace: e.target.value })
-                }
+                onChange={(e) => handleDeathPlaceChange(details, setDetails, e)}
               ></input>
+              {/* Dropdown List */}
+              {showDropdown && (
+                <ul
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    width: "100%",
+                    border: "1px solid #ccc",
+                    backgroundColor: "white",
+                    color: "black",
+                    listStyleType: "none",
+                    padding: 0,
+                    margin: 0,
+                    maxHeight: "150px",
+                    overflowY: "auto",
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  {results.map((item, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSelect(details, setDetails, item)}
+                      style={{
+                        padding: "8px",
+                        cursor: "pointer",
+                        borderBottom: "1px solid #ddd",
+                      }}
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="inputandQuestionMark">
