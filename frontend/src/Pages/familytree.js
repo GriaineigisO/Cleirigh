@@ -40,6 +40,7 @@ const FamilyTree = () => {
   const [repeatAncestorProfileNum, setRepeatAncestorProfileNum] = useState();
   const [showDropdown, setShowDropdown] = useState(false);
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
 
   const [showFather, setShowFather] = useState(false);
   const [showMother, setShowMother] = useState(false);
@@ -2860,8 +2861,18 @@ const FamilyTree = () => {
 
     const response = await fetch(url);
     const data = await response.json();
-    setShowDropdown(data.length > 0);
-    console.log(data);
+    let places = [];
+    for (let i = 0; i < data.length; i++) {
+      places.push(data[i].display_name)
+    }
+    setShowDropdown(places.length > 0);
+    setResults(places)
+    console.log(places);
+  };
+
+  const handleSelect = (value) => {
+    setQuery(value); // Set input to selected value
+    setShowDropdown(false); // Hide dropdown
   };
 
   function MakeModal(
