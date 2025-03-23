@@ -2870,7 +2870,7 @@ const FamilyTree = () => {
     console.log(places);
   };
 
-  const handleSelect = (value) => {
+  const handleSelect = (details, setDetails, value) => {
     setDetails({ ...details, birthPlace: value });
     setShowDropdown(false); 
   };
@@ -3057,7 +3057,7 @@ const FamilyTree = () => {
                   {results.map((item, index) => (
                     <li
                       key={index}
-                      onClick={() => handleSelect(item)}
+                      onClick={() => handleSelect(details, setDetails, item)}
                       style={{
                         padding: "8px",
                         cursor: "pointer",
