@@ -4,6 +4,7 @@ import { capitaliseFirstLetter, convertDate, capitalise } from "../library.js";
 import "../style.css";
 import { Link } from "react-router-dom";
 import LeftSidebar from "../Components/leftSidebar.js";
+import Table from 'react-bootstrap/Table';
 
 const Search = () => {
   const [firstName, setFirstName] = useState();
@@ -19,6 +20,7 @@ const Search = () => {
   const [profileLinks, setProfileLinks] = useState([]);
   const [treeLinks, setTreeLinks] = useState([]);
   const [clickCount, setClickCount] = useState(0);
+  
 
   const searchAncestors = async () => {
     setClickCount(clickCount + 1);
@@ -80,7 +82,6 @@ const Search = () => {
   return (
     <div>
       <div className="row">
-        <LeftSidebar />
 
         <div className="col">
           {results.length === 0 && clickCount > 0 ? (
@@ -139,7 +140,7 @@ const Search = () => {
 
           <div style={{ marginBottom: "80px" }}>
             <h4>{results.length} results</h4>
-            <table class="table table-striped table-hover">
+            <Table class="hover responsive striped">
               {results.map((firstName, index) => (
                 <tr>
                   <td>
@@ -162,12 +163,12 @@ const Search = () => {
                   </td>
                   <td>
                     <span class="small-caps">b.</span>
-                    {results[index].date_of_birth }
+                    {results[index].date_of_birth}
                     {results[index].place_of_birth}
                   </td>
                   <td>
                     <span class="small-caps">d.</span>
-                    {results[index].date_o_death }
+                    {results[index].date_of_death }
                     {results[index].place_of_death}
                   </td>
                   <td>
