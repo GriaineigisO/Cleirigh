@@ -156,9 +156,6 @@ const Search = () => {
                     {capitalise(results[index].last_name)}
                   </td>
                   <td>
-                    {capitalise(results[index].sex)}
-                  </td>
-                  <td>
                     {capitalise(results[index].ethnicity)}
                   </td>
                   <td>
