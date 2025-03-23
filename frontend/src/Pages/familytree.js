@@ -38,6 +38,8 @@ const FamilyTree = () => {
   const [addRepeatAncestorSection, setAddRepeatAncestorSection] =
     useState(false);
   const [repeatAncestorProfileNum, setRepeatAncestorProfileNum] = useState();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [query, setQuery] = useState("");
 
   const [showFather, setShowFather] = useState(false);
   const [showMother, setShowMother] = useState(false);
@@ -925,7 +927,7 @@ const FamilyTree = () => {
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+        presumed_place_of_birth: data.presumed_place_of_birth,
       }));
     }
   };
@@ -972,7 +974,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+        presumed_place_of_birth: data.presumed_place_of_birth,
       }));
     }
   };
@@ -1019,7 +1021,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+        presumed_place_of_birth: data.presumed_place_of_birth,
       }));
     }
   };
@@ -1074,7 +1076,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+        presumed_place_of_birth: data.presumed_place_of_birth,
       }));
     }
   };
@@ -1121,7 +1123,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth
+        presumed_place_of_birth: data.presumed_place_of_birth,
       }));
     }
   };
@@ -1212,7 +1214,7 @@ presumed_place_of_birth: data.presumed_place_of_birth
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1259,7 +1261,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1306,7 +1308,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1353,7 +1355,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1400,7 +1402,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1447,7 +1449,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1494,7 +1496,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -1541,7 +1543,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         uncertainDeathPlace: data.uncertainDeathPlace,
         uncertainOccupation: data.uncertainOccupation,
         memberOfNobility: data.memberOfNobility,
-presumed_place_of_birth: data.presumed_place_of_birth,
+        presumed_place_of_birth: data.presumed_place_of_birth,
         pageNum: data.pageNum,
       }));
     }
@@ -2847,9 +2849,9 @@ presumed_place_of_birth: data.presumed_place_of_birth,
   };
 
   const handleBirthPlaceChange = (details, setDetails, e) => {
-    setDetails({ ...details, birthPlace: e.target.value })
+    setDetails({ ...details, birthPlace: e.target.value });
     showPlaces(e.target.value);
-  }
+  };
 
   const showPlaces = async (place) => {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
@@ -2858,8 +2860,9 @@ presumed_place_of_birth: data.presumed_place_of_birth,
 
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data)
-  }
+    setShowDropdown(data.length > 0);
+    console.log(data);
+  };
 
   function MakeModal(
     showPerson,
@@ -2887,7 +2890,6 @@ presumed_place_of_birth: data.presumed_place_of_birth,
         }
       }
     }, [showPerson, childDetails]);
-    
 
     let motherOrFather = "";
     if (sex === "male") {
@@ -3019,11 +3021,43 @@ presumed_place_of_birth: data.presumed_place_of_birth,
             <div className="inputandQuestionMark">
               <input
                 type="text"
+                value={query}
                 placeholder="Birth Place"
-                onChange={(e) =>
-                  handleBirthPlaceChange(details, setDetails, e)
-                }
+                onChange={(e) => handleBirthPlaceChange(details, setDetails, e)}
               ></input>
+              {/* Dropdown List */}
+              {showDropdown && (
+                <ul
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    width: "100%",
+                    border: "1px solid #ccc",
+                    backgroundColor: "white",
+                    listStyleType: "none",
+                    padding: 0,
+                    margin: 0,
+                    maxHeight: "150px",
+                    overflowY: "auto",
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  {results.map((item, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSelect(item)}
+                      style={{
+                        padding: "8px",
+                        cursor: "pointer",
+                        borderBottom: "1px solid #ddd",
+                      }}
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
 
