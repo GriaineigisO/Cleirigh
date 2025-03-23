@@ -55,14 +55,14 @@ export default async function handler(req, res) {
 
     let query = supabase.from(`tree_${currentTree}`).select("*"); // Fetch all columns
 
-    if (firstName) query = query.eq("first_name", firstName);
-    if (middleName) query = query.eq("middle_name", middleName);
-    if (lastName) query = query.eq("last_name", lastName);
-    if (birthDate) query = query.eq("date_of_birth", birthDate);
+    if (firstName) query = query.ilike("first_name", `%${firstName}%`);
+    if (middleName) query = query.ilike("middle_name", `%${middleName}%`);
+    if (lastName) query = query.ilike("last_name", `%${lastName}%`);
+    if (birthDate) query = query.ilike("date_of_birth", `%${birthDate}%`);
     if (birthPlace) query = query.ilike("place_of_birth", `%${birthPlace}%`);
-    if (deathDate) query = query.eq("date_of_death", deathDate);
+    if (deathDate) query = query.ilike("date_of_death", `%${deathDate}%`);
     if (deathPlace) query = query.ilike("place_of_death", `%${deathPlace}%`);
-    if (ethnicity) query = query.eq("ethnicity", ethnicity);
+    if (ethnicity) query = query.ilike("ethnicity", `%${ethnicity}%`);
     if (profileNum && profileNum !== 0)
       query = query.eq("ancestor_id", profileNum);
 
