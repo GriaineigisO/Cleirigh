@@ -40,8 +40,8 @@ const FamilyTree = () => {
   const [repeatAncestorProfileNum, setRepeatAncestorProfileNum] = useState();
   const [showDropdown, setShowDropdown] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
+  const [birthResults, setBirthResults] = useState([]);
+  const [deathResults, setDeathResults] = useState([]);
   const [showFather, setShowFather] = useState(false);
   const [showMother, setShowMother] = useState(false);
   const [showPaternalGrandfather, setShowPaternalGrandfather] = useState(false);
@@ -2851,15 +2851,15 @@ const FamilyTree = () => {
 
   const handleBirthPlaceChange = (details, setDetails, e) => {
     setDetails({ ...details, birthPlace: e.target.value });
-    showPlaces(e.target.value);
+    showPlaces(setBirthResults, e.target.value);
   };
 
   const handleDeathPlaceChange = (details, setDetails, e) => {
     setDetails({ ...details, deathPlace: e.target.value });
-    showPlaces(e.target.value);
+    showPlaces(setDeathResults, e.target.value);
   };
 
-  const showPlaces = async (place) => {
+  const showPlaces = async (setResults, place) => {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
       place
     )}`;
@@ -2872,7 +2872,6 @@ const FamilyTree = () => {
     }
     setShowDropdown(places.length > 0);
     setResults(places)
-    console.log(places);
   };
 
   const handleSelect = (details, setDetails, value) => {
@@ -3060,7 +3059,7 @@ const FamilyTree = () => {
                     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  {results.map((item, index) => (
+                  {birthResults.map((item, index) => (
                     <li
                       key={index}
                       onClick={() => handleSelect(details, setDetails, item)}
