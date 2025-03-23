@@ -2846,6 +2846,23 @@ presumed_place_of_birth: data.presumed_place_of_birth,
     }
   };
 
+  const handleBirthPlaceChange = (e) => {
+    setDetails({ ...details, birthPlace: e.target.value })
+    showPlaces(e.target.value);
+  }
+
+  const showPlaces = async (place) => {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${place}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const data = response.json();
+    console.log(data)
+  }
+
   function MakeModal(
     showPerson,
     closeAddPerson,
@@ -3006,7 +3023,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
                 type="text"
                 placeholder="Birth Place"
                 onChange={(e) =>
-                  setDetails({ ...details, birthPlace: e.target.value })
+                  handleBirthPlaceChange(e)
                 }
               ></input>
             </div>
