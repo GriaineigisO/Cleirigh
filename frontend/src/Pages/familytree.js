@@ -2874,8 +2874,13 @@ const FamilyTree = () => {
     setResults(places)
   };
 
-  const handleSelect = (details, setDetails, value) => {
+  const handleBirthSelect = (details, setDetails, value) => {
     setDetails({ ...details, birthPlace: value });
+    setShowDropdown(false); 
+  };
+
+  const handleDeathSelect = (details, setDetails, value) => {
+    setDetails({ ...details, deathPlace: value });
     setShowDropdown(false); 
   };
 
@@ -3062,7 +3067,7 @@ const FamilyTree = () => {
                   {birthResults.map((item, index) => (
                     <li
                       key={index}
-                      onClick={() => handleSelect(details, setDetails, item)}
+                      onClick={() => handleBirthSelect(details, setDetails, item)}
                       style={{
                         padding: "8px",
                         cursor: "pointer",
@@ -3117,7 +3122,7 @@ const FamilyTree = () => {
                   {deathResults.map((item, index) => (
                     <li
                       key={index}
-                      onClick={() => handleSelect(details, setDetails, item)}
+                      onClick={() => handleDeathSelect(details, setDetails, item)}
                       style={{
                         padding: "8px",
                         cursor: "pointer",
