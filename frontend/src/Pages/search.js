@@ -140,7 +140,7 @@ const Search = () => {
 
           <div style={{ marginBottom: "80px" }}>
             <h4>{results.length} results</h4>
-            <Table class="hover responsive striped">
+            <Table className="hover responsive striped">
               {results.map((firstName, index) => (
                 <tr>
                   <td>
