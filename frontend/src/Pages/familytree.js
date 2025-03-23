@@ -3114,7 +3114,7 @@ const FamilyTree = () => {
                     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  {results.map((item, index) => (
+                  {deathResults.map((item, index) => (
                     <li
                       key={index}
                       onClick={() => handleSelect(details, setDetails, item)}
