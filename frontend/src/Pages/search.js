@@ -50,7 +50,6 @@ const Search = () => {
     setResults(data);
 
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i].page_number);
       profileLinks[i] = `/profile/${data[i].ancestor_id}`;
       treeLinks[i] = `/familytree/${data[i].page_number}`;
     }
@@ -141,6 +140,7 @@ const Search = () => {
           <div style={{ marginBottom: "80px" }}>
             <h4>{results.length} results</h4>
             <Table className="hover responsive striped">
+              <tbody>
               {results.map((firstName, index) => (
                 <tr>
                   <td>
@@ -176,6 +176,7 @@ const Search = () => {
                   </td>
                 </tr>
               ))}
+              </tbody>
             </Table>
 
             {/* {results.map((firstName, index) => (
