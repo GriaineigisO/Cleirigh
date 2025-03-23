@@ -176,7 +176,7 @@ const Search = () => {
                   </td>
                 </tr>
               ))}
-            </table>
+            </Table>
 
             {/* {results.map((firstName, index) => (
               <table id="searchResults">
