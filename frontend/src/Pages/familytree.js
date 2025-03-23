@@ -2846,7 +2846,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
     }
   };
 
-  const handleBirthPlaceChange = (e) => {
+  const handleBirthPlaceChange = (details, setDetails, e) => {
     setDetails({ ...details, birthPlace: e.target.value })
     showPlaces(e.target.value);
   }
@@ -3023,7 +3023,7 @@ presumed_place_of_birth: data.presumed_place_of_birth,
                 type="text"
                 placeholder="Birth Place"
                 onChange={(e) =>
-                  handleBirthPlaceChange(e)
+                  handleBirthPlaceChange(details, setDetails, e)
                 }
               ></input>
             </div>
