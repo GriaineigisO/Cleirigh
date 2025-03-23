@@ -2871,8 +2871,8 @@ const FamilyTree = () => {
   };
 
   const handleSelect = (value) => {
-    setQuery(value); // Set input to selected value
-    setShowDropdown(false); // Hide dropdown
+    setDetails({ ...details, birthPlace: value });
+    setShowDropdown(false); 
   };
 
   function MakeModal(
@@ -3032,7 +3032,7 @@ const FamilyTree = () => {
             <div className="inputandQuestionMark">
               <input
                 type="text"
-                value={query}
+                value={details.birthPlace}
                 placeholder="Birth Place"
                 onChange={(e) => handleBirthPlaceChange(details, setDetails, e)}
               ></input>
