@@ -150,31 +150,27 @@ const Search = () => {
                   </td>
                   <td>{results[index].ancestor_id}</td>
                   <td>
-                    <span class="small-caps">name</span>
                     {capitalise(results[index].first_name)}{" "}
                     {capitalise(results[index].middle_name)}{" "}
                     {capitalise(results[index].last_name)}
                   </td>
                   <td>
-                    <span class="small-caps">sex</span>
                     {capitalise(results[index].sex)}
                   </td>
                   <td>
-                    <span class="small-caps">ethnicity</span>
                     {capitalise(results[index].ethnicity)}
                   </td>
                   <td>
-                    <span class="small-caps">birth</span>
-                    {results[index].date_of_birth}
+                    <span class="small-caps">b.</span>
+                    {results[index].date_of_birth }
                     {results[index].place_of_birth}
                   </td>
                   <td>
-                    <span class="small-caps">death</span>
-                    {results[index].date_o_death}
+                    <span class="small-caps">d.</span>
+                    {results[index].date_o_death }
                     {results[index].place_of_death}
                   </td>
                   <td>
-                  <span class="small-caps">occupation</span>
                   {results[index].occupation}{" "}
                   </td>
                 </tr>

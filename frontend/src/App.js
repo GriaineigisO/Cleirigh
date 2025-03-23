@@ -16,6 +16,7 @@ import Profile from './Pages/profile.js';
 import Topics from './Pages/topics.js';
 import Topic from './Pages/topic.js';
 import FamilyMigrationMap from './Pages/migrationMap.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
