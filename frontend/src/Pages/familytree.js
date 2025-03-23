@@ -2852,14 +2852,12 @@ presumed_place_of_birth: data.presumed_place_of_birth,
   }
 
   const showPlaces = async (place) => {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${place}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    const data = response.json();
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+      place
+    )}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
     console.log(data)
   }
 
