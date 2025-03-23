@@ -139,7 +139,7 @@ const Search = () => {
 
           <div style={{ marginBottom: "80px" }}>
             <h4>{results.length} results</h4>
-            <Table className="hover responsive striped">
+            <Table className="table-hover table-responsive table-striped">
               <tbody>
               {results.map((firstName, index) => (
                 <tr>
@@ -163,13 +163,11 @@ const Search = () => {
                   </td>
                   <td>
                     <span class="small-caps">b.</span>
-                    {results[index].date_of_birth}
-                    {results[index].place_of_birth}
+                    {`${results[index].date_of_birth} ${results[index].place_of_birth}`}
                   </td>
                   <td>
                     <span class="small-caps">d.</span>
-                    {results[index].date_of_death }
-                    {results[index].place_of_death}
+                    {`${results[index].date_of_death} ${results[index].place_of_death}`}
                   </td>
                   <td>
                   {results[index].occupation}{" "}
