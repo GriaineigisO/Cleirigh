@@ -3046,6 +3046,7 @@ const FamilyTree = () => {
                     width: "100%",
                     border: "1px solid #ccc",
                     backgroundColor: "white",
+                    colour: "black",
                     listStyleType: "none",
                     padding: 0,
                     margin: 0,
