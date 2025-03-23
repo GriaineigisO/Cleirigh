@@ -2884,6 +2884,30 @@ const FamilyTree = () => {
     setShowDropdown(false); 
   };
 
+  // References for input and dropdown
+  const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  // Handle clicking outside the input or dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        inputRef.current && !inputRef.current.contains(e.target) &&
+        dropdownRef.current && !dropdownRef.current.contains(e.target)
+      ) {
+        setShowDropdown(false); // Hide the dropdown if clicked outside
+      }
+    };
+
+    // Set up the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   function MakeModal(
     showPerson,
     closeAddPerson,
