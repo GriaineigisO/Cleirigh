@@ -23,29 +23,32 @@ const Search = () => {
   const searchAncestors = async () => {
     setClickCount(clickCount + 1);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/search-ancestors", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        firstName,
-        middleName,
-        lastName,
-        birthDate,
-        birthPlace,
-        deathDate,
-        deathPlace,
-        ethnicity,
-        profileNum,
-      }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/search-ancestors",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          firstName,
+          middleName,
+          lastName,
+          birthDate,
+          birthPlace,
+          deathDate,
+          deathPlace,
+          ethnicity,
+          profileNum,
+        }),
+      }
+    );
     const data = await response.json();
     setResults(data);
 
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i].page_number)
+      console.log(data[i].page_number);
       profileLinks[i] = `/profile/${data[i].ancestor_id}`;
       treeLinks[i] = `/familytree/${data[i].page_number}`;
     }
@@ -65,15 +68,29 @@ const Search = () => {
     );
   };
 
+  const openProfile = () => {
+    window.location.href = `${profileLinks[index]}`;
+  };
+
+  const openTree = () => {
+    changePageNum(results[index].page_number);
+    window.location.href = `${treeLinks[index]}`;
+  };
+
   return (
     <div>
       <div className="row">
         <LeftSidebar />
 
         <div className="col">
-
           {results.length === 0 && clickCount > 0 ? (
-            <h2 style={{ color: "rgb(123, 103, 103)", textAlign:"center", marginTop: "100px" }}>
+            <h2
+              style={{
+                color: "rgb(123, 103, 103)",
+                textAlign: "center",
+                marginTop: "100px",
+              }}
+            >
               Your Search Gave No Results...
             </h2>
           ) : (
@@ -121,8 +138,50 @@ const Search = () => {
           </div>
 
           <div style={{ marginBottom: "80px" }}>
-          <h4>{results.length} results</h4>
-            {results.map((firstName, index) => (
+            <h4>{results.length} results</h4>
+            <table class="table table-striped table-hover">
+              {results.map((firstName, index) => (
+                <tr>
+                  <td>
+                    <button onClick={openProfile}>Profile</button>
+                  </td>
+                  <td>
+                    <button onClick={openTree}>Tree</button>
+                  </td>
+                  <td>{results[index].ancestor_id}</td>
+                  <td>
+                    <span class="small-caps">name</span>
+                    {capitalise(results[index].first_name)}{" "}
+                    {capitalise(results[index].middle_name)}{" "}
+                    {capitalise(results[index].last_name)}
+                  </td>
+                  <td>
+                    <span class="small-caps">sex</span>
+                    {capitalise(results[index].sex)}
+                  </td>
+                  <td>
+                    <span class="small-caps">ethnicity</span>
+                    {capitalise(results[index].ethnicity)}
+                  </td>
+                  <td>
+                    <span class="small-caps">birth</span>
+                    {results[index].date_of_birth}
+                    {results[index].place_of_birth}
+                  </td>
+                  <td>
+                    <span class="small-caps">death</span>
+                    {results[index].date_o_death}
+                    {results[index].place_of_death}
+                  </td>
+                  <td>
+                  <span class="small-caps">occupation</span>
+                  {results[index].occupation}{" "}
+                  </td>
+                </tr>
+              ))}
+            </table>
+
+            {/* {results.map((firstName, index) => (
               <table id="searchResults">
                 <tr>
                   <td className="li-span search-label search-border-right search-border-bottom">
@@ -205,15 +264,18 @@ const Search = () => {
                   <td className="search-content"></td>
                 </tr>
                 <tr>
-                  <td  className="li-span search-label search-border-right">
+                  <td className="li-span search-label search-border-right">
                     Occupation
                   </td>
-                  <td className="search-content search-border-right" colSpan="4">
-                  {results[index].occupation}{" "}
+                  <td
+                    className="search-content search-border-right"
+                    colSpan="4"
+                  >
+                    {results[index].occupation}{" "}
                   </td>
                 </tr>
               </table>
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

@@ -487,6 +487,10 @@ table tr:first-child td:last-child {
   font-size: 10px;
 }
 
+.small-caps {
+  font-variant: small-caps;
+}
+
 .profile-cell:hover {
   background-color: #9bb4a3;
   cursor: pointer;
