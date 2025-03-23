@@ -68,13 +68,13 @@ const Search = () => {
     );
   };
 
-  const openProfile = () => {
-    window.location.href = `${profileLinks[index]}`;
+  const openProfile = (profileLink) => {
+    window.location.href = `${profileLink}`;
   };
 
-  const openTree = () => {
-    changePageNum(results[index].page_number);
-    window.location.href = `${treeLinks[index]}`;
+  const openTree = (treeLink) => {
+    changePageNum(treeLink.page_number);
+    window.location.href = `${treeLink}`;
   };
 
   return (
@@ -143,10 +143,10 @@ const Search = () => {
               {results.map((firstName, index) => (
                 <tr>
                   <td>
-                    <button onClick={openProfile}>Profile</button>
+                    <button onClick={() => openProfile(profileLinks[index])}>Profile</button>
                   </td>
                   <td>
-                    <button onClick={openTree}>Tree</button>
+                    <button onClick={() => openTree(treeLinks[index])}>Tree</button>
                   </td>
                   <td>{results[index].ancestor_id}</td>
                   <td>
