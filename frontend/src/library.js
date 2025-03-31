@@ -2,6 +2,7 @@ export const capitaliseFirstLetter = (str) => {
   if (str) {
     if (
       (str[0] === "d" && str[1] === "e" && str[2] === " ") ||
+      (str[0] === "d" && str[1] === "u" && str[2] === " ") ||
       (str[0] === "d" && str[1] === "'") ||
       (str[0] === "o" && str[1] === "f" && str[2] === " ") ||
       (str[0] === "i" && str[1] === "n" && str[2] === "g" && str[3] === "e" && str[4] === "n") ||
