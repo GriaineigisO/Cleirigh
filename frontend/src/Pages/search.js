@@ -100,13 +100,13 @@ const Search = () => {
           )}
 
           <div id="search">
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="First Name"
                 onChange={(event) => setFirstName(event.target.value)}
               ></input>
               <button
-                class="dropdown-toggle"
+                className="dropdown-toggle"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
@@ -115,23 +115,23 @@ const Search = () => {
               >
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a className="dropdown-item" href="#">
                   Exact Match
                 </a>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                 Begins With
                 </a>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Includes
                 </a>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Include Variants
                 </a>
               </div>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Middle Name"
                 onChange={(event) => setMiddleName(event.target.value)}
@@ -144,7 +144,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Last Name"
                 onChange={(event) => setLastName(event.target.value)}
@@ -157,7 +157,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Birth Date"
                 onChange={(event) => setBirthDate(event.target.value)}
@@ -167,7 +167,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Birth Place"
                 onChange={(event) => setBirthPlace(event.target.value)}
@@ -178,7 +178,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Death Date"
                 onChange={(event) => setDeathDate(event.target.value)}
@@ -188,7 +188,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Death Place"
                 onChange={(event) => setDeathPlace(event.target.value)}
@@ -199,7 +199,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Ethnicity"
                 onChange={(event) => setEthnicity(event.target.value)}
@@ -210,7 +210,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Occupation"
                 onChange={(event) => setOccupation(event.target.value)}
@@ -221,7 +221,7 @@ const Search = () => {
               </select>
             </div>
 
-            <div class="search-input-and-dropdown">
+            <div className="search-input-and-dropdown">
               <input
                 placeholder="Profile Number"
                 onChange={(event) => setProfileNum(event.target.value)}
@@ -255,11 +255,11 @@ const Search = () => {
                     </td>
                     <td>{capitalise(results[index].ethnicity)}</td>
                     <td>
-                      <span class="small-caps">b.</span>
+                      <span className="small-caps">b.</span>
                       {`${results[index].date_of_birth} ${results[index].place_of_birth}`}
                     </td>
                     <td>
-                      <span class="small-caps">d.</span>
+                      <span className="small-caps">d.</span>
                       {`${results[index].date_of_death} ${results[index].place_of_death}`}
                     </td>
                     <td>{results[index].occupation} </td>
