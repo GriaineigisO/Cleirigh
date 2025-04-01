@@ -103,12 +103,7 @@ const Search = () => {
                 placeholder="First Name"
                 onChange={(event) => setFirstName(event.target.value)}
               ></input>
-              <select>
-                <option>Exact Match</option>
-                <option>Names That Begin With</option>
-                <option>Includes</option>
-                <option>Include Variants</option>
-              </select>
+              <button><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
 
             <div class="search-input-and-dropdown">
