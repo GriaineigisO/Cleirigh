@@ -778,7 +778,6 @@ textarea {
   padding: 10px;
   width: 100%;
   flex-wrap: wrap;
-  margin-right: 10px;
 }
 
 #search input {
@@ -886,6 +885,7 @@ textarea {
 .search-input-and-dropdown {
   display: flex;
   flex-direction: row;
+  margin-right: 10px;
 }
 
 /*media queries*/
