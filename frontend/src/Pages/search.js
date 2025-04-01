@@ -23,6 +23,8 @@ const Search = () => {
   const [profileLinks, setProfileLinks] = useState([]);
   const [treeLinks, setTreeLinks] = useState([]);
   const [clickCount, setClickCount] = useState(0);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Exact Match");
 
   const searchAncestors = async () => {
     setClickCount(clickCount + 1);
@@ -81,6 +83,13 @@ const Search = () => {
     window.open(treeLink, "_blank");
   };
 
+  const options = [
+    "Exact Match",
+    "Begins With",
+    "Includes",
+    "Include Variants",
+  ];
+
   return (
     <div>
       <div className="row">
@@ -104,31 +113,31 @@ const Search = () => {
               <input
                 placeholder="First Name"
                 onChange={(event) => setFirstName(event.target.value)}
-              ></input>
+              />
               <button
                 className="dropdown-toggle"
                 type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+                onClick={() => setShowDropdown(!showDropdown)}
               >
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </button>
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a className="dropdown-item" href="#">
-                  Exact Match
-                </a>
-                <a className="dropdown-item" href="#">
-                Begins With
-                </a>
-                <a className="dropdown-item" href="#">
-                  Includes
-                </a>
-                <a className="dropdown-item" href="#">
-                  Include Variants
-                </a>
-              </div>
+
+              {showDropdown && (
+                <div className="dropdown-menu show">
+                  {options.map((option) => (
+                    <label key={option} className="dropdown-item">
+                      <input
+                        type="radio"
+                        name="searchOption"
+                        value={option}
+                        checked={selectedOption === option}
+                        onChange={() => setSelectedOption(option)}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="search-input-and-dropdown">
