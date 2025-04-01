@@ -4,7 +4,7 @@ import { capitaliseFirstLetter, convertDate, capitalise } from "../library.js";
 import "../style.css";
 import { Link } from "react-router-dom";
 import LeftSidebar from "../Components/leftSidebar.js";
-import Table from 'react-bootstrap/Table';
+import Table from "react-bootstrap/Table";
 
 const Search = () => {
   const [firstName, setFirstName] = useState();
@@ -15,12 +15,12 @@ const Search = () => {
   const [deathDate, setDeathDate] = useState();
   const [deathPlace, setDeathPlace] = useState();
   const [ethnicity, setEthnicity] = useState();
+  const [occupation, setOccupation] = useState();
   const [profileNum, setProfileNum] = useState();
   const [results, setResults] = useState([]);
   const [profileLinks, setProfileLinks] = useState([]);
   const [treeLinks, setTreeLinks] = useState([]);
   const [clickCount, setClickCount] = useState(0);
-  
 
   const searchAncestors = async () => {
     setClickCount(clickCount + 1);
@@ -42,6 +42,7 @@ const Search = () => {
           deathDate,
           deathPlace,
           ethnicity,
+          occupation,
           profileNum,
         }),
       }
@@ -70,18 +71,17 @@ const Search = () => {
   };
 
   const openProfile = (profileLink) => {
-    window.open(profileLink,"_blank")
+    window.open(profileLink, "_blank");
   };
 
   const openTree = (treeLink) => {
     changePageNum(treeLink.page_number);
-    window.open(treeLink,"_blank")
+    window.open(treeLink, "_blank");
   };
 
   return (
     <div>
       <div className="row">
-
         <div className="col">
           {results.length === 0 && clickCount > 0 ? (
             <h2
@@ -98,42 +98,116 @@ const Search = () => {
           )}
 
           <div id="search">
-            <input
-              placeholder="First Name"
-              onChange={(event) => setFirstName(event.target.value)}
-            ></input>
-            <input
-              placeholder="Middle Name"
-              onChange={(event) => setMiddleName(event.target.value)}
-            ></input>
-            <input
-              placeholder="Last Name"
-              onChange={(event) => setLastName(event.target.value)}
-            ></input>
-            <input
-              placeholder="Birth Date"
-              onChange={(event) => setBirthDate(event.target.value)}
-            ></input>
-            <input
-              placeholder="Birth Place"
-              onChange={(event) => setBirthPlace(event.target.value)}
-            ></input>
-            <input
-              placeholder="Death Date"
-              onChange={(event) => setDeathDate(event.target.value)}
-            ></input>
-            <input
-              placeholder="Death Place"
-              onChange={(event) => setDeathPlace(event.target.value)}
-            ></input>
-            <input
-              placeholder="Ethnicity"
-              onChange={(event) => setEthnicity(event.target.value)}
-            ></input>
-            <input
-              placeholder="Profile Number"
-              onChange={(event) => setProfileNum(event.target.value)}
-            ></input>
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="First Name"
+                onChange={(event) => setFirstName(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Names That Begin With</option>
+                <option>Includes</option>
+                <option>Include Variants</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Middle Name"
+                onChange={(event) => setMiddleName(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Names That Begin With</option>
+                <option>Includes</option>
+                <option>Include Variants</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Last Name"
+                onChange={(event) => setLastName(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Names That Begin With</option>
+                <option>Includes</option>
+                <option>Include Variants</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Birth Date"
+                onChange={(event) => setBirthDate(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Birth Place"
+                onChange={(event) => setBirthPlace(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Names That Begin With</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Death Date"
+                onChange={(event) => setDeathDate(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Death Place"
+                onChange={(event) => setDeathPlace(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Begins With</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Ethnicity"
+                onChange={(event) => setEthnicity(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Begins With</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Occupation"
+                onChange={(event) => setOccupation(event.target.value)}
+              ></input>
+              <select>
+                <option>Exact Match</option>
+                <option>Begins With</option>
+              </select>
+            </div>
+
+            <div class="search-input-and-dropdown">
+              <input
+                placeholder="Profile Number"
+                onChange={(event) => setProfileNum(event.target.value)}
+              ></input>
+            </div>
+
             <button onClick={searchAncestors}>Search</button>
           </div>
 
@@ -141,134 +215,38 @@ const Search = () => {
             <h4>{results.length} results</h4>
             <Table className="table-hover table-responsive table-striped">
               <tbody>
-              {results.map((firstName, index) => (
-                <tr>
-                  <td>
-                    <button onClick={() => openProfile(profileLinks[index])}>Profile</button>
-                  </td>
-                  <td>
-                    <button onClick={() => openTree(treeLinks[index])}>Tree</button>
-                  </td>
-                  <td>{results[index].ancestor_id}</td>
-                  <td>
-                    {capitalise(results[index].first_name)}{" "}
-                    {capitalise(results[index].middle_name)}{" "}
-                    {capitalise(results[index].last_name)}
-                  </td>
-                  <td>
-                    {capitalise(results[index].ethnicity)}
-                  </td>
-                  <td>
-                    <span class="small-caps">b.</span>
-                    {`${results[index].date_of_birth} ${results[index].place_of_birth}`}
-                  </td>
-                  <td>
-                    <span class="small-caps">d.</span>
-                    {`${results[index].date_of_death} ${results[index].place_of_death}`}
-                  </td>
-                  <td>
-                  {results[index].occupation}{" "}
-                  </td>
-                </tr>
-              ))}
+                {results.map((firstName, index) => (
+                  <tr>
+                    <td>
+                      <button onClick={() => openProfile(profileLinks[index])}>
+                        Profile
+                      </button>
+                    </td>
+                    <td>
+                      <button onClick={() => openTree(treeLinks[index])}>
+                        Tree
+                      </button>
+                    </td>
+                    <td>{results[index].ancestor_id}</td>
+                    <td>
+                      {capitalise(results[index].first_name)}{" "}
+                      {capitalise(results[index].middle_name)}{" "}
+                      {capitalise(results[index].last_name)}
+                    </td>
+                    <td>{capitalise(results[index].ethnicity)}</td>
+                    <td>
+                      <span class="small-caps">b.</span>
+                      {`${results[index].date_of_birth} ${results[index].place_of_birth}`}
+                    </td>
+                    <td>
+                      <span class="small-caps">d.</span>
+                      {`${results[index].date_of_death} ${results[index].place_of_death}`}
+                    </td>
+                    <td>{results[index].occupation} </td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
-
-            {/* {results.map((firstName, index) => (
-              <table id="searchResults">
-                <tr>
-                  <td className="li-span search-label search-border-right search-border-bottom">
-                    profile number
-                  </td>
-                  <td className="search-content search-border-right search-border-bottom search-name">
-                    {results[index].ancestor_id}
-                  </td>
-                  <td className="li-span search-label search-border-right search-border-bottom">
-                    sex
-                  </td>
-                  <td className="search-content search-border-bottom">
-                    {capitalise(results[index].sex)}
-                  </td>
-                  <td className="search-content  search-border-bottom"></td>
-                </tr>
-                <tr>
-                  <td className="li-span search-label search-border-right search-border-bottom">
-                    name
-                  </td>
-                  <td className="search-name search-content search-border-right search-border-bottom">
-                    {capitalise(results[index].first_name)}{" "}
-                    {capitalise(results[index].middle_name)}{" "}
-                    {capitalise(results[index].last_name)}
-                  </td>
-                  <td className="li-span search-label search-border-right search-border-bottom">
-                    ethnicity
-                  </td>
-                  <td className="search-content search-border-right search-border-bottom">
-                    {capitalise(results[index].ethnicity)}
-                  </td>
-
-                  <td className="search-content search-border-bottom button-cell">
-                    <a
-                      href={profileLinks[index]}
-                      target="_blank"
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      View Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="li-span search-label search-border-right search-border-bottom">
-                    birth
-                  </td>
-                  <td className="search-content search-border-right search-border-bottom">
-                    {results[index].date_of_birth}
-                  </td>
-                  <td
-                    className="search-place search-content search-border-right search-border-bottom"
-                    colSpan="2"
-                  >
-                    {results[index].place_of_birth}
-                  </td>
-                  <td className="search-content search-border-bottom button-cell">
-                    <a
-                      href={treeLinks[index]}
-                      onClick={() => changePageNum(results[index].page_number)}
-                      target="_blank"
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      View in Tree
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="li-span search-label search-border-right  search-border-bottom">
-                    death
-                  </td>
-                  <td className="search-content search-border-right search-border-bottom">
-                    {results[index].date_of_death}{" "}
-                  </td>
-                  <td
-                    className="search-place search-content search-border-right search-border-bottom"
-                    colSpan="2"
-                  >
-                    {results[index].place_of_death}
-                  </td>
-                  <td className="search-content"></td>
-                </tr>
-                <tr>
-                  <td className="li-span search-label search-border-right">
-                    Occupation
-                  </td>
-                  <td
-                    className="search-content search-border-right"
-                    colSpan="4"
-                  >
-                    {results[index].occupation}{" "}
-                  </td>
-                </tr>
-              </table>
-            ))} */}
           </div>
         </div>
       </div>

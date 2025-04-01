@@ -41,6 +41,7 @@ export default async function handler(req, res) {
       deathDate,
       deathPlace,
       ethnicity,
+      occupation,
       profileNum,
     } = req.body;
 
@@ -63,6 +64,7 @@ export default async function handler(req, res) {
     if (deathDate) query = query.ilike("date_of_death", `%${deathDate}%`);
     if (deathPlace) query = query.ilike("place_of_death", `%${deathPlace}%`);
     if (ethnicity) query = query.ilike("ethnicity", `%${ethnicity}%`);
+    if (occupation) query = query.ilike("occupation", `%${occupation}%`);
     if (profileNum && profileNum !== 0)
       query = query.eq("ancestor_id", profileNum);
 
