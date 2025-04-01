@@ -145,12 +145,30 @@ const Search = () => {
                 placeholder="Middle Name"
                 onChange={(event) => setMiddleName(event.target.value)}
               ></input>
-              <select>
-                <option>Exact Match</option>
-                <option>Begins With</option>
-                <option>Includes</option>
-                <option>Include Variants</option>
-              </select>
+              <button
+                className="dropdown-toggle"
+                type="button"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </button>
+
+              {showDropdown && (
+                <div className="dropdown-menu show">
+                  {options.map((option) => (
+                    <label key={option} className="dropdown-item">
+                      <input
+                        type="radio"
+                        name="searchOption"
+                        value={option}
+                        checked={selectedOption === option}
+                        onChange={() => setSelectedOption(option)}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="search-input-and-dropdown">
@@ -158,12 +176,30 @@ const Search = () => {
                 placeholder="Last Name"
                 onChange={(event) => setLastName(event.target.value)}
               ></input>
-              <select>
-                <option>Exact Match</option>
-                <option>Begins With</option>
-                <option>Includes</option>
-                <option>Include Variants</option>
-              </select>
+              <button
+                className="dropdown-toggle"
+                type="button"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </button>
+
+              {showDropdown && (
+                <div className="dropdown-menu show">
+                  {options.map((option) => (
+                    <label key={option} className="dropdown-item">
+                      <input
+                        type="radio"
+                        name="searchOption"
+                        value={option}
+                        checked={selectedOption === option}
+                        onChange={() => setSelectedOption(option)}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="search-input-and-dropdown">
