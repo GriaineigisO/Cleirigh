@@ -777,9 +777,8 @@ textarea {
   color: rgb(210, 255, 126);
   padding: 10px;
   width: 100%;
-  margin-left: -12px;
-  bottom: 0px;
-  position: fixed;
+  /*bottom: 0px;
+  position: fixed;*/
 }
 
 #search input {
