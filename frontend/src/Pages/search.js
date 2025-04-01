@@ -5,6 +5,8 @@ import "../style.css";
 import { Link } from "react-router-dom";
 import LeftSidebar from "../Components/leftSidebar.js";
 import Table from "react-bootstrap/Table";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const Search = () => {
   const [firstName, setFirstName] = useState();
@@ -103,7 +105,30 @@ const Search = () => {
                 placeholder="First Name"
                 onChange={(event) => setFirstName(event.target.value)}
               ></input>
-              <button><i class="fa-solid fa-magnifying-glass"></i></button>
+              <button
+                class="dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">
+                  Exact Match
+                </a>
+                <a class="dropdown-item" href="#">
+                Begins With
+                </a>
+                <a class="dropdown-item" href="#">
+                  Includes
+                </a>
+                <a class="dropdown-item" href="#">
+                  Include Variants
+                </a>
+              </div>
             </div>
 
             <div class="search-input-and-dropdown">
@@ -113,7 +138,7 @@ const Search = () => {
               ></input>
               <select>
                 <option>Exact Match</option>
-                <option>Names That Begin With</option>
+                <option>Begins With</option>
                 <option>Includes</option>
                 <option>Include Variants</option>
               </select>
@@ -126,7 +151,7 @@ const Search = () => {
               ></input>
               <select>
                 <option>Exact Match</option>
-                <option>Names That Begin With</option>
+                <option>Begins With</option>
                 <option>Includes</option>
                 <option>Include Variants</option>
               </select>
