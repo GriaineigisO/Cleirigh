@@ -61,7 +61,8 @@ const FamilyMigrationMap = () => {
   useEffect(() => {
     if (!map) return;
 
-    const migrationLayer = L.layerGroup().addTo(map);
+    const migrationLayer = L.layerGroup().addTo(map); //layer for migration path of everyone in the tree
+    const anfExpansionLayer = L.layerGroup().addTo(map) //layer for Anatolian Neolithic Farmer migrations
 
     const fetchParentChildBirths = async () => {
       const userId = localStorage.getItem("userId");
@@ -255,6 +256,11 @@ const FamilyMigrationMap = () => {
     L.control
       .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
       .addTo(map);
+
+      L.control
+      .layers(null, { "Anatolian Neolithic Farmer Expansion": anfExpansionLayer }, { collapsed: true })
+      .addTo(map);
+
   }, [map]);
 
   return (
