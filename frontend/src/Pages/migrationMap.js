@@ -45,8 +45,16 @@ const MigrationLines = ({ map }) => {
       if (place === "Scandinavia") place = "Norway";
       if (geocodeCache.has(place)) return geocodeCache.get(place);
 
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place)}`;
-      const response = await fetch(url);
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-place",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            place
+          }),
+        }
+      );
       const data = await response.json();
 
       const coords = data.length > 0
