@@ -114,140 +114,245 @@ const FamilyMigrationMap = () => {
 
       let ancestorBirthplaces = new Map(); // Track most recent ancestor's valid POB
 
-      for (let index = 0; index < migrations.length; index++) {
-        const migration = migrations[index];
+      const migrationLayer = L.layerGroup();
 
-        console.log("parent_id is:", migration.parent_id);
-        // Check if the parent's birthplace is NULL
-        let parentBirthplace = migration.parent_birth || null;
-        if (!parentBirthplace && migration.parent_id) {
-          parentBirthplace =
-            ancestorBirthplaces.get(migration.parent_id) || null;
+      const geocodeCache = new Map();
+
+      const getCoords = async (place) => {
+        if (!place) return null;
+        if (place === "Scandinavia") place = "Norway";
+        if (geocodeCache.has(place)) return geocodeCache.get(place);
+
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          place
+        )}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const coords =
+          data.length > 0
+            ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
+            : null;
+
+        geocodeCache.set(place, coords);
+        return coords;
+      };
+
+      const tasks = migrations.map(async (migration) => {
+        let { parent_id, child_id, parent_birth, child_birth } = migration;
+
+        if (!parent_birth && parent_id) {
+          parent_birth = ancestorBirthplaces.get(parent_id) || null;
+        }
+        if (parent_birth && parent_id) {
+          ancestorBirthplaces.set(parent_id, parent_birth);
         }
 
-        // Store parent birthplace in ancestor map (if valid)
-        if (parentBirthplace && migration.parent_id) {
-          ancestorBirthplaces.set(migration.parent_id, parentBirthplace);
+        if (!child_birth && child_id) {
+          child_birth = ancestorBirthplaces.get(child_id) || parent_birth;
+        }
+        if (child_birth && child_id) {
+          ancestorBirthplaces.set(child_id, child_birth);
         }
 
-        // Check if the child's birthplace is NULL
-        let childBirthplace = migration.child_birth || null;
-        if (!childBirthplace && migration.child_id) {
-          childBirthplace =
-            ancestorBirthplaces.get(migration.child_id) || parentBirthplace;
-        }
+        const parentCoords = await getCoords(parent_birth);
+        const childCoords = await getCoords(child_birth);
 
-        // Store child's birthplace in ancestor map (if valid)
-        if (childBirthplace && migration.child_id) {
-          ancestorBirthplaces.set(migration.child_id, childBirthplace);
-        }
+        if (!parentCoords || !childCoords) return;
 
-        // Get coordinates
-        const parentCoords = await geocodeLocation(parentBirthplace);
-        const childCoords = await geocodeLocation(childBirthplace);
+        const unchangedRelation = migration.relation_to_user[0];
+        const relation =
+          unchangedRelation < 7
+            ? unchangedRelation + 20
+            : unchangedRelation + 50;
+        const opacity = getOpacity(relation);
 
-        //console.log(`${parentBirthplace} > ${childBirthplace}`);
+        let color = "blue";
+        if (unchangedRelation >= 7 && unchangedRelation <= 17) color = "green";
+        else if (unchangedRelation > 17) color = "black";
 
-        let relation = migration.relation_to_user[0];
-        let unchangedRelation = relation;
-        if (relation < 7) {
-          relation += 20;
-        } else {
-          relation += 50;
-        }
+        const polyline = L.polyline([parentCoords, childCoords], {
+          color,
+          weight: 4,
+          opacity,
+        }).addTo(migrationLayer);
 
-        if (parentCoords && childCoords) {
-          //loads data of parent and child to populate popups
-          const polylineDataMap = new Map(); // Store data for each polyline
+        polyline.on("click", (e) => {
+          L.popup()
+            .setLatLng(e.latlng)
+            .setContent(
+              `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${migration.parent_id}" target="_blank">${migration.parent_name} (b.${migration.parent_dob}) - ${migration.parent_birth}</a><br>
+                 <b>Child:</b> <a class="popup_migration_link" href="./profile/${migration.child_id}" target="_blank">${migration.child_name} (b.${migration.child_dob}) - ${migration.child_birth}</a>`
+            )
+            .openOn(map);
+        });
 
-          const polylineKey = `${parentCoords}-${childCoords}`;
-
-          if (!polylineDataMap.has(polylineKey)) {
-            polylineDataMap.set(polylineKey, []);
-          }
-
-          polylineDataMap.get(polylineKey).push({
-            parent: {
-              name: migration.parent_name,
-              birth: migration.parent_birth,
-              dob: migration.parent_dob,
-              id: migration.parent_id,
-            },
-            child: {
-              name: migration.child_name,
-              birth: migration.child_birth,
-              dob: migration.child_dob,
-              id: migration.child_id,
-            },
-          });
-
-          let polyline = "";
-          if (unchangedRelation < 7) {
-            polyline = L.polyline([parentCoords, childCoords], {
-              color: "blue",
-              weight: 4,
-              opacity: getOpacity(relation),
-            }).addTo(migrationLayer);
-          } else if (unchangedRelation >= 7 && unchangedRelation <= 17) {
-            polyline = L.polyline([parentCoords, childCoords], {
-              color: "green",
-              weight: 4,
-              opacity: getOpacity(relation),
-            }).addTo(migrationLayer);
-          } else if (unchangedRelation > 17) {
-            polyline = L.polyline([parentCoords, childCoords], {
-              color: "black",
-              weight: 4,
-              opacity: getOpacity(relation),
-            }).addTo(migrationLayer);
-          }
-
-          polyline.on("click", (e) => {
-            const details = polylineDataMap
-              .get(polylineKey)
-              .map(
-                (entry) =>
-                  `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (b.${entry.parent.dob}) - ${entry.parent.birth}</a><br>
-                   <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (b.${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
-              )
-              .join("");
-
-            L.popup()
-              .setLatLng(e.latlng)
-              .setContent(`<div>${details}</div>`)
-              .openOn(map);
-          });
-
-          polylineDataMap.get(polylineKey).polyline = polyline;
-
-          // Add an arrowhead to the polyline
-          setTimeout(() => {
-            const decorator = L.polylineDecorator(polyline, {
-              patterns: [
-                {
-                  pixelSize: 14,
-                  offset: "10%", // Start arrows 10% into the line
-                  repeat: "20%", // Repeat every 20% of the line length
-                  symbol: L.Symbol.arrowHead({
-                    headAngle: 30,
-                    pathOptions: {
-                      stroke: true,
-                      color: "blue",
-                      opacity: getOpacity(relation + 40), // Apply opacity here
-                    },
-                  }),
+        L.polylineDecorator(polyline, {
+          patterns: [
+            {
+              pixelSize: 14,
+              offset: "10%",
+              repeat: "20%",
+              symbol: L.Symbol.arrowHead({
+                headAngle: 30,
+                pathOptions: {
+                  stroke: true,
+                  color,
+                  opacity: getOpacity(relation + 40),
                 },
-              ],
-            }).addTo(migrationLayer);
-          }, 100);
-        }
+              }),
+            },
+          ],
+        }).addTo(migrationLayer);
 
-        // Update progress
-        setProgress((prevState) => ({
-          current: prevState.current + 1,
-          total: prevState.total,
-        }));
-      }
+        setProgress((prev) => ({ ...prev, current: prev.current + 1 }));
+      });
+
+      await Promise.all(tasks);
+
+      migrationLayer.addTo(map);
+      L.control
+        .layers(
+          null,
+          { "Migration Paths": migrationLayer },
+          { collapsed: false }
+        )
+        .addTo(map);
+
+      // for (let index = 0; index < migrations.length; index++) {
+      //   const migration = migrations[index];
+
+      //   console.log("parent_id is:", migration.parent_id);
+      //   // Check if the parent's birthplace is NULL
+      //   let parentBirthplace = migration.parent_birth || null;
+      //   if (!parentBirthplace && migration.parent_id) {
+      //     parentBirthplace =
+      //       ancestorBirthplaces.get(migration.parent_id) || null;
+      //   }
+
+      //   // Store parent birthplace in ancestor map (if valid)
+      //   if (parentBirthplace && migration.parent_id) {
+      //     ancestorBirthplaces.set(migration.parent_id, parentBirthplace);
+      //   }
+
+      //   // Check if the child's birthplace is NULL
+      //   let childBirthplace = migration.child_birth || null;
+      //   if (!childBirthplace && migration.child_id) {
+      //     childBirthplace =
+      //       ancestorBirthplaces.get(migration.child_id) || parentBirthplace;
+      //   }
+
+      //   // Store child's birthplace in ancestor map (if valid)
+      //   if (childBirthplace && migration.child_id) {
+      //     ancestorBirthplaces.set(migration.child_id, childBirthplace);
+      //   }
+
+      //   // Get coordinates
+      //   const parentCoords = await geocodeLocation(parentBirthplace);
+      //   const childCoords = await geocodeLocation(childBirthplace);
+
+      //   //console.log(`${parentBirthplace} > ${childBirthplace}`);
+
+      //   let relation = migration.relation_to_user[0];
+      //   let unchangedRelation = relation;
+      //   if (relation < 7) {
+      //     relation += 20;
+      //   } else {
+      //     relation += 50;
+      //   }
+
+      //   if (parentCoords && childCoords) {
+      //     //loads data of parent and child to populate popups
+      //     const polylineDataMap = new Map(); // Store data for each polyline
+
+      //     const polylineKey = `${parentCoords}-${childCoords}`;
+
+      //     if (!polylineDataMap.has(polylineKey)) {
+      //       polylineDataMap.set(polylineKey, []);
+      //     }
+
+      //     polylineDataMap.get(polylineKey).push({
+      //       parent: {
+      //         name: migration.parent_name,
+      //         birth: migration.parent_birth,
+      //         dob: migration.parent_dob,
+      //         id: migration.parent_id,
+      //       },
+      //       child: {
+      //         name: migration.child_name,
+      //         birth: migration.child_birth,
+      //         dob: migration.child_dob,
+      //         id: migration.child_id,
+      //       },
+      //     });
+
+      //     let polyline = "";
+      //     if (unchangedRelation < 7) {
+      //       polyline = L.polyline([parentCoords, childCoords], {
+      //         color: "blue",
+      //         weight: 4,
+      //         opacity: getOpacity(relation),
+      //       }).addTo(migrationLayer);
+      //     } else if (unchangedRelation >= 7 && unchangedRelation <= 17) {
+      //       polyline = L.polyline([parentCoords, childCoords], {
+      //         color: "green",
+      //         weight: 4,
+      //         opacity: getOpacity(relation),
+      //       }).addTo(migrationLayer);
+      //     } else if (unchangedRelation > 17) {
+      //       polyline = L.polyline([parentCoords, childCoords], {
+      //         color: "black",
+      //         weight: 4,
+      //         opacity: getOpacity(relation),
+      //       }).addTo(migrationLayer);
+      //     }
+
+      //     polyline.on("click", (e) => {
+      //       const details = polylineDataMap
+      //         .get(polylineKey)
+      //         .map(
+      //           (entry) =>
+      //             `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (b.${entry.parent.dob}) - ${entry.parent.birth}</a><br>
+      //              <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (b.${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
+      //         )
+      //         .join("");
+
+      //       L.popup()
+      //         .setLatLng(e.latlng)
+      //         .setContent(`<div>${details}</div>`)
+      //         .openOn(map);
+      //     });
+
+      //     polylineDataMap.get(polylineKey).polyline = polyline;
+
+      //     // Add an arrowhead to the polyline
+      //     setTimeout(() => {
+      //       const decorator = L.polylineDecorator(polyline, {
+      //         patterns: [
+      //           {
+      //             pixelSize: 14,
+      //             offset: "10%", // Start arrows 10% into the line
+      //             repeat: "20%", // Repeat every 20% of the line length
+      //             symbol: L.Symbol.arrowHead({
+      //               headAngle: 30,
+      //               pathOptions: {
+      //                 stroke: true,
+      //                 color: "blue",
+      //                 opacity: getOpacity(relation + 40), // Apply opacity here
+      //               },
+      //             }),
+      //           },
+      //         ],
+      //       }).addTo(migrationLayer);
+      //     }, 100);
+      //   }
+
+      //   // Update progress
+      //   setProgress((prevState) => ({
+      //     current: prevState.current + 1,
+      //     total: prevState.total,
+      //   }));
+      // }
     };
 
     plotParentChildMigrations();
