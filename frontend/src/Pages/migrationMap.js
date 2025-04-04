@@ -62,7 +62,7 @@ const FamilyMigrationMap = () => {
     if (!map) return;
 
     const migrationLayer = L.layerGroup().addTo(map); //layer for migration path of everyone in the tree
-    const anfExpansionLayer = L.layerGroup().addTo(map) //layer for Anatolian Neolithic Farmer migrations
+    const anfExpansionLayer = L.layerGroup().addTo(map); //layer for Anatolian Neolithic Farmer migrations
 
     const fetchParentChildBirths = async () => {
       const userId = localStorage.getItem("userId");
@@ -118,7 +118,6 @@ const FamilyMigrationMap = () => {
       for (let index = 0; index < migrations.length; index++) {
         const migration = migrations[index];
 
-        console.log("parent_id is:", migration.parent_id);
         // Check if the parent's birthplace is NULL
         let parentBirthplace = migration.parent_birth || null;
         if (!parentBirthplace && migration.parent_id) {
@@ -257,10 +256,26 @@ const FamilyMigrationMap = () => {
       .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
       .addTo(map);
 
-      L.control
-      .layers(null, { "Anatolian Neolithic Farmer Expansion": anfExpansionLayer }, { collapsed: true })
-      .addTo(map);
 
+    const plotANFExpansion = () => {
+      let ANFOriginCoords = [38.109904916253555, 37.56280292126914]
+      
+      let toCyprus = [34.937300019663, 33.12242036505382]
+      polyline = L.polyline([ANFOriginCoords, toCyprus], {
+        color: "brown",
+        weight: 8,
+        opacity: 5,
+      }).addTo(anfExpansionLayer);
+
+    }
+
+    L.control
+      .layers(
+        null,
+        { "Anatolian Neolithic Farmer Expansion": anfExpansionLayer },
+        { collapsed: false }
+      )
+      .addTo(map);
   }, [map]);
 
   return (
