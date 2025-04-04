@@ -259,7 +259,7 @@ const FamilyMigrationMap = () => {
   }, [map]);
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <div id="map"/>
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
