@@ -254,7 +254,7 @@ const FamilyMigrationMap = () => {
 
     L.control
       .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
-      .addTo(migrationLayer);
+      .addTo(map);
   }, [map]);
 
   return (
