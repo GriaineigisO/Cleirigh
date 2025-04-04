@@ -256,37 +256,47 @@ const FamilyMigrationMap = () => {
     //   .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
     //   .addTo(map);
 
-
-    const plotANFExpansion = () => { //plots the various paths of expansion taken by the Anatolian Neoltihic Farmers into Europe
+    let ANFOriginCoords = [38.109904916253555, 37.56280292126914];
+    let cyprus = [34.937300019663, 33.12242036505382];
+    let crete = [35.231110035824535, 24.80451044415649];
+    let bademdere = [37.91529817816538, 35.076834657380765];
+    const plotANFExpansion = (from, to) => {
+      //plots the various paths of expansion taken by the Anatolian Neoltihic Farmers into Europe
       let polyline = "";
-      let opacity = 5;
-      let ANFOriginCoords = [38.109904916253555, 37.56280292126914]
-
-      let cyprus = [34.937300019663, 33.12242036505382]
-      polyline = L.polyline([ANFOriginCoords, cyprus], {
-        color: "brown",
-        weight: 8,
-        opacity: opacity,
-      }).addTo(anfExpansionLayer);
-
-      let crete = [35.231110035824535, 24.80451044415649]
-      polyline = L.polyline([cyprus, crete], {
-        weight: 8,
-        opacity: opacity,
-      }).addTo(anfExpansionLayer);
-
-      let bademdere = [37.91529817816538, 35.076834657380765]
-      polyline = L.polyline([ANFOriginCoords, bademdere], {
-        color: "brown",
-        weight: 8,
-        opacity: opacity,
-      }).addTo(anfExpansionLayer);
-
+      let opacity = 0.5;
+      let weight = 8;
+      let colour = "brown";
       
+      polyline = L.polyline([from, to], {
+        color: colour,
+        weight: weight,
+        opacity: opacity,
+      }).addTo(anfExpansionLayer);
 
-    }
+      const decorator = L.polylineDecorator(polyline, {
+        patterns: [
+          {
+            pixelSize: 14,
+            offset: "10%", // Start arrows 10% into the line
+            repeat: "20%", // Repeat every 20% of the line length
+            symbol: L.Symbol.arrowHead({
+              headAngle: 30,
+              pathOptions: {
+                stroke: true,
+                color: colour,
+                opacity: opacity
+              },
+            }),
+          },
+        ],
+      }).addTo(anfExpansionLayer);
 
-    plotANFExpansion();
+
+    };
+
+    plotANFExpansion(ANFOriginCoords, cyprus);
+    plotANFExpansion(cyprus, crete);
+    plotANFExpansion(ANFOriginCoords, bademdere);
 
     L.control
       .layers(
