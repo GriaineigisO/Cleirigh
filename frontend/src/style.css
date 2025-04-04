@@ -950,6 +950,11 @@ textarea {
   margin-top: 25px; /* Add margin-top for when there's an actual new paragraph */
 }
 
+#map {
+  height: 100%;
+  width: 100%;
+}
+
 @media print {
   .gg-parent-buttons,
   #left-button,

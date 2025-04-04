@@ -260,7 +260,7 @@ const FamilyMigrationMap = () => {
 
   return (
     <div>
-      <div id="map" style={{ height: "100%", width: "100%" }} />
+      <div id="map"/>
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
           <p style={{ textAlign: "center" }}>
