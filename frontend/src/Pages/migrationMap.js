@@ -257,12 +257,19 @@ const FamilyMigrationMap = () => {
       .addTo(map);
 
 
-    const plotANFExpansion = () => {
+    const plotANFExpansion = () => { //plots the various paths of expansion taken by the Anatolian Neoltihic Farmers into Europe
+      let polyline = "";
       let ANFOriginCoords = [38.109904916253555, 37.56280292126914]
-      
-      let toCyprus = [34.937300019663, 33.12242036505382]
-      polyline = L.polyline([ANFOriginCoords, toCyprus], {
+
+      let cyprus = [34.937300019663, 33.12242036505382]
+      polyline = L.polyline([ANFOriginCoords, cyprus], {
         color: "brown",
+        weight: 8,
+        opacity: 5,
+      }).addTo(anfExpansionLayer);
+
+      let crete = [35.231110035824535, 24.80451044415649]
+      polyline = L.polyline([cyprus, crete], {
         weight: 8,
         opacity: 5,
       }).addTo(anfExpansionLayer);
