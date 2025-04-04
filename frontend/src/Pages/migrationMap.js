@@ -9,13 +9,6 @@ const FamilyMigrationMap = () => {
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
   useEffect(() => {
-    console.log(
-      "L.polyline.prototype.arrowheads:",
-      L.polyline.prototype.arrowheads
-    );
-  }, []);
-
-  useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
@@ -67,6 +60,8 @@ const FamilyMigrationMap = () => {
 
   useEffect(() => {
     if (!map) return;
+
+    const migrationLayer = L.layerGroup().addTo(map);
 
     const fetchParentChildBirths = async () => {
       const userId = localStorage.getItem("userId");
@@ -192,19 +187,19 @@ const FamilyMigrationMap = () => {
               color: "blue",
               weight: 4,
               opacity: getOpacity(relation),
-            }).addTo(map);
+            }).addTo(migrationLayer);
           } else if (unchangedRelation >= 7 && unchangedRelation <= 17) {
             polyline = L.polyline([parentCoords, childCoords], {
               color: "green",
               weight: 4,
               opacity: getOpacity(relation),
-            }).addTo(map);
+            }).addTo(migrationLayer);
           } else if (unchangedRelation > 17) {
             polyline = L.polyline([parentCoords, childCoords], {
               color: "black",
               weight: 4,
               opacity: getOpacity(relation),
-            }).addTo(map);
+            }).addTo(migrationLayer);
           }
 
           polyline.on("click", (e) => {
@@ -243,7 +238,7 @@ const FamilyMigrationMap = () => {
                   }),
                 },
               ],
-            }).addTo(map);
+            }).addTo(migrationLayer);
           }, 100);
         }
 
@@ -256,11 +251,15 @@ const FamilyMigrationMap = () => {
     };
 
     plotParentChildMigrations();
+
+    L.control
+      .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
+      .addTo(migrationLayer);
   }, [map]);
 
   return (
     <div style={{ height: "100vh" }}>
-      <div id="map"/>
+      <div id="map" />
       <div style={{ marginTop: "10px" }}>
         {progress.total > 0 && (
           <p style={{ textAlign: "center" }}>
