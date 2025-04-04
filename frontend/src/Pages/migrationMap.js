@@ -276,9 +276,9 @@ const FamilyMigrationMap = () => {
       const decorator = L.polylineDecorator(polyline, {
         patterns: [
           {
-            pixelSize: 14,
+            pixelSize: 20,
             offset: "10%", // Start arrows 10% into the line
-            repeat: "20%", // Repeat every 20% of the line length
+            repeat: "50%", // Repeat every 20% of the line length
             symbol: L.Symbol.arrowHead({
               headAngle: 30,
               pathOptions: {
