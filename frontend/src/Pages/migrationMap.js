@@ -264,40 +264,40 @@ const FamilyMigrationMap = () => {
     let thessaloniki = [40.67467495371143, 22.894976499076776];
     let tirana = [41.334582276261884, 19.677275378989766];
     const plotANFExpansion = (from, to) => {
-      //plots the various paths of expansion taken by the Anatolian Neoltihic Farmers into Europe
-      let polyline = "";
       let opacity = 0.5;
       let weight = 8;
       let colour = "brown";
-
-      polyline = L.polyline([from, to], {
+    
+      // Add the polyline to the map
+      const polyline = L.polyline([from, to], {
         color: colour,
         weight: weight,
         opacity: opacity,
       }).addTo(anfExpansionLayer);
-
+    
       // Calculate rotation angle in degrees
       const angle =
-        (Math.atan2(to.lat - from.lat, to.lng - from.lng) * 180) / Math.PI;
-
+        (Math.atan2(to[0] - from[0], to[1] - from[1]) * 180) / Math.PI;
+    
       // Create an arrowhead marker (divIcon shaped like a triangle)
       const arrowIcon = L.divIcon({
         className: "",
         html: `<div style="
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 20px solid brown;
-      transform: rotate(${angle}deg);
-    "></div>`,
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 20px solid ${colour};
+          transform: rotate(${angle}deg);
+        "></div>`,
         iconSize: [20, 20],
         iconAnchor: [10, 10],
       });
-
+    
       // Place the arrow at the end of the line
-      L.polyline(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
+      L.marker(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
     };
+    
 
     plotANFExpansion(ANFOriginCoords, cyprus);
     plotANFExpansion(cyprus, crete);
