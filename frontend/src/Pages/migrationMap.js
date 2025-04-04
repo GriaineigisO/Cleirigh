@@ -260,6 +260,7 @@ const FamilyMigrationMap = () => {
     let cyprus = [34.937300019663, 33.12242036505382];
     let crete = [35.231110035824535, 24.80451044415649];
     let bademdere = [37.91529817816538, 35.076834657380765];
+    let kusadasi = [37.85638183728916, 27.290315419375275];
     const plotANFExpansion = (from, to) => {
       //plots the various paths of expansion taken by the Anatolian Neoltihic Farmers into Europe
       let polyline = "";
@@ -297,6 +298,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(ANFOriginCoords, cyprus);
     plotANFExpansion(cyprus, crete);
     plotANFExpansion(ANFOriginCoords, bademdere);
+    plotANFExpansion(bademdere, kusadasi);
 
     L.control
       .layers(
