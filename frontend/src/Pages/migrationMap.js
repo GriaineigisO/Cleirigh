@@ -261,44 +261,50 @@ const FamilyMigrationMap = () => {
     let crete = [35.231110035824535, 24.80451044415649];
     let bademdere = [37.91529817816538, 35.076834657380765];
     let kusadasi = [37.85638183728916, 27.290315419375275];
+    let thessaloniki = [40.67467495371143, 22.894976499076776];
+    let tirana = [41.334582276261884, 19.677275378989766];
     const plotANFExpansion = (from, to) => {
       //plots the various paths of expansion taken by the Anatolian Neoltihic Farmers into Europe
       let polyline = "";
       let opacity = 0.5;
       let weight = 8;
       let colour = "brown";
-      
+
       polyline = L.polyline([from, to], {
         color: colour,
         weight: weight,
         opacity: opacity,
       }).addTo(anfExpansionLayer);
 
-      const decorator = L.polylineDecorator(polyline, {
-        patterns: [
-          {
-            pixelSize: 20,
-            offset: "10%", // Start arrows 10% into the line
-            repeat: "50%", // Repeat every 20% of the line length
-            symbol: L.Symbol.arrowHead({
-              headAngle: 30,
-              pathOptions: {
-                stroke: true,
-                color: colour,
-                opacity: opacity
-              },
-            }),
-          },
-        ],
-      }).addTo(anfExpansionLayer);
+      // Calculate rotation angle in degrees
+      const angle =
+        (Math.atan2(to.lat - from.lat, to.lng - from.lng) * 180) / Math.PI;
 
+      // Create an arrowhead marker (divIcon shaped like a triangle)
+      const arrowIcon = L.divIcon({
+        className: "",
+        html: `<div style="
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 20px solid brown;
+      transform: rotate(${angle}deg);
+    "></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+      });
 
+      // Place the arrow at the end of the line
+      L.polyline(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
     };
 
     plotANFExpansion(ANFOriginCoords, cyprus);
     plotANFExpansion(cyprus, crete);
     plotANFExpansion(ANFOriginCoords, bademdere);
     plotANFExpansion(bademdere, kusadasi);
+    plotANFExpansion(kusadasi, thessaloniki);
+    plotANFExpansion(thessaloniki, tirana);
 
     L.control
       .layers(
