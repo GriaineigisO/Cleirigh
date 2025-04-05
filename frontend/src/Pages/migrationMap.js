@@ -266,6 +266,8 @@ const FamilyMigrationMap = () => {
     let cutro = [39.027030380708986, 16.885483724873207];
     let nafplion = [37.567760841027386, 22.98740570268659];
     let syvota = [39.55142338246975, 20.180992582746878];
+    let rossano = [39.57185552491794, 16.643531035064285];
+    let split = [43.519201932947865, 16.51378613302088];
     const plotANFExpansion = (from, to) => {
       let opacity = 0.5;
       let weight = 8;
@@ -307,6 +309,8 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(kusadasi, thessaloniki);
     plotANFExpansion(thessaloniki, tirana);
     plotANFExpansion(nafplion, syvota);
+    plotANFExpansion(syvota, rossano);
+    plotANFExpansion(syvota, split);
 
     L.control
       .layers(
