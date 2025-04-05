@@ -272,28 +272,28 @@ const FamilyMigrationMap = () => {
     let paola = [39.34275024440744, 16.04286760094992];
     let latina = [41.43538325186495, 12.86778800709526];
     let ostia = [41.75491678543996, 12.274359485378756];
-    let sardinia = [39.8677093953908, 9.047691232289715]
-    let piombino = [42.969452702406, 10.525436595835794]
-    let genoa = [44.46942144131711, 8.841474913224822]
-    let frejus = [43.37954726509159, 6.604082213078283]
-    let montpellier = [43.58487223384653, 3.8178397375090576]
-    let girona = [42.40345722881095, 2.879939763110085]
-    let valencia = [39.374613208102666, -0.534081545192991]
-    let seville = [37.038532578492855, -5.206541501117564]
-    let lisbon = [38.8665697002456, -8.923271011495029]
-    let lesvans = [44.3901009211351, 4.117062995377118]
-    let lemans = [48.23111664095748, 0.6421339818132111]
-    let brittany = [48.55648532612354, -4.163733952892681]
-    let southwales = [51.84800378764838, -4.8610559669437166]
-    let lille = [50.60889068902996, 2.1498572554072446]
-    let london = [51.344590583719764, 0.05789121325413622]
-    let izmit = [40.68726386603334, 30.72121329075923]
-    let northmacedonia = [42.05903556486896, 22.485274908559845]
-    let serbia = [44.39314119869013, 20.7137000620518]
-    let sofia = [42.69943560665004, 23.08836421800939]
-    let craiova = [44.177273889432506, 23.80453277298072]
-    let burgas = [42.657869532924906, 27.25344976139531]
-    let babadag = [44.77473442415656, 28.849941790154233]
+    let sardinia = [39.8677093953908, 9.047691232289715];
+    let piombino = [42.969452702406, 10.525436595835794];
+    let genoa = [44.46942144131711, 8.841474913224822];
+    let frejus = [43.37954726509159, 6.604082213078283];
+    let montpellier = [43.58487223384653, 3.8178397375090576];
+    let girona = [42.40345722881095, 2.879939763110085];
+    let valencia = [39.374613208102666, -0.534081545192991];
+    let seville = [37.038532578492855, -5.206541501117564];
+    let lisbon = [38.8665697002456, -8.923271011495029];
+    let lesvans = [44.3901009211351, 4.117062995377118];
+    let lemans = [48.23111664095748, 0.6421339818132111];
+    let brittany = [48.55648532612354, -4.163733952892681];
+    let southwales = [51.84800378764838, -4.8610559669437166];
+    let lille = [50.60889068902996, 2.1498572554072446];
+    let london = [51.344590583719764, 0.05789121325413622];
+    let izmit = [40.68726386603334, 30.72121329075923];
+    let northmacedonia = [42.05903556486896, 22.485274908559845];
+    let serbia = [44.39314119869013, 20.7137000620518];
+    let sofia = [42.69943560665004, 23.08836421800939];
+    let craiova = [44.177273889432506, 23.80453277298072];
+    let burgas = [42.657869532924906, 27.25344976139531];
+    let babadag = [44.77473442415656, 28.849941790154233];
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -369,6 +369,34 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(northmacedonia, serbia);
     plotANFExpansion(sofia, craiova);
     plotANFExpansion(burgas, babadag);
+
+    /***ANF BORDERS**/
+    let anfOriginCoords = [
+      [38.65592378562599, 37.625977094769496],
+      [38.46503850516063, 36.77157632010816],
+      [37.73506145800293, 36.67393051728971],
+      [36.83125364058383, 36.71818868379447],
+      [36.50782304499802, 37.71361967743543],
+      [36.702162420101025, 38.30370819450153],
+      [37.67846419124882, 39.1812757327024],
+    ];
+
+    let anfOrigin = L.polygon(anfOriginCoords, {
+      color: "brown", // Border color
+      weight: 8, // Border thickness
+      opacity: 0.6, // Border opacity
+      fillColor: "yellow", // Fill color
+      fillOpacity: 0.5, // Fill opacity
+      smoothFactor: 1, // Smooths out the curves between points (not necessary for simple polygons)
+    }).addTo(anfExpansionLayer);
+
+    // To apply a blur effect to the border
+    anfOrigin.setStyle({
+      weight: 8, // Border thickness
+      opacity: 8, // Border opacity
+      color: "red", // Border color
+      dashArray: "5, 10", // Optional: adds a dashed effect to the border (not required)
+    });
 
     L.control
       .layers(
