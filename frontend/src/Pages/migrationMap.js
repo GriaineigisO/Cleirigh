@@ -795,6 +795,10 @@ const FamilyMigrationMap = () => {
 
     sicilyCoords = fixCoords(sicilyCoords);
 
+    let darkSardiniaCoords = [[8.255070023275941,41.08349099049067,0],[8.159285938262082,40.90480531994267,0],[8.152093818675857,40.56871773284574,0],[8.38147739859047,40.45793217415184,0],[8.404474621031357,40.26410526426007,0],[9.01070393681779,40.45964073398189,0],[9.208616570326766,40.5890104098438,0],[9.290461175581273,40.7604264407743,0],[9.163891914297276,40.87620280909353,0],[8.689347895416264,40.90738300161757,0],[8.32706232089506,40.86251107292968,0],[8.255070023275941,41.08349099049067,0]]
+
+    darkSardiniaCoords = fixCoords(darkSardiniaCoords);
+
     //some coords are taken from polygons drawn on google earth which are [long, lat] but leaflet uses [lat, long], this function handles this conversion
     function fixCoords(coords) {
       for (let i = 0; i < coords.length; i++) {
@@ -835,9 +839,10 @@ const FamilyMigrationMap = () => {
     addPolygon(balkanCoords, "yellow", 0.4);
     addPolygon(northwestAnatoliaCoords, "yellow", 0.8);
     addPolygon(creteCoords, "orange", 0.8);
-    addPolygon(albaniaCoords, "rgb(57, 46, 153)", 0.8)
-    addPolygon(southItalyCoords, "rgb(57, 46, 153)", 0.8)
-    addPolygon(sicilyCoords, "rgb(57, 46, 153)", 0.8)
+    addPolygon(albaniaCoords, "rgb(36, 28, 106)", 0.8)
+    addPolygon(southItalyCoords, "rgb(36, 28, 106)", 0.8)
+    addPolygon(sicilyCoords, "rgb(36, 28, 106)", 0.8)
+    addPolygon(darkSardiniaCoords, "rgb(36, 28, 106)", 0.8)
 
     /******************************************************/
 
