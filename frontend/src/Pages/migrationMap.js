@@ -425,14 +425,10 @@ const FamilyMigrationMap = () => {
 
     /******************************************************/
 
-    L.control
-      .layers(
-        null,
-        { "Anatolian Neolithic Farmer Expansion": anfExpansionLayer },
-        { collapsed: false }
-      )
-      .addTo(map);
-  }, [map]);
+    const overlayMaps = {
+  "Anatolian Neolithic Farmer Expansion": anfExpansionLayer // Layer is registered but NOT added yet
+};
+L.control.layers(baseMaps, overlayMaps).addTo(map);
 
   return (
     <div style={{ height: "100vh" }}>
