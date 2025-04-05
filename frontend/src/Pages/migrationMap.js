@@ -450,8 +450,8 @@ const FamilyMigrationMap = () => {
       for (let i = 0; i < coords.length; i++) {
         if (coords[i] === 0) {
           let arr = [];
-          arr.push(coords[i-2]); //the latitude
-          arr.push(coords[i-1]); //the longitude
+          arr.push(coords[i-1]); //the latitude
+          arr.push(coords[i-2]); //the longitude
           fixedCoords.push(arr);
         }
       }
