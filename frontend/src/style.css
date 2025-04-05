@@ -961,7 +961,7 @@ textarea {
   width: 100%;
 }
 
-.leaflet-interactive {
+.leaflet-polygon {
   filter: blur(2px);  /* Adjust the blur effect here */
 }
 

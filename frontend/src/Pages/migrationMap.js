@@ -390,12 +390,6 @@ const FamilyMigrationMap = () => {
       smoothFactor: 1, // Smooths out the curves between points (not necessary for simple polygons)
     }).addTo(anfExpansionLayer);
 
-    // To apply a blur effect to the border
-    anfOrigin.setStyle({
-      weight: 8, // Border thickness
-      opacity: 8, // Border opacity
-      color: "red", // Border color
-    });
 
     L.control
       .layers(
