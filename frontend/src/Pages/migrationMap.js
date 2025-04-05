@@ -272,7 +272,7 @@ const FamilyMigrationMap = () => {
     let paola = [39.34275024440744, 16.04286760094992];
     let latina = [41.43538325186495, 12.86778800709526];
     let ostia = [41.75491678543996, 12.274359485378756];
-    let sardinia = [41.02479027300788, 9.346778778244001]
+    let sardinia = [39.8677093953908, 9.047691232289715]
     let piombino = [42.969452702406, 10.525436595835794]
     let genoa = [44.46942144131711, 8.841474913224822]
     let frejus = [43.37954726509159, 6.604082213078283]
@@ -281,6 +281,19 @@ const FamilyMigrationMap = () => {
     let valencia = [39.374613208102666, -0.534081545192991]
     let seville = [37.038532578492855, -5.206541501117564]
     let lisbon = [38.8665697002456, -8.923271011495029]
+    let lesvans = [44.3901009211351, 4.117062995377118]
+    let lemans = [48.23111664095748, 0.6421339818132111]
+    let brittany = [48.55648532612354, -4.163733952892681]
+    let southwales = [51.84800378764838, -4.8610559669437166]
+    let lille = [50.60889068902996, 2.1498572554072446]
+    let london = [51.344590583719764, 0.05789121325413622]
+    let izmit = [40.68726386603334, 30.72121329075923]
+    let northmacedonia = [42.05903556486896, 22.485274908559845]
+    let serbia = [44.39314119869013, 20.7137000620518]
+    let sofia = [42.69943560665004, 23.08836421800939]
+    let craiova = [44.177273889432506, 23.80453277298072]
+    let burgas = [42.657869532924906, 27.25344976139531]
+    let babadag = [44.77473442415656, 28.849941790154233]
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -336,6 +349,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(crete, nafplion);
     plotANFExpansion(ANFOriginCoords, bademdere);
     plotANFExpansion(bademdere, kusadasi);
+    plotANFExpansion(bademdere, izmit);
     plotANFExpansion(kusadasi, thessaloniki);
     plotANFExpansion(thessaloniki, tirana);
     plotANFExpansion(nafplion, syvota);
@@ -349,6 +363,12 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(girona, valencia);
     plotANFExpansion(valencia, seville);
     plotANFExpansion(seville, lisbon);
+    plotANFExpansion(lesvans, lemans);
+    plotANFExpansion(brittany, southwales);
+    plotANFExpansion(lille, london);
+    plotANFExpansion(northmacedonia, serbia);
+    plotANFExpansion(sofia, craiova);
+    plotANFExpansion(burgas, babadag);
 
     L.control
       .layers(
