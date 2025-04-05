@@ -263,6 +263,9 @@ const FamilyMigrationMap = () => {
     let kusadasi = [37.85638183728916, 27.290315419375275];
     let thessaloniki = [40.67467495371143, 22.894976499076776];
     let tirana = [41.334582276261884, 19.677275378989766];
+    let cutro = [39.027030380708986, 16.885483724873207];
+    let nafplion = [37.567760841027386, 22.98740570268659];
+    let syvota = [39.55142338246975, 20.180992582746878];
     const plotANFExpansion = (from, to) => {
       let opacity = 0.5;
       let weight = 8;
@@ -301,10 +304,13 @@ const FamilyMigrationMap = () => {
 
     plotANFExpansion(ANFOriginCoords, cyprus);
     plotANFExpansion(cyprus, crete);
+    plotANFExpansion(crete, cutro);
+    plotANFExpansion(crete, nafplion);
     plotANFExpansion(ANFOriginCoords, bademdere);
     plotANFExpansion(bademdere, kusadasi);
     plotANFExpansion(kusadasi, thessaloniki);
     plotANFExpansion(thessaloniki, tirana);
+    plotANFExpansion(nafplion, syvota);
 
     L.control
       .layers(
