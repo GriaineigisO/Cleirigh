@@ -508,19 +508,19 @@ const FamilyMigrationMap = () => {
       [32.2695375, 35.1036718],
     ];
 
-    cyprusCoords = fixCoords(cyprusCoords);
+    // cyprusCoords = fixCoords(cyprusCoords);
 
-    //some coords are taken from polygons drawn on google earth which are [long, lat] but leaflet uses [lat, long], this function handles this conversion
-    function fixCoords(coords) {
-      for (let i = 0; i < coords.length; i++) {
-        for (let j = 0; j < coords[i].length; j++) {
-          let temp = coords[i][1];
-          coords[i][1] = coords[i][0];
-          coords[i][0] = temp;
-        }
-      }
-      return coords;
-    }
+    // //some coords are taken from polygons drawn on google earth which are [long, lat] but leaflet uses [lat, long], this function handles this conversion
+    // function fixCoords(coords) {
+    //   for (let i = 0; i < coords.length; i++) {
+    //     for (let j = 0; j < coords[i].length; j++) {
+    //       let temp = coords[i][1];
+    //       coords[i][1] = coords[i][0];
+    //       coords[i][0] = temp;
+    //     }
+    //   }
+    //   return coords;
+    // }
 
     function addPolygon(coords, color, opacity) {
       // Create a polygon with no visible border
