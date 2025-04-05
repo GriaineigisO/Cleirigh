@@ -65,197 +65,197 @@ const FamilyMigrationMap = () => {
     const migrationLayer = L.layerGroup().addTo(map); //layer for migration path of everyone in the tree
     const anfExpansionLayer = L.layerGroup().addTo(map); //layer for Anatolian Neolithic Farmer migrations
 
-    // const fetchParentChildBirths = async () => {
-    //   const userId = localStorage.getItem("userId");
-    //   const response = await fetch(
-    //     "https://cleirigh-backend.vercel.app/api/migration-map",
-    //     {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ userId }),
-    //     }
-    //   );
-    //   const data = await response.json();
-    //   console.log(data);
-    //   return data;
-    // };
+    const fetchParentChildBirths = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/migration-map",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      return data;
+    };
 
-    // const geocodeLocation = async (place) => {
-    //   if (place) {
-    //     if (place === "Scandinavia") {
-    //       place = "Norway";
-    //     }
+    const geocodeLocation = async (place) => {
+      if (place) {
+        if (place === "Scandinavia") {
+          place = "Norway";
+        }
 
-    //     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-    //       place
-    //     )}`;
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          place
+        )}`;
 
-    //     const response = await fetch(url);
-    //     const data = await response.json();
-    //     return data.length > 0
-    //       ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
-    //       : null;
-    //   } else {
-    //     return null;
-    //   }
-    // };
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.length > 0
+          ? [parseFloat(data[0].lat), parseFloat(data[0].lon)]
+          : null;
+      } else {
+        return null;
+      }
+    };
 
-    // //determines a line's opactiy based on the ancestor's relation to the user: more distant = more opaque
-    // const getOpacity = (relationLevel) => {
-    //   return Math.max(100 - relationLevel, 10) / 100;
-    // };
+    //determines a line's opactiy based on the ancestor's relation to the user: more distant = more opaque
+    const getOpacity = (relationLevel) => {
+      return Math.max(100 - relationLevel, 10) / 100;
+    };
 
-    // const plotParentChildMigrations = async () => {
-    //   const migrations = await fetchParentChildBirths();
-    //   if (!migrations || migrations.length === 0) {
-    //     console.log("No migration data available.");
-    //     return;
-    //   }
+    const plotParentChildMigrations = async () => {
+      const migrations = await fetchParentChildBirths();
+      if (!migrations || migrations.length === 0) {
+        console.log("No migration data available.");
+        return;
+      }
 
-    //   setProgress({ current: 0, total: migrations.length });
+      setProgress({ current: 0, total: migrations.length });
 
-    //   let ancestorBirthplaces = new Map(); // Track most recent ancestor's valid POB
+      let ancestorBirthplaces = new Map(); // Track most recent ancestor's valid POB
 
-    //   for (let index = 0; index < migrations.length; index++) {
-    //     const migration = migrations[index];
+      for (let index = 0; index < migrations.length; index++) {
+        const migration = migrations[index];
 
-    //     // Check if the parent's birthplace is NULL
-    //     let parentBirthplace = migration.parent_birth || null;
-    //     if (!parentBirthplace && migration.parent_id) {
-    //       parentBirthplace =
-    //         ancestorBirthplaces.get(migration.parent_id) || null;
-    //     }
+        // Check if the parent's birthplace is NULL
+        let parentBirthplace = migration.parent_birth || null;
+        if (!parentBirthplace && migration.parent_id) {
+          parentBirthplace =
+            ancestorBirthplaces.get(migration.parent_id) || null;
+        }
 
-    //     // Store parent birthplace in ancestor map (if valid)
-    //     if (parentBirthplace && migration.parent_id) {
-    //       ancestorBirthplaces.set(migration.parent_id, parentBirthplace);
-    //     }
+        // Store parent birthplace in ancestor map (if valid)
+        if (parentBirthplace && migration.parent_id) {
+          ancestorBirthplaces.set(migration.parent_id, parentBirthplace);
+        }
 
-    //     // Check if the child's birthplace is NULL
-    //     let childBirthplace = migration.child_birth || null;
-    //     if (!childBirthplace && migration.child_id) {
-    //       childBirthplace =
-    //         ancestorBirthplaces.get(migration.child_id) || parentBirthplace;
-    //     }
+        // Check if the child's birthplace is NULL
+        let childBirthplace = migration.child_birth || null;
+        if (!childBirthplace && migration.child_id) {
+          childBirthplace =
+            ancestorBirthplaces.get(migration.child_id) || parentBirthplace;
+        }
 
-    //     // Store child's birthplace in ancestor map (if valid)
-    //     if (childBirthplace && migration.child_id) {
-    //       ancestorBirthplaces.set(migration.child_id, childBirthplace);
-    //     }
+        // Store child's birthplace in ancestor map (if valid)
+        if (childBirthplace && migration.child_id) {
+          ancestorBirthplaces.set(migration.child_id, childBirthplace);
+        }
 
-    //     // Get coordinates
-    //     const parentCoords = await geocodeLocation(parentBirthplace);
-    //     const childCoords = await geocodeLocation(childBirthplace);
+        // Get coordinates
+        const parentCoords = await geocodeLocation(parentBirthplace);
+        const childCoords = await geocodeLocation(childBirthplace);
 
-    //     //console.log(`${parentBirthplace} > ${childBirthplace}`);
+        //console.log(`${parentBirthplace} > ${childBirthplace}`);
 
-    //     let relation = migration.relation_to_user[0];
-    //     let unchangedRelation = relation;
-    //     if (relation < 7) {
-    //       relation += 20;
-    //     } else {
-    //       relation += 50;
-    //     }
+        let relation = migration.relation_to_user[0];
+        let unchangedRelation = relation;
+        if (relation < 7) {
+          relation += 20;
+        } else {
+          relation += 50;
+        }
 
-    //     if (parentCoords && childCoords) {
-    //       //loads data of parent and child to populate popups
-    //       const polylineDataMap = new Map(); // Store data for each polyline
+        if (parentCoords && childCoords) {
+          //loads data of parent and child to populate popups
+          const polylineDataMap = new Map(); // Store data for each polyline
 
-    //       const polylineKey = `${parentCoords}-${childCoords}`;
+          const polylineKey = `${parentCoords}-${childCoords}`;
 
-    //       if (!polylineDataMap.has(polylineKey)) {
-    //         polylineDataMap.set(polylineKey, []);
-    //       }
+          if (!polylineDataMap.has(polylineKey)) {
+            polylineDataMap.set(polylineKey, []);
+          }
 
-    //       polylineDataMap.get(polylineKey).push({
-    //         parent: {
-    //           name: migration.parent_name,
-    //           birth: migration.parent_birth,
-    //           dob: migration.parent_dob,
-    //           id: migration.parent_id,
-    //         },
-    //         child: {
-    //           name: migration.child_name,
-    //           birth: migration.child_birth,
-    //           dob: migration.child_dob,
-    //           id: migration.child_id,
-    //         },
-    //       });
+          polylineDataMap.get(polylineKey).push({
+            parent: {
+              name: migration.parent_name,
+              birth: migration.parent_birth,
+              dob: migration.parent_dob,
+              id: migration.parent_id,
+            },
+            child: {
+              name: migration.child_name,
+              birth: migration.child_birth,
+              dob: migration.child_dob,
+              id: migration.child_id,
+            },
+          });
 
-    //       let polyline = "";
-    //       if (unchangedRelation < 7) {
-    //         polyline = L.polyline([parentCoords, childCoords], {
-    //           color: "blue",
-    //           weight: 4,
-    //           opacity: getOpacity(relation),
-    //         }).addTo(migrationLayer);
-    //       } else if (unchangedRelation >= 7 && unchangedRelation <= 17) {
-    //         polyline = L.polyline([parentCoords, childCoords], {
-    //           color: "green",
-    //           weight: 4,
-    //           opacity: getOpacity(relation),
-    //         }).addTo(migrationLayer);
-    //       } else if (unchangedRelation > 17) {
-    //         polyline = L.polyline([parentCoords, childCoords], {
-    //           color: "black",
-    //           weight: 4,
-    //           opacity: getOpacity(relation),
-    //         }).addTo(migrationLayer);
-    //       }
+          let polyline = "";
+          if (unchangedRelation < 7) {
+            polyline = L.polyline([parentCoords, childCoords], {
+              color: "blue",
+              weight: 4,
+              opacity: getOpacity(relation),
+            }).addTo(migrationLayer);
+          } else if (unchangedRelation >= 7 && unchangedRelation <= 17) {
+            polyline = L.polyline([parentCoords, childCoords], {
+              color: "green",
+              weight: 4,
+              opacity: getOpacity(relation),
+            }).addTo(migrationLayer);
+          } else if (unchangedRelation > 17) {
+            polyline = L.polyline([parentCoords, childCoords], {
+              color: "black",
+              weight: 4,
+              opacity: getOpacity(relation),
+            }).addTo(migrationLayer);
+          }
 
-    //       polyline.on("click", (e) => {
-    //         const details = polylineDataMap
-    //           .get(polylineKey)
-    //           .map(
-    //             (entry) =>
-    //               `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (b.${entry.parent.dob}) - ${entry.parent.birth}</a><br>
-    //                <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (b.${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
-    //           )
-    //           .join("");
+          polyline.on("click", (e) => {
+            const details = polylineDataMap
+              .get(polylineKey)
+              .map(
+                (entry) =>
+                  `<b>Parent:</b> <a class="popup_migration_link" href="./profile/${entry.parent.id}" target="_blank">${entry.parent.name} (b.${entry.parent.dob}) - ${entry.parent.birth}</a><br>
+                   <b>Child:</b> <a class="popup_migration_link" href="./profile/${entry.child.id}" target="_blank">${entry.child.name} (b.${entry.child.dob}) - ${entry.child.birth}</a><br><br>`
+              )
+              .join("");
 
-    //         L.popup()
-    //           .setLatLng(e.latlng)
-    //           .setContent(`<div>${details}</div>`)
-    //           .openOn(map);
-    //       });
+            L.popup()
+              .setLatLng(e.latlng)
+              .setContent(`<div>${details}</div>`)
+              .openOn(map);
+          });
 
-    //       polylineDataMap.get(polylineKey).polyline = polyline;
+          polylineDataMap.get(polylineKey).polyline = polyline;
 
-    //       // Add an arrowhead to the polyline
-    //       setTimeout(() => {
-    //         const decorator = L.polylineDecorator(polyline, {
-    //           patterns: [
-    //             {
-    //               pixelSize: 14,
-    //               offset: "10%", // Start arrows 10% into the line
-    //               repeat: "20%", // Repeat every 20% of the line length
-    //               symbol: L.Symbol.arrowHead({
-    //                 headAngle: 30,
-    //                 pathOptions: {
-    //                   stroke: true,
-    //                   color: "blue",
-    //                   opacity: getOpacity(relation + 40), // Apply opacity here
-    //                 },
-    //               }),
-    //             },
-    //           ],
-    //         }).addTo(migrationLayer);
-    //       }, 100);
-    //     }
+          // Add an arrowhead to the polyline
+          setTimeout(() => {
+            const decorator = L.polylineDecorator(polyline, {
+              patterns: [
+                {
+                  pixelSize: 14,
+                  offset: "10%", // Start arrows 10% into the line
+                  repeat: "20%", // Repeat every 20% of the line length
+                  symbol: L.Symbol.arrowHead({
+                    headAngle: 30,
+                    pathOptions: {
+                      stroke: true,
+                      color: "blue",
+                      opacity: getOpacity(relation + 40), // Apply opacity here
+                    },
+                  }),
+                },
+              ],
+            }).addTo(migrationLayer);
+          }, 100);
+        }
 
-    //     // Update progress
-    //     setProgress((prevState) => ({
-    //       current: prevState.current + 1,
-    //       total: prevState.total,
-    //     }));
-    //   }
-    // };
+        // Update progress
+        setProgress((prevState) => ({
+          current: prevState.current + 1,
+          total: prevState.total,
+        }));
+      }
+    };
 
-    // plotParentChildMigrations();
+    plotParentChildMigrations();
 
-    // L.control
-    //   .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
-    //   .addTo(map);
+    L.control
+      .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
+      .addTo(map);
 
     /***ANF BORDERS**************************************/
 
