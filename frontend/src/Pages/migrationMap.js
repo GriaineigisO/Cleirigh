@@ -9,11 +9,18 @@ const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
+  
+
   useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(initMap);
+
+    const baseMaps = {
+      "OpenStreetMap": initMap
+    };
+    
     // Create a custom control for the info button
     const infoControl = L.control({ position: "topright" });
 
@@ -423,10 +430,16 @@ const FamilyMigrationMap = () => {
     addPolygon(anfOriginCoords, "red")
     addPolygon(nigdeCoords, "red")
 
-    /******************************************************/
+   
+
+    const overlayMaps = {
+      "ANF Expansion": anfExpansionLayer // Layer is registered but NOT added yet
+    };
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
   }, [map]);
+  
+  /******************************************************/
 
   return (
     <div style={{ height: "100vh" }}>
