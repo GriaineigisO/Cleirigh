@@ -444,8 +444,7 @@ const FamilyMigrationMap = () => {
     cyprusCoords = fixCoords(cyprusCoords)
 
 
-
-    //some coords are taken from polygons drawn on google earth which are long - lat - altitude but leaflet uses lat - long, this function handles this conversion
+    //some coords are taken from polygons drawn on google earth which are [long, lat, altitude] but leaflet uses [lat, long], this function handles this conversion
     function fixCoords(coords) {
       let fixedCoords = [];
       for (let i = 0; i < coords.length; i++) {
@@ -456,6 +455,7 @@ const FamilyMigrationMap = () => {
           fixedCoords.push(arr);
         }
       }
+      console.log(fixedCoords)
       return fixedCoords;
     }
 
