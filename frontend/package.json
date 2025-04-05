@@ -21,6 +21,7 @@
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "leaflet-arrowheads": "^1.4.0",
+    "leaflet-curve": "^1.0.0",
     "leaflet-polylinedecorator": "^1.6.0",
     "lodash": "^4.17.21",
     "popper.js": "^1.16.1",

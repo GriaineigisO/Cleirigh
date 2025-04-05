@@ -3,6 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-arrowheads";
 import "leaflet-polylinedecorator";
+import 'leaflet-curve';
 
 const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
@@ -268,36 +269,61 @@ const FamilyMigrationMap = () => {
     let syvota = [39.55142338246975, 20.180992582746878];
     let rossano = [39.57185552491794, 16.643531035064285];
     let split = [43.519201932947865, 16.51378613302088];
+
     const plotANFExpansion = (from, to) => {
+      // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
+      let polyline = "";
       let opacity = 0.5;
       let weight = 8;
       let colour = "brown";
     
-      // Draw the polyline
-      const polyline = L.polyline([from, to], {
-        color: colour,
-        weight: weight,
-        opacity: opacity,
-      }).addTo(anfExpansionLayer);
+      // Function to calculate control point for the curve
+      const getControlPoint = (from, to, curveStrength = 0.3) => {
+        const latMid = (from[0] + to[0]) / 2;
+        const lngMid = (from[1] + to[1]) / 2;
+        const dx = to[1] - from[1];
+        const dy = to[0] - from[0];
+        const norm = Math.sqrt(dx * dx + dy * dy);
+        const offsetLat = -dy / norm * curveStrength;
+        const offsetLng = dx / norm * curveStrength;
     
-      // Calculate angle in degrees for rotation (from → to)
-      const angle =
-      (Math.atan2(to[1] - from[1], to[0] - from[0]) * 180) / Math.PI;
+        return [latMid + offsetLat, lngMid + offsetLng];
+      };
     
-      // Custom arrow icon with an outstretched triangle
+      // Calculate control point for the curve
+      const controlPoint = getControlPoint(from, to, 1.2); // Adjust the curve strength if needed
+    
+      // Create the curved polyline with control point
+      polyline = L.curve(
+        ['M', from, 'Q', controlPoint, to],
+        {
+          color: colour,
+          weight: weight,
+          opacity: opacity,
+        }
+      ).addTo(anfExpansionLayer);
+    
+      // Calculate the angle for the arrow
+      const angle = (Math.atan2(to[0] - from[0], to[1] - from[1]) * 180) / Math.PI;
+    
+      // Create an arrowhead marker (divIcon shaped like a triangle)
       const arrowIcon = L.divIcon({
-        className: "",
-        html: `<svg width="30" height="30" viewBox="0 0 30 30" style="transform: rotate(${angle}deg);">
-          <polygon points="15,0 5,25 25,25" fill="${colour}" />
-        </svg>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
+        className: '',
+        html: `<div style="
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 20px solid brown;
+          transform: rotate(${angle}deg);
+        "></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
       });
     
-      // Place marker at the end of the polyline
+      // Place the arrow at the end of the curved polyline
       L.marker(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
     };
-    
     
 
     plotANFExpansion(ANFOriginCoords, cyprus);
