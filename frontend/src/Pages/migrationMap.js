@@ -9,14 +9,11 @@ const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
-
   useEffect(() => {
     const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(initMap);
-
-    
     // Create a custom control for the info button
     const infoControl = L.control({ position: "topright" });
 
@@ -421,7 +418,6 @@ const FamilyMigrationMap = () => {
     ];
 
 
-
     function addPolygon(coords, color, opacity) {
       // Create a polygon with no visible border
       let polygon = L.polygon(coords, {
@@ -444,18 +440,18 @@ const FamilyMigrationMap = () => {
 
     addPolygon(anfOriginCoords, "red", 0.8)
     addPolygon(nigdeCoords, "red", 0.8)
-    addPolygon(southernAnatoliaCoords, "orange", 0.5)
+    addPolygon(southernAnatolia, "orange", 0.5)
 
-   
+    /******************************************************/
 
-    const overlayMaps = {
-      "ANF Expansion": anfExpansionLayer // Layer is registered but NOT added yet
-    };
-
-    L.control.layers(overlayMaps).addTo(map);
+    L.control
+      .layers(
+        null,
+        { "Anatolian Neolithic Farmer Expansion": anfExpansionLayer },
+        { collapsed: false }
+      )
+      .addTo(map);
   }, [map]);
-  
-  /******************************************************/
 
   return (
     <div style={{ height: "100vh" }}>
