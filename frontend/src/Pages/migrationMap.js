@@ -294,6 +294,8 @@ const FamilyMigrationMap = () => {
     let craiova = [44.177273889432506, 23.80453277298072];
     let burgas = [42.657869532924906, 27.25344976139531];
     let babadag = [44.77473442415656, 28.849941790154233];
+    let tab = [46.7482705788913, 18.093693044006326];
+    let austria = [47.61713200458379, 14.637853653202992];
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -369,6 +371,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(northmacedonia, serbia);
     plotANFExpansion(sofia, craiova);
     plotANFExpansion(burgas, babadag);
+    plotANFExpansion(tab, austria);
 
     /***ANF BORDERS**************************************/
     let anfOriginCoords = [
@@ -388,7 +391,7 @@ const FamilyMigrationMap = () => {
       opacity: 0, // Border opacity (no opacity, making the border invisible)
       fillColor: "red", // Fill color
       fillOpacity: 0.5, // Fill opacity
-      smoothFactor: 4, // Smooths out the curves (doesn't make it fully curved, but helps with smoothness)
+      smoothFactor: 9, // Smooths out the curves (doesn't make it fully curved, but helps with smoothness)
     }).addTo(anfExpansionLayer);
 
     // Apply a blur effect to the polygon's fill (not the border)
@@ -398,7 +401,7 @@ const FamilyMigrationMap = () => {
       opacity: 0,
       fillColor: "red",
       fillOpacity: 0.5,
-      filter: "blur(5px)", // Apply blur effect to the fill
+      filter: "blur(20px)", // Apply blur effect to the fill
     });
 
     /******************************************************/
