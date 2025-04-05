@@ -395,34 +395,24 @@ const FamilyMigrationMap = () => {
       smoothFactor: 4, // Smooth out the curve
     }).addTo(anfExpansionLayer);
 
+    // Apply the blur effect to the polygon using its path element
+    anfOrigin.on("add", function () {
+      // Get the path element and apply the filter for the blur effect
+      let pathElement = anfOrigin._path;
+      pathElement.setAttribute("style", "filter: blur(10px)");
+    });
+
     // Create a custom HTML div to simulate the blurred fill effect
-    const createBlurredOverlay = (anfOriginCoords) => {
-      const overlayDiv = document.createElement("div");
-      overlayDiv.classList.add("blur-overlay");
+    // const createBlurredOverlay = (anfOriginCoords) => {
+    //   const overlayDiv = document.createElement("div");
+    //   overlayDiv.classList.add("blur-overlay");
 
-      // Dynamically set the position of the div based on coordinates
-      // You may need to implement a way to properly position this div on the map
+    //   document.body.appendChild(overlayDiv);
+    //   return overlayDiv;
+    // };
 
-      document.body.appendChild(overlayDiv);
-      return overlayDiv;
-    };
-
-    // Apply the custom div to the map
-    let blurOverlay = createBlurredOverlay(anfOriginCoords);
-
-    // Apply custom CSS for the blur effect
-    let style = document.createElement("style");
-    style.innerHTML = `
-  .blur-overlay {
-    position: absolute;
-    background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent fill */
-    filter: blur(5px); /* Apply blur */
-    border-radius: 10px; /* Optional: for rounded corners */
-    width: 100px; /* Adjust size as needed */
-    height: 100px; /* Adjust size as needed */
-  }
-`;
-    document.head.appendChild(style);
+    // // Apply the custom div to the map
+    // let blurOverlay = createBlurredOverlay(anfOriginCoords);
 
     /******************************************************/
 
