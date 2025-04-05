@@ -298,6 +298,7 @@ const FamilyMigrationMap = () => {
     let austria = [47.61713200458379, 14.637853653202992];
     let linz = [48.583915311724475, 14.172928491228985];
     let ostrava = [49.90699335635247, 17.439098596615057];
+    let anatalya = [37.040801521583184, 30.822048028480644];
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -352,7 +353,8 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(crete, cutro);
     plotANFExpansion(crete, nafplion);
     plotANFExpansion(ANFOriginCoords, bademdere);
-    plotANFExpansion(bademdere, kusadasi);
+    plotANFExpansion(bademdere, anatalya);
+    plotANFExpansion(anatalya, kusadasi);
     plotANFExpansion(bademdere, izmit);
     plotANFExpansion(kusadasi, thessaloniki);
     plotANFExpansion(thessaloniki, tirana);
@@ -417,6 +419,26 @@ const FamilyMigrationMap = () => {
       [38.56951511803281, 34.582868549367326]
     ];
 
+    let anatalyaCoords = [
+      [31.27860633437128,36.81862874213588];
+[31.3297049441794,36.95880943571527];
+[31.34272344310054,37.24889917302281];
+[31.26763650793056,37.48457806488227];
+[30.85693032054667,37.76107190847018];
+[30.53916233601901,37.83350189916775];
+[30.01696383860413,37.75783048529645];
+[29.72699378795706,37.39004482233363];
+[29.67929886245489,37.00881143949443];
+[29.84418592756568,36.59699478475412];
+[30.22631704898586,36.30964615739611];
+[30.4892798152122,36.26462404666757];
+[30.55760943915834,36.46243720043351];
+[30.56569183284663,36.68983836406246];
+[30.69403795906551,36.86774867885865];
+[30.89191894996338,36.85955538398348];
+[31.27860633437128,36.81862874213588];
+    ]
+
 
     function addPolygon(coords, color, opacity) {
       // Create a polygon with no visible border
@@ -441,6 +463,7 @@ const FamilyMigrationMap = () => {
     addPolygon(anfOriginCoords, "red", 0.8)
     addPolygon(nigdeCoords, "red", 0.8)
     addPolygon(southernAnatoliaCoords, "orange", 0.5)
+    addPolygon(anatalyaCoords, "orange", 0.5)
 
     /******************************************************/
 
