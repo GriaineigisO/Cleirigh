@@ -382,10 +382,10 @@ const FamilyMigrationMap = () => {
     ];
 
     let anfOrigin = L.polygon(anfOriginCoords, {
-      color: "brown", // Border color
+      color: "red", // Border color
       weight: 8, // Border thickness
       opacity: 0.6, // Border opacity
-      fillColor: "yellow", // Fill color
+      fillColor: "red", // Fill color
       fillOpacity: 0.5, // Fill opacity
       smoothFactor: 1, // Smooths out the curves between points (not necessary for simple polygons)
     }).addTo(anfExpansionLayer);
@@ -395,7 +395,6 @@ const FamilyMigrationMap = () => {
       weight: 8, // Border thickness
       opacity: 8, // Border opacity
       color: "red", // Border color
-      dashArray: "5, 10", // Optional: adds a dashed effect to the border (not required)
     });
 
     L.control
