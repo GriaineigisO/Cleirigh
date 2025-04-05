@@ -961,9 +961,10 @@ textarea {
   width: 100%;
 }
 
-/* Define an SVG filter for the blur effect */
-#blur-filter {
-  filter: blur(10px); /* Adjust the blur level as needed */
+/* App.css */
+.leaflet-polygon {
+  filter: blur(10px) !important; /* Ensure the blur is applied */
+  transition: filter 0.3s ease-in-out;  /* Optional: Smooth transition for blur */
 }
 
 
