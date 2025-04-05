@@ -374,6 +374,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(osiek, austria);
 
     /***ANF BORDERS**************************************/
+    // Coordinates for the polygon
     let anfOriginCoords = [
       [38.65592378562599, 37.625977094769496],
       [38.46503850516063, 36.77157632010816],
@@ -384,7 +385,7 @@ const FamilyMigrationMap = () => {
       [37.67846419124882, 39.1812757327024],
     ];
 
-    // Create polygon without visible border
+    // Create a polygon with no visible border
     let anfOrigin = L.polygon(anfOriginCoords, {
       color: "transparent", // No visible border
       weight: 0, // No border thickness
@@ -394,24 +395,35 @@ const FamilyMigrationMap = () => {
       smoothFactor: 4, // Smooth out the curve
     }).addTo(anfExpansionLayer);
 
-    // Custom overlay for the blurred fill
-    const overlay = L.divOverlay({
-      className: "blur-overlay", // Add a class for custom styling
-    })
-      .setLatLngs(anfOriginCoords)
-      .addTo(anfExpansionLayer);
+    // Create a custom HTML div to simulate the blurred fill effect
+    const createBlurredOverlay = (anfOriginCoords) => {
+      const overlayDiv = document.createElement("div");
+      overlayDiv.classList.add("blur-overlay");
 
-    // Apply custom styles using CSS
+      // Dynamically set the position of the div based on coordinates
+      // You may need to implement a way to properly position this div on the map
+
+      document.body.appendChild(overlayDiv);
+      return overlayDiv;
+    };
+
+    // Apply the custom div to the map
+    let blurOverlay = createBlurredOverlay(anfOriginCoords);
+
+    // Apply custom CSS for the blur effect
     let style = document.createElement("style");
     style.innerHTML = `
   .blur-overlay {
-    filter: blur(5px); /* Apply blur only to this overlay */
     position: absolute;
     background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent fill */
-    border-radius: 10px; /* Optional: you can adjust radius to create rounded borders */
+    filter: blur(5px); /* Apply blur */
+    border-radius: 10px; /* Optional: for rounded corners */
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
   }
 `;
     document.head.appendChild(style);
+
     /******************************************************/
 
     L.control
