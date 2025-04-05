@@ -294,7 +294,7 @@ const FamilyMigrationMap = () => {
     let craiova = [44.177273889432506, 23.80453277298072];
     let burgas = [42.657869532924906, 27.25344976139531];
     let babadag = [44.77473442415656, 28.849941790154233];
-    let tab = [46.7482705788913, 18.093693044006326];
+    let osiek = [45.52949591904141, 18.68940193957483];
     let austria = [47.61713200458379, 14.637853653202992];
 
     const plotANFExpansion = (from, to) => {
@@ -371,7 +371,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(northmacedonia, serbia);
     plotANFExpansion(sofia, craiova);
     plotANFExpansion(burgas, babadag);
-    plotANFExpansion(tab, austria);
+    plotANFExpansion(osiek, austria);
 
     /***ANF BORDERS**************************************/
     let anfOriginCoords = [
@@ -384,26 +384,34 @@ const FamilyMigrationMap = () => {
       [37.67846419124882, 39.1812757327024],
     ];
 
-    // Polygon creation with no border (invisible border)
+    // Create polygon without visible border
     let anfOrigin = L.polygon(anfOriginCoords, {
-      color: "transparent", // Border color (invisible)
-      weight: 0, // Border thickness (0 to make it invisible)
-      opacity: 0, // Border opacity (no opacity, making the border invisible)
+      color: "transparent", // No visible border
+      weight: 0, // No border thickness
+      opacity: 0, // No border opacity
       fillColor: "red", // Fill color
       fillOpacity: 0.5, // Fill opacity
-      smoothFactor: 9, // Smooths out the curves (doesn't make it fully curved, but helps with smoothness)
+      smoothFactor: 4, // Smooth out the curve
     }).addTo(anfExpansionLayer);
 
-    // Apply a blur effect to the polygon's fill (not the border)
-    anfOrigin.setStyle({
-      color: "transparent", // Border still invisible
-      weight: 0,
-      opacity: 0,
-      fillColor: "red",
-      fillOpacity: 0.5,
-      filter: "blur(20px)", // Apply blur effect to the fill
-    });
+    // Custom overlay for the blurred fill
+    const overlay = L.divOverlay({
+      className: "blur-overlay", // Add a class for custom styling
+    })
+      .setLatLngs(anfOriginCoords)
+      .addTo(anfExpansionLayer);
 
+    // Apply custom styles using CSS
+    let style = document.createElement("style");
+    style.innerHTML = `
+  .blur-overlay {
+    filter: blur(5px); /* Apply blur only to this overlay */
+    position: absolute;
+    background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent fill */
+    border-radius: 10px; /* Optional: you can adjust radius to create rounded borders */
+  }
+`;
+    document.head.appendChild(style);
     /******************************************************/
 
     L.control
