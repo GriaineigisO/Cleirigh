@@ -484,6 +484,7 @@ const FamilyMigrationMap = () => {
     addPolygon(nigdeCoords, "red", 0.8)
     addPolygon(southernAnatoliaCoords, "orange", 0.5)
     addPolygon(anatalyaCoords, "orange", 0.5)
+    addPolygon(cyprusCoords, "orange", 0.5)
 
     /******************************************************/
 
