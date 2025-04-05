@@ -440,7 +440,7 @@ const FamilyMigrationMap = () => {
 
     addPolygon(anfOriginCoords, "red", 0.8)
     addPolygon(nigdeCoords, "red", 0.8)
-    addPolygon(southernAnatolia, "orange", 0.5)
+    addPolygon(southernAnatoliaCoords, "orange", 0.5)
 
     /******************************************************/
 
