@@ -304,7 +304,7 @@ const FamilyMigrationMap = () => {
       ).addTo(anfExpansionLayer);
     
       // Calculate the angle for the arrow
-      const angle = (Math.atan2(to[0] - from[0], to[1] - from[1]) * 180) / Math.PI;
+      const angle = (Math.atan2(to[1] - from[1], to[0] - from[0]) * 180) / Math.PI;
     
       // Create an arrowhead marker (divIcon shaped like a triangle)
       const arrowIcon = L.divIcon({
