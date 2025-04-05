@@ -961,6 +961,12 @@ textarea {
   width: 100%;
 }
 
+/* Define an SVG filter for the blur effect */
+#blur-filter {
+  filter: blur(10px); /* Adjust the blur level as needed */
+}
+
+
 @media print {
   .gg-parent-buttons,
   #left-button,

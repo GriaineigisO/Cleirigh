@@ -395,11 +395,16 @@ const FamilyMigrationMap = () => {
       smoothFactor: 4, // Smooth out the curve
     }).addTo(anfExpansionLayer);
 
-    // Apply the blur effect to the polygon using its path element
+    // Define the filter id
+    const filterId = "blur-filter";
+
+    // Add the SVG filter to the polygon
     anfOrigin.on("add", function () {
-      // Get the path element and apply the filter for the blur effect
-      let pathElement = anfOrigin._path;
-      pathElement.setAttribute("style", "filter: blur(10px)");
+      // Access the path of the polygon
+      const path = anfOrigin._path;
+
+      // Apply the CSS filter to the polygon path element
+      path.style.filter = `url(#${filterId})`;
     });
 
     // Create a custom HTML div to simulate the blurred fill effect
