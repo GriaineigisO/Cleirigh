@@ -257,126 +257,6 @@ const FamilyMigrationMap = () => {
     //   .layers(null, { "Migration Paths": migrationLayer }, { collapsed: false })
     //   .addTo(map);
 
-    let ANFOriginCoords = [38.109904916253555, 37.56280292126914];
-    let cyprus = [34.937300019663, 33.12242036505382];
-    let crete = [35.231110035824535, 24.80451044415649];
-    let bademdere = [37.91529817816538, 35.076834657380765];
-    let kusadasi = [37.85638183728916, 27.290315419375275];
-    let thessaloniki = [40.67467495371143, 22.894976499076776];
-    let tirana = [41.334582276261884, 19.677275378989766];
-    let cutro = [39.027030380708986, 16.885483724873207];
-    let nafplion = [37.567760841027386, 22.98740570268659];
-    let syvota = [39.55142338246975, 20.180992582746878];
-    let rossano = [39.57185552491794, 16.643531035064285];
-    let split = [43.519201932947865, 16.51378613302088];
-    let paola = [39.34275024440744, 16.04286760094992];
-    let latina = [41.43538325186495, 12.86778800709526];
-    let ostia = [41.75491678543996, 12.274359485378756];
-    let sardinia = [39.8677093953908, 9.047691232289715];
-    let piombino = [42.969452702406, 10.525436595835794];
-    let genoa = [44.46942144131711, 8.841474913224822];
-    let frejus = [43.37954726509159, 6.604082213078283];
-    let montpellier = [43.58487223384653, 3.8178397375090576];
-    let girona = [42.40345722881095, 2.879939763110085];
-    let valencia = [39.374613208102666, -0.534081545192991];
-    let seville = [37.038532578492855, -5.206541501117564];
-    let lisbon = [38.8665697002456, -8.923271011495029];
-    let lesvans = [44.3901009211351, 4.117062995377118];
-    let lemans = [48.23111664095748, 0.6421339818132111];
-    let brittany = [48.55648532612354, -4.163733952892681];
-    let southwales = [51.84800378764838, -4.8610559669437166];
-    let lille = [50.60889068902996, 2.1498572554072446];
-    let london = [51.344590583719764, 0.05789121325413622];
-    let izmit = [40.68726386603334, 30.72121329075923];
-    let northmacedonia = [42.05903556486896, 22.485274908559845];
-    let serbia = [44.39314119869013, 20.7137000620518];
-    let sofia = [42.69943560665004, 23.08836421800939];
-    let craiova = [44.177273889432506, 23.80453277298072];
-    let burgas = [42.657869532924906, 27.25344976139531];
-    let babadag = [44.77473442415656, 28.849941790154233];
-    let osiek = [45.52949591904141, 18.68940193957483];
-    let austria = [47.61713200458379, 14.637853653202992];
-    let linz = [48.583915311724475, 14.172928491228985];
-    let ostrava = [49.90699335635247, 17.439098596615057];
-    let anatalya = [37.040801521583184, 30.822048028480644];
-
-    const plotANFExpansion = (from, to) => {
-      // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
-      let polyline = "";
-      let opacity = 0.5;
-      let weight = 8;
-      let colour = "brown";
-
-      // Function to calculate control point for the curve
-      const getControlPoint = (from, to, curveStrength = 0.3) => {
-        const latMid = (from[0] + to[0]) / 2;
-        const lngMid = (from[1] + to[1]) / 2;
-        const dx = to[1] - from[1];
-        const dy = to[0] - from[0];
-        const norm = Math.sqrt(dx * dx + dy * dy);
-        const offsetLat = (-dy / norm) * curveStrength;
-        const offsetLng = (dx / norm) * curveStrength;
-
-        return [latMid + offsetLat, lngMid + offsetLng];
-      };
-
-      // Calculate control point for the curve
-      const controlPoint = getControlPoint(from, to, 1.2); // Adjust the curve strength if needed
-
-      // Create the curved polyline with control point
-      polyline = L.curve(["M", from, "Q", controlPoint, to], {
-        color: colour,
-        weight: weight,
-        opacity: opacity,
-      }).addTo(anfExpansionLayer);
-
-      // Calculate the angle for the arrow
-      const angle =
-        (Math.atan2(to[1] - from[1], to[0] - from[0]) * 180) / Math.PI;
-
-      // Custom arrow icon with an outstretched triangle
-      const arrowIcon = L.divIcon({
-        className: "",
-        html: `<svg width="30" height="30" viewBox="0 0 30 30" style="transform: rotate(${angle}deg);">
-      <polygon points="15,0, 5,25 25,25" fill="${colour}" />
-    </svg>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-      });
-
-      // Place the arrow at the end of the curved polyline
-      L.marker(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
-    };
-
-    plotANFExpansion(ANFOriginCoords, cyprus);
-    plotANFExpansion(cyprus, crete);
-    plotANFExpansion(crete, cutro);
-    plotANFExpansion(crete, nafplion);
-    plotANFExpansion(ANFOriginCoords, bademdere);
-    plotANFExpansion(bademdere, anatalya);
-    plotANFExpansion(anatalya, kusadasi);
-    plotANFExpansion(bademdere, izmit);
-    plotANFExpansion(kusadasi, thessaloniki);
-    plotANFExpansion(thessaloniki, tirana);
-    plotANFExpansion(nafplion, syvota);
-    plotANFExpansion(syvota, rossano);
-    plotANFExpansion(syvota, split);
-    plotANFExpansion(paola, latina);
-    plotANFExpansion(ostia, sardinia);
-    plotANFExpansion(piombino, genoa);
-    plotANFExpansion(genoa, frejus);
-    plotANFExpansion(frejus, montpellier);
-    plotANFExpansion(girona, valencia);
-    plotANFExpansion(valencia, seville);
-    plotANFExpansion(seville, lisbon);
-    plotANFExpansion(lesvans, lemans);
-    plotANFExpansion(brittany, southwales);
-    plotANFExpansion(lille, london);
-    plotANFExpansion(northmacedonia, serbia);
-    plotANFExpansion(sofia, craiova);
-    plotANFExpansion(burgas, babadag);
-    plotANFExpansion(osiek, austria);
-    plotANFExpansion(linz, ostrava);
 
     /***ANF BORDERS**************************************/
 
@@ -743,6 +623,10 @@ const FamilyMigrationMap = () => {
 
     northwestAnatoliaCoords = fixCoords(northwestAnatoliaCoords);
 
+    let nafplionCoords = [[23.14448545460216,38.06172254939011,0],[22.84554689949073,38.03644549344567,0],[22.87873686394086,37.92930794649016,0],[22.55442901716221,38.10639928262282,0],[22.28481099358733,38.1875701558473,0],[22.23607513653912,38.07937901644083,0],[22.23720048288685,37.85795638420363,0],[22.27415177777769,37.77410578586606,0],[22.47244621345434,37.48588269395741,0],[22.78481220409642,37.42253803219032,0],[22.76999693067576,37.55115912153599,0],[22.99267604495904,37.49058114289438,0],[23.19877256935614,37.23720977164109,0],[23.55577315011073,37.36143568896152,0],[23.5284515507187,37.45891801093472,0],[23.22907169678885,37.62093074626739,0],[23.12576460228786,37.81393047646395,0],[23.14448545460216,38.06172254939011,0]]
+
+    nafplionCoords = fixCoords(nafplionCoords)
+
     //some coords are taken from polygons drawn on google earth which are [long, lat] but leaflet uses [lat, long], this function handles this conversion
     function fixCoords(coords) {
       for (let i = 0; i < coords.length; i++) {
@@ -779,9 +663,133 @@ const FamilyMigrationMap = () => {
     addPolygon(anatalyaCoords, "orange", 0.5);
     addPolygon(cyprusCoords, "red", 0.8);
     addPolygon(westAnatoliaCoords, "orange", 0.5);
+    addPolygon(nafplionCoords, "orange", 0.5);
     addPolygon(northwestAnatoliaCoords, "yellow", 0.8);
 
     /******************************************************/
+
+    let ANFOriginCoords = [38.109904916253555, 37.56280292126914];
+    let cyprus = [34.937300019663, 33.12242036505382];
+    let crete = [35.231110035824535, 24.80451044415649];
+    let bademdere = [37.91529817816538, 35.076834657380765];
+    let kusadasi = [37.85638183728916, 27.290315419375275];
+    let thessaloniki = [40.67467495371143, 22.894976499076776];
+    let tirana = [41.334582276261884, 19.677275378989766];
+    let cutro = [39.027030380708986, 16.885483724873207];
+    let nafplion = [37.567760841027386, 22.98740570268659];
+    let syvota = [39.55142338246975, 20.180992582746878];
+    let rossano = [39.57185552491794, 16.643531035064285];
+    let split = [43.519201932947865, 16.51378613302088];
+    let paola = [39.34275024440744, 16.04286760094992];
+    let latina = [41.43538325186495, 12.86778800709526];
+    let ostia = [41.75491678543996, 12.274359485378756];
+    let sardinia = [39.8677093953908, 9.047691232289715];
+    let piombino = [42.969452702406, 10.525436595835794];
+    let genoa = [44.46942144131711, 8.841474913224822];
+    let frejus = [43.37954726509159, 6.604082213078283];
+    let montpellier = [43.58487223384653, 3.8178397375090576];
+    let girona = [42.40345722881095, 2.879939763110085];
+    let valencia = [39.374613208102666, -0.534081545192991];
+    let seville = [37.038532578492855, -5.206541501117564];
+    let lisbon = [38.8665697002456, -8.923271011495029];
+    let lesvans = [44.3901009211351, 4.117062995377118];
+    let lemans = [48.23111664095748, 0.6421339818132111];
+    let brittany = [48.55648532612354, -4.163733952892681];
+    let southwales = [51.84800378764838, -4.8610559669437166];
+    let lille = [50.60889068902996, 2.1498572554072446];
+    let london = [51.344590583719764, 0.05789121325413622];
+    let izmit = [40.68726386603334, 30.72121329075923];
+    let northmacedonia = [42.05903556486896, 22.485274908559845];
+    let serbia = [44.39314119869013, 20.7137000620518];
+    let sofia = [42.69943560665004, 23.08836421800939];
+    let craiova = [44.177273889432506, 23.80453277298072];
+    let burgas = [42.657869532924906, 27.25344976139531];
+    let babadag = [44.77473442415656, 28.849941790154233];
+    let osiek = [45.52949591904141, 18.68940193957483];
+    let austria = [47.61713200458379, 14.637853653202992];
+    let linz = [48.583915311724475, 14.172928491228985];
+    let ostrava = [49.90699335635247, 17.439098596615057];
+    let anatalya = [37.040801521583184, 30.822048028480644];
+
+    const plotANFExpansion = (from, to) => {
+      // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
+      let polyline = "";
+      let opacity = 0.5;
+      let weight = 8;
+      let colour = "brown";
+
+      // Function to calculate control point for the curve
+      const getControlPoint = (from, to, curveStrength = 0.3) => {
+        const latMid = (from[0] + to[0]) / 2;
+        const lngMid = (from[1] + to[1]) / 2;
+        const dx = to[1] - from[1];
+        const dy = to[0] - from[0];
+        const norm = Math.sqrt(dx * dx + dy * dy);
+        const offsetLat = (-dy / norm) * curveStrength;
+        const offsetLng = (dx / norm) * curveStrength;
+
+        return [latMid + offsetLat, lngMid + offsetLng];
+      };
+
+      // Calculate control point for the curve
+      const controlPoint = getControlPoint(from, to, 1.2); // Adjust the curve strength if needed
+
+      // Create the curved polyline with control point
+      polyline = L.curve(["M", from, "Q", controlPoint, to], {
+        color: colour,
+        weight: weight,
+        opacity: opacity,
+      }).addTo(anfExpansionLayer);
+
+      // Calculate the angle for the arrow
+      const angle =
+        (Math.atan2(to[1] - from[1], to[0] - from[0]) * 180) / Math.PI;
+
+      // Custom arrow icon with an outstretched triangle
+      const arrowIcon = L.divIcon({
+        className: "",
+        html: `<svg width="30" height="30" viewBox="0 0 30 30" style="transform: rotate(${angle}deg);">
+      <polygon points="15,0, 5,25 25,25" fill="${colour}" />
+    </svg>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+      });
+
+      // Place the arrow at the end of the curved polyline
+      L.marker(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
+    };
+
+    plotANFExpansion(ANFOriginCoords, cyprus);
+    plotANFExpansion(cyprus, crete);
+    plotANFExpansion(crete, cutro);
+    plotANFExpansion(crete, nafplion);
+    plotANFExpansion(ANFOriginCoords, bademdere);
+    plotANFExpansion(bademdere, anatalya);
+    plotANFExpansion(anatalya, kusadasi);
+    plotANFExpansion(bademdere, izmit);
+    plotANFExpansion(kusadasi, thessaloniki);
+    plotANFExpansion(thessaloniki, tirana);
+    plotANFExpansion(nafplion, syvota);
+    plotANFExpansion(syvota, rossano);
+    plotANFExpansion(syvota, split);
+    plotANFExpansion(paola, latina);
+    plotANFExpansion(ostia, sardinia);
+    plotANFExpansion(piombino, genoa);
+    plotANFExpansion(genoa, frejus);
+    plotANFExpansion(frejus, montpellier);
+    plotANFExpansion(girona, valencia);
+    plotANFExpansion(valencia, seville);
+    plotANFExpansion(seville, lisbon);
+    plotANFExpansion(lesvans, lemans);
+    plotANFExpansion(brittany, southwales);
+    plotANFExpansion(lille, london);
+    plotANFExpansion(northmacedonia, serbia);
+    plotANFExpansion(sofia, craiova);
+    plotANFExpansion(burgas, babadag);
+    plotANFExpansion(osiek, austria);
+    plotANFExpansion(linz, ostrava);
+
+  
 
     L.control
       .layers(
