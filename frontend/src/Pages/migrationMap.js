@@ -381,22 +381,24 @@ const FamilyMigrationMap = () => {
       [37.67846419124882, 39.1812757327024],
     ];
 
+    // Polygon creation with no border (invisible border)
     let anfOrigin = L.polygon(anfOriginCoords, {
-      color: "red", // Border color
-      weight: 8, // Border thickness
-      opacity: 0.6, // Border opacity
+      color: "transparent", // Border color (invisible)
+      weight: 0, // Border thickness (0 to make it invisible)
+      opacity: 0, // Border opacity (no opacity, making the border invisible)
       fillColor: "red", // Fill color
       fillOpacity: 0.5, // Fill opacity
-      smoothFactor: 4, // Smooths out the curves between points (not necessary for simple polygons)
+      smoothFactor: 4, // Smooths out the curves (doesn't make it fully curved, but helps with smoothness)
     }).addTo(anfExpansionLayer);
 
+    // Apply a blur effect to the polygon's fill (not the border)
     anfOrigin.setStyle({
-      color: "red",
-      weight: 8,
-      opacity: 0.6,
+      color: "transparent", // Border still invisible
+      weight: 0,
+      opacity: 0,
       fillColor: "red",
       fillOpacity: 0.5,
-      filter: "blur(3px)", // Apply blur to polygon's border
+      filter: "blur(5px)", // Apply blur effect to the fill
     });
 
     /******************************************************/
