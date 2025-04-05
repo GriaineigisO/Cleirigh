@@ -296,6 +296,8 @@ const FamilyMigrationMap = () => {
     let babadag = [44.77473442415656, 28.849941790154233];
     let osiek = [45.52949591904141, 18.68940193957483];
     let austria = [47.61713200458379, 14.637853653202992];
+    let linz = [48.583915311724475, 14.172928491228985];
+    let ostrava = [49.90699335635247, 17.439098596615057];
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -372,9 +374,10 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(sofia, craiova);
     plotANFExpansion(burgas, babadag);
     plotANFExpansion(osiek, austria);
+    plotANFExpansion(linz, ostrava);
 
     /***ANF BORDERS**************************************/
-    // Coordinates for the polygon
+
     let anfOriginCoords = [
       [38.65592378562599, 37.625977094769496],
       [38.46503850516063, 36.77157632010816],
@@ -385,17 +388,34 @@ const FamilyMigrationMap = () => {
       [37.67846419124882, 39.1812757327024],
     ];
 
-    // Create a polygon with no visible border
-    let anfOrigin = L.polygon(anfOriginCoords, {
-      color: "transparent", // No visible border
-      weight: 0, // No border thickness
-      opacity: 0, // No border opacity
-      fillColor: "red", // Fill color
-      fillOpacity: 0.5, // Fill opacity
-      smoothFactor: 4, // Smooth out the curve
-    }).addTo(anfExpansionLayer);
+    let nigdeCoords = [
+      [38.282521647972935, 34.93112135582155],
+      [38.282521647972935, 34.54969697872669],
+      [38.13529661410928, 34.208422536062876],
+      [37.86108941693132, 33.9139896835686],
+      [37.43723359396372, 34.40248055247956],
+      [37.638866719894985, 35.06495447059168],
+      [38.07210904565424, 35.1920959296233],
+    ];
 
-    anfOrigin._path.setAttribute("filter", "blur(10px)");  // Apply blur directly
+
+
+    function addPolygon(coords, color) {
+      // Create a polygon with no visible border
+      let polygon = L.polygon(coords, {
+        color: "transparent", // No visible border
+        weight: 0, // No border thickness
+        opacity: 0, // No border opacity
+        fillColor: color, // Fill color
+        fillOpacity: 0.5, // Fill opacity
+        smoothFactor: 4, // Smooth out the curve
+      }).addTo(anfExpansionLayer);
+
+      polygon._path.setAttribute("filter", "blur(10px)"); // Apply blur directly
+    }
+
+    addPolygon(anfOriginCoords, "red")
+    addPolygon(nigdeCoords, "red")
 
     /******************************************************/
 
