@@ -271,35 +271,31 @@ const FamilyMigrationMap = () => {
       let weight = 8;
       let colour = "brown";
     
-      // Add the polyline to the map
+      // Draw the polyline
       const polyline = L.polyline([from, to], {
         color: colour,
         weight: weight,
         opacity: opacity,
       }).addTo(anfExpansionLayer);
     
-      // Calculate rotation angle in degrees
+      // Calculate angle in degrees for rotation (from → to)
       const angle =
         (Math.atan2(to[0] - from[0], to[1] - from[1]) * 180) / Math.PI;
     
-      // Create an arrowhead marker (divIcon shaped like a triangle)
+      // Custom arrow icon with an outstretched triangle
       const arrowIcon = L.divIcon({
         className: "",
-        html: `<div style="
-          width: 0;
-          height: 0;
-          border-left: 10px solid transparent;
-          border-right: 10px solid transparent;
-          border-bottom: 20px solid ${colour};
-          transform: rotate(${angle}deg);
-        "></div>`,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10],
+        html: `<svg width="30" height="30" viewBox="0 0 30 30" style="transform: rotate(${angle}deg);">
+          <polygon points="15,0 5,25 25,25" fill="${colour}" />
+        </svg>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
       });
     
-      // Place the arrow at the end of the line
+      // Place marker at the end of the polyline
       L.marker(to, { icon: arrowIcon }).addTo(anfExpansionLayer);
     };
+    
     
 
     plotANFExpansion(ANFOriginCoords, cyprus);
