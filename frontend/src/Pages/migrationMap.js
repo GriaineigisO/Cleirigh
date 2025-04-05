@@ -280,7 +280,7 @@ const FamilyMigrationMap = () => {
     
       // Calculate angle in degrees for rotation (from → to)
       const angle =
-        (Math.atan2(to[0] - from[0], to[1] - from[1]) * 180) / Math.PI;
+      (Math.atan2(to[1] - from[1], to[0] - from[0]) * 180) / Math.PI;
     
       // Custom arrow icon with an outstretched triangle
       const arrowIcon = L.divIcon({
