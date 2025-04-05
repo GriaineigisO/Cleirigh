@@ -9,13 +9,9 @@ const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
-  let initMap = "";
-  const baseMaps = {
-    "OpenStreetMap": initMap
-  };
 
   useEffect(() => {
-    initMap = L.map("map").setView([20, 0], 2);
+    const initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(initMap);
@@ -456,7 +452,7 @@ const FamilyMigrationMap = () => {
       "ANF Expansion": anfExpansionLayer // Layer is registered but NOT added yet
     };
 
-    L.control.layers(baseMaps, overlayMaps).addTo(map);
+    L.control.layers(overlayMaps).addTo(map);
   }, [map]);
   
   /******************************************************/
