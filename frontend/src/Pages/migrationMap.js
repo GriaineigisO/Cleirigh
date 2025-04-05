@@ -370,7 +370,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(sofia, craiova);
     plotANFExpansion(burgas, babadag);
 
-    /***ANF BORDERS**/
+    /***ANF BORDERS**************************************/
     let anfOriginCoords = [
       [38.65592378562599, 37.625977094769496],
       [38.46503850516063, 36.77157632010816],
@@ -387,9 +387,19 @@ const FamilyMigrationMap = () => {
       opacity: 0.6, // Border opacity
       fillColor: "red", // Fill color
       fillOpacity: 0.5, // Fill opacity
-      smoothFactor: 1, // Smooths out the curves between points (not necessary for simple polygons)
+      smoothFactor: 4, // Smooths out the curves between points (not necessary for simple polygons)
     }).addTo(anfExpansionLayer);
 
+    anfOrigin.setStyle({
+      color: "red",
+      weight: 8,
+      opacity: 0.6,
+      fillColor: "red",
+      fillOpacity: 0.5,
+      filter: "blur(3px)", // Apply blur to polygon's border
+    });
+
+    /******************************************************/
 
     L.control
       .layers(

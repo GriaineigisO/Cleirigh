@@ -961,10 +961,6 @@ textarea {
   width: 100%;
 }
 
-.leaflet-polygon {
-  filter: blur(2px);  /* Adjust the blur effect here */
-}
-
 @media print {
   .gg-parent-buttons,
   #left-button,
