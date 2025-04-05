@@ -271,6 +271,16 @@ const FamilyMigrationMap = () => {
     let split = [43.519201932947865, 16.51378613302088];
     let paola = [39.34275024440744, 16.04286760094992];
     let latina = [41.43538325186495, 12.86778800709526];
+    let ostia = [41.75491678543996, 12.274359485378756];
+    let sardinia = [41.02479027300788, 9.346778778244001]
+    let piombino = [42.969452702406, 10.525436595835794]
+    let genoa = [44.46942144131711, 8.841474913224822]
+    let frejus = [43.37954726509159, 6.604082213078283]
+    let montpellier = [43.58487223384653, 3.8178397375090576]
+    let girona = [42.40345722881095, 2.879939763110085]
+    let valencia = [39.374613208102666, -0.534081545192991]
+    let seville = [37.038532578492855, -5.206541501117564]
+    let lisbon = [38.8665697002456, -8.923271011495029]
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -332,6 +342,13 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(syvota, rossano);
     plotANFExpansion(syvota, split);
     plotANFExpansion(paola, latina);
+    plotANFExpansion(ostia, sardinia);
+    plotANFExpansion(piombino, genoa);
+    plotANFExpansion(genoa, frejus);
+    plotANFExpansion(frejus, montpellier);
+    plotANFExpansion(girona, valencia);
+    plotANFExpansion(valencia, seville);
+    plotANFExpansion(seville, lisbon);
 
     L.control
       .layers(
