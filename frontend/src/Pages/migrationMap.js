@@ -9,17 +9,17 @@ const FamilyMigrationMap = () => {
   const [map, setMap] = useState(null);
   const [progress, setProgress] = useState({ current: 0, total: 0 }); // State to track progress
 
-  
+  let initMap = "";
+  const baseMaps = {
+    "OpenStreetMap": initMap
+  };
 
   useEffect(() => {
-    const initMap = L.map("map").setView([20, 0], 2);
+    initMap = L.map("map").setView([20, 0], 2);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(initMap);
 
-    const baseMaps = {
-      "OpenStreetMap": initMap
-    };
     
     // Create a custom control for the info button
     const infoControl = L.control({ position: "topright" });
@@ -405,16 +405,35 @@ const FamilyMigrationMap = () => {
       [38.07210904565424, 35.1920959296233],
     ];
 
+    let southernAnatoliaCoords = [
+      [38.41453325871002, 33.52394153141406],
+      [38.347045897847025, 33.17957502151216],
+      [38.16451572065202, 32.32726790950493],
+      [37.83888683921623, 31.92263726037019],
+      [37.50498472746565, 31.845154795642266],
+      [37.238153549431665, 31.78489065640943],
+      [36.63950272434739, 31.767672330914337],
+      [36.58421853009478, 31.896809772132457]
+      [36.05008575624487, 32.68885274490684],
+      [36.30720375526325, 33.93718134330125],
+      [36.784435012379056, 34.617305200357514],
+      [37.32720270588548, 35.27160156917113],
+      [37.85928097836909, 35.74510552028626],
+      [37.90005235372797, 35.67623221830588],
+      [38.44825331352187, 35.71927803204361],
+      [38.56951511803281, 34.582868549367326]
+    ];
 
 
-    function addPolygon(coords, color) {
+
+    function addPolygon(coords, color, opacity) {
       // Create a polygon with no visible border
       let polygon = L.polygon(coords, {
         color: "transparent", // No visible border
         weight: 0, // No border thickness
         opacity: 0, // No border opacity
         fillColor: color, // Fill color
-        fillOpacity: 0.5, // Fill opacity
+        fillOpacity: opacity, // Fill opacity
         smoothFactor: 4, // Smooth out the curve
       }).addTo(anfExpansionLayer);
 
@@ -427,8 +446,9 @@ const FamilyMigrationMap = () => {
       });
     }
 
-    addPolygon(anfOriginCoords, "red")
-    addPolygon(nigdeCoords, "red")
+    addPolygon(anfOriginCoords, "red", 0.8)
+    addPolygon(nigdeCoords, "red", 0.8)
+    addPolygon(southernAnatoliaCoords, "orange", 0.5)
 
    
 
