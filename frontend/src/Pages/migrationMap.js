@@ -859,6 +859,13 @@ const FamilyMigrationMap = () => {
 
     brittanyCoords = fixCoords(brittanyCoords)
 
+    let englandCoords = [[0.09915854530095691,51.83887986994434,0],[-0.5070437550133267,51.74270115204825,0],[-0.9863717480765466,51.5312904710142,0],[-1.128154324238724,51.21323657791152,0],[-0.952782163016247,50.82983059410572,0],[0.2113181432304234,50.87338804034385,0],[1.026508897257401,51.04849638166451,0],[1.457422659960523,51.3444434111487,0],[0.09915854530095691,51.83887986994434,0]]
+
+    englandCoords = fixCoords(englandCoords)
+
+    let southWalesCoords = [[-4.52345808987158,52.19835251168273,0],[-4.874973760639988,52.06676674985038,0],[-5.366733648476961,51.90844506529069,0],[-5.098670545214798,51.60720803851456,0],[-4.562185675513145,51.78025721167905,0],[-4.010879841615516,51.63614247450131,0],[-3.988311276929659,52.00955662208258,0],[-4.52345808987158,52.19835251168273,0]]
+
+    southWalesCoords = fixCoords(southWalesCoords)
 
     //some coords are taken from polygons drawn on google earth which are [long, lat] but leaflet uses [lat, long], this function handles this conversion
     function fixCoords(coords) {
@@ -918,6 +925,8 @@ const FamilyMigrationMap = () => {
     addPolygon(greaterCentralEuropeCoords, "rgb(112, 107, 14)", 0.5)
     addPolygon(eastFranceCoords, "rgb(29, 149, 131)", 0.5);
     addPolygon(varnaCoords, "rgb(217, 255, 2)", 0.8);
+    addPolygon(englandCoords, "rgb(217, 255, 2)", 0.8);
+    addPolygon(southWalesCoords, "rgb(217, 255, 2)", 0.8);
     addPolygon(brittanyCoords, "rgb(162, 175, 83)", 0.8);
    
 
