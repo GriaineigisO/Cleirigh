@@ -962,8 +962,8 @@ textarea {
 }
 
 /* App.css */
-.leaflet-polygon {
-  filter: blur(10px) !important; /* Ensure the blur is applied */
+.blurred-polygon {
+  filter: blur(5px) !important; /* Ensure the blur is applied */
   transition: filter 0.3s ease-in-out;  /* Optional: Smooth transition for blur */
 }
 

@@ -411,7 +411,13 @@ const FamilyMigrationMap = () => {
         smoothFactor: 4, // Smooth out the curve
       }).addTo(anfExpansionLayer);
 
-      polygon._path.setAttribute("filter", "blur(10px)"); // Apply blur directly
+      polygon.on("add", () => {
+        setTimeout(() => {
+          if (polygon._path) {
+            polygon._path.classList.add("blurred-polygon");
+          }
+        }, 0);
+      });
     }
 
     addPolygon(anfOriginCoords, "red")
