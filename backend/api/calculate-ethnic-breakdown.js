@@ -64,7 +64,7 @@ export default async function handler(req, res) {
 
       console.log("childId is:", childId);
 
-      let findParents = null;
+      let findParents = {};
       for (let i = 0; i < getData.length; i++) {
         if (childId === getData[i].ancestor_id) {
           findParents = getData[i];
