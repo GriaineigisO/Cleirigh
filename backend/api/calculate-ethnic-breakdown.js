@@ -64,15 +64,12 @@ export default async function handler(req, res) {
 
       console.log("childId is:", childId);
 
-      let findParents = {};
-      for (let i = 0; i < getData.length; i++) {
-        if (childId === getData[i].ancestor_id) {
-          findParents = getData[i];
-          break;
-        }
-      }
+      const findParents = getData.find(
+        (person) => person.ancestor_id === childId
+      );
+      console.log(findParents);
 
-      console.log(findParents)
+      console.log(findParents);
       const fatherId = findParents.father_id;
       const motherId = findParents.mother_id;
 
@@ -97,7 +94,6 @@ export default async function handler(req, res) {
         }
 
         return [fatherEthnicityNameArray, fatherEthnicityPercentageArray];
-
       } else if (fatherId === null && motherId !== null) {
         //ancestor has a mother recorded, but not a father. Father is assumed to have the same ethnicity as the mother - thus the mother's values are passed down unchanged
         const motherEthnicity = await calculateEthnicBreakdown(motherId);
@@ -107,7 +103,6 @@ export default async function handler(req, res) {
         }
 
         return [motherEthnicityNameArray, motherEthnicityPercentageArray];
-
       } else if (fatherId !== null && motherId !== null) {
         //both parents are recorded. The values of each parent are halved and then added together to form the child's ethnic breakdown
 
