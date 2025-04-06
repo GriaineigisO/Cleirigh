@@ -65,11 +65,10 @@ export default async function handler(req, res) {
       let findParents = null;
       for (let i = 0; i < getData.length; i++) {
         if (Number(getData[i].ancestor_id) === Number(childId)) {
-          findParents = getData[i];
-          break;
+          console.log(getData[i])
         }
       }
-      console.log("Brute force result:", findParents);
+      
 
       const fatherId = findParents.father_id;
       const motherId = findParents.mother_id;
