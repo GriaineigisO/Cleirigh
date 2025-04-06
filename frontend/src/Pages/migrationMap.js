@@ -994,6 +994,14 @@ const FamilyMigrationMap = () => {
     let linz = [48.583915311724475, 14.172928491228985];
     let ostrava = [49.90699335635247, 17.439098596615057];
     let anatalya = [37.040801521583184, 30.822048028480644];
+    let bavaria = [48.912117707063445, 12.582313457338286];
+    let saarbrucken = [49.33065269354518, 6.749140941813131]
+    let cheb = [50.100338050805725, 12.379365401349798]
+    let kassel = [51.461192964289715, 9.337507937337772]
+    let osnabruck = [52.34879744865141, 8.108508758196647]
+    let denmark = [54.06377679069807, 9.734902453223343]
+    let mlawa = [53.13280456097303, 20.350671013734775]
+    let gdynia = [54.45006306465209, 18.367604457651517]
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -1072,6 +1080,12 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(burgas, babadag);
     plotANFExpansion(osiek, austria);
     plotANFExpansion(linz, ostrava);
+    plotANFExpansion(bavaria, saarbrucken);
+    plotANFExpansion(cheb, kassel);
+    plotANFExpansion(osnabruck, denmark);
+    plotANFExpansion(mlawa, gdynia);
+
+    
 
     L.control
       .layers(
