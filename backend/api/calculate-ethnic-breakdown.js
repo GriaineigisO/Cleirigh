@@ -47,11 +47,29 @@ export default async function handler(req, res) {
     const currentTree = user.current_tree_id;
 
     //get all rows from the current tree in one single query
-    const { data: getData, error } = await supabase
-      .from(`tree_${currentTree}`)
-      .select("*")
-      .range(from, from + batchSize - 1);
+    // Fetch all rows from the tree_{currentTree} table
+    let allData = [];
+    let from = 0;
+    let to = 999;
+    let done = false;
+    
+    while (!done) {
+      const { data, error } = await supabase
+        .from(`tree_${currentTree}`)
+        .select("*")
+        .range(from, to);
+    
+      if (data && data.length > 0) {
+        allData = [...allData, ...data];
+        from += 1000;
+        to += 1000;
+      } else {
+        done = true;
+      }
+    }
+    
 
+    
     //recursive function which determines the parent's ethnic breakdown. It first must gain the values of each deadend ancestor (hence continiously checking if a person has parents, going up one generation if he does)
     const calculateEthnicBreakdown = async (childId) => {
       let fatherEthnicityNameArray = [];
@@ -63,10 +81,12 @@ export default async function handler(req, res) {
 
       console.log("childId is:", childId);
 
+      
+
       let findParents = null;
-      for (let i = 0; i < getData.length; i++) {
-        if (Number(getData[i].ancestor_id) === Number(childId)) {
-          findParents = getData[i];
+      for (let i = 0; i < allData.length; i++) {
+        if (Number(allData[i].ancestor_id) === Number(childId)) {
+          findParents = allData[i];
           break;
         }
       }
