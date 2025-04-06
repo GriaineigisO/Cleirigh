@@ -62,12 +62,12 @@ export default async function handler(req, res) {
       let ethnicityNameArray = [];
       let ethnicityPercentageArray = [];
 
-      console.log("childId is:", childId);
+      console.log(typeof childId);
 
-      const findParents = getData.find(
-        (person) => person.ancestor_id === childId
-      );
-      console.log(findParents);
+      const findParents = getData.find((person) => {
+        console.log("Comparing", childId, "with", person.ancestor_id);
+        return person.ancestor_id === childId;
+      });
 
       console.log(findParents);
       const fatherId = findParents.father_id;
