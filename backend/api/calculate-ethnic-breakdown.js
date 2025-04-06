@@ -74,7 +74,6 @@ export default async function handler(req, res) {
       const fatherId = findParents.father_id;
       const motherId = findParents.mother_id;
 
-
       //checks if each parent is a deadend ancestor
       if (fatherId === null && motherId === null) {
         //is a deadend ancestor, returns ethnicity and pushes 50 to the percentage array. If no ethnicity has been assigned to a dead end ancestor, then the label UNASSIGNED will be pushed - a prompt for the user to look for the dead-end ancestor and then assign an ethnicity
@@ -155,9 +154,16 @@ export default async function handler(req, res) {
     //initial call, with the target ancestor's ID in the argument
     const ethnicity = await calculateEthnicBreakdown(id);
 
+    const zipped = ethnicity[0].map((name, i) => ({
+      name,
+      percentage: ethnicity[1][i],
+    }));
+
+    zipped.sort((a, b) => b.percentage - a.percentage);
+
     res.json({
-      ethnicityNameArray: ethnicity[0],
-      ethnicityPercentageArray: ethnicity[1],
+      ethnicityNameArray: zipped.map((e) => e.name),
+      ethnicityPercentageArray: zipped.map((e) => e.percentage),
     });
   } catch (error) {
     console.log("error calculating ethnic breakdown:", error);
