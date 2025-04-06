@@ -37,8 +37,6 @@ export default async function handler(req, res) {
     const { userId, idNumber } = req.body;
     const id = idNumber;
 
-    console.log("id is:", id);
-
     // Get the current tree ID from the user's record
     const { data: user, error: userError } = await supabase
       .from("users")
@@ -64,15 +62,21 @@ export default async function handler(req, res) {
 
       console.log("childId is:", childId);
 
-      console.log(getData)
+      // let findParents = null;
+      // for (let i = 0; i < getData.length; i++) {
+      //   if (Number(getData[i].ancestor_id) === Number(childId)) {
+      //     findParents = getData[i];
+      //     break;
+      //   }
+      // }
 
-      let findParents = null;
-      for (let i = 0; i < getData.length; i++) {
-        if (Number(getData[i].ancestor_id) === Number(childId)) {
-          console.log(getData[i])
+
+      for (const person of getData) {
+        if (String(person.ancestor_id) === String(childId)) {
+          console.log("MATCH FOUND with string equality:", person);
         }
       }
-
+      
       const fatherId = findParents.father_id;
       const motherId = findParents.mother_id;
 
