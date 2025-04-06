@@ -63,7 +63,8 @@ export default async function handler(req, res) {
       let ethnicityPercentageArray = [];
 
       const findParents = getData.find((person) => {
-        return Number(person.ancestor_id) === childId;
+        console.log(person.ancestor_id)
+        return person.ancestor_id === childId;
       });
 
       console.log(findParents);
