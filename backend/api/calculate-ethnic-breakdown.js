@@ -64,14 +64,16 @@ export default async function handler(req, res) {
 
       console.log("childId is:", childId);
 
-      let fatherId = "";
-      let motherId = "";
+      let findParents = null;
       for (let i = 0; i < getData.length; i++) {
         if (childId === getData[i].ancestor_id) {
-          fatherId = getData[i].father_id;
-          motherId = getData[i].mother_id;
+          findParents = getData[i];
         }
       }
+
+      const fatherId = findParents[0].father_id;
+      const motherId = findParents[0].mother_id;
+
 
       //checks if each parent is a deadend ancestor
       if (fatherId === null && motherId === null) {
