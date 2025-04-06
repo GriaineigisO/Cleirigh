@@ -1001,7 +1001,7 @@ const FamilyMigrationMap = () => {
     let osnabruck = [52.34879744865141, 8.108508758196647]
     let denmark = [54.06377679069807, 9.734902453223343]
     let mlawa = [53.13280456097303, 20.350671013734775]
-    let gdynia = [54.45006306465209, 18.367604457651517]
+    let rostock = [54.03078354176252, 12.13142859234608]
 
     const plotANFExpansion = (from, to) => {
       // Plot the various paths of expansion taken by the Anatolian Neolithic Farmers into Europe
@@ -1083,7 +1083,7 @@ const FamilyMigrationMap = () => {
     plotANFExpansion(bavaria, saarbrucken);
     plotANFExpansion(cheb, kassel);
     plotANFExpansion(osnabruck, denmark);
-    plotANFExpansion(mlawa, gdynia);
+    plotANFExpansion(mlawa, rostock);
 
     
 
