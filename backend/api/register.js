@@ -72,13 +72,21 @@ export default async function handler(req, res) {
       expiresIn: "1h",
     });
 
-    // 5. Respond with token and user data
+    // 5. Collect new user's data for response
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+
+    // 6. Respond with token and user data
     res.json({
       token,
       user: {
-        id: newUser.id,
-        username: newUser.username,
-        email: newUser.email,
+        id: user.id,
+        username: user.username,
+        email: user.email,
       },
     });
   } catch (err) {
