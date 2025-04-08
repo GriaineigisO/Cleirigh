@@ -67,11 +67,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ message: insertError.message });
     }
 
-    // 4. Generate the JWT token
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
     // 5. Collect new user's data for response
     const { data: user, error: userError } = await supabase
       .from("users")
@@ -79,8 +74,17 @@ export default async function handler(req, res) {
       .eq("email", email)
       .single();
 
+      if (userError) {
+        console.log("Error retrieving new user's information:", userError)
+      }
 
-    // 6. Respond with token and user data
+    // 6. Generate the JWT token
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+
+    // 7. Respond with token and user data
     res.json({
       token,
       user: {
