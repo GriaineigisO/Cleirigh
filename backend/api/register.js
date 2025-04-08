@@ -18,7 +18,8 @@ export default async function handler(req, res) {
 
   const { username, email, password } = req.body;
 
-
+  console.log(username)
+  
   try {
     // 1. Check if user already exists using Supabase
     const { data: existingUser, error } = await supabase
@@ -26,6 +27,7 @@ export default async function handler(req, res) {
       .select('*')
       .eq('email', email)
       .single();
+
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
