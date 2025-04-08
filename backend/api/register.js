@@ -46,10 +46,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    if (error) {
-      return res.status(500).json({ message: "Server error during user check" });
-    }
-
     // 2. Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
