@@ -585,7 +585,7 @@ const Home = () => {
     const treeId = Date.now();
 
     try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/make-new-tree", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/api/make-new-tree", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -602,7 +602,7 @@ const Home = () => {
 
     //updates the current_tree_id column in the users table
     try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/set-current-tree", {
+      const response = await fetch("https://cleirigh-backend.vercel.app/api/set-current-tree", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, treeId }),
