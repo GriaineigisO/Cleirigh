@@ -91,4 +91,5 @@ export default async function handler(req, res) {
     console.error('Error during registration:', err.message);
     res.status(500).send("Server error");
   }
-};
+}
+}
