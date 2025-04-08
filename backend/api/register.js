@@ -30,17 +30,15 @@ export default async function handler(req, res) {
     return;
   }
 
-    const { username, email, password } = req.body;
-
+  const { username, email, password } = req.body;
 
   try {
     // 1. Check if user already exists using Supabase
     const { data: existingUser, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
+      .from("users")
+      .select("*")
+      .eq("email", email)
       .single();
-
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -52,26 +50,25 @@ export default async function handler(req, res) {
 
     // 3. Insert new user into the users table in Supabase
     const { data: newUser, error: insertError } = await supabase
-      .from('users')
+      .from("users")
       .insert([
         {
           username,
           email,
           password: hashedPassword,
-          id: Date.now()
-        }
+          id: Date.now(),
+        },
       ])
       .single();
 
     if (insertError) {
-      return res.status(500).json({ message: "Error inserting new user" });
+      return res.status(500).json({ message: insertError.message });
     }
 
     // 4. Generate the JWT token
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-
 
     // 5. Respond with token and user data
     res.json({
@@ -83,7 +80,7 @@ export default async function handler(req, res) {
       },
     });
   } catch (err) {
-    console.error('Error during registration:', err.message);
+    console.error("Error during registration:", err.message);
     res.status(500).send("Server error");
   }
 }
