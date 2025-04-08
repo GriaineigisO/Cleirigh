@@ -37,15 +37,15 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Database query failed for tree creation' });
       }
   
-      const { data: createTableData, error: createTableError } = await supabase
-        .rpc('create_tree_table', {
-          tree_id: treeId 
-        });
+      // const { data: createTableData, error: createTableError } = await supabase
+      //   .rpc('create_tree_table', {
+      //     tree_id: treeId 
+      //   });
   
-      if (createTableError) {
-        console.error('Error creating dynamic tree table:', createTableError);
-        return res.status(500).json({ error: 'Error creating dynamic tree table' });
-      }
+      // if (createTableError) {
+      //   console.error('Error creating dynamic tree table:', createTableError);
+      //   return res.status(500).json({ error: 'Error creating dynamic tree table' });
+      // }
   
       res.status(201).json({
         success: true,

@@ -64,46 +64,46 @@ const HomePageWithTree = () => {
 
   // returns name of user's tree
   useEffect(() => {
-    
-  const getTreeName = async () => {
-    if (!treeName) {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
+    const getTreeName = async () => {
+      if (!treeName) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found");
+          return;
+        }
 
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;
 
-    try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-tree-name", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId }),
-      });
+        try {
+          const response = await fetch(
+            "https://cleirigh-backend.vercel.app/api/get-tree-name",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ userId }),
+            }
+          );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const data = await response.json();
+
+          setTreeName(data.treeName);
+        } catch (error) {
+          console.error("Error checking trees:", error);
+        }
+
+        return treeName;
       }
-
-      const data = await response.json();
-
-      setTreeName(data.treeName); 
-    } catch (error) {
-      console.error("Error checking trees:", error);
-    }
-
-    return treeName;
-  }
-  };
-  
+    };
 
     getTreeName();
-  }, [])
-  
+  }, []);
 
   const getCurrentTree = async () => {
     const token = localStorage.getItem("token");
@@ -117,11 +117,14 @@ const HomePageWithTree = () => {
 
     //gets the current_tree_id in the users table
     try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/get-current-tree", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-current-tree",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        }
+      );
 
       const data = await response.json();
       setCurrentTree(data.currentTree);
@@ -137,7 +140,6 @@ const HomePageWithTree = () => {
   useEffect(() => {
     const checkTreeEmpty = async () => {
       if (!currentTree !== null && currentTree !== undefined) {
-        console.log("current tree is:", currentTree)
         const response = await fetch(
           "https://cleirigh-backend.vercel.app/api/check-if-tree-empty",
           {
@@ -209,20 +211,26 @@ const HomePageWithTree = () => {
 
   const homePageStats = useCallback(async () => {
     try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/count-ancestors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currentTree }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/count-ancestors",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ currentTree }),
+        }
+      );
 
       const data = await response.json();
       setNumOfAncestors(data);
 
-      const placeResponse = await fetch("https://cleirigh-backend.vercel.app/api/count-places", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currentTree }),
-      });
+      const placeResponse = await fetch(
+        "https://cleirigh-backend.vercel.app/api/count-places",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ currentTree }),
+        }
+      );
 
       const placeData = await placeResponse.json();
       setNumOfPlaces(placeData.numOfPlaces);
@@ -324,24 +332,27 @@ const HomePageWithTree = () => {
   }, [currentTree, homePageStats]); // Include homePageStats in dependencies
 
   const handleFirstPerson = async () => {
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/add-first-person", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName,
-        middleName,
-        lastName,
-        sex,
-        ethnicity,
-        birthDate,
-        birthPlace,
-        deathDate,
-        deathPlace,
-        deathCause,
-        occupation,
-        currentTree,
-      }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/add-first-person",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          middleName,
+          lastName,
+          sex,
+          ethnicity,
+          birthDate,
+          birthPlace,
+          deathDate,
+          deathPlace,
+          deathCause,
+          occupation,
+          currentTree,
+        }),
+      }
+    );
 
     setIsEmpty(false);
   };
@@ -349,15 +360,18 @@ const HomePageWithTree = () => {
   const handleRemoveNote = async () => {
     setSavedProgress(false);
     const userId = localStorage.getItem("userId");
-    const response = await fetch("https://cleirigh-backend.vercel.app/api/remove-progress-note", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
-    });
+    const response = await fetch(
+      "https://cleirigh-backend.vercel.app/api/remove-progress-note",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }
+    );
   };
 
   useEffect(() => {
-    if (mostRemovedAncestorRelation.length > 0 ) {
+    if (mostRemovedAncestorRelation.length > 0) {
       //finds the largest value in the mostRemovedAncestorRelation array
       let largest = 0;
       for (let i = 0; i < mostRemovedAncestorRelation.length; i++) {
@@ -369,7 +383,6 @@ const HomePageWithTree = () => {
       setMostRemovedAncestorRelationLargestInt(largest);
     }
   }, [mostRemovedAncestorRelation]);
-  
 
   return (
     <div className="oghamleaves">
@@ -470,7 +483,9 @@ const HomePageWithTree = () => {
                 <p className="homePageDivLabel">
                   Number of ancestors in the tree
                 </p>
-                <p className="homePageDivContent">{numOfAncestors.toLocaleString()}</p>
+                <p className="homePageDivContent">
+                  {numOfAncestors.toLocaleString()}
+                </p>
               </div>
 
               <div className="homePageDiv">
@@ -491,7 +506,6 @@ const HomePageWithTree = () => {
                 </p>
               </div>
 
-              
               <div className="homePageDiv">
                 <p className="homePageDivLabel">
                   Most Removed Ancestor By Generation
@@ -511,7 +525,6 @@ const HomePageWithTree = () => {
                 </p>
               </div>
 
-              
               {mostRepeatedAncestor && repeatedTimes > 1 ? (
                 <div className="homePageDiv">
                   <p className="homePageDivLabel">Most Repeated Ancestor</p>
@@ -586,13 +599,16 @@ const Home = () => {
     const treeId = Date.now();
 
     try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/make-new-tree", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId, treeName, treeId }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/make-new-tree",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, treeName, treeId }),
+        }
+      );
 
       const data = await response.json();
       //saves what tree is currently selected, in loca storage
@@ -601,13 +617,33 @@ const Home = () => {
       console.error("Error submitting query:", error);
     }
 
+    //supabase edge function to create a new table for the tree
+    const response = await fetch("https://xkwbiwiieqlsjmptcagp.supabase.co/functions/v1/create-tree-table", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tree_id: treeId }),
+    });
+
+    const { message, error } = await response.json();
+
+    if (error) {
+      console.error("Error creating table:", error);
+    } else {
+      console.log(message);
+    }
+
     //updates the current_tree_id column in the users table
     try {
-      const response = await fetch("https://cleirigh-backend.vercel.app/api/set-current-tree", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, treeId }),
-      });
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/set-current-tree",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, treeId }),
+        }
+      );
 
       const data = await response.json();
       if (!data.success) {
