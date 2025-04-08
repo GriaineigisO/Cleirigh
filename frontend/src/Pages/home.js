@@ -137,6 +137,7 @@ const HomePageWithTree = () => {
   useEffect(() => {
     const checkTreeEmpty = async () => {
       if (!currentTree !== null && currentTree !== undefined) {
+        console.log("current tree is:", currentTree)
         const response = await fetch(
           "https://cleirigh-backend.vercel.app/api/check-if-tree-empty",
           {
