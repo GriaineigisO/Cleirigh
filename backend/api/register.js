@@ -79,7 +79,7 @@ export default async function handler(req, res) {
       }
 
     // 6. Generate the JWT token
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
