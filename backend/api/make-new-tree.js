@@ -25,17 +25,23 @@ export default async function handler(req, res) {
     try {
       const { userId, treeName, treeId } = req.body;
   
-      const { data: newTree, error: treeError } = await supabase
+      const { data: newTree, error: newTreeError } = await supabase
         .from('trees')
         .insert([
           { user_id: userId, tree_name: treeName, tree_id: treeId }
         ])
         .single(); 
   
-      if (treeError) {
-        console.error('Error inserting new tree:', treeError);
+      if (newTreeError) {
+        console.error('Error inserting new tree:', newTreeError);
         return res.status(500).json({ error: 'Database query failed for tree creation' });
       }
+
+      const { data: tree, error: treeError } = await supabase
+        .from('trees')
+        .select("*")
+        .eq("tree_id", treeId)
+        .single(); 
   
       // const { data: createTableData, error: createTableError } = await supabase
       //   .rpc('create_tree_table', {
@@ -50,7 +56,7 @@ export default async function handler(req, res) {
       res.status(201).json({
         success: true,
         message: "Tree created successfully",
-        tree: { treeId: newTree.tree_id },
+        tree: { treeId: tree.tree_id },
       });
     } catch (err) {
       console.error(err);
