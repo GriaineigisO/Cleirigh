@@ -29,7 +29,6 @@ export default async function handler(req, res) {
     res.status(200).end();
     return;
   }
-  try {
 
     const { username, email, password } = req.body;
 
@@ -91,5 +90,4 @@ export default async function handler(req, res) {
     console.error('Error during registration:', err.message);
     res.status(500).send("Server error");
   }
-}
 }
