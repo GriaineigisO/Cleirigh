@@ -535,35 +535,33 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    const InbreedingCoefficiency = async () => {
-      try {
-        const userId = localStorage.getItem("userId");
-        const idNumber = Number(id); 
-        const response = await fetch(
-          "https://cleirigh-backend.vercel.app/api/get-inbreeding-coefficiency",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}`,
-            },
-            body: JSON.stringify({ userId, idNumber }),
-          }
-        );
+  const InbreedingCoefficiency = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const idNumber = Number(id);
+      const response = await fetch(
+        "https://cleirigh-backend.vercel.app/api/get-inbreeding-coefficiency",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}`,
+          },
+          body: JSON.stringify({ userId, idNumber }),
+        }
+      );
 
-        const data = await response.json();
-        setInbreedingCoefficiency(data); 
-      } catch (err) {
-        setError("Failed to fetch data");
-        console.error(err);
-      } finally {
-        setLoading(false); 
-      }
-    };
+      const data = await response.json();
+      setInbreedingCoefficiency(data);
+    } catch (err) {
+      setError("Failed to fetch data");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    InbreedingCoefficiency(); 
-  }, []); 
+  
 
   if (loading) {
     return <div>Loading...</div>;
