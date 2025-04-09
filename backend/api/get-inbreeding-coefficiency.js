@@ -134,8 +134,8 @@ export default async function handler(req, res) {
             ...path,
             personId,
           ]);
-          console.log(`${commonCoEff} = 0.5, ${n} + 1 * (1 + ${F_CA}) `)
-          commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+          console.log(`${commonCoEff} = 0.5, ${n}  * (1 + ${F_CA}) `)
+          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         }
       }
 
@@ -170,8 +170,8 @@ export default async function handler(req, res) {
                     for (const s2 of steps2) {
                         common.push({
                             ancestorId: Number(ancestorId),
-                            fatherSteps: s1 - 1,  // Steps from father to ancestor
-                            motherSteps: s2 - 1   // Steps from mother to ancestor
+                            fatherSteps: s1,
+                            motherSteps: s2 
                         });
                     }
                 }
@@ -183,7 +183,7 @@ export default async function handler(req, res) {
     
 
     // Function to trace all ancestors of a person and return their distances
-    function getAncestorSteps(personId, steps = 1) {
+    function getAncestorSteps(personId, steps = 0) {
         const person = ancestorLookup[personId];
         if (!person) return {};
         
