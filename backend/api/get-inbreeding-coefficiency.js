@@ -136,7 +136,6 @@ export default async function handler(req, res) {
             personId,
           ]);
           commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
-
         }
       }
 
@@ -202,9 +201,7 @@ export default async function handler(req, res) {
         Object.assign(result, motherAncestors);
       }
 
-      if (!person.father_id && !person.mother_id) {
-        result[personId] = distance;
-      }
+      result[personId] = distance;
 
       return result;
     }
