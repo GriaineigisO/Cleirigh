@@ -154,6 +154,7 @@ export default async function handler(req, res) {
       return totalCoEff;
     }
 
+    // Fix: Correct ancestor tracing
     function findCommonAncestors(fatherId, motherId) {
         const ancestors1 = getAllAncestorsWithDistances(fatherId);
         const ancestors2 = getAllAncestorsWithDistances(motherId);
@@ -169,8 +170,9 @@ export default async function handler(req, res) {
           }
         }
         return common;
-      }
+    }
 
+    // Function to trace all ancestors of a person and return their distances
     function getAllAncestorsWithDistances(personId, distance = 1) {
       const person = ancestorLookup[personId];
       if (!person) return {};
