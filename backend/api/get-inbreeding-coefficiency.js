@@ -81,13 +81,10 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    console.log(ancestorLookup);
-
     function calculateInbreedingCoefficient(ancestorId, ancestorsMap) {
       const memo = new Map(); // for caching F values
 
       function getF(id) {
-        console.log(ancestorsMap[id]);
         if (!id || !ancestorsMap[id]) {
           console.log("id or ancestorsmap is undefined");
           return 0;
@@ -105,6 +102,36 @@ export default async function handler(req, res) {
           mother_id,
           ancestorsMap
         );
+
+        // Function to find common ancestors between father and mother
+        function findCommonAncestors(fatherId, motherId, ancestorLookup) {
+          const fatherAncestors = getAncestors(fatherId, ancestorLookup);
+          const motherAncestors = getAncestors(motherId, ancestorLookup);
+
+          // Return common ancestors by finding intersection of father and mother's ancestors
+          return fatherAncestors.filter((ancestor) =>
+            motherAncestors.includes(ancestor)
+          );
+        }
+
+        // Helper function to retrieve all ancestors of a given individual
+        function getAncestors(id, ancestorLookup) {
+          let ancestors = [];
+          let current = id;
+
+          // Traverse upwards through the ancestry
+          while (current) {
+            const ancestor = ancestorLookup[current];
+            if (ancestor) {
+              ancestors.push(current);
+              current = ancestor.father_id || ancestor.mother_id; // move up to the father or mother
+            } else {
+              break; // Stop if there's no more ancestor data
+            }
+          }
+
+          return ancestors;
+        }
 
         let F = 0;
         for (const ca of commonAncestors) {
@@ -128,7 +155,10 @@ export default async function handler(req, res) {
       return getF(ancestorId);
     }
 
-    const inbreedingCoefficient = calculateInbreedingCoefficient(id, ancestorLookup);
+    const inbreedingCoefficient = calculateInbreedingCoefficient(
+      id,
+      ancestorLookup
+    );
 
     // Return the calculated inbreeding coefficient
     res.json(inbreedingCoefficient);
