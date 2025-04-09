@@ -126,23 +126,32 @@ export default async function handler(req, res) {
           ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
           : 0;
       
-        // Common ancestor logic (not too aggressive)
+        // Initialize common coefficient
         let commonCoEff = 0;
+      
+        // Only calculate for common ancestors if both father and mother exist
         if (person.father_id && person.mother_id) {
           const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+          
           for (const {ancestorId, fatherSteps, motherSteps} of commonAncestors) {
             const n = fatherSteps + motherSteps;
-            const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]);
-            commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+            
+            // Only factor in common ancestors if they are sufficiently distant
+            if (n > 1) {  // Common ancestors should not directly count for immediate parents
+              const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]);
+              commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+            }
           }
         }
       
-        // Total coefficient calculation with adjusted weighting
+        // Total coefficient calculation
         const totalCoEff = fatherCoEff / 2 + motherCoEff / 2 + commonCoEff;
       
+        // Save result in memoization cache
         memo[personId] = totalCoEff;
         return totalCoEff;
       }
+      
       
 
     function findCommonAncestors(personId1, personId2) {
