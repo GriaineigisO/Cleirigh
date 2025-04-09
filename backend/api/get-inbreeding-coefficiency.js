@@ -121,11 +121,15 @@ export default async function handler(req, res) {
         if (person.father_id && person.mother_id) {
           // Dynamically find common ancestors between father and mother
           const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+          console.log("commonAncestors:", commonAncestors)
       
           for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+            console.log("fatherSteps:", fatherSteps)
+            console.log("motherSteps:", motherSteps)
             // The number of steps is how far each person is from the common ancestor
             const n = fatherSteps + motherSteps;  // This should correctly count the generations
             const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]);
+            console.log("F_CA:", F_CA)
             
             // Calculate the inbreeding coefficient for common ancestors based on the steps
             commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
