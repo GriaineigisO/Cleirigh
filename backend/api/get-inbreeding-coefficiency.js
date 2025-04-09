@@ -135,7 +135,8 @@ export default async function handler(req, res) {
             ...path,
             personId,
           ]);
-          commonCoEff += Math.pow(0.5, n + 1) * F_CA; // Account for generational distance and common ancestor's coefficient
+          commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+
         }
       }
 
