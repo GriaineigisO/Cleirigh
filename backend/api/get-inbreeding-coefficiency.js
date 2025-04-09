@@ -106,8 +106,20 @@ export default async function handler(req, res) {
           ancestorsMap
         );
 
+        console.log("Common Ancestors:", commonAncestors);
+
         // Function to find common ancestors between father and mother
         function findCommonAncestors(fatherId, motherId, ancestorLookup) {
+          console.log("Ancestor Lookup:", ancestorLookup);
+          console.log(
+            "Father Ancestors:",
+            getAncestors(father_id, ancestorLookup)
+          );
+          console.log(
+            "Mother Ancestors:",
+            getAncestors(mother_id, ancestorLookup)
+          );
+
           const fatherAncestors = getAncestors(fatherId, ancestorLookup);
           const motherAncestors = getAncestors(motherId, ancestorLookup);
 
@@ -141,18 +153,68 @@ export default async function handler(req, res) {
           const pathsToFather = getPaths(ca, father_id, ancestorsMap);
           const pathsToMother = getPaths(ca, mother_id, ancestorsMap);
 
+          console.log(
+            "Paths to Father:",
+            getPaths(ca, father_id, ancestorsMap)
+          );
+          console.log(
+            "Paths to Mother:",
+            getPaths(ca, mother_id, ancestorsMap)
+          );
+
           for (const pf of pathsToFather) {
             for (const pm of pathsToMother) {
               const n1 = pf.length;
               const n2 = pm.length;
               const Fca = getF(ca);
-              F += Math.pow(0.5, n1 + n2 + 1) * (1 + Fca);
+              const coeff = Math.pow(0.5, n1 + n2 + 1) * (1 + Fca);
+        
+              if (coeff > 0) { // Check if the coefficient is contributing
+                F += coeff;
+              }
             }
           }
         }
 
+        // Helper function to retrieve all possible paths to a given ancestor
+        function getPaths(ancestorId, targetId, ancestorLookup) {
+          let paths = [];
+
+          // Helper function to find all paths from a starting point to the target
+          function findPaths(currentId, path) {
+            if (!currentId || !ancestorLookup[currentId]) {
+              return; // Stop if no ancestor is found or we've reached the root
+            }
+
+            // Add current ID to the path
+            path.push(currentId);
+
+            // If the current ancestor is the target, add the path to the paths list
+            if (currentId === targetId) {
+              paths.push([...path]); // Clone path array before pushing
+            } else {
+              // Continue searching along father_id and mother_id
+              const ancestor = ancestorLookup[currentId];
+              if (ancestor.father_id) {
+                findPaths(ancestor.father_id, path);
+              }
+              if (ancestor.mother_id) {
+                findPaths(ancestor.mother_id, path);
+              }
+            }
+
+            // Remove the current ancestor to backtrack
+            path.pop();
+          }
+
+          // Start the search from the given ancestorId
+          findPaths(ancestorId, []);
+
+          return paths;
+        }
+
         memo.set(id, F);
-        console.log("F:", F)
+        console.log("F:", F);
         return F;
       }
 
@@ -164,7 +226,7 @@ export default async function handler(req, res) {
       ancestorLookup
     );
 
-    console.log("inbreedingCoefficient:", inbreedingCoefficient)
+    console.log("inbreedingCoefficient:", inbreedingCoefficient);
 
     // Return the calculated inbreeding coefficient
     res.json(inbreedingCoefficient);
