@@ -33,6 +33,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+
   try {
     const { userId, idNumber } = req.body;
     const id = idNumber;
@@ -81,143 +82,141 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    function calculateInbreedingCoefficientForAncestor(ancestorId, ancestorMap) {
-        // Check if the ancestor data is available in the map
-        if (!ancestorMap[ancestorId]) return 0;
-      
-        const ancestor = ancestorMap[ancestorId];
-        const { father_id, mother_id } = ancestor;
-      
-        // If no further ancestors, return base case: 0 (no inbreeding from this ancestor)
-        if (!father_id && !mother_id) return 0;
-      
-        // Recursively calculate the inbreeding coefficients for the parents
-        const fatherCoeff = calculateInbreedingCoefficientForAncestor(father_id, ancestorMap);
-        const motherCoeff = calculateInbreedingCoefficientForAncestor(mother_id, ancestorMap);
-      
-        // The inbreeding coefficient of the ancestor is the average of the parent's coefficients (halved)
-        const inbreedingCoefficient = (fatherCoeff + motherCoeff) / 2;
-      
-        return inbreedingCoefficient;
-      }
-      
-      // Recursive function to calculate the child's inbreeding coefficient
-      function calculateChildInbreedingCoefficient(id, ancestorMap) {
-        //find parents' ids
-        const {fatherId, motherId} = ancestorMap[id];
+    // Memoization cache to store already calculated coefficients
+    const memo = {};
 
-        // Find the inbreeding coefficient for each parent based on their ancestors
-        const fatherInbreedingCoeff = calculateInbreedingCoefficientForAncestor(fatherId, ancestorMap);
-        const motherInbreedingCoeff = calculateInbreedingCoefficientForAncestor(motherId, ancestorMap);
-      
-        // Calculate the relationship coefficient (shared ancestor coefficient between parents)
-        const commonAncestorsCoeff = calculateCommonAncestorsCoeff(fatherId, motherId, ancestorMap);
-      
-        // Combine the coefficients
-        const childInbreedingCoeff = commonAncestorsCoeff + (fatherInbreedingCoeff / 2) + (motherInbreedingCoeff / 2);
-      
-        return childInbreedingCoeff;
+    /**
+     * Recursive function to calculate inbreeding coefficient
+     * @param {number} personId - ID of the person to calculate coefficient for
+     * @param {object[]} path - Array of ancestor IDs in the current path (for detecting loops)
+     * @returns {number} Inbreeding coefficient (0 to 1)
+     */
+    function calculateInbreedingCoefficient(personId, path = []) {
+      // Check memoization cache first
+      if (memo[personId] !== undefined) {
+        return memo[personId];
       }
+
+      const person = ancestorLookup[personId];
       
-      // Helper function to calculate the relationship coefficient (common ancestors) between parents
-      function calculateCommonAncestorsCoeff(fatherId, motherId, ancestorMap) {
-        const fatherAncestors = getAncestors(fatherId, ancestorMap);
-        const motherAncestors = getAncestors(motherId, ancestorMap);
+      // If person doesn't exist in the tree or has no parents, return 0
+      if (!person || (!person.father_id && !person.mother_id)) {
+        memo[personId] = 0;
+        return 0;
+      }
+
+      // If person has only one parent, treat as no parents (can't be inbred with one parent)
+      if (!person.father_id || !person.mother_id) {
+        memo[personId] = 0;
+        return 0;
+      }
+
+      // Check for parent loops (shouldn't happen in valid genealogy)
+      if (path.includes(personId)) {
+        // Circular reference detected
+        memo[personId] = 0;
+        return 0;
+      }
+
+      // Get all ancestors of both parents
+      const fatherAncestors = getAllAncestors(person.father_id, []);
+      const motherAncestors = getAllAncestors(person.mother_id, []);
+
+      // Find common ancestors between parents
+      const commonAncestors = fatherAncestors.filter(ancestor => 
+        motherAncestors.includes(ancestor)
+      );
+
+      // Calculate the sum of (0.5)^(n1 + n2 + 1) * (1 + F_CA) for each common ancestor
+      let commonCoEff = 0;
       
-        // Find the intersection (common ancestors)
-        const commonAncestors = fatherAncestors.filter(ancestor => motherAncestors.includes(ancestor));
+      for (const caId of commonAncestors) {
+        // Get paths from father and mother to the common ancestor
+        const fatherPath = getPathToAncestor(person.father_id, caId);
+        const motherPath = getPathToAncestor(person.mother_id, caId);
         
-        let relationshipCoeff = 0;
-        
-        // If there are common ancestors, calculate the inbreeding coefficient from them
-        for (const ancestor of commonAncestors) {
-          relationshipCoeff += calculateInbreedingCoefficientForAncestor(ancestor, ancestorMap);
+        if (fatherPath && motherPath) {
+          const n1 = fatherPath.length;
+          const n2 = motherPath.length;
+          const F_CA = calculateInbreedingCoefficient(caId, [...path, personId]);
+          commonCoEff += Math.pow(0.5, n1 + n2 + 1) * (1 + F_CA);
         }
-      
-        return relationshipCoeff;
       }
+
+      // Calculate inbreeding coefficients for parents
+      const fatherCoEff = calculateInbreedingCoefficient(person.father_id, [...path, personId]);
+      const motherCoEff = calculateInbreedingCoefficient(person.mother_id, [...path, personId]);
+
+      // Total inbreeding coefficient
+      const totalCoEff = commonCoEff + (fatherCoEff / 2) + (motherCoEff / 2);
       
-      // Helper function to get all ancestors of a given person (recursively)
-      function getAncestors(ancestorId, ancestorMap) {
-        let ancestors = [];
-        let currentAncestorId = ancestorId;
-      
-        while (currentAncestorId) {
-          const ancestor = ancestorMap[currentAncestorId];
-          if (ancestor) {
-            ancestors.push(currentAncestorId);
-            currentAncestorId = ancestor.father_id || ancestor.mother_id;
-          } else {
-            break;
-          }
+      // Memoize the result
+      memo[personId] = totalCoEff;
+      return totalCoEff;
+    }
+
+    /**
+     * Recursive function to get all ancestors of a person
+     * @param {number} personId - ID of the person
+     * @param {number[]} ancestors - Accumulator array of ancestor IDs
+     * @returns {number[]} Array of ancestor IDs
+     */
+    function getAllAncestors(personId, ancestors) {
+      const person = ancestorLookup[personId];
+      if (!person) return ancestors;
+
+      if (person.father_id) {
+        if (!ancestors.includes(person.father_id)) {
+          ancestors.push(person.father_id);
+          getAllAncestors(person.father_id, ancestors);
         }
-      
-        return ancestors;
       }
-    
-      
-      // Calculate the child's inbreeding coefficient
-      const childInbreedingCoeff = calculateChildInbreedingCoefficient(id, ancestorLookup);
-      
-      console.log("Child's Inbreeding Coefficient:", childInbreedingCoeff);
-      
 
-    // Helper function to find common ancestors between two individuals
-    // function findCommonAncestors(fatherId, motherId, ancestorLookup) {
-    //   const fatherAncestors = getAncestors(fatherId, ancestorLookup);
-    //   const motherAncestors = getAncestors(motherId, ancestorLookup);
-
-    //   // Return common ancestors by finding intersection of father and mother's ancestors
-    //   return fatherAncestors.filter((ancestor) =>
-    //     motherAncestors.includes(ancestor)
-    //   );
-    // }
-
-    // Helper function to retrieve all ancestors of a given individual
-    function getAncestors(id, ancestorLookup) {
-      let ancestors = [];
-      let current = id;
-
-      // Traverse upwards through the ancestry
-      while (current) {
-        const ancestor = ancestorLookup[current];
-        if (ancestor) {
-          ancestors.push(current);
-          current = ancestor.father_id || ancestor.mother_id; // Move up to the father or mother
-        } else {
-          break; // Stop if there's no more ancestor data
+      if (person.mother_id) {
+        if (!ancestors.includes(person.mother_id)) {
+          ancestors.push(person.mother_id);
+          getAllAncestors(person.mother_id, ancestors);
         }
       }
 
       return ancestors;
     }
 
-    // Helper function to get all paths from an individual to a common ancestor
-    // function getPaths(ancestorId, startId, ancestorLookup) {
-    //   let paths = [];
-    //   let current = startId;
+    /**
+     * Recursive function to find path from descendant to ancestor
+     * @param {number} descendantId - Starting person ID
+     * @param {number} ancestorId - Target ancestor ID
+     * @param {number[]} currentPath - Current path being explored
+     * @returns {number[]|null} Array of IDs representing the path or null if not found
+     */
+    function getPathToAncestor(descendantId, ancestorId, currentPath = []) {
+      if (descendantId === ancestorId) {
+        return [...currentPath, descendantId];
+      }
 
-    //   // Traverse upwards through the ancestry and find the path
-    //   while (current) {
-    //     const ancestor = ancestorLookup[current];
-    //     if (ancestor) {
-    //       if (ancestorId === current) {
-    //         paths.push([ancestorId]);
-    //       }
-    //       current = ancestor.father_id || ancestor.mother_id;
-    //     } else {
-    //       break; // Stop if there's no more ancestor data
-    //     }
-    //   }
+      const person = ancestorLookup[descendantId];
+      if (!person) return null;
 
-    //   return paths;
-    // }
+      // Check father's line
+      if (person.father_id) {
+        const fatherPath = getPathToAncestor(person.father_id, ancestorId, [...currentPath, descendantId]);
+        if (fatherPath) return fatherPath;
+      }
 
+      // Check mother's line
+      if (person.mother_id) {
+        const motherPath = getPathToAncestor(person.mother_id, ancestorId, [...currentPath, descendantId]);
+        if (motherPath) return motherPath;
+      }
 
-    console.log("inbreedingCoefficient:", childInbreedingCoeff);
+      return null;
+    }
 
-    // Return the calculated inbreeding coefficient
-    res.json(childInbreedingCoeff);
+    // Calculate the inbreeding coefficient for the requested person
+    const coefficient = calculateInbreedingCoefficient(id);
+
+    // Return the calculated inbreeding coefficient as a percentage
+    res.json({ inbreedingCoefficient: coefficient * 100 });
   } catch (error) {
     console.log("error calculating inbreeding coefficient:", error);
     res.status(500).json({ error: "Internal server error" });
