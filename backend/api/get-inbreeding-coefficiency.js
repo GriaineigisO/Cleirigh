@@ -126,11 +126,9 @@ export default async function handler(req, res) {
           // Use common ancestors only if they are sufficiently distant
           for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
             const n = fatherSteps + motherSteps;
-            // Ensure we only count common ancestors from distant generations
-            if (n > 1) {
               const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]);
               commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA); // Adjust for distance from ancestor
-            }
+              console.log(commonCoEff)
           }
         }
       
