@@ -8,7 +8,7 @@ const supabase = createClient(
 
 // CORS options
 const corsOptions = {
-  origin: "https://cleirighgenealogy.com", // Replace with your domain
+  origin: "https://cleirighgenealogy.com",
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -99,14 +99,8 @@ export default async function handler(req, res) {
 
       const person = ancestorLookup[personId];
       
-      // If person doesn't exist in the tree or has no parents, return 0
-      if (!person || (!person.father_id && !person.mother_id)) {
-        memo[personId] = 0;
-        return 0;
-      }
-
-      // If person has only one parent, treat as no parents (can't be inbred with one parent)
-      if (!person.father_id || !person.mother_id) {
+      // If person doesn't exist in the tree, return 0
+      if (!person) {
         memo[personId] = 0;
         return 0;
       }
@@ -118,34 +112,49 @@ export default async function handler(req, res) {
         return 0;
       }
 
-      // Get all ancestors of both parents
-      const fatherAncestors = getAllAncestors(person.father_id, []);
-      const motherAncestors = getAllAncestors(person.mother_id, []);
-
-      // Find common ancestors between parents
-      const commonAncestors = fatherAncestors.filter(ancestor => 
-        motherAncestors.includes(ancestor)
-      );
-
-      // Calculate the sum of (0.5)^(n1 + n2 + 1) * (1 + F_CA) for each common ancestor
-      let commonCoEff = 0;
-      
-      for (const caId of commonAncestors) {
-        // Get paths from father and mother to the common ancestor
-        const fatherPath = getPathToAncestor(person.father_id, caId);
-        const motherPath = getPathToAncestor(person.mother_id, caId);
-        
-        if (fatherPath && motherPath) {
-          const n1 = fatherPath.length;
-          const n2 = motherPath.length;
-          const F_CA = calculateInbreedingCoefficient(caId, [...path, personId]);
-          commonCoEff += Math.pow(0.5, n1 + n2 + 1) * (1 + F_CA);
-        }
+      // If person has no parents, return 0 (base case)
+      if (!person.father_id && !person.mother_id) {
+        memo[personId] = 0;
+        return 0;
       }
 
-      // Calculate inbreeding coefficients for parents
-      const fatherCoEff = calculateInbreedingCoefficient(person.father_id, [...path, personId]);
-      const motherCoEff = calculateInbreedingCoefficient(person.mother_id, [...path, personId]);
+      // Calculate inbreeding coefficients for parents (even if only one parent exists)
+      const fatherCoEff = person.father_id 
+        ? calculateInbreedingCoefficient(person.father_id, [...path, personId])
+        : 0;
+      
+      const motherCoEff = person.mother_id 
+        ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
+        : 0;
+
+      // Only calculate common ancestors if both parents exist
+      let commonCoEff = 0;
+      if (person.father_id && person.mother_id) {
+        // Find all paths between parents to identify common ancestors
+        const fatherAncestors = getAllAncestors(person.father_id);
+        const motherAncestors = getAllAncestors(person.mother_id);
+        
+        // Find common ancestors between parents
+        const commonAncestors = fatherAncestors.filter(ancestor => 
+          motherAncestors.includes(ancestor)
+        );
+
+        for (const caId of commonAncestors) {
+          // Get all paths from father to common ancestor
+          const fatherPaths = getAllPaths(person.father_id, caId);
+          // Get all paths from mother to common ancestor
+          const motherPaths = getAllPaths(person.mother_id, caId);
+
+          for (const fatherPath of fatherPaths) {
+            for (const motherPath of motherPaths) {
+              const n1 = fatherPath.length;
+              const n2 = motherPath.length;
+              const F_CA = calculateInbreedingCoefficient(caId, [...path, personId]);
+              commonCoEff += Math.pow(0.5, n1 + n2 + 1) * (1 + F_CA);
+            }
+          }
+        }
+      }
 
       // Total inbreeding coefficient
       const totalCoEff = commonCoEff + (fatherCoEff / 2) + (motherCoEff / 2);
@@ -158,69 +167,96 @@ export default async function handler(req, res) {
     /**
      * Recursive function to get all ancestors of a person
      * @param {number} personId - ID of the person
-     * @param {number[]} ancestors - Accumulator array of ancestor IDs
      * @returns {number[]} Array of ancestor IDs
      */
-    function getAllAncestors(personId, ancestors) {
+    function getAllAncestors(personId) {
       const person = ancestorLookup[personId];
-      if (!person) return ancestors;
+      if (!person) return [];
 
+      const ancestors = new Set();
+      
       if (person.father_id) {
-        if (!ancestors.includes(person.father_id)) {
-          ancestors.push(person.father_id);
-          getAllAncestors(person.father_id, ancestors);
-        }
+        ancestors.add(person.father_id);
+        const fatherAncestors = getAllAncestors(person.father_id);
+        fatherAncestors.forEach(a => ancestors.add(a));
       }
 
       if (person.mother_id) {
-        if (!ancestors.includes(person.mother_id)) {
-          ancestors.push(person.mother_id);
-          getAllAncestors(person.mother_id, ancestors);
-        }
+        ancestors.add(person.mother_id);
+        const motherAncestors = getAllAncestors(person.mother_id);
+        motherAncestors.forEach(a => ancestors.add(a));
       }
 
-      return ancestors;
+      return Array.from(ancestors);
     }
 
     /**
-     * Recursive function to find path from descendant to ancestor
+     * Recursive function to find all paths from descendant to ancestor
      * @param {number} descendantId - Starting person ID
      * @param {number} ancestorId - Target ancestor ID
      * @param {number[]} currentPath - Current path being explored
-     * @returns {number[]|null} Array of IDs representing the path or null if not found
+     * @returns {number[][]} Array of paths (each path is an array of IDs)
      */
-    function getPathToAncestor(descendantId, ancestorId, currentPath = []) {
+    function getAllPaths(descendantId, ancestorId, currentPath = []) {
       if (descendantId === ancestorId) {
-        return [...currentPath, descendantId];
+        return [[...currentPath, descendantId]];
       }
 
       const person = ancestorLookup[descendantId];
-      if (!person) return null;
+      if (!person) return [];
 
+      let allPaths = [];
+      
       // Check father's line
       if (person.father_id) {
-        const fatherPath = getPathToAncestor(person.father_id, ancestorId, [...currentPath, descendantId]);
-        if (fatherPath) return fatherPath;
+        const fatherPaths = getAllPaths(
+          person.father_id, 
+          ancestorId, 
+          [...currentPath, descendantId]
+        );
+        allPaths = allPaths.concat(fatherPaths);
       }
 
       // Check mother's line
       if (person.mother_id) {
-        const motherPath = getPathToAncestor(person.mother_id, ancestorId, [...currentPath, descendantId]);
-        if (motherPath) return motherPath;
+        const motherPaths = getAllPaths(
+          person.mother_id, 
+          ancestorId, 
+          [...currentPath, descendantId]
+        );
+        allPaths = allPaths.concat(motherPaths);
       }
 
-      return null;
+      return allPaths;
     }
 
     // Calculate the inbreeding coefficient for the requested person
     const coefficient = calculateInbreedingCoefficient(id);
-    const inbreedingCoefficient = coefficient * 100;
-    console.log(inbreedingCoefficient)
 
     // Return the calculated inbreeding coefficient as a percentage
-    res.json(inbreedingCoefficient);
+    res.json({ 
+      inbreedingCoefficient: coefficient * 100,
+      interpretation: getInterpretation(coefficient * 100)
+    });
   } catch (error) {
     console.log("error calculating inbreeding coefficient:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+}
+
+/**
+ * Provides a human-readable interpretation of the inbreeding coefficient
+ * @param {number} coefficient - Inbreeding coefficient percentage
+ * @returns {string} Interpretation text
+ */
+function getInterpretation(coefficient) {
+  if (coefficient === 0) return "No detectable inbreeding";
+  if (coefficient < 0.1) return "Very distant relatives (e.g., 6th cousins or more)";
+  if (coefficient < 0.5) return "Distant relatives (e.g., 4th-5th cousins)";
+  if (coefficient < 1) return "3rd-4th cousins";
+  if (coefficient < 2) return "2nd-3rd cousins";
+  if (coefficient < 6) return "1st-2nd cousins";
+  if (coefficient < 13) return "Siblings or parent-child";
+  if (coefficient < 25) return "Double first cousins or uncle-niece";
+  return "Very close relationship (e.g., sibling or parent-child repeated)";
 }

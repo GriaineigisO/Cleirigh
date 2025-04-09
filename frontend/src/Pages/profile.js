@@ -553,7 +553,7 @@ const Profile = () => {
         );
 
         const data = await response.json();
-        setInbreedingCoefficiency(data); 
+        setInbreedingCoefficiency(data.inbreedingCoefficient); 
       } catch (err) {
         setError("Failed to fetch data");
         console.error(err);
