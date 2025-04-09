@@ -97,6 +97,8 @@ export default async function handler(req, res) {
         return memo[personId];
       }
 
+      
+
       const person = ancestorLookup[personId];
       
       // If person doesn't exist in the tree, return 0
@@ -116,6 +118,16 @@ export default async function handler(req, res) {
       if (!person.father_id && !person.mother_id) {
         memo[personId] = 0;
         return 0;
+      }
+
+      if (person.father_id && person.mother_id) {
+        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+        
+        for (const {ancestorId, fatherSteps, motherSteps} of commonAncestors) {
+          const n = fatherSteps + motherSteps;
+          const F_CA = calculateInbreedingCoefficient(ancestorId);
+          commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+        }
       }
 
       // Calculate inbreeding coefficients for parents (even if only one parent exists)
@@ -163,6 +175,52 @@ export default async function handler(req, res) {
       memo[personId] = totalCoEff;
       return totalCoEff;
     }
+
+    function findCommonAncestors(personId1, personId2) {
+        const ancestors1 = getAncestorSteps(personId1);
+        const ancestors2 = getAncestorSteps(personId2);
+        
+        const common = [];
+        
+        for (const [ancestorId, steps] of Object.entries(ancestors1)) {
+          if (ancestors2[ancestorId]) {
+            for (const s1 of steps) {
+              for (const s2 of ancestors2[ancestorId]) {
+                common.push({
+                  ancestorId: Number(ancestorId),
+                  fatherSteps: s1,
+                  motherSteps: s2
+                });
+              }
+            }
+          }
+        }
+        
+        return common;
+      }
+
+      function getAncestorSteps(personId, steps = 0) {
+        const person = ancestorLookup[personId];
+        if (!person) return {};
+        
+        const result = {};
+        
+        if (person.father_id) {
+          const fatherAncestors = getAncestorSteps(person.father_id, steps + 1);
+          Object.assign(result, fatherAncestors);
+        }
+        
+        if (person.mother_id) {
+          const motherAncestors = getAncestorSteps(person.mother_id, steps + 1);
+          Object.assign(result, motherAncestors);
+        }
+        
+        if (!person.father_id && !person.mother_id) {
+          result[personId] = [steps];
+        }
+        
+        return result;
+      }
 
     /**
      * Recursive function to get all ancestors of a person
