@@ -206,29 +206,6 @@ export default async function handler(req, res) {
       return result;
     }
 
-    function getAncestorSteps(personId, steps = 0) {
-      const person = ancestorLookup[personId];
-      if (!person) return {};
-
-      const result = {};
-
-      if (person.father_id) {
-        const fatherAncestors = getAncestorSteps(person.father_id, steps + 1);
-        Object.assign(result, fatherAncestors);
-      }
-
-      if (person.mother_id) {
-        const motherAncestors = getAncestorSteps(person.mother_id, steps + 1);
-        Object.assign(result, motherAncestors);
-      }
-
-      if (!person.father_id && !person.mother_id) {
-        result[personId] = [steps - 1]; // Subtract 1 to exclude current generation
-      }
-
-      return result;
-    }
-
     // Calculate the inbreeding coefficient for the requested person
     const coefficient = calculateInbreedingCoefficient(id);
     console.log(`Inbreeding coefficient for ${id}:`, coefficient);
