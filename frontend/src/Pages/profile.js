@@ -568,7 +568,7 @@ const Profile = () => {
 
   const InbreedingCoefficiency = () => {
     return (
-      <p>{profileData.firstName} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%.</p>
+      <p>{profileData.first_name} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%.</p>
     )
   };
 
