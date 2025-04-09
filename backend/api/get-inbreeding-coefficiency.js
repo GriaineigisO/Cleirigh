@@ -141,6 +141,9 @@ export default async function handler(req, res) {
 
       // Total coefficient
       const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
+      console.log("totalCoEff:", totalCoEff)
+      console.log("fatherCoEff:", fatherCoEff)
+      console.log("motherCoEff:", motherCoEff)
 
       memo[personId] = totalCoEff;
       return totalCoEff;
