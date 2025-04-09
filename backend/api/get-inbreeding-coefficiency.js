@@ -120,6 +120,7 @@ export default async function handler(req, res) {
         return 0;
       }
 
+      let commonCoEff = 0;
       if (person.father_id && person.mother_id) {
         const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
         
@@ -140,7 +141,6 @@ export default async function handler(req, res) {
         : 0;
 
       // Only calculate common ancestors if both parents exist
-      let commonCoEff = 0;
       if (person.father_id && person.mother_id) {
         // Find all paths between parents to identify common ancestors
         const fatherAncestors = getAllAncestors(person.father_id);
