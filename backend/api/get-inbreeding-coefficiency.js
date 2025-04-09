@@ -92,67 +92,73 @@ export default async function handler(req, res) {
      * @returns {number} Inbreeding coefficient (0 to 1)
      */
     function calculateInbreedingCoefficient(personId, path = []) {
-      // Check memoization cache first
-      if (memo[personId] !== undefined) {
-        return memo[personId];
-      }
-
-      const person = ancestorLookup[personId];
-
-      // If person doesn't exist in the tree, return 0
-      if (!person) {
-        memo[personId] = 0;
-        return 0;
-      }
-
-      // Check for parent loops
-      if (path.includes(personId)) {
-        memo[personId] = 0;
-        return 0;
-      }
-
-      // If person has no parents, return 0
-      if (!person.father_id && !person.mother_id) {
-        memo[personId] = 0;
-        return 0;
-      }
-
-      let commonCoEff = 0;
-      if (person.father_id && person.mother_id) {
-        const commonAncestors = findCommonAncestors(
-          person.father_id,
-          person.mother_id
-        );
-
-        for (const {
-          ancestorId,
-          fatherSteps,
-          motherSteps,
-        } of commonAncestors) {
-          const n = fatherSteps + motherSteps;
-          const F_CA = calculateInbreedingCoefficient(ancestorId, [
-            ...path,
-            personId,
-          ]);
-          commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+        // Check memoization cache first
+        if (memo[personId] !== undefined) {
+          return memo[personId];
         }
+      
+        const person = ancestorLookup[personId];
+      
+        // If person doesn't exist in the tree, return 0
+        if (!person) {
+          memo[personId] = 0;
+          return 0;
+        }
+      
+        // Check for parent loops
+        if (path.includes(personId)) {
+          memo[personId] = 0;
+          return 0;
+        }
+      
+        // If person has no parents, return 0
+        if (!person.father_id && !person.mother_id) {
+          memo[personId] = 0;
+          return 0;
+        }
+      
+        let commonCoEff = 0;
+      
+        if (person.father_id && person.mother_id) {
+          // Find common ancestors between the father and mother
+          const commonAncestors = findCommonAncestors(
+            person.father_id,
+            person.mother_id
+          );
+      
+          // Calculate coefficient based on common ancestors
+          for (const {
+            ancestorId,
+            fatherSteps,
+            motherSteps,
+          } of commonAncestors) {
+            const n = fatherSteps + motherSteps;
+            const F_CA = calculateInbreedingCoefficient(ancestorId, [
+              ...path,
+              personId,
+            ]);
+            commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
+          }
+        }
+      
+        // Handle missing parents: if father or mother is missing, assume coefficient is 0
+        const fatherCoEff = person.father_id
+          ? calculateInbreedingCoefficient(person.father_id, [...path, personId])
+          : 0;
+      
+        const motherCoEff = person.mother_id
+          ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
+          : 0;
+      
+        // Total coefficient: ensure no overcounting of common ancestors
+        const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
+      
+        // Cache the result for the current person
+        memo[personId] = totalCoEff;
+      
+        return totalCoEff;
       }
-
-      // Calculate parents' coefficients (for father and mother)
-      const fatherCoEff = person.father_id
-        ? calculateInbreedingCoefficient(person.father_id, [...path, personId])
-        : 0;
-
-      const motherCoEff = person.mother_id
-        ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
-        : 0;
-
-      // Total coefficient: ensure no overcounting of common ancestors
-      const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
-
-      memo[personId] = totalCoEff;
-      return totalCoEff;
-    }
+      
 
     // Fix: Correct ancestor tracing
     function findCommonAncestors(fatherId, motherId) {
