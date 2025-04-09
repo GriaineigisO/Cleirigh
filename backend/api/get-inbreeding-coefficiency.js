@@ -81,76 +81,102 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    function calculateInbreedingCoefficient(ancestorId, ancestorLookup) {
-      const memo = new Map(); // For caching the inbreeding coefficient of ancestors
-      const visited = new Set(); // To track ancestors we've already seen in a given path
-
-      function getF(id, path = []) {
-        if (!id || !ancestorLookup[id]) {
-          return 0; // If no ancestor exists, return 0 (no inbreeding)
-        }
-        if (memo.has(id)) {
-          return memo.get(id); // Return cached value if already calculated
-        }
-
-        // If we have already visited this ancestor in this path, we've encountered pedigree collapse
-        if (path.includes(id)) {
-          return 0.5; // Return a fixed contribution for pedigree collapse, adjust as needed
-        }
-
-        // Track the current path for this ancestor to avoid cycles
-        path.push(id);
-
-        const { father_id, mother_id } = ancestorLookup[id];
-
-        let F = 0;
-
-        // If both father and mother exist, calculate recursively for both
-        if (father_id && mother_id) {
-          const fatherCoeff = getF(father_id, path); // Inbreeding from the father's side
-          const motherCoeff = getF(mother_id, path); // Inbreeding from the mother's side
-
-          // For each common ancestor between the parents, we calculate the coefficient
-          const commonAncestors = findCommonAncestors(
-            father_id,
-            mother_id,
-            ancestorLookup
-          );
-
-          // Sum the inbreeding coefficient from common ancestors
-          for (const ca of commonAncestors) {
-            const pathsToFather = getPaths(ca, father_id, ancestorLookup);
-            const pathsToMother = getPaths(ca, mother_id, ancestorLookup);
-
-            // For each path from father and mother to the common ancestor, calculate the coefficient
-            for (const pf of pathsToFather) {
-              for (const pm of pathsToMother) {
-                const n1 = pf.length; // Generations to father
-                const n2 = pm.length; // Generations to mother
-                const Fca = getF(ca, path); // Inbreeding coefficient for common ancestor
-                F += Math.pow(0.5, n1 + n2 + 1) * (1 + Fca);
-              }
-            }
-          }
-
-          // Halve the inbreeding coefficients from both parents
-          F += 0.5 * (fatherCoeff + motherCoeff);
-        } else if (father_id) {
-          // Only the father exists, calculate inbreeding based on the father's side
-          F += 0.5 * getF(father_id, path);
-        } else if (mother_id) {
-          // Only the mother exists, calculate inbreeding based on the mother's side
-          F += 0.5 * getF(mother_id, path);
-        }
-
-        // Store the result for future calls
-        memo.set(id, F);
-        return F;
+    function calculateInbreedingCoefficientForAncestor(ancestorId, ancestorMap) {
+        // Check if the ancestor data is available in the map
+        if (!ancestorMap[ancestorId]) return 0;
+      
+        const ancestor = ancestorMap[ancestorId];
+        const { father_id, mother_id } = ancestor;
+      
+        // If no further ancestors, return base case: 0 (no inbreeding from this ancestor)
+        if (!father_id && !mother_id) return 0;
+      
+        // Recursively calculate the inbreeding coefficients for the parents
+        const fatherCoeff = calculateInbreedingCoefficientForAncestor(father_id, ancestorMap);
+        const motherCoeff = calculateInbreedingCoefficientForAncestor(mother_id, ancestorMap);
+      
+        // The inbreeding coefficient of the ancestor is the average of the parent's coefficients (halved)
+        const inbreedingCoefficient = (fatherCoeff + motherCoeff) / 2;
+      
+        return inbreedingCoefficient;
       }
-
-      // Start the recursion from the given ancestorId
-      return getF(ancestorId);
-    }
+      
+      // Recursive function to calculate the child's inbreeding coefficient
+      function calculateChildInbreedingCoefficient(fatherId, motherId, ancestorMap) {
+        // Find the inbreeding coefficient for each parent based on their ancestors
+        const fatherInbreedingCoeff = calculateInbreedingCoefficientForAncestor(fatherId, ancestorMap);
+        const motherInbreedingCoeff = calculateInbreedingCoefficientForAncestor(motherId, ancestorMap);
+      
+        // Calculate the relationship coefficient (shared ancestor coefficient between parents)
+        const commonAncestorsCoeff = calculateCommonAncestorsCoeff(fatherId, motherId, ancestorMap);
+      
+        // Combine the coefficients
+        const childInbreedingCoeff = commonAncestorsCoeff + (fatherInbreedingCoeff / 2) + (motherInbreedingCoeff / 2);
+      
+        return childInbreedingCoeff;
+      }
+      
+      // Helper function to calculate the relationship coefficient (common ancestors) between parents
+      function calculateCommonAncestorsCoeff(fatherId, motherId, ancestorMap) {
+        const fatherAncestors = getAncestors(fatherId, ancestorMap);
+        const motherAncestors = getAncestors(motherId, ancestorMap);
+      
+        // Find the intersection (common ancestors)
+        const commonAncestors = fatherAncestors.filter(ancestor => motherAncestors.includes(ancestor));
+        
+        let relationshipCoeff = 0;
+        
+        // If there are common ancestors, calculate the inbreeding coefficient from them
+        for (const ancestor of commonAncestors) {
+          relationshipCoeff += calculateInbreedingCoefficientForAncestor(ancestor, ancestorMap);
+        }
+      
+        return relationshipCoeff;
+      }
+      
+      // Helper function to get all ancestors of a given person (recursively)
+      function getAncestors(ancestorId, ancestorMap) {
+        let ancestors = [];
+        let currentAncestorId = ancestorId;
+      
+        while (currentAncestorId) {
+          const ancestor = ancestorMap[currentAncestorId];
+          if (ancestor) {
+            ancestors.push(currentAncestorId);
+            currentAncestorId = ancestor.father_id || ancestor.mother_id;
+          } else {
+            break;
+          }
+        }
+      
+        return ancestors;
+      }
+      
+      // Example usage with ancestor data (ancestorMap should contain the ancestor tree)
+      const ancestorMap = {
+        1: { father_id: 2, mother_id: 3 },
+        2: { father_id: 4, mother_id: 5 },
+        3: { father_id: 6, mother_id: 7 },
+        4: { father_id: 8, mother_id: 9 },
+        5: { father_id: null, mother_id: null }, // No ancestors here, so base coefficient is 0
+        6: { father_id: 10, mother_id: 11 },
+        7: { father_id: 12, mother_id: 13 },
+        8: { father_id: null, mother_id: null },
+        9: { father_id: null, mother_id: null },
+        10: { father_id: null, mother_id: null },
+        11: { father_id: null, mother_id: null },
+        12: { father_id: null, mother_id: null },
+        13: { father_id: null, mother_id: null },
+      };
+      
+      const fatherId = 1; // Example father ID
+      const motherId = 2; // Example mother ID
+      
+      // Calculate the child's inbreeding coefficient
+      const childInbreedingCoeff = calculateChildInbreedingCoefficient(fatherId, motherId, ancestorMap);
+      
+      console.log("Child's Inbreeding Coefficient:", childInbreedingCoeff);
+      
 
     // Helper function to find common ancestors between two individuals
     function findCommonAncestors(fatherId, motherId, ancestorLookup) {
