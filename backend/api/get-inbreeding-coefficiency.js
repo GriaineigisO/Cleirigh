@@ -76,6 +76,8 @@ export default async function handler(req, res) {
     }
 
     function calculateInbreedingCoefficient(ancestorId, ancestorsMap) {
+        console.log(ancestorId)
+        console.log(ancestorsMap)
       const memo = new Map(); // for caching F values
 
       function getF(id) {
