@@ -75,14 +75,22 @@ export default async function handler(req, res) {
       }
     }
 
-    function calculateInbreedingCoefficient(ancestorId, ancestorsMap) {
+    // Create a lookup map from allData for faster access
+    const ancestorLookup = allData.reduce((acc, ancestor) => {
+      acc[ancestor.ancestor_id] = ancestor;
+      return acc;
+    }, {});
 
+    console.log(ancestorLookup);
+
+    function calculateInbreedingCoefficient(ancestorId, ancestorsMap) {
       const memo = new Map(); // for caching F values
 
       function getF(id) {
+        console.log(ancestorsMap[id]);
         if (!id || !ancestorsMap[id]) {
-            console.log("id or ancestorsmap is undefined")
-            return 0;
+          console.log("id or ancestorsmap is undefined");
+          return 0;
         }
         if (memo.has(id)) return memo.get(id);
 
@@ -120,7 +128,7 @@ export default async function handler(req, res) {
       return getF(ancestorId);
     }
 
-    const inbreedingCoefficient = calculateInbreedingCoefficient(id, allData);
+    const inbreedingCoefficient = calculateInbreedingCoefficient(id, ancestorLookup);
 
     // Return the calculated inbreeding coefficient
     res.json(inbreedingCoefficient);
