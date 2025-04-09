@@ -290,6 +290,7 @@ export default async function handler(req, res) {
 
     // Calculate the inbreeding coefficient for the requested person
     const coefficient = calculateInbreedingCoefficient(id);
+    console.log(coefficient * 100)
 
     // Return the calculated inbreeding coefficient as a percentage
     res.json({ 
