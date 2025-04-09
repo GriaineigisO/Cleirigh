@@ -105,7 +105,7 @@ export default async function handler(req, res) {
           return 0;
         }
       
-        Check for parent loops
+        //Check for parent loops
         if (path.includes(personId)) {
           memo[personId] = 0;
           return 0;
