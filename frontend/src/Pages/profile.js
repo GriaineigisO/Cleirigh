@@ -535,7 +535,7 @@ const Profile = () => {
     }
   };
 
-  const InbreedingCoefficiency  = () => {
+  const InbreedingCoefficiency  = async () => {
 
     const userId = localStorage.getItem("userId");
     const idNumber = Number(id);
