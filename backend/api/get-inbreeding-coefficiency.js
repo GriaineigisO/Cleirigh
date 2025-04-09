@@ -118,7 +118,6 @@ export default async function handler(req, res) {
       }
 
       let commonCoEff = 0;
-
       if (person.father_id && person.mother_id) {
         const commonAncestors = findCommonAncestors(
           person.father_id,
@@ -130,7 +129,7 @@ export default async function handler(req, res) {
           fatherSteps,
           motherSteps,
         } of commonAncestors) {
-          const n = fatherSteps + motherSteps; // Total generational distance
+          const n = fatherSteps + motherSteps;
           const F_CA = calculateInbreedingCoefficient(ancestorId, [
             ...path,
             personId,
@@ -156,28 +155,21 @@ export default async function handler(req, res) {
     }
 
     function findCommonAncestors(fatherId, motherId) {
-      console.log(
-        `Finding common ancestors between ${fatherId} and ${motherId}`
-      );
-
-      const ancestors1 = getAllAncestorsWithDistances(fatherId);
-      const ancestors2 = getAllAncestorsWithDistances(motherId);
-
-      const common = [];
-      for (const [ancestorId, dist1] of Object.entries(ancestors1)) {
-        if (ancestors2[ancestorId]) {
-          const dist2 = ancestors2[ancestorId];
-          common.push({
-            ancestorId: Number(ancestorId),
-            fatherSteps: dist1,
-            motherSteps: dist2,
-          });
+        const ancestors1 = getAllAncestorsWithDistances(fatherId);
+        const ancestors2 = getAllAncestorsWithDistances(motherId);
+      
+        const common = [];
+        for (const [ancestorId, dist1] of Object.entries(ancestors1)) {
+          if (ancestors2[ancestorId]) {
+            common.push({
+              ancestorId: Number(ancestorId),
+              fatherSteps: dist1 - 1, // Steps from father to ancestor
+              motherSteps: ancestors2[ancestorId] - 1 // Steps from mother to ancestor
+            });
+          }
         }
+        return common;
       }
-
-      console.log("Common ancestors:", common);
-      return common;
-    }
 
     function getAllAncestorsWithDistances(personId, distance = 1) {
       const person = ancestorLookup[personId];
