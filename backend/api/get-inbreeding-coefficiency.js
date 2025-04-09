@@ -214,9 +214,11 @@ export default async function handler(req, res) {
 
     // Calculate the inbreeding coefficient for the requested person
     const coefficient = calculateInbreedingCoefficient(id);
+    const inbreedingCoefficient = coefficient * 100;
+    console.log(inbreedingCoefficient)
 
     // Return the calculated inbreeding coefficient as a percentage
-    res.json({ inbreedingCoefficient: coefficient * 100 });
+    res.json(inbreedingCoefficient);
   } catch (error) {
     console.log("error calculating inbreeding coefficient:", error);
     res.status(500).json({ error: "Internal server error" });
