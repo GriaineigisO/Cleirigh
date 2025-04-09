@@ -563,11 +563,11 @@ const Profile = () => {
     };
 
     getInbreedingCoefficiency(); 
-  }, []); 
+  }, [profileData]); 
 
   const InbreedingCoefficiency = () => {
     return (
-      <p>{profileData.firstName} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreedingCoefficiency</a> of {inbreedingCoefficiency}.</p>
+      <p>{profileData.firstName} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%.</p>
     )
   };
 
