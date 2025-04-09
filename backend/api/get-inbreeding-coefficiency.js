@@ -89,7 +89,10 @@ export default async function handler(req, res) {
           console.log("id or ancestorsmap is undefined");
           return 0;
         }
-        if (memo.has(id)) return memo.get(id);
+        if (memo.has(id)) {
+          console.log("memo has id");
+          return memo.get(id);
+        }
 
         const { father_id, mother_id } = ancestorsMap[id];
         if (!father_id || !mother_id) {
@@ -149,6 +152,7 @@ export default async function handler(req, res) {
         }
 
         memo.set(id, F);
+        console.log("F:", F)
         return F;
       }
 
@@ -159,6 +163,8 @@ export default async function handler(req, res) {
       id,
       ancestorLookup
     );
+
+    console.log("inbreedingCoefficient:", inbreedingCoefficient)
 
     // Return the calculated inbreeding coefficient
     res.json(inbreedingCoefficient);
