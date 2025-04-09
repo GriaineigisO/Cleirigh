@@ -117,7 +117,24 @@ export default async function handler(req, res) {
           return 0;
         }
       
-        // Coefficients for the father and mother
+        let commonCoEff = 0;
+      
+        // Only calculate if both parents exist
+        if (person.father_id && person.mother_id) {
+          const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+      
+          // Use common ancestors only if they are sufficiently distant
+          for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+            const n = fatherSteps + motherSteps;
+            // Ensure we only count common ancestors from distant generations
+            if (n > 1) {
+              const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]);
+              commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA); // Adjust for distance from ancestor
+            }
+          }
+        }
+      
+        // Calculate parents' coefficients (for father and mother)
         const fatherCoEff = person.father_id
           ? calculateInbreedingCoefficient(person.father_id, [...path, personId])
           : 0;
@@ -126,35 +143,14 @@ export default async function handler(req, res) {
           ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
           : 0;
       
-        // Initialize common coefficient
-        let commonCoEff = 0;
+        // Total coefficient: ensure no overcounting of common ancestors
+        const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
       
-        // Only calculate for common ancestors if both father and mother exist
-        if (person.father_id && person.mother_id) {
-          const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
-          
-          for (const {ancestorId, fatherSteps, motherSteps} of commonAncestors) {
-            const n = fatherSteps + motherSteps;
-            
-            // Only factor in common ancestors if they are sufficiently distant
-            if (n > 1) {  // Common ancestors should not directly count for immediate parents
-              const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]);
-              commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
-            }
-          }
-        }
-      
-        // Total coefficient calculation
-        const totalCoEff = fatherCoEff / 2 + motherCoEff / 2 + commonCoEff;
-      
-        // Save result in memoization cache
         memo[personId] = totalCoEff;
         return totalCoEff;
       }
       
-      
-
-    function findCommonAncestors(personId1, personId2) {
+      function findCommonAncestors(personId1, personId2) {
         const ancestors1 = getAncestorSteps(personId1);
         const ancestors2 = getAncestorSteps(personId2);
       
@@ -167,8 +163,8 @@ export default async function handler(req, res) {
               for (const s2 of steps2) {
                 common.push({
                   ancestorId: Number(ancestorId),
-                  fatherSteps: s1 - 1,  // Subtract 1 to get parent→ancestor steps
-                  motherSteps: s2 - 1   // Subtract 1 to get parent→ancestor steps
+                  fatherSteps: s1 - 1,  // Adjust steps to exclude direct parent
+                  motherSteps: s2 - 1   // Adjust steps to exclude direct parent
                 });
               }
             }
@@ -177,29 +173,30 @@ export default async function handler(req, res) {
       
         return common;
       }
-
+      
       function getAncestorSteps(personId, steps = 0) {
         const person = ancestorLookup[personId];
         if (!person) return {};
-        
+      
         const result = {};
-        
+      
         if (person.father_id) {
-            const fatherAncestors = getAncestorSteps(person.father_id, steps + 1);
-            Object.assign(result, fatherAncestors);
+          const fatherAncestors = getAncestorSteps(person.father_id, steps + 1);
+          Object.assign(result, fatherAncestors);
         }
-        
+      
         if (person.mother_id) {
-            const motherAncestors = getAncestorSteps(person.mother_id, steps + 1);
-            Object.assign(result, motherAncestors);
+          const motherAncestors = getAncestorSteps(person.mother_id, steps + 1);
+          Object.assign(result, motherAncestors);
         }
-        
+      
         if (!person.father_id && !person.mother_id) {
-            result[personId] = [steps - 1];  // Subtract 1 to exclude current generation
+          result[personId] = [steps - 1];  // Subtract 1 to exclude current generation
         }
-        
+      
         return result;
-    }
+      }
+      
 
     // Calculate the inbreeding coefficient for the requested person
     const coefficient = calculateInbreedingCoefficient(id);
