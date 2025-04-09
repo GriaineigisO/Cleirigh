@@ -106,10 +106,10 @@ export default async function handler(req, res) {
         }
       
         // Check for parent loops
-        if (path.includes(personId)) {
-          memo[personId] = 0;
-          return 0;
-        }
+        // if (path.includes(personId)) {
+        //   memo[personId] = 0;
+        //   return 0;
+        // }
       
         // If person has no parents, return 0
         if (!person.father_id && !person.mother_id) {
