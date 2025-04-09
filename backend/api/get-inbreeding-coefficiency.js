@@ -157,7 +157,7 @@ export default async function handler(req, res) {
     
       
       // Calculate the child's inbreeding coefficient
-      const childInbreedingCoeff = calculateChildInbreedingCoefficient(id, ancestorMap);
+      const childInbreedingCoeff = calculateChildInbreedingCoefficient(id, ancestorLookup);
       
       console.log("Child's Inbreeding Coefficient:", childInbreedingCoeff);
       
