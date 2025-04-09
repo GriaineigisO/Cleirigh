@@ -102,6 +102,9 @@ export default async function handler(req, res) {
         // If both father and mother exist, check for common ancestors
         if (person.father_id && person.mother_id) {
             const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+            if(personId === id) {
+              console.log(commonAncestors)
+            }
     
             // For each common ancestor, calculate their contribution to the inbreeding coefficient
             for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
@@ -110,6 +113,11 @@ export default async function handler(req, res) {
     
                 // Adding the common ancestor's contribution to the inbreeding coefficient
                 commonCoEff += (Math.pow(0.5, n-1) + Math.pow(0.5, n-1)) * (1 + F_CA); // Formula for inbreeding coefficient contribution
+                if(personId === id) {
+                  console.log("steps:", n)
+                  console.log("F_CA:", F_CA)
+                  console.log("commonAncestors:", commonAncestors)
+                }
             }
         }
     
@@ -124,6 +132,11 @@ export default async function handler(req, res) {
     
         // Total coefficient considering both parents and common ancestors
         const totalCoEff = commonCoEff + (fatherCoEff / 2) + (motherCoEff / 2);
+        if(personId === id) {
+          console.log("fatherCoEff:", fatherCoEff / 2)
+          console.log("motherCoEff", motherCoEff / 2)
+          console.log("totalCoEff:", totalCoEff)
+        }
     
         return totalCoEff;  // No artificial cap here; let the coefficient propagate naturally
     }
