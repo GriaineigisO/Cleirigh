@@ -137,9 +137,7 @@ export default async function handler(req, res) {
           ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
           : 0;
       
-          console.log("commonCoEff:", commonCoEff)
-          console.log("fatherCoEff:", fatherCoEff)
-          console.log("motherCoEff:", motherCoEff)
+         
         // Total coefficient: ensure no overcounting of common ancestors
         const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
       
@@ -165,6 +163,8 @@ export default async function handler(req, res) {
                 });
             }
         }
+
+        console.log("common:", common)
         
         return common;
     }
