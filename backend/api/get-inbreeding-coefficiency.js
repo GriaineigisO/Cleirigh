@@ -82,66 +82,58 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    // Memoization cache to store already calculated coefficients
-    // Memoization cache for inbreeding coefficients
-    const memo = {};
+    const memo = {}; // To store calculated inbreeding coefficients for ancestors
 
-    // Simplified recursive function to calculate inbreeding coefficient
+    // Simplified recursive function to calculate the inbreeding coefficient
     function calculateInbreedingCoefficient(personId, path = []) {
-      // Check memoization cache
+      // Check if the result is already in the cache
       if (memo[personId] !== undefined) {
         return memo[personId];
       }
 
-      // Find the person in the lookup table
+      // Find the person in the ancestor data
       const person = ancestorLookup[personId];
 
-      // If person doesn't exist or is at a leaf node, return 0 (base case)
+      // Base case: if person has no ancestors, return 0
       if (!person || (!person.father_id && !person.mother_id)) {
         memo[personId] = 0;
         return 0;
       }
 
-      // Avoid circular references (if we're going through the same person in the path)
+      // Avoid circular references by checking the path
       if (path.includes(personId)) {
         memo[personId] = 0;
         return 0;
       }
 
-      // Track the path of ancestors
+      // Track the current person's ancestors to avoid infinite recursion
       path.push(personId);
 
       let commonCoEff = 0;
 
       if (person.father_id && person.mother_id) {
-        // Find common ancestors for father and mother
+        // Find common ancestors between father and mother
         const commonAncestors = findCommonAncestors(
           person.father_id,
           person.mother_id
         );
 
-        // Loop through common ancestors and calculate the inbreeding coefficient
+        // Loop through the common ancestors and calculate the inbreeding coefficient
         commonAncestors.forEach(({ ancestorId, fatherSteps, motherSteps }) => {
-          // The number of steps is how far each person is from the common ancestor
-          const n = fatherSteps + motherSteps;
+          const n = fatherSteps + motherSteps; // Sum of steps (generations) between the common ancestor and the individuals
 
-          // Log for debugging purposes
-          console.log("Common Ancestor:", ancestorId);
-          console.log("fatherSteps:", fatherSteps);
-          console.log("motherSteps:", motherSteps);
-
-          // Calculate F_CA (inbreeding coefficient for common ancestor)
+          // Calculate the inbreeding coefficient for the common ancestor
           const F_CA = calculateInbreedingCoefficient(ancestorId, [
             ...path,
             personId,
           ]);
 
-          // Accumulate the inbreeding coefficient for common ancestors
-          commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula to calculate inbreeding coefficient
+          // Accumulate the inbreeding coefficient based on the distance (number of generations)
+          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         });
       }
 
-      // Calculate inbreeding coefficient from father and mother side
+      // Calculate inbreeding coefficient for father and mother
       const fatherCoEff = person.father_id
         ? calculateInbreedingCoefficient(person.father_id, [...path, personId])
         : 0;
@@ -150,7 +142,7 @@ export default async function handler(req, res) {
         ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
         : 0;
 
-      // Total inbreeding coefficient is the sum of common ancestors and individual parents' coefficients
+      // Total inbreeding coefficient is the sum of common ancestors and parents' coefficients
       const totalCoEff = commonCoEff + (fatherCoEff + motherCoEff) / 2;
 
       // Memoize the result for this person
@@ -159,21 +151,22 @@ export default async function handler(req, res) {
       return totalCoEff;
     }
 
-    // Function to find common ancestors between two individuals (father_id and mother_id)
+    // Function to find common ancestors between father and mother
     function findCommonAncestors(fatherId, motherId) {
       const fatherAncestors = getAncestorSteps(fatherId);
       const motherAncestors = getAncestorSteps(motherId);
 
       const commonAncestors = [];
 
-      // Iterate over the ancestors of father and mother and find common ancestors
-      for (const [ancestorId, fatherSteps] of Object.entries(fatherAncestors)) {
+      // Iterate over the ancestors and find common ones
+      for (const ancestorId in fatherAncestors) {
         if (motherAncestors[ancestorId]) {
+          const fatherSteps = fatherAncestors[ancestorId];
           const motherSteps = motherAncestors[ancestorId];
           commonAncestors.push({
             ancestorId: Number(ancestorId),
-            fatherSteps,
-            motherSteps,
+            fatherSteps: fatherSteps,
+            motherSteps: motherSteps,
           });
         }
       }
@@ -181,40 +174,38 @@ export default async function handler(req, res) {
       return commonAncestors;
     }
 
-    // Function to get all ancestors and their generation distances
+    // Function to get all ancestors' steps
     function getAncestorSteps(personId, steps = 0) {
       const person = ancestorLookup[personId];
       if (!person) return {};
 
       let result = {};
 
-      // Get ancestors from father side
+      // Get ancestors from father's side
       if (person.father_id) {
         const fatherAncestors = getAncestorSteps(person.father_id, steps + 1);
         Object.assign(result, fatherAncestors);
       }
 
-      // Get ancestors from mother side
+      // Get ancestors from mother's side
       if (person.mother_id) {
         const motherAncestors = getAncestorSteps(person.mother_id, steps + 1);
         Object.assign(result, motherAncestors);
       }
 
+      // If the person has no parents (leaf node), return their steps
       if (!person.father_id && !person.mother_id) {
-        result[personId] = [steps];
+        result[personId] = steps;
       }
 
       return result;
     }
 
+    // Example of usage:
     const inbreedingCoeff = calculateInbreedingCoefficient(1, []);
     console.log(
       `Inbreeding coefficient for person 1: ${inbreedingCoeff * 100}%`
     );
-
-    // Calculate the inbreeding coefficient for the requested person
-    const coefficient = calculateInbreedingCoefficient(id);
-    console.log(`Inbreeding coefficient for ${id}:`, coefficient);
 
     /**
      * Provides a human-readable interpretation of the inbreeding coefficient
@@ -236,8 +227,8 @@ export default async function handler(req, res) {
 
     // Return the calculated inbreeding coefficient as a percentage
     res.json({
-      inbreedingCoefficient: coefficient * 100,
-      interpretation: getInterpretation(coefficient * 100),
+      inbreedingCoefficient: inbreedingCoeff * 100,
+      interpretation: getInterpretation(inbreedingCoeff * 100),
     });
   } catch (error) {
     console.log("error calculating inbreeding coefficient:", error);
