@@ -134,6 +134,7 @@ export default async function handler(req, res) {
             ...path,
             personId,
           ]);
+          console.log(`${commonCoEff} = 0.5, ${n} + 1 * (1 + ${F_CA}) `)
           commonCoEff += Math.pow(0.5, n + 1) * (1 + F_CA);
         }
       }
