@@ -59,6 +59,7 @@ const Profile = () => {
   const [associatedTopicNames, setAssociatedTopicNames] = useState([]);
   const [associatedTopicLinks, setAssociatedTopicLinks] = useState([]);
   const [associatedTopicIds, setAssociatedTopicIds] = useState([]);
+  const [inbreedingCoefficiency, setInbreedingCoefficiency] = useState(0);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -533,6 +534,30 @@ const Profile = () => {
       );
     }
   };
+
+  const InbreedingCoefficiency  = () => {
+
+    const userId = localStorage.getItem("userId");
+    const idNumber = Number(id);
+    const getCoefficiency = await fetch(
+      "https://cleirigh-backend.vercel.app/api/get-inbreeding-coefficiency",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY}`,
+        },
+        body: JSON.stringify({ userId, idNumber }),
+      }
+    );
+    const data = await getCoefficiency.json();
+    console.log(data)
+    setInbreedingCoefficiency(data);
+
+    return (
+      <p>{profileData.firstName} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}.</p>
+    )
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -1158,6 +1183,8 @@ const Profile = () => {
           <CalculateRelation />
 
           <AncestryAmount />
+
+          <InbreedingCoefficiency />
 
           <div className="other-facts">
             <table>
