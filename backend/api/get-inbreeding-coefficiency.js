@@ -176,12 +176,12 @@ export default async function handler(req, res) {
     
         if (person.father_id) {
             const fatherAncestors = getAncestorSteps(person.father_id);
-            Object.assign(result, fatherAncestors);
+            result[personId] = [fatherAncestors];
         }
     
         if (person.mother_id) {
             const motherAncestors = getAncestorSteps(person.mother_id);
-            Object.assign(result, motherAncestors);
+            result[personId] = [motherAncestors];
         }
     
         if (!person.father_id && !person.mother_id) {
