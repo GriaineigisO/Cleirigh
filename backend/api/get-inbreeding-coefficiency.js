@@ -102,17 +102,18 @@ export default async function handler(req, res) {
         // If both father and mother exist, check for common ancestors
         if (person.father_id && person.mother_id) {
             const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
-            if(personId === id) {
-            }
-    
+           
             // For each common ancestor, calculate their contribution to the inbreeding coefficient
             for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+              console.log("fatherSteps:", fatherSteps)
+              console.log("motherSteps:", motherSteps)
                 const n = fatherSteps + motherSteps;  // Total steps (generations) from common ancestor to the person
                 const F_CA = 0;
                 //calculateInbreedingCoefficient(ancestorId, [...path, personId]); //coefficient of the common ancestor himself
     
                 // Adding the common ancestor's contribution to the inbreeding coefficient
                 commonCoEff += (Math.pow(0.5, n-1) + Math.pow(0.5, n-1)) * (1 + F_CA); // Formula for inbreeding coefficient contribution
+                console.log("coefficient:", commonCoEff)
             }
         }
     
@@ -131,9 +132,9 @@ export default async function handler(req, res) {
         return totalCoEff;  // No artificial cap here; let the coefficient propagate naturally
     }
     
-    function findCommonAncestors(personId1, personId2) {
-      const rawAncestors1 = getAncestorSteps(personId1);
-      const rawAncestors2 = getAncestorSteps(personId2);
+    function findCommonAncestors(fatherId, motherId) {
+      const rawAncestors1 = getAncestorSteps(fatherId);
+      const rawAncestors2 = getAncestorSteps(motherId);
   
       const ancestors1 = flattenAncestors(rawAncestors1);
       const ancestors2 = flattenAncestors(rawAncestors2);
@@ -146,15 +147,13 @@ export default async function handler(req, res) {
                   for (const s2 of ancestors2[ancestorId]) {
                       commonAncestors.push({
                           ancestorId: Number(ancestorId),
-                          person1Steps: s1,
-                          person2Steps: s2,
+                          fatherSteps: s1,
+                          motherSteps: s2,
                       });
                   }
               }
           }
       }
-  
-      console.log("commonAncestors:", commonAncestors);
   
       return commonAncestors;
   }
