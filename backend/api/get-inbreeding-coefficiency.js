@@ -128,8 +128,12 @@ export default async function handler(req, res) {
     
         // Total coefficient considering both parents and common ancestors
         const totalCoEff = commonCoEff + (fatherCoEff / 2) + (motherCoEff / 2);
+
+        console.log("fatherCoEff:", fatherCoEff)
+        console.log("motherCoEff:", motherCoEff)
+        console.log("totalCoEff:", totalCoEff)
        
-        return totalCoEff;  // No artificial cap here; let the coefficient propagate naturally
+        return totalCoEff;  
     }
     
     function findCommonAncestors(fatherId, motherId) {
