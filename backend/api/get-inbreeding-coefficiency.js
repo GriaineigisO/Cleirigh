@@ -172,20 +172,35 @@ export default async function handler(req, res) {
     
       const result = {};
     
-      if (person.father_id && !seen[person.father_id]) {
+      if (
+        person.father_id &&
+        !seen[person.father_id] &&
+        ancestorLookup[person.father_id]
+      ) {
         seen[person.father_id] = true;
         result[person.father_id] = steps;
-        Object.assign(result, getAncestorSteps(person.father_id, steps + 1, seen));
+        Object.assign(
+          result,
+          getAncestorSteps(person.father_id, steps + 1, seen)
+        );
       }
     
-      if (person.mother_id && !seen[person.mother_id]) {
+      if (
+        person.mother_id &&
+        !seen[person.mother_id] &&
+        ancestorLookup[person.mother_id]
+      ) {
         seen[person.mother_id] = true;
         result[person.mother_id] = steps;
-        Object.assign(result, getAncestorSteps(person.mother_id, steps + 1, seen));
+        Object.assign(
+          result,
+          getAncestorSteps(person.mother_id, steps + 1, seen)
+        );
       }
     
       return result;
     }
+    
     
 
     function flattenAncestors(tree, steps = 1, flat = {}) {
