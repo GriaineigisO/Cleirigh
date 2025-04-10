@@ -132,54 +132,49 @@ export default async function handler(req, res) {
     }
     
     function findCommonAncestors(personId1, personId2) {
-        const ancestors1 = getAncestorSteps(personId1);
-        const ancestors2 = getAncestorSteps(personId2);
-    
-        const commonAncestors = [];
-    
-        // Check for common ancestors between both individuals
-        for (const [ancestorId, steps1] of Object.entries(ancestors1)) {
-            if (ancestors2[ancestorId]) {
-              console.log("ancestors2[ancestorId]:", ancestors2[ancestorId])
-                const steps2 = ancestors2[ancestorId];
-                // For each common ancestor, calculate the relationship (steps)
-                for (const s1 of steps1) {
-                    for (const s2 of steps2) {
-                        commonAncestors.push({
-                            ancestorId: Number(ancestorId),
-                            fatherSteps: s1,
-                            motherSteps: s2,
-                        });
-                    }
-                }
-            }
-        }
-
-        console.log("commonAncestors:", commonAncestors)
-    
-        return commonAncestors;
-    }
-    
-    function getAncestorSteps(personId) {
-      const person = ancestorLookup[personId];
-      if (!person) return {};
+      const rawAncestors1 = getAncestorSteps(personId1);
+      const rawAncestors2 = getAncestorSteps(personId2);
   
-      const result = {};
+      const ancestors1 = flattenAncestors(rawAncestors1);
+      const ancestors2 = flattenAncestors(rawAncestors2);
   
-      if (person.father_id || person.mother_id) {
-          result[personId] = {};
-          if (person.father_id) {
-              result[personId].father = getAncestorSteps(person.father_id);
+      const commonAncestors = [];
+  
+      for (const ancestorId in ancestors1) {
+          if (ancestorId in ancestors2) {
+              for (const s1 of ancestors1[ancestorId]) {
+                  for (const s2 of ancestors2[ancestorId]) {
+                      commonAncestors.push({
+                          ancestorId: Number(ancestorId),
+                          person1Steps: s1,
+                          person2Steps: s2,
+                      });
+                  }
+              }
           }
-          if (person.mother_id) {
-              result[personId].mother = getAncestorSteps(person.mother_id);
-          }
-      } else {
-          result[personId] = [0]; // Dead end, no parents
       }
   
-      return result;
+      console.log("commonAncestors:", commonAncestors);
+  
+      return commonAncestors;
   }
+  
+    
+    function flattenAncestors(tree, steps = 1, flat = {}) {
+      for (const [personId, parentTree] of Object.entries(tree)) {
+          if (!flat[personId]) flat[personId] = [];
+          flat[personId].push(steps);
+  
+          if (parentTree.father) {
+              flattenAncestors(parentTree.father, steps + 1, flat);
+          }
+          if (parentTree.mother) {
+              flattenAncestors(parentTree.mother, steps + 1, flat);
+          }
+      }
+      return flat;
+  }
+  
   
     
   
