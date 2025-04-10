@@ -156,22 +156,30 @@ export default async function handler(req, res) {
     
       const commonAncestors = [];
     
+      // Traverse both sets of ancestors
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
           const fatherAncestor = ancestors1[ancestorId];
           const motherAncestor = ancestors2[ancestorId];
     
-          // Ensure both ancestors have valid parent information (i.e., not null)
-          if (fatherAncestor && motherAncestor && !isRootAncestor(fatherAncestor) && !isRootAncestor(motherAncestor)) {
-            const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+          // Ensure both ancestors are valid (non-root ancestors)
+          if (fatherAncestor && motherAncestor) {
+            // Check if both ancestors have non-null parents
+            const isFatherRoot = !fatherAncestor.father_id && !fatherAncestor.mother_id;
+            const isMotherRoot = !motherAncestor.father_id && !motherAncestor.mother_id;
     
-            // Allow non-inbred ancestors to contribute, even if their coefficient is 0
-            commonAncestors.push({
-              ancestorId: Number(ancestorId),
-              fatherSteps: fatherAncestor,
-              motherSteps: motherAncestor,
-              inbreedingCoefficient: ancestorInbreeding,
-            });
+            if (!isFatherRoot && !isMotherRoot) {
+              // Calculate the inbreeding coefficient only if both ancestors are valid
+              const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+    
+              // Add to common ancestors only if they are valid
+              commonAncestors.push({
+                ancestorId: Number(ancestorId),
+                fatherSteps: fatherAncestor,
+                motherSteps: motherAncestor,
+                inbreedingCoefficient: ancestorInbreeding,
+              });
+            }
           }
         }
       }
@@ -179,10 +187,11 @@ export default async function handler(req, res) {
       return commonAncestors;
     }
     
-    // Helper function to check if an ancestor is at the root of the family tree (no parents)
+    // Example of how to check if an ancestor is a root
     function isRootAncestor(ancestor) {
       return ancestor.father_id === null && ancestor.mother_id === null;
     }
+    
     
     
 
