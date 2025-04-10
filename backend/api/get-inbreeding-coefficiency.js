@@ -151,31 +151,28 @@ export default async function handler(req, res) {
     }
 
     function findCommonAncestors(fatherId, motherId) {
-  const ancestors1 = getAncestorSteps(fatherId);
-  const ancestors2 = getAncestorSteps(motherId);
-
-  const commonAncestors = [];
-
-  for (const ancestorId in ancestors1) {
-    if (ancestorId in ancestors2) {
-      // Calculate the inbreeding coefficient for the common ancestor
-      const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
-      console.log(`${ancestorId}'s ancestorInbreeding:, ${ancestorInbreeding}`)
-
-      // Only include ancestors with inbreeding coefficient > 0 (i.e., they are inbred)
-      if (ancestorInbreeding > 0) {
-        commonAncestors.push({
-          ancestorId: Number(ancestorId),
-          fatherSteps: ancestors1[ancestorId],
-          motherSteps: ancestors2[ancestorId],
-          inbreedingCoefficient: ancestorInbreeding,
-        });
+      const ancestors1 = getAncestorSteps(fatherId);
+      const ancestors2 = getAncestorSteps(motherId);
+    
+      const commonAncestors = [];
+    
+      for (const ancestorId in ancestors1) {
+        if (ancestorId in ancestors2) {
+          const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+    
+          // Allow non-inbred ancestors to contribute, even if their coefficient is 0
+          commonAncestors.push({
+            ancestorId: Number(ancestorId),
+            fatherSteps: ancestors1[ancestorId],
+            motherSteps: ancestors2[ancestorId],
+            inbreedingCoefficient: ancestorInbreeding,
+          });
+        }
       }
+    
+      return commonAncestors;
     }
-  }
-
-  return commonAncestors;
-}
+    
 
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
