@@ -160,6 +160,7 @@ export default async function handler(req, res) {
     if (ancestorId in ancestors2) {
       // Calculate the inbreeding coefficient for the common ancestor
       const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+      console.log(`${ancestorId}'s ancestorInbreeding:, ${ancestorInbreeding}`)
 
       // Only include ancestors with inbreeding coefficient > 0 (i.e., they are inbred)
       if (ancestorInbreeding > 0) {
