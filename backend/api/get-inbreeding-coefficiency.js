@@ -114,8 +114,7 @@ export default async function handler(req, res) {
         } of commonAncestors) {
 
           const n = fatherSteps + motherSteps; // Total steps (generations) from common ancestor to the person
-          const F_CA = 0;
-          //calculateInbreedingCoefficient(ancestorId, [...path, personId]); //coefficient of the common ancestor himself
+          const F_CA = calculateInbreedingCoefficient(ancestorId, [...path, personId]); //coefficient of the common ancestor himself
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);  // Formula for inbreeding coefficient contribution
