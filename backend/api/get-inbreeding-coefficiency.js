@@ -145,30 +145,24 @@ export default async function handler(req, res) {
     }
 
     function findCommonAncestors(fatherId, motherId) {
-      const rawAncestors1 = getAncestorSteps(fatherId);
-      const rawAncestors2 = getAncestorSteps(motherId);
-
-      const ancestors1 = flattenAncestors(rawAncestors1);
-      const ancestors2 = flattenAncestors(rawAncestors2);
-
+      const ancestors1 = getAncestorSteps(fatherId);
+      const ancestors2 = getAncestorSteps(motherId);
+    
       const commonAncestors = [];
-
+    
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
-          for (const s1 of ancestors1[ancestorId]) {
-            for (const s2 of ancestors2[ancestorId]) {
-              commonAncestors.push({
-                ancestorId: Number(ancestorId),
-                fatherSteps: s1,
-                motherSteps: s2,
-              });
-            }
-          }
+          commonAncestors.push({
+            ancestorId: Number(ancestorId),
+            fatherSteps: ancestors1[ancestorId],
+            motherSteps: ancestors2[ancestorId],
+          });
         }
       }
-
+    
       return commonAncestors;
     }
+    
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
       const person = ancestorLookup[personId];
