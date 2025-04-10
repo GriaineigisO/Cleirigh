@@ -84,7 +84,7 @@ export default async function handler(req, res) {
 
       console.log(".......................")
       console.log("Person:", person)
-      
+
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
         return 0;
@@ -151,33 +151,31 @@ export default async function handler(req, res) {
     }
 
     function findCommonAncestors(fatherId, motherId) {
-      const ancestors1 = getAncestorSteps(fatherId);
-      const ancestors2 = getAncestorSteps(motherId);
+  const ancestors1 = getAncestorSteps(fatherId);
+  const ancestors2 = getAncestorSteps(motherId);
 
-      const commonAncestors = [];
+  const commonAncestors = [];
 
-      for (const ancestorId in ancestors1) {
-        if (ancestorId in ancestors2) {
-          commonAncestors.push({
-            ancestorId: Number(ancestorId),
-            fatherSteps: ancestors1[ancestorId],
-            motherSteps: ancestors2[ancestorId],
-          });
+  for (const ancestorId in ancestors1) {
+    if (ancestorId in ancestors2) {
+      // Calculate the inbreeding coefficient for the common ancestor
+      const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
 
-          // Only include ancestors with inbreeding coefficient > 0 (i.e., they are inbred)
-          if (ancestorInbreeding > 0) {
-            commonAncestors.push({
-              ancestorId: Number(ancestorId),
-              fatherSteps: ancestors1[ancestorId],
-              motherSteps: ancestors2[ancestorId],
-              inbreedingCoefficient: ancestorInbreeding,
-            });
-          }
-        }
+      // Only include ancestors with inbreeding coefficient > 0 (i.e., they are inbred)
+      if (ancestorInbreeding > 0) {
+        commonAncestors.push({
+          ancestorId: Number(ancestorId),
+          fatherSteps: ancestors1[ancestorId],
+          motherSteps: ancestors2[ancestorId],
+          inbreedingCoefficient: ancestorInbreeding,
+        });
       }
-
-      return commonAncestors;
     }
+  }
+
+  return commonAncestors;
+}
+
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
       const person = ancestorLookup[personId];
