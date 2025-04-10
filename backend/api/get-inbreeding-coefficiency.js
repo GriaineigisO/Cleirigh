@@ -170,26 +170,27 @@ export default async function handler(req, res) {
       return commonAncestors;
     }
 
-    function getAncestorSteps(personId) {
+    function getAncestorSteps(personId, steps = 1, seen = {}) {
       const person = ancestorLookup[personId];
       if (!person) return {};
-
+    
       const result = {};
-
-      if (person.father_id || person.mother_id) {
-        result[personId] = {};
-        if (person.father_id) {
-          result[personId].father = getAncestorSteps(person.father_id);
-        }
-        if (person.mother_id) {
-          result[personId].mother = getAncestorSteps(person.mother_id);
-        }
-      } else {
-        result[personId] = [0]; // Dead end, no parents
+    
+      if (person.father_id && !seen[person.father_id]) {
+        seen[person.father_id] = true;
+        result[person.father_id] = steps;
+        Object.assign(result, getAncestorSteps(person.father_id, steps + 1, seen));
       }
-
+    
+      if (person.mother_id && !seen[person.mother_id]) {
+        seen[person.mother_id] = true;
+        result[person.mother_id] = steps;
+        Object.assign(result, getAncestorSteps(person.mother_id, steps + 1, seen));
+      }
+    
       return result;
     }
+    
 
     function flattenAncestors(tree, steps = 1, flat = {}) {
       for (const [personId, parentTree] of Object.entries(tree)) {
