@@ -160,21 +160,42 @@ export default async function handler(req, res) {
   }
   
     
-    function flattenAncestors(tree, steps = 1, flat = {}) {
-      for (const [personId, parentTree] of Object.entries(tree)) {
-          if (!flat[personId]) flat[personId] = [];
-          flat[personId].push(steps);
+    function getAncestorSteps(personId) {
+      const person = ancestorLookup[personId];
+      if (!person) return {};
   
-          if (parentTree.father) {
-              flattenAncestors(parentTree.father, steps + 1, flat);
+      const result = {};
+  
+      if (person.father_id || person.mother_id) {
+          result[personId] = {};
+          if (person.father_id) {
+              result[personId].father = getAncestorSteps(person.father_id);
           }
-          if (parentTree.mother) {
-              flattenAncestors(parentTree.mother, steps + 1, flat);
+          if (person.mother_id) {
+              result[personId].mother = getAncestorSteps(person.mother_id);
           }
+      } else {
+          result[personId] = [0]; // Dead end, no parents
       }
-      return flat;
-  }
   
+      return result;
+  }
+
+  function flattenAncestors(tree, steps = 1, flat = {}) {
+    for (const [personId, parentTree] of Object.entries(tree)) {
+        if (!flat[personId]) flat[personId] = [];
+        flat[personId].push(steps);
+
+        if (parentTree.father) {
+            flattenAncestors(parentTree.father, steps + 1, flat);
+        }
+        if (parentTree.mother) {
+            flattenAncestors(parentTree.mother, steps + 1, flat);
+        }
+    }
+    return flat;
+}
+
   
     
   
