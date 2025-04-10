@@ -118,8 +118,6 @@ export default async function handler(req, res) {
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);  // Formula for inbreeding coefficient contribution
-          console.log("fatherSteps:", fatherSteps)
-          console.log("motherSteps:", motherSteps)
           console.log(`Common Ancestor ${ancestorId}: ${commonCoEff} (steps: ${fatherSteps} + ${motherSteps})`);
         }
       }
@@ -153,16 +151,24 @@ export default async function handler(req, res) {
     
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
-          commonAncestors.push({
-            ancestorId: Number(ancestorId),
-            fatherSteps: ancestors1[ancestorId],
-            motherSteps: ancestors2[ancestorId],
-          });
+          // Calculate the inbreeding coefficient for the common ancestor
+          const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+    
+          // Only include ancestors with inbreeding coefficient > 0 (i.e., they are inbred)
+          if (ancestorInbreeding > 0) {
+            commonAncestors.push({
+              ancestorId: Number(ancestorId),
+              fatherSteps: ancestors1[ancestorId],
+              motherSteps: ancestors2[ancestorId],
+              inbreedingCoefficient: ancestorInbreeding,
+            });
+          }
         }
       }
     
       return commonAncestors;
     }
+    
     
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
