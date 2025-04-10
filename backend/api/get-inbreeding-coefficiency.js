@@ -169,7 +169,7 @@ export default async function handler(req, res) {
     
     function getAncestorSteps(personId) {
         const person = ancestorLookup[personId];
-        console.log(person)
+        console.log("person:", person)
         if (!person) return {};
     
         const result = {};
@@ -187,6 +187,8 @@ export default async function handler(req, res) {
         if (!person.father_id && !person.mother_id) {
             result[personId] = [0]; // Dead end, no parents
         }
+
+        console.log("result:", result)
     
         return result;
     }
