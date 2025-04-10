@@ -168,30 +168,29 @@ export default async function handler(req, res) {
     }
     
     function getAncestorSteps(personId) {
-        const person = ancestorLookup[personId];
-        console.log("person:", person)
-        if (!person) return {};
-    
-        const result = {};
-    
-        if (person.father_id) {
-            const fatherAncestors = getAncestorSteps(person.father_id);
-            result[personId] = [fatherAncestors];
-        }
-    
-        if (person.mother_id) {
-            const motherAncestors = getAncestorSteps(person.mother_id);
-            result[personId] = [motherAncestors];
-        }
-    
-        if (!person.father_id && !person.mother_id) {
-            result[personId] = [0]; // Dead end, no parents
-        }
-
-        console.log("result:", result)
-    
-        return result;
-    }
+      const person = ancestorLookup[personId];
+      console.log("person:", person);
+      if (!person) return {};
+  
+      const result = {};
+  
+      if (person.father_id || person.mother_id) {
+          result[personId] = {};
+          if (person.father_id) {
+              result[personId].father = getAncestorSteps(person.father_id);
+          }
+          if (person.mother_id) {
+              result[personId].mother = getAncestorSteps(person.mother_id);
+          }
+      } else {
+          result[personId] = [0]; // Dead end, no parents
+      }
+  
+      console.log("result:", result);
+  
+      return result;
+  }
+  
     
   
       const coefficient = calculateInbreedingCoefficient(id);
