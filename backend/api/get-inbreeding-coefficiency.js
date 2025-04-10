@@ -153,48 +153,64 @@ export default async function handler(req, res) {
     function findCommonAncestors(fatherId, motherId) {
       const ancestors1 = getAncestorSteps(fatherId);
       const ancestors2 = getAncestorSteps(motherId);
-    
+
       const commonAncestors = [];
-    
+
       // Traverse both sets of ancestors
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
           const fatherAncestor = ancestors1[ancestorId];
           const motherAncestor = ancestors2[ancestorId];
-    
+
           // Ensure both ancestors are valid (non-root ancestors)
           if (fatherAncestor && motherAncestor) {
-            // Check if both ancestors have non-null parents
             const isFatherRoot = !fatherAncestor.father_id && !fatherAncestor.mother_id;
             const isMotherRoot = !motherAncestor.father_id && !motherAncestor.mother_id;
-    
+
             if (!isFatherRoot && !isMotherRoot) {
-              // Calculate the inbreeding coefficient only if both ancestors are valid
-              const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
-    
-              // Add to common ancestors only if they are valid
+              // Log for debugging
+              console.log(`Common Ancestor Found: ${ancestorId}`);
+              console.log(`Father Ancestor: ${JSON.stringify(fatherAncestor)}`);
+              console.log(`Mother Ancestor: ${JSON.stringify(motherAncestor)}`);
+
+              // Calculate the inbreeding coefficient for this ancestor
+              const steps = Math.max(fatherAncestor.steps, motherAncestor.steps);
+              const F_CA = getInbreedingCoefficient(Number(ancestorId)); // Assuming this function calculates the inbreeding coefficient
+
+              // Calculate common ancestor's contribution
+              const commonCoEff = Math.pow(0.5, steps) * (1 + F_CA);
+              console.log(`Common Ancestor ${ancestorId} CoEff: ${commonCoEff}`);
+
+              // Add to common ancestors
               commonAncestors.push({
                 ancestorId: Number(ancestorId),
-                fatherSteps: fatherAncestor,
-                motherSteps: motherAncestor,
-                inbreedingCoefficient: ancestorInbreeding,
+                commonCoEff: commonCoEff,
+                steps: steps,
               });
             }
           }
         }
       }
-    
-      return commonAncestors;
-    }
-    
-    // Example of how to check if an ancestor is a root
-    function isRootAncestor(ancestor) {
-      return ancestor.father_id === null && ancestor.mother_id === null;
-    }
-    
-    
-    
 
+      // Final inbreeding coefficient
+      let totalCoEff = 0;
+      commonAncestors.forEach(ancestor => {
+        totalCoEff += ancestor.commonCoEff;
+      });
+
+      // Return total inbreeding coefficient as percentage
+      const inbreedingPercentage = totalCoEff * 100;
+      console.log(`Total Inbreeding CoEff: ${totalCoEff}`);
+      console.log(`Inbreeding Coefficient: ${inbreedingPercentage}%`);
+
+      return inbreedingPercentage;
+    }
+
+    // Get the inbreeding coefficient for a specific ancestor (dummy function for now)
+    function getInbreedingCoefficient(ancestorId) {
+      // Example: Replace with actual logic
+      return 0.05; // Assuming a constant for now
+    }
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
       const person = ancestorLookup[personId];
@@ -229,21 +245,6 @@ export default async function handler(req, res) {
       }
 
       return result;
-    }
-
-    function flattenAncestors(tree, steps = 1, flat = {}) {
-      for (const [personId, parentTree] of Object.entries(tree)) {
-        if (!flat[personId]) flat[personId] = [];
-        flat[personId].push(steps);
-
-        if (parentTree.father) {
-          flattenAncestors(parentTree.father, steps + 1, flat);
-        }
-        if (parentTree.mother) {
-          flattenAncestors(parentTree.mother, steps + 1, flat);
-        }
-      }
-      return flat;
     }
 
     const coefficient = calculateInbreedingCoefficient(id);
