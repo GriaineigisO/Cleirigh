@@ -158,20 +158,32 @@ export default async function handler(req, res) {
     
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
-          const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+          const fatherAncestor = ancestors1[ancestorId];
+          const motherAncestor = ancestors2[ancestorId];
     
-          // Allow non-inbred ancestors to contribute, even if their coefficient is 0
-          commonAncestors.push({
-            ancestorId: Number(ancestorId),
-            fatherSteps: ancestors1[ancestorId],
-            motherSteps: ancestors2[ancestorId],
-            inbreedingCoefficient: ancestorInbreeding,
-          });
+          // Ensure both ancestors have valid parent information (i.e., not null)
+          if (fatherAncestor && motherAncestor && !isRootAncestor(fatherAncestor) && !isRootAncestor(motherAncestor)) {
+            const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+    
+            // Allow non-inbred ancestors to contribute, even if their coefficient is 0
+            commonAncestors.push({
+              ancestorId: Number(ancestorId),
+              fatherSteps: fatherAncestor,
+              motherSteps: motherAncestor,
+              inbreedingCoefficient: ancestorInbreeding,
+            });
+          }
         }
       }
     
       return commonAncestors;
     }
+    
+    // Helper function to check if an ancestor is at the root of the family tree (no parents)
+    function isRootAncestor(ancestor) {
+      return ancestor.father_id === null && ancestor.mother_id === null;
+    }
+    
     
 
 
