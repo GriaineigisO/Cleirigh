@@ -134,13 +134,14 @@ export default async function handler(req, res) {
     function findCommonAncestors(personId1, personId2) {
         const ancestors1 = getAncestorSteps(personId1);
         const ancestors2 = getAncestorSteps(personId2);
-
-        console.log("ancestors1:", ancestors1)
     
         const commonAncestors = [];
     
         // Check for common ancestors between both individuals
         for (const [ancestorId, steps1] of Object.entries(ancestors1)) {
+          console.log("ancestorId:", ancestorId)
+          console.log("steps1:", steps1)
+          console.log("--------------------------")
             if (ancestors2[ancestorId]) {
                 const steps2 = ancestors2[ancestorId];
                 // For each common ancestor, calculate the relationship (steps)
