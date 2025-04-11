@@ -214,15 +214,32 @@ export default async function handler(req, res) {
     console.log(`Raw Inbreeding Coefficient: ${coefficient}`);
 
     function getInterpretation(coefficient) {
-      if (coefficient === 0) return "completely unrelated";
-      if (coefficient <= 0.2) return "fourth cousins";
-      if (coefficient <= 0.78) return "third cousins";
-      if (coefficient <= 3.13) return "second cousins";
-      if (coefficient <= 12.5) return "first cousins";
-      if (coefficient <= 25) return "aunt/uncle and neice/nephew, or half siblings, or grandparent and grandchildren or double first cousins";
-      if (coefficient <= 50) return "full siblings, or parent and child";
+      // Define central values for each cousin category
+      const thresholds = [
+        { value: 0, interpretation: "completely unrelated" },
+        { value: 0.2, interpretation: "fourth cousins" },
+        { value: 0.78, interpretation: "third cousins" },
+        { value: 3.13, interpretation: "second cousins" },
+        { value: 12.5, interpretation: "first cousins" },
+        { value: 25, interpretation: "aunt/uncle and niece/nephew, or half siblings, or grandparent and grandchildren, or double first cousins" },
+        { value: 50, interpretation: "full siblings, or parent and child" }
+      ];
+    
+      // Find the threshold with the minimum difference to the given coefficient
+      let closest = thresholds[0];
+      let minDiff = Math.abs(coefficient - closest.value);
+    
+      thresholds.forEach(threshold => {
+        const diff = Math.abs(coefficient - threshold.value);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closest = threshold;
+        }
+      });
+    
+      return closest.interpretation;
     }
-
+    
     res.json({
       inbreedingCoefficient: inbreedingPercentage,
       interpretation: getInterpretation(inbreedingPercentage),
