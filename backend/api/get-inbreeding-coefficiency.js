@@ -83,6 +83,8 @@ export default async function handler(req, res) {
 
           const n = fatherSteps + motherSteps;
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
+          
+      console.log(`personId: ${person}; ${commonCoEff} and ${n}`)
         }
       }
 
@@ -95,7 +97,6 @@ export default async function handler(req, res) {
 
       const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
 
-      console.log(`person: ${person}; ${totalCoEff} = ${commonCoEff} +${fatherCoEff / 2} + ${motherCoEff / 2}`)
 
       memoizedResults[personId] = totalCoEff;
       return totalCoEff;
