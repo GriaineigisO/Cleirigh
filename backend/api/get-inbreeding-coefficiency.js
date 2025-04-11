@@ -116,15 +116,15 @@ export default async function handler(req, res) {
           motherSteps,
         } of commonAncestors) {
           const n = fatherSteps + motherSteps; // Total steps (generations) from common ancestor to the person
-          const F_CA = calculateInbreedingCoefficient(ancestorId, [
-            ...path,
-            personId,
-          ]); //coefficient of the common ancestor himself
+          const sharedAncestor = ancestorLookup[ancestorId];
+          const F_CA =
+            sharedAncestor?.father_id && sharedAncestor?.mother_id
+              ? calculateInbreedingCoefficient(ancestorId, [...path, personId])
+              : 0;
+          //coefficient of the common ancestor himself
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
-          if (F_CA > 0) {
-            commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
-          }
+          commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
         }
       }
 
@@ -151,7 +151,6 @@ export default async function handler(req, res) {
 
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
-
           // Allow non-inbred ancestors to contribute, even if their coefficient is 0
           commonAncestors.push({
             ancestorId: Number(ancestorId),
