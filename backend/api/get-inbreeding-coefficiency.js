@@ -55,7 +55,7 @@ export default async function handler(req, res) {
 
     while (!done) {
       const { data, error } = await supabase
-        .from(tree_${currentTree})
+        .from(`tree_${currentTree}`)
         .select("ancestor_id, father_id, mother_id")
         .range(from, to);
 
