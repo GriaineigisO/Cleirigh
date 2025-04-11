@@ -167,7 +167,7 @@ export default async function handler(req, res) {
       return result;
     }
 
-    const coefficient = await calculateInbreedingCoefficient(id);
+    const coefficient = await calculateInbreedingCoefficient(id) * 100;
     console.log(`Inbreeding Coefficient: ${coefficient * 10}%`);
     console.log(`Raw Inbreeding Coefficient: ${coefficient}`);
 
@@ -185,8 +185,8 @@ export default async function handler(req, res) {
     }
 
     res.json({
-      inbreedingCoefficient: coefficient * 10,
-      interpretation: getInterpretation(coefficient * 10),
+      inbreedingCoefficient: coefficient,
+      interpretation: getInterpretation(coefficient),
     });
   } catch (error) {
     console.log("error calculating inbreeding coefficient:", error);
