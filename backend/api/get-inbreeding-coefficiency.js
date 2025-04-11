@@ -89,16 +89,19 @@ export default async function handler(req, res) {
 
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
+        memoizedResults[personId] = 0;
         return 0;
       }
 
       // Check for loops (to avoid infinite recursion)
       if (path.includes(personId)) {
+        memoizedResults[personId] = 0;
         return 0;
       }
 
       // If there are no parents, return 0 (i.e., dead end)
       if (!person.father_id && !person.mother_id) {
+        memoizedResults[personId] = 0;
         return 0;
       }
 
@@ -127,9 +130,7 @@ export default async function handler(req, res) {
         }
       }
 
-      // Memoize the result
       memoizedResults[personId] = commonCoEff;
-
       return commonCoEff;
     }
 
