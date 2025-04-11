@@ -109,6 +109,8 @@ export default async function handler(req, res) {
           person.mother_id
         );
 
+        
+
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
         for (const {
           ancestorId,
@@ -125,6 +127,9 @@ export default async function handler(req, res) {
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
           console.log(
             `Common Ancestor ${ancestorId}: ${commonCoEff} (steps: ${fatherSteps} + ${motherSteps})`
+          );
+          console.log(
+            `CommonAncestors: ${commonAncestors})`
           );
         }
       }
