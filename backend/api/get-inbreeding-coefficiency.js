@@ -134,6 +134,7 @@ export default async function handler(req, res) {
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
+          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         }
       }
 
