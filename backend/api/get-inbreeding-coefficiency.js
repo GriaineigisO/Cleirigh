@@ -243,8 +243,8 @@ export default async function handler(req, res) {
     }
 
     res.json({
-      inbreedingCoefficient: coefficient * 100,
-      interpretation: getInterpretation(coefficient * 100),
+      inbreedingCoefficient: coefficient * 10,
+      interpretation: getInterpretation(coefficient * 10),
     });
   } catch (error) {
     console.log("error calculating inbreeding coefficient:", error);
