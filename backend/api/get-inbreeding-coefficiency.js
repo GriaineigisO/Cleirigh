@@ -55,7 +55,7 @@ export default async function handler(req, res) {
 
     while (!done) {
       const { data, error } = await supabase
-        .from(`tree_${currentTree}`)
+        .from(tree_${currentTree})
         .select("ancestor_id, father_id, mother_id")
         .range(from, to);
 
@@ -76,6 +76,8 @@ export default async function handler(req, res) {
       acc[ancestor.ancestor_id] = ancestor;
       return acc;
     }, {});
+
+    const memo = {};
 
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
@@ -207,7 +209,6 @@ export default async function handler(req, res) {
     }
 
     const coefficient = calculateInbreedingCoefficient(id);
-
 
     function getInterpretation(coefficient) {
       if (coefficient === 0) return "completely unrelated";
