@@ -115,13 +115,26 @@ export default async function handler(req, res) {
           fatherSteps,
           motherSteps,
         } of commonAncestors) {
-          const n = fatherSteps + motherSteps; // Total steps (generations) from common ancestor to the person
           const sharedAncestor = ancestorLookup[ancestorId];
           const F_CA =
             sharedAncestor?.father_id && sharedAncestor?.mother_id
               ? calculateInbreedingCoefficient(ancestorId, [...path, personId])
               : 0;
           //coefficient of the common ancestor himself
+
+          let n = 0; // Total steps (generations) from common ancestor to the person
+          if (F_CA === 0) {
+            // If the shared ancestor is not inbred, reduce the inbreeding contribution
+            // Scale n to a minimal value (e.g., 2), but avoid setting it too low
+            n = Math.max(2, Math.min(fatherSteps, motherSteps));
+          } else {
+            // If the shared ancestor is inbred, include full depth from both parents
+            n = Math.max(fatherSteps, motherSteps); // This helps avoid overemphasis on small steps
+          }
+
+          // Adding the common ancestor's contribution to the inbreeding coefficient
+          // Apply a scaling factor to reduce impact of high n values
+          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
