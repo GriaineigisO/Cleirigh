@@ -80,10 +80,8 @@ export default async function handler(req, res) {
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
-
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
-        console.log("hello")
         return 0;
       }
 
@@ -132,9 +130,6 @@ export default async function handler(req, res) {
           // Adding the common ancestor's contribution to the inbreeding coefficient
           // Apply a scaling factor to reduce impact of high n values
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
-
-          // Adding the common ancestor's contribution to the inbreeding coefficient
-          commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
         }
       }
 
