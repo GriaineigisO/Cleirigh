@@ -82,9 +82,6 @@ export default async function handler(req, res) {
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
-      console.log(".......................");
-      console.log("Person:", person);
-
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
         return 0;
@@ -227,7 +224,9 @@ export default async function handler(req, res) {
     }
 
     const coefficient = calculateInbreedingCoefficient(id);
-    console.log(`Inbreeding Coefficient: ${coefficient * 100}%`);
+    console.log(`Inbreeding Coefficient: ${coefficient * 10}%`);
+    console.log(`Raw Inbreeding Coefficient: ${coefficient}`);
+
 
     function getInterpretation(coefficient) {
       if (coefficient === 0) return "No detectable inbreeding";
