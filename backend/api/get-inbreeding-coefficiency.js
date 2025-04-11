@@ -115,7 +115,7 @@ export default async function handler(req, res) {
           fatherSteps,
           motherSteps,
         } of commonAncestors) {
-          const n = fatherSteps + motherSteps; // Total steps (generations) from common ancestor to the person
+          const totalSteps = fatherSteps + motherSteps; // Total steps (generations) from common ancestor to the person
           const F_CA = calculateInbreedingCoefficient(ancestorId, [
             ...path,
             personId,
