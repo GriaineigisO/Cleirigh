@@ -84,7 +84,7 @@ export default async function handler(req, res) {
           const n = fatherSteps + motherSteps;
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
           
-      console.log(`personId: ${person}; ${commonCoEff} and ${n}`)
+      console.log(`personId: ${personId}; ${commonCoEff} and ${n}`)
         }
       }
 
