@@ -168,6 +168,7 @@ export default async function handler(req, res) {
     }
 
     function mainCoefficient(personId) {
+      const path = [];
       const person = ancestorLookup[personId];
       if (!person || !person.father_id || !person.mother_id) return 0;
 
