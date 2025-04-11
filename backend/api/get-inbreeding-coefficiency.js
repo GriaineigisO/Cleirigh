@@ -87,72 +87,28 @@ export default async function handler(req, res) {
 
       const person = ancestorLookup[personId];
 
-      // If the person doesn't exist, return 0 (i.e., no inbreeding)
-      if (!person) {
-        return 0;
+      if (!person) return 0;
+      if (path.includes(personId)) return 0;
+      if (!person.father_id || !person.mother_id) return 0;
+
+      let totalCoEff = 0;
+
+      // Find all common ancestors between father and mother
+      const commonAncestors = findCommonAncestors(
+        person.father_id,
+        person.mother_id
+      );
+
+      for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+        const F_CA = await calculateInbreedingCoefficient(ancestorId, [
+          ...path,
+          personId,
+        ]);
+        const n = fatherSteps + motherSteps;
+        totalCoEff += Math.pow(0.5, n) * (1 + F_CA);
       }
 
-      // Check for loops (to avoid infinite recursion)
-      if (path.includes(personId)) {
-        return 0;
-      }
-
-      // If there are no parents, return 0 (i.e., dead end)
-      if (!person.father_id && !person.mother_id) {
-        return 0;
-      }
-
-      let commonCoEff = 0;
-
-      // If both father and mother exist, check for common ancestors
-      if (person.father_id && person.mother_id) {
-        const commonAncestors = findCommonAncestors(
-          person.father_id,
-          person.mother_id
-        );
-
-        // For each common ancestor, calculate their contribution to the inbreeding coefficient
-        for (const {
-          ancestorId,
-          fatherSteps,
-          motherSteps,
-        } of commonAncestors) {
-          const sharedAncestor = ancestorLookup[ancestorId];
-          const F_CA =
-            sharedAncestor?.father_id && sharedAncestor?.mother_id
-              ? await calculateInbreedingCoefficient(ancestorId, [...path, personId])
-              : 0;
-          
-          let n = 0; // Total steps (generations) from common ancestor to the person
-          if (F_CA === 0) {
-            // If the shared ancestor is not inbred, reduce the inbreeding contribution
-            n = Math.max(2, Math.min(fatherSteps, motherSteps));
-          } else {
-            // If the shared ancestor is inbred, include full depth from both parents
-            n = Math.max(fatherSteps, motherSteps);
-          }
-
-          // Adding the common ancestor's contribution to the inbreeding coefficient
-          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
-          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
-        }
-      }
-
-      // Calculate inbreeding coefficient from the parents
-      const fatherCoEff = person.father_id
-        ? await calculateInbreedingCoefficient(person.father_id, [...path, personId])
-        : 0;
-
-      const motherCoEff = person.mother_id
-        ? await calculateInbreedingCoefficient(person.mother_id, [...path, personId])
-        : 0;
-
-      // Total coefficient considering both parents and common ancestors
-      const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
-
-      // Memoize the result
       memoizedResults[personId] = totalCoEff;
-      
       return totalCoEff;
     }
 
@@ -217,7 +173,8 @@ export default async function handler(req, res) {
 
     function getInterpretation(coefficient) {
       if (coefficient === 0) return "No detectable inbreeding";
-      if (coefficient < 0.1) return "Very distant relatives (e.g., 6th cousins or more)";
+      if (coefficient < 0.1)
+        return "Very distant relatives (e.g., 6th cousins or more)";
       if (coefficient < 0.5) return "Distant relatives (e.g., 4th-5th cousins)";
       if (coefficient < 1) return "3rd-4th cousins";
       if (coefficient < 2) return "2nd-3rd cousins";
