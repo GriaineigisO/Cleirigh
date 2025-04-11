@@ -82,8 +82,8 @@ export default async function handler(req, res) {
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
-      console.log(".......................")
-      console.log("Person:", person)
+      console.log(".......................");
+      console.log("Person:", person);
 
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
@@ -109,8 +109,6 @@ export default async function handler(req, res) {
           person.mother_id
         );
 
-        
-
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
         for (const {
           ancestorId,
@@ -125,11 +123,6 @@ export default async function handler(req, res) {
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
-          console.log(
-            `Common Ancestor ${ancestorId}: ${commonCoEff} (steps: ${fatherSteps} + ${motherSteps})`
-          );
-          console.log(commonAncestors);
-          
         }
       }
 
@@ -149,29 +142,25 @@ export default async function handler(req, res) {
     }
 
     function findCommonAncestors(fatherId, motherId) {
-  const ancestors1 = getAncestorSteps(fatherId);
-  const ancestors2 = getAncestorSteps(motherId);
+      const ancestors1 = getAncestorSteps(fatherId);
+      const ancestors2 = getAncestorSteps(motherId);
 
-  const commonAncestors = [];
+      const commonAncestors = [];
 
-  for (const ancestorId in ancestors1) {
-    if (ancestorId in ancestors2) {
-      const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+      for (const ancestorId in ancestors1) {
+        if (ancestorId in ancestors2) {
 
-      // Allow non-inbred ancestors to contribute, even if their coefficient is 0
-      commonAncestors.push({
-        ancestorId: Number(ancestorId),
-        fatherSteps: ancestors1[ancestorId],
-        motherSteps: ancestors2[ancestorId],
-        inbreedingCoefficient: ancestorInbreeding,
-      });
+          // Allow non-inbred ancestors to contribute, even if their coefficient is 0
+          commonAncestors.push({
+            ancestorId: Number(ancestorId),
+            fatherSteps: ancestors1[ancestorId],
+            motherSteps: ancestors2[ancestorId],
+          });
+        }
+      }
+
+      return commonAncestors;
     }
-  }
-
-  return commonAncestors;
-}
-
-
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
       const person = ancestorLookup[personId];
