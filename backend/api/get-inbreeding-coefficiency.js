@@ -106,36 +106,27 @@ export default async function handler(req, res) {
 
       // If both father and mother exist, check for common ancestors
       if (person.father_id && person.mother_id) {
-        const commonAncestors = findCommonAncestors(
-          person.father_id,
-          person.mother_id
-        );
-
+        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+    
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
-        for (const {
-          ancestorId,
-          fatherSteps,
-          motherSteps,
-        } of commonAncestors) {
-          const sharedAncestor = ancestorLookup[ancestorId];
-          const F_CA =
-            sharedAncestor?.father_id && sharedAncestor?.mother_id
-              ? await calculateInbreedingCoefficient(ancestorId, [...path, personId])
-              : 0;
-          
-          let n = 0; // Total steps (generations) from common ancestor to the person
-          if (F_CA === 0) {
-            // If the shared ancestor is not inbred, reduce the inbreeding contribution
-            n = Math.max(2, Math.min(fatherSteps, motherSteps));
-          } else {
-            // If the shared ancestor is inbred, include full depth from both parents
-            n = Math.max(fatherSteps, motherSteps);
-          }
-
-          // Adding the common ancestor's contribution to the inbreeding coefficient
-          commonCoEff += (Math.pow(0.5, n) + Math.pow(0.5, n)) * (1 + F_CA);
+        for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+            const sharedAncestor = ancestorLookup[ancestorId];
+    
+            // Calculate the inbreeding coefficient for the common ancestor
+            const F_CA = sharedAncestor?.father_id && sharedAncestor?.mother_id
+                ? await calculateInbreedingCoefficient(ancestorId, [...path, personId])
+                : 0;
+    
+            let n = Math.max(fatherSteps, motherSteps); // Calculate the correct number of generations
+    
+            // If the shared ancestor is inbred, include their full contribution
+            const commonAncestorCoEff = Math.pow(0.5, n) * (1 + F_CA);
+    
+            // Adjust the common coefficient by adding the ancestor's contribution
+            commonCoEff += commonAncestorCoEff;
         }
-      }
+    }
+    
 
       // Calculate inbreeding coefficient from the parents
       const fatherCoEff = person.father_id
