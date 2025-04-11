@@ -77,20 +77,18 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    const memo = {};
-
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
 
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
+        console.log("hello")
         return 0;
       }
 
       // Check for loops (to avoid infinite recursion)
       if (path.includes(personId)) {
-        console.log("here")
         return 0;
       }
 
@@ -208,21 +206,6 @@ export default async function handler(req, res) {
       }
 
       return result;
-    }
-
-    function flattenAncestors(tree, steps = 1, flat = {}) {
-      for (const [personId, parentTree] of Object.entries(tree)) {
-        if (!flat[personId]) flat[personId] = [];
-        flat[personId].push(steps);
-
-        if (parentTree.father) {
-          flattenAncestors(parentTree.father, steps + 1, flat);
-        }
-        if (parentTree.mother) {
-          flattenAncestors(parentTree.mother, steps + 1, flat);
-        }
-      }
-      return flat;
     }
 
     const coefficient = calculateInbreedingCoefficient(id);
