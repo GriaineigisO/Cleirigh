@@ -95,6 +95,8 @@ export default async function handler(req, res) {
 
       const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
 
+      console.log(`person: ${person}; ${totalCoEff} = ${commonCoEff} +${fatherCoEff / 2} + ${motherCoEff / 2}`)
+
       memoizedResults[personId] = totalCoEff;
       return totalCoEff;
     }
