@@ -109,14 +109,13 @@ export default async function handler(req, res) {
     
       // If both father and mother exist, check for common ancestors
       if (person.father_id && person.mother_id) {
-        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id, path);
     
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
-        for (const {
-          ancestorId,
-          fatherSteps,
-          motherSteps,
-        } of commonAncestors) {
+        for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+          // Skip ancestors that have already been processed in this path
+          if (path.includes(ancestorId)) continue;
+    
           const sharedAncestor = ancestorLookup[ancestorId];
           const F_CA =
             sharedAncestor?.father_id && sharedAncestor?.mother_id
@@ -125,7 +124,7 @@ export default async function handler(req, res) {
     
           let n = fatherSteps + motherSteps; // Total steps to the common ancestor
     
-          // Adding the common ancestor's contribution to the inbreeding coefficient
+          // We adjust how the common ancestor's contribution is calculated to account for both sides
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         }
       }
@@ -148,64 +147,66 @@ export default async function handler(req, res) {
       return totalCoEff;
     }
     
-
-    function findCommonAncestors(fatherId, motherId) {
-      const ancestors1 = getAncestorSteps(fatherId);
-      const ancestors2 = getAncestorSteps(motherId);
-
+    function findCommonAncestors(fatherId, motherId, path = []) {
+      const ancestors1 = getAncestorSteps(fatherId, path);
+      const ancestors2 = getAncestorSteps(motherId, path);
+    
       const commonAncestors = [];
-
+    
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
-          // Calculate the relationship steps dynamically without hardcoding specific cases
-          const fatherSteps = ancestors1[ancestorId];
-          const motherSteps = ancestors2[ancestorId];
-
-          commonAncestors.push({
-            ancestorId: Number(ancestorId),
-            fatherSteps,
-            motherSteps,
-          });
+          // Only add ancestors that haven't already been processed in the current path
+          if (!path.includes(ancestorId)) {
+            const fatherSteps = ancestors1[ancestorId];
+            const motherSteps = ancestors2[ancestorId];
+    
+            commonAncestors.push({
+              ancestorId: Number(ancestorId),
+              fatherSteps,
+              motherSteps,
+            });
+          }
         }
       }
-
+    
       return commonAncestors;
     }
-
-    function getAncestorSteps(personId, steps = 1, seen = {}) {
+    
+    function getAncestorSteps(personId, path = [], seen = {}) {
       const person = ancestorLookup[personId];
       if (!person) return {};
-
+    
       const result = {};
-
+    
       if (
         person.father_id &&
         !seen[person.father_id] &&
         ancestorLookup[person.father_id]
       ) {
         seen[person.father_id] = true;
-        result[person.father_id] = steps;
+        result[person.father_id] = path.length + 1;
         Object.assign(
           result,
-          getAncestorSteps(person.father_id, steps + 1, seen)
+          getAncestorSteps(person.father_id, [...path, personId], seen)
         );
       }
-
+    
       if (
         person.mother_id &&
         !seen[person.mother_id] &&
         ancestorLookup[person.mother_id]
       ) {
         seen[person.mother_id] = true;
-        result[person.mother_id] = steps;
+        result[person.mother_id] = path.length + 1;
         Object.assign(
           result,
-          getAncestorSteps(person.mother_id, steps + 1, seen)
+          getAncestorSteps(person.mother_id, [...path, personId], seen)
         );
       }
-
+    
       return result;
     }
+    
 
 
     const coefficient = await calculateInbreedingCoefficient(id);
