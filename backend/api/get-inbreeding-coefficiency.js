@@ -1,12 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// CORS options
 const corsOptions = {
   origin: "https://cleirighgenealogy.com",
   methods: ["GET", "POST", "OPTIONS"],
@@ -20,8 +18,13 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
   res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
 
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
     const { userId, idNumber } = req.body;
@@ -33,12 +36,16 @@ export default async function handler(req, res) {
       .eq("id", userId)
       .single();
 
-    if (userError) return res.status(500).json({ error: "Error retrieving user data" });
+    if (userError) {
+      return res.status(500).json({ error: "Error retrieving user data" });
+    }
 
     const currentTree = user.current_tree_id;
 
     let allData = [];
-    let from = 0, to = 999, done = false;
+    let from = 0;
+    let to = 999;
+    let done = false;
 
     while (!done) {
       const { data, error } = await supabase
@@ -48,8 +55,8 @@ export default async function handler(req, res) {
 
       if (error) return res.status(500).json({ error: "Error fetching tree data" });
 
-      if (data.length > 0) {
-        allData.push(...data);
+      if (data && data.length > 0) {
+        allData = [...allData, ...data];
         from += 1000;
         to += 1000;
       } else {
@@ -57,40 +64,51 @@ export default async function handler(req, res) {
       }
     }
 
-    const ancestorLookup = Object.fromEntries(allData.map((a) => [a.ancestor_id, a]));
+    const ancestorLookup = allData.reduce((acc, ancestor) => {
+      acc[ancestor.ancestor_id] = ancestor;
+      return acc;
+    }, {});
+
     const memoizedResults = {};
 
     async function calculateInbreedingCoefficient(personId, path = []) {
       if (memoizedResults[personId] !== undefined) return memoizedResults[personId];
 
       const person = ancestorLookup[personId];
-      if (!person || path.includes(personId)) return (memoizedResults[personId] = 0);
+      if (!person) return (memoizedResults[personId] = 0);
 
-      const { father_id, mother_id } = person;
+      if (path.includes(personId)) return (memoizedResults[personId] = 0);
 
-      if (!father_id && !mother_id) return (memoizedResults[personId] = 0);
+      if (!person.father_id && !person.mother_id) return (memoizedResults[personId] = 0);
 
       let commonCoEff = 0;
 
-      if (father_id && mother_id) {
-        const commonAncestors = findCommonAncestors(father_id, mother_id);
+      if (person.father_id && person.mother_id) {
+        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
 
         for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
-          const shared = ancestorLookup[ancestorId];
-          const F_CA = shared?.father_id && shared?.mother_id
-            ? await calculateInbreedingCoefficient(ancestorId, [...path, personId])
-            : 0;
+          const sharedAncestor = ancestorLookup[ancestorId];
+
+          let F_CA = 0;
+          if (sharedAncestor?.father_id && sharedAncestor?.mother_id) {
+            F_CA = await calculateInbreedingCoefficient(ancestorId, [...path, personId]);
+          }
 
           const n = fatherSteps + motherSteps;
-          commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
+
+          if (F_CA > 0 || n === 2) {
+            // Only include ancestors that are inbred OR direct shared grandparents (first cousins)
+            commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
+          }
         }
       }
 
-      const fatherCoEff = father_id
-        ? await calculateInbreedingCoefficient(father_id, [...path, personId])
+      const fatherCoEff = person.father_id
+        ? await calculateInbreedingCoefficient(person.father_id, [...path, personId])
         : 0;
-      const motherCoEff = mother_id
-        ? await calculateInbreedingCoefficient(mother_id, [...path, personId])
+
+      const motherCoEff = person.mother_id
+        ? await calculateInbreedingCoefficient(person.mother_id, [...path, personId])
         : 0;
 
       const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
@@ -102,11 +120,11 @@ export default async function handler(req, res) {
     function findCommonAncestors(fatherId, motherId) {
       const ancestors1 = getAncestorSteps(fatherId);
       const ancestors2 = getAncestorSteps(motherId);
-      const result = [];
+      const commonAncestors = [];
 
       for (const ancestorId in ancestors1) {
         if (ancestorId in ancestors2) {
-          result.push({
+          commonAncestors.push({
             ancestorId: Number(ancestorId),
             fatherSteps: ancestors1[ancestorId],
             motherSteps: ancestors2[ancestorId],
@@ -114,21 +132,25 @@ export default async function handler(req, res) {
         }
       }
 
-      return result;
+      return commonAncestors;
     }
 
     function getAncestorSteps(personId, steps = 1, seen = {}) {
-      const result = {};
       const person = ancestorLookup[personId];
-      if (!person) return result;
+      if (!person) return {};
 
-      for (const parentKey of ["father_id", "mother_id"]) {
-        const parentId = person[parentKey];
-        if (parentId && !seen[parentId] && ancestorLookup[parentId]) {
-          seen[parentId] = true;
-          result[parentId] = steps;
-          Object.assign(result, getAncestorSteps(parentId, steps + 1, seen));
-        }
+      const result = {};
+
+      if (person.father_id && !seen[person.father_id] && ancestorLookup[person.father_id]) {
+        seen[person.father_id] = true;
+        result[person.father_id] = steps;
+        Object.assign(result, getAncestorSteps(person.father_id, steps + 1, seen));
+      }
+
+      if (person.mother_id && !seen[person.mother_id] && ancestorLookup[person.mother_id]) {
+        seen[person.mother_id] = true;
+        result[person.mother_id] = steps;
+        Object.assign(result, getAncestorSteps(person.mother_id, steps + 1, seen));
       }
 
       return result;
@@ -144,20 +166,20 @@ export default async function handler(req, res) {
         { value: 0.78, interpretation: "third cousins" },
         { value: 3.13, interpretation: "second cousins" },
         { value: 12.5, interpretation: "first cousins" },
-        { value: 25, interpretation: "aunt/uncle and niece/nephew, or half siblings, or grandparent and grandchildren, or double first cousins" },
-        { value: 50, interpretation: "full siblings, or parent and child" }
+        { value: 25, interpretation: "aunt/uncle and niece/nephew, or half siblings, or grandparent and grandchild" },
+        { value: 50, interpretation: "full siblings or parent and child" },
       ];
 
       let closest = thresholds[0];
       let minDiff = Math.abs(coefficient - closest.value);
 
-      for (const t of thresholds) {
+      thresholds.forEach((t) => {
         const diff = Math.abs(coefficient - t.value);
         if (diff < minDiff) {
           minDiff = diff;
           closest = t;
         }
-      }
+      });
 
       return closest.interpretation;
     }
@@ -167,7 +189,7 @@ export default async function handler(req, res) {
       interpretation: getInterpretation(inbreedingPercentage),
     });
   } catch (error) {
-    console.error("Error calculating inbreeding coefficient:", error);
+    console.error("error calculating inbreeding coefficient:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }
