@@ -109,7 +109,7 @@ export default async function handler(req, res) {
     
       // If both father and mother exist, check for common ancestors
       if (person.father_id && person.mother_id) {
-        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id, path);
+        const commonAncestors = await findCommonAncestors(person.father_id, person.mother_id, path);
     
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
         for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
@@ -124,7 +124,7 @@ export default async function handler(req, res) {
     
           let n = fatherSteps + motherSteps; // Total steps to the common ancestor
     
-          // We adjust how the common ancestor's contribution is calculated to account for both sides
+          // Adjust how the common ancestor's contribution is calculated to account for both sides
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         }
       }
@@ -147,9 +147,9 @@ export default async function handler(req, res) {
       return totalCoEff;
     }
     
-    function findCommonAncestors(fatherId, motherId, path = []) {
-      const ancestors1 = getAncestorSteps(fatherId, path);
-      const ancestors2 = getAncestorSteps(motherId, path);
+    async function findCommonAncestors(fatherId, motherId, path = []) {
+      const ancestors1 = await getAncestorSteps(fatherId, path);
+      const ancestors2 = await getAncestorSteps(motherId, path);
     
       const commonAncestors = [];
     
@@ -172,7 +172,7 @@ export default async function handler(req, res) {
       return commonAncestors;
     }
     
-    function getAncestorSteps(personId, path = [], seen = {}) {
+    async function getAncestorSteps(personId, path = [], seen = {}) {
       const person = ancestorLookup[personId];
       if (!person) return {};
     
@@ -187,7 +187,7 @@ export default async function handler(req, res) {
         result[person.father_id] = path.length + 1;
         Object.assign(
           result,
-          getAncestorSteps(person.father_id, [...path, personId], seen)
+          await getAncestorSteps(person.father_id, [...path, personId], seen)
         );
       }
     
@@ -200,7 +200,7 @@ export default async function handler(req, res) {
         result[person.mother_id] = path.length + 1;
         Object.assign(
           result,
-          getAncestorSteps(person.mother_id, [...path, personId], seen)
+          await getAncestorSteps(person.mother_id, [...path, personId], seen)
         );
       }
     
