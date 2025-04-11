@@ -82,7 +82,6 @@ export default async function handler(req, res) {
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
-      console.log(`Calculating for ${personId}:`, person); // Add logging here
 
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
@@ -91,6 +90,7 @@ export default async function handler(req, res) {
 
       // Check for loops (to avoid infinite recursion)
       if (path.includes(personId)) {
+        console.log("here")
         return 0;
       }
 
