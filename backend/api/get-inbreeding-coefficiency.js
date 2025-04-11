@@ -53,6 +53,7 @@ export default async function handler(req, res) {
     let to = 999;
     let done = false;
 
+    // Fetch ancestor data in batches
     while (!done) {
       const { data, error } = await supabase
         .from(`tree_${currentTree}`)
@@ -77,7 +78,13 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    function calculateInbreedingCoefficient(personId, path = []) {
+    const memoizedResults = {};
+
+    async function calculateInbreedingCoefficient(personId, path = []) {
+      if (memoizedResults[personId]) {
+        return memoizedResults[personId];
+      }
+
       const person = ancestorLookup[personId];
 
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
@@ -113,39 +120,38 @@ export default async function handler(req, res) {
           const sharedAncestor = ancestorLookup[ancestorId];
           const F_CA =
             sharedAncestor?.father_id && sharedAncestor?.mother_id
-              ? calculateInbreedingCoefficient(ancestorId, [...path, personId])
+              ? await calculateInbreedingCoefficient(ancestorId, [...path, personId])
               : 0;
-          //coefficient of the common ancestor himself
-
+          
           let n = 0; // Total steps (generations) from common ancestor to the person
           if (F_CA === 0) {
             // If the shared ancestor is not inbred, reduce the inbreeding contribution
-            // Scale n to a minimal value (e.g., 2), but avoid setting it too low
             n = Math.max(2, Math.min(fatherSteps, motherSteps));
           } else {
             // If the shared ancestor is inbred, include full depth from both parents
-            n = Math.max(fatherSteps, motherSteps); // This helps avoid overemphasis on small steps
+            n = Math.max(fatherSteps, motherSteps);
           }
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
-          // Apply a scaling factor to reduce impact of high n values
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
-
         }
       }
 
       // Calculate inbreeding coefficient from the parents
       const fatherCoEff = person.father_id
-        ? calculateInbreedingCoefficient(person.father_id, [...path, personId])
+        ? await calculateInbreedingCoefficient(person.father_id, [...path, personId])
         : 0;
 
       const motherCoEff = person.mother_id
-        ? calculateInbreedingCoefficient(person.mother_id, [...path, personId])
+        ? await calculateInbreedingCoefficient(person.mother_id, [...path, personId])
         : 0;
 
       // Total coefficient considering both parents and common ancestors
       const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
 
+      // Memoize the result
+      memoizedResults[personId] = totalCoEff;
+      
       return totalCoEff;
     }
 
@@ -204,19 +210,20 @@ export default async function handler(req, res) {
       return result;
     }
 
-    const coefficient = calculateInbreedingCoefficient(id);
-    console.log("coefficient:", coefficient * 10)
-    console.log("raw coefficient:", coefficient)
-
+    const coefficient = await calculateInbreedingCoefficient(id);
+    console.log(`Inbreeding Coefficient: ${coefficient * 10}%`);
+    console.log(`Raw Inbreeding Coefficient: ${coefficient}`);
 
     function getInterpretation(coefficient) {
-      if (coefficient === 0) return "completely unrelated";
-      if (coefficient <= 0.2) return "fourth cousins";
-      if (coefficient <= 0.78) return "third cousins";
-      if (coefficient <= 3.13) return "second cousins";
-      if (coefficient <= 12.5) return "first cousins";
-      if (coefficient <= 25) return "aunt/uncle and neice/nephew, or half siblings, or grandparent and grandchildren or double first cousins";
-      if (coefficient <= 50) return "full siblings, or parent and child";
+      if (coefficient === 0) return "No detectable inbreeding";
+      if (coefficient < 0.1) return "Very distant relatives (e.g., 6th cousins or more)";
+      if (coefficient < 0.5) return "Distant relatives (e.g., 4th-5th cousins)";
+      if (coefficient < 1) return "3rd-4th cousins";
+      if (coefficient < 2) return "2nd-3rd cousins";
+      if (coefficient < 6) return "1st-2nd cousins";
+      if (coefficient < 13) return "Siblings or parent-child";
+      if (coefficient < 25) return "Double first cousins or uncle-niece";
+      return "Very close relationship (e.g., sibling or parent-child repeated)";
     }
 
     res.json({
