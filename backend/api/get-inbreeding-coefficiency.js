@@ -82,8 +82,8 @@ export default async function handler(req, res) {
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
-      console.log(".......................");
-      console.log("Person:", person);
+      console.log(".......................")
+      console.log("Person:", person)
 
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
@@ -109,6 +109,8 @@ export default async function handler(req, res) {
           person.mother_id
         );
 
+        
+
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
         for (const {
           ancestorId,
@@ -127,6 +129,7 @@ export default async function handler(req, res) {
             `Common Ancestor ${ancestorId}: ${commonCoEff} (steps: ${fatherSteps} + ${motherSteps})`
           );
           console.log(commonAncestors);
+          
         }
       }
 
@@ -145,64 +148,63 @@ export default async function handler(req, res) {
       return totalCoEff;
     }
 
-    function findCommonAncestors(fatherId, motherId, seenAncestors = {}) {
-      const ancestors1 = getAncestorSteps(fatherId, seenAncestors);
-      const ancestors2 = getAncestorSteps(motherId, seenAncestors);
-    
-      const commonAncestors = [];
-    
-      for (const ancestorId in ancestors1) {
-        if (ancestorId in ancestors2) {
-          // Avoid including any ancestor already counted in the final result
-          if (!seenAncestors[ancestorId]) {
-            seenAncestors[ancestorId] = true; // Mark ancestor as seen
-    
-            const fatherSteps = ancestors1[ancestorId];
-            const motherSteps = ancestors2[ancestorId];
-    
-            // Get the inbreeding coefficient of the common ancestor (if inbred)
-            const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
-    
-            // Add only common ancestors to the result
-            commonAncestors.push({
-              ancestorId: Number(ancestorId),
-              fatherSteps,
-              motherSteps,
-              inbreedingCoefficient: ancestorInbreeding, // Include inbreeding coefficient for the shared ancestor
-            });
-          }
-        }
-      }
-    
-      return commonAncestors;
-    }
+    function findCommonAncestors(fatherId, motherId) {
+  const ancestors1 = getAncestorSteps(fatherId);
+  const ancestors2 = getAncestorSteps(motherId);
 
-    function getAncestorSteps(personId, seen = {}) {
+  const commonAncestors = [];
+
+  for (const ancestorId in ancestors1) {
+    if (ancestorId in ancestors2) {
+      const ancestorInbreeding = calculateInbreedingCoefficient(Number(ancestorId));
+
+      // Allow non-inbred ancestors to contribute, even if their coefficient is 0
+      commonAncestors.push({
+        ancestorId: Number(ancestorId),
+        fatherSteps: ancestors1[ancestorId],
+        motherSteps: ancestors2[ancestorId],
+        inbreedingCoefficient: ancestorInbreeding,
+      });
+    }
+  }
+
+  return commonAncestors;
+}
+
+
+
+    function getAncestorSteps(personId, steps = 1, seen = {}) {
       const person = ancestorLookup[personId];
       if (!person) return {};
-    
+
       const result = {};
-    
+
       if (
         person.father_id &&
         !seen[person.father_id] &&
         ancestorLookup[person.father_id]
       ) {
         seen[person.father_id] = true;
-        result[person.father_id] = 1;
-        Object.assign(result, getAncestorSteps(person.father_id, seen));
+        result[person.father_id] = steps;
+        Object.assign(
+          result,
+          getAncestorSteps(person.father_id, steps + 1, seen)
+        );
       }
-    
+
       if (
         person.mother_id &&
         !seen[person.mother_id] &&
         ancestorLookup[person.mother_id]
       ) {
         seen[person.mother_id] = true;
-        result[person.mother_id] = 1;
-        Object.assign(result, getAncestorSteps(person.mother_id, seen));
+        result[person.mother_id] = steps;
+        Object.assign(
+          result,
+          getAncestorSteps(person.mother_id, steps + 1, seen)
+        );
       }
-    
+
       return result;
     }
 
