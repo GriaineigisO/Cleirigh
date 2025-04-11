@@ -214,15 +214,13 @@ export default async function handler(req, res) {
     console.log(`Raw Inbreeding Coefficient: ${coefficient}`);
 
     function getInterpretation(coefficient) {
-      if (coefficient === 0) return "No detectable inbreeding";
-      if (coefficient < 0.1) return "Very distant relatives (e.g., 6th cousins or more)";
-      if (coefficient < 0.5) return "Distant relatives (e.g., 4th-5th cousins)";
-      if (coefficient < 1) return "3rd-4th cousins";
-      if (coefficient < 2) return "2nd-3rd cousins";
-      if (coefficient < 6) return "1st-2nd cousins";
-      if (coefficient < 13) return "1st cousins";
-      if (coefficient < 25) return "Double first cousins or uncle-niece";
-      return "Very close relationship (e.g., sibling or parent-child repeated)";
+      if (coefficient === 0) return "completely unrelated";
+      if (coefficient <= 0.2) return "fourth cousins";
+      if (coefficient <= 0.78) return "third cousins";
+      if (coefficient <= 3.13) return "second cousins";
+      if (coefficient <= 12.5) return "first cousins";
+      if (coefficient <= 25) return "aunt/uncle and neice/nephew, or half siblings, or grandparent and grandchildren or double first cousins";
+      if (coefficient <= 50) return "full siblings, or parent and child";
     }
 
     res.json({
