@@ -158,25 +158,21 @@ export default async function handler(req, res) {
     function mainCoefficient(personId) {
       const person = ancestorLookup[personId];
       if (!person || !person.father_id || !person.mother_id) return 0;
-
+    
       const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
-
       const sharedAncestorIds = new Set(commonAncestors.map(a => a.ancestorId));
-
+    
       let commonCoEff = 0;
-
+    
       for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
         const n = fatherSteps + motherSteps;
         const F_CA = calculateInbreedingCoefficient(ancestorId, [personId], sharedAncestorIds);
         commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
       }
-
-      // Add contributions from parents
-      const F_father = calculateInbreedingCoefficient(person.father_id, [personId]);
-      const F_mother = calculateInbreedingCoefficient(person.mother_id, [personId]);
-
-      return commonCoEff + 0.5 * (F_father + F_mother);
+    
+      return commonCoEff;
     }
+    
 
     const coefficient = mainCoefficient(id);
     console.log(`Inbreeding Coefficient: ${coefficient * 100}%`);
