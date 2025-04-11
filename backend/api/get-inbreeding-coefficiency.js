@@ -77,8 +77,6 @@ export default async function handler(req, res) {
       return acc;
     }, {});
 
-    const memo = {};
-
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
@@ -209,6 +207,7 @@ export default async function handler(req, res) {
     }
 
     const coefficient = calculateInbreedingCoefficient(id);
+
 
     function getInterpretation(coefficient) {
       if (coefficient === 0) return "completely unrelated";
