@@ -60,6 +60,7 @@ const Profile = () => {
   const [associatedTopicLinks, setAssociatedTopicLinks] = useState([]);
   const [associatedTopicIds, setAssociatedTopicIds] = useState([]);
   const [inbreedingCoefficiency, setInbreedingCoefficiency] = useState(0);
+  const [parentRelation, setParentRelation] = useState("");
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -555,6 +556,7 @@ const Profile = () => {
         const data = await response.json();
         console.log(data)
         setInbreedingCoefficiency(data.inbreedingCoefficient); 
+        setParentRelation(data.interpretation)
       } catch (err) {
         setError("Failed to fetch data");
         console.error(err);
@@ -568,7 +570,7 @@ const Profile = () => {
 
   const InbreedingCoefficiency = () => {
     return (
-      <p>{profileData.first_name} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%. This is equivalent to having parents that were {data.interpretation}</p>
+      <p>{profileData.first_name} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%. This is equivalent to having parents that were {parentRelation}</p>
     )
   };
 
