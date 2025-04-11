@@ -82,6 +82,8 @@ export default async function handler(req, res) {
     function calculateInbreedingCoefficient(personId, path = []) {
       const person = ancestorLookup[personId];
 
+      console.log(`Calculating for ${personId}:`, person); // Add logging here
+
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
         return 0;
@@ -230,8 +232,7 @@ export default async function handler(req, res) {
 
     function getInterpretation(coefficient) {
       if (coefficient === 0) return "No detectable inbreeding";
-      if (coefficient < 0.1)
-        return "Very distant relatives (e.g., 6th cousins or more)";
+      if (coefficient < 0.1) return "Very distant relatives (e.g., 6th cousins or more)";
       if (coefficient < 0.5) return "Distant relatives (e.g., 4th-5th cousins)";
       if (coefficient < 1) return "3rd-4th cousins";
       if (coefficient < 2) return "2nd-3rd cousins";
