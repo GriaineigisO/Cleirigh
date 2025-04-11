@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { convertNumToRelation } from "../library";
 import ReactQuill from "react-quill";
@@ -568,7 +568,7 @@ const Profile = () => {
 
   const InbreedingCoefficiency = () => {
     return (
-      <p>{profileData.first_name} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%.</p>
+      <p>{profileData.first_name} has an <a href="https://en.wikipedia.org/wiki/Coefficient_of_inbreeding" target="_blank">inbreeding coefficiency</a> of {inbreedingCoefficiency}%. This is equivalent to having parents that were {data.interpretation}</p>
     )
   };
 
