@@ -207,6 +207,8 @@ export default async function handler(req, res) {
     }
 
     const coefficient = calculateInbreedingCoefficient(id);
+    console.log("coefficient:", coefficient * 10)
+    console.log("raw coefficient:", coefficient)
 
 
     function getInterpretation(coefficient) {
