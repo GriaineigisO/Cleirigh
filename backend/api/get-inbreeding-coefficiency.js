@@ -84,33 +84,33 @@ export default async function handler(req, res) {
       if (memoizedResults[personId]) {
         return memoizedResults[personId];
       }
-
+    
       const person = ancestorLookup[personId];
-
+    
       // If the person doesn't exist, return 0 (i.e., no inbreeding)
       if (!person) {
         memoizedResults[personId] = 0;
         return 0;
       }
-
+    
       // Check for loops (to avoid infinite recursion)
       if (path.includes(personId)) {
         memoizedResults[personId] = 0;
         return 0;
       }
-
+    
       // If there are no parents, return 0 (i.e., dead end)
       if (!person.father_id && !person.mother_id) {
         memoizedResults[personId] = 0;
         return 0;
       }
-
+    
       let commonCoEff = 0;
-
+    
       // If both father and mother exist, check for common ancestors
       if (person.father_id && person.mother_id) {
         const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
-
+    
         // For each common ancestor, calculate their contribution to the inbreeding coefficient
         for (const {
           ancestorId,
@@ -122,17 +122,32 @@ export default async function handler(req, res) {
             sharedAncestor?.father_id && sharedAncestor?.mother_id
               ? await calculateInbreedingCoefficient(ancestorId, [...path, personId])
               : 0;
-
+    
           let n = fatherSteps + motherSteps; // Total steps to the common ancestor
-
+    
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         }
       }
-
-      memoizedResults[personId] = commonCoEff;
-      return commonCoEff;
+    
+      // Calculate inbreeding coefficient from the parents (taking into account the parent's inbreeding)
+      const fatherCoEff = person.father_id
+        ? await calculateInbreedingCoefficient(person.father_id, [...path, personId])
+        : 0;
+    
+      const motherCoEff = person.mother_id
+        ? await calculateInbreedingCoefficient(person.mother_id, [...path, personId])
+        : 0;
+    
+      // Total coefficient considering both parents' contributions and the common ancestors
+      const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
+    
+      // Memoize the result
+      memoizedResults[personId] = totalCoEff;
+    
+      return totalCoEff;
     }
+    
 
     function findCommonAncestors(fatherId, motherId) {
       const ancestors1 = getAncestorSteps(fatherId);
