@@ -128,9 +128,8 @@ export default async function handler(req, res) {
           console.log(
             `Common Ancestor ${ancestorId}: ${commonCoEff} (steps: ${fatherSteps} + ${motherSteps})`
           );
-          console.log(
-            `CommonAncestors: ${commonAncestors})`
-          );
+          console.log(commonAncestors);
+          
         }
       }
 
