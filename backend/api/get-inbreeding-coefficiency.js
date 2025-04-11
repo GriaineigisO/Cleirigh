@@ -121,6 +121,7 @@ export default async function handler(req, res) {
     
           let n = fatherSteps + motherSteps; // Total steps to the common ancestor
     
+          // We adjust how the common ancestor's contribution is calculated to account for both sides
           // Adding the common ancestor's contribution to the inbreeding coefficient
           commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
         }
