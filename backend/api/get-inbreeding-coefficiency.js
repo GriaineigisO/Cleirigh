@@ -16,7 +16,10 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", corsOptions.origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", corsOptions.methods.join(", "));
-  res.setHeader("Access-Control-Allow-Headers", corsOptions.allowedHeaders.join(", "));
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    corsOptions.allowedHeaders.join(", ")
+  );
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -53,7 +56,8 @@ export default async function handler(req, res) {
         .select("ancestor_id, father_id, mother_id")
         .range(from, to);
 
-      if (error) return res.status(500).json({ error: "Error fetching tree data" });
+      if (error)
+        return res.status(500).json({ error: "Error fetching tree data" });
 
       if (data && data.length > 0) {
         allData = [...allData, ...data];
@@ -72,43 +76,70 @@ export default async function handler(req, res) {
     const memoizedResults = {};
 
     async function calculateInbreedingCoefficient(personId, path = []) {
-      if (memoizedResults[personId] !== undefined) return memoizedResults[personId];
+      if (memoizedResults[personId] !== undefined)
+        return memoizedResults[personId];
 
       const person = ancestorLookup[personId];
       if (!person) return (memoizedResults[personId] = 0);
 
       if (path.includes(personId)) return (memoizedResults[personId] = 0);
 
-      if (!person.father_id && !person.mother_id) return (memoizedResults[personId] = 0);
+      if (!person.father_id && !person.mother_id)
+        return (memoizedResults[personId] = 0);
 
       let commonCoEff = 0;
 
       if (person.father_id && person.mother_id) {
-        const commonAncestors = findCommonAncestors(person.father_id, person.mother_id);
+        const commonAncestors = findCommonAncestors(
+          person.father_id,
+          person.mother_id
+        );
 
-        for (const { ancestorId, fatherSteps, motherSteps } of commonAncestors) {
+        for (const {
+          ancestorId,
+          fatherSteps,
+          motherSteps,
+        } of commonAncestors) {
           const sharedAncestor = ancestorLookup[ancestorId];
 
           let F_CA = 0;
           if (sharedAncestor?.father_id && sharedAncestor?.mother_id) {
-            F_CA = await calculateInbreedingCoefficient(ancestorId, [...path, personId]);
+            F_CA = await calculateInbreedingCoefficient(ancestorId, [
+              ...path,
+              personId,
+            ]);
           }
 
           const n = fatherSteps + motherSteps;
 
-          if (F_CA > 0 || n === 2) {
-            // Only include ancestors that are inbred OR direct shared grandparents (first cousins)
+          const isDirectParentOfBoth =
+            (sharedAncestor?.ancestor_id ===
+              ancestorLookup[person.father_id]?.father_id ||
+              sharedAncestor?.ancestor_id ===
+                ancestorLookup[person.father_id]?.mother_id) &&
+            (sharedAncestor?.ancestor_id ===
+              ancestorLookup[person.mother_id]?.father_id ||
+              sharedAncestor?.ancestor_id ===
+                ancestorLookup[person.mother_id]?.mother_id);
+
+          if (F_CA > 0 || isDirectParentOfBoth) {
             commonCoEff += Math.pow(0.5, n) * (1 + F_CA);
           }
         }
       }
 
       const fatherCoEff = person.father_id
-        ? await calculateInbreedingCoefficient(person.father_id, [...path, personId])
+        ? await calculateInbreedingCoefficient(person.father_id, [
+            ...path,
+            personId,
+          ])
         : 0;
 
       const motherCoEff = person.mother_id
-        ? await calculateInbreedingCoefficient(person.mother_id, [...path, personId])
+        ? await calculateInbreedingCoefficient(person.mother_id, [
+            ...path,
+            personId,
+          ])
         : 0;
 
       const totalCoEff = commonCoEff + fatherCoEff / 2 + motherCoEff / 2;
@@ -141,16 +172,30 @@ export default async function handler(req, res) {
 
       const result = {};
 
-      if (person.father_id && !seen[person.father_id] && ancestorLookup[person.father_id]) {
+      if (
+        person.father_id &&
+        !seen[person.father_id] &&
+        ancestorLookup[person.father_id]
+      ) {
         seen[person.father_id] = true;
         result[person.father_id] = steps;
-        Object.assign(result, getAncestorSteps(person.father_id, steps + 1, seen));
+        Object.assign(
+          result,
+          getAncestorSteps(person.father_id, steps + 1, seen)
+        );
       }
 
-      if (person.mother_id && !seen[person.mother_id] && ancestorLookup[person.mother_id]) {
+      if (
+        person.mother_id &&
+        !seen[person.mother_id] &&
+        ancestorLookup[person.mother_id]
+      ) {
         seen[person.mother_id] = true;
         result[person.mother_id] = steps;
-        Object.assign(result, getAncestorSteps(person.mother_id, steps + 1, seen));
+        Object.assign(
+          result,
+          getAncestorSteps(person.mother_id, steps + 1, seen)
+        );
       }
 
       return result;
@@ -166,7 +211,11 @@ export default async function handler(req, res) {
         { value: 0.78, interpretation: "third cousins" },
         { value: 3.13, interpretation: "second cousins" },
         { value: 12.5, interpretation: "first cousins" },
-        { value: 25, interpretation: "aunt/uncle and niece/nephew, or half siblings, or grandparent and grandchild" },
+        {
+          value: 25,
+          interpretation:
+            "aunt/uncle and niece/nephew, or half siblings, or grandparent and grandchild",
+        },
         { value: 50, interpretation: "full siblings or parent and child" },
       ];
 
