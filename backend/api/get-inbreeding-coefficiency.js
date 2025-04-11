@@ -122,7 +122,9 @@ export default async function handler(req, res) {
           ]); //coefficient of the common ancestor himself
 
           // Adding the common ancestor's contribution to the inbreeding coefficient
-          commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
+          if (F_CA > 0) {
+            commonCoEff += Math.pow(0.5, n) * (1 + F_CA); // Formula for inbreeding coefficient contribution
+          }
         }
       }
 
